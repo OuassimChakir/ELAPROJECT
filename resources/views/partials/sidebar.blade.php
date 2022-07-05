@@ -118,12 +118,12 @@
 								<div class="collapse">
 									<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
 										<li class="">
-											<a class="sidenav-item-link" href="#">
-												<span class="nav-text">les Matières</span>
+											<a class="sidenav-item-link" href="{{route('subjects')}}">
+												<span class="nav-text">Matières</span>
 											</a>
 										</li>
 										<li class="">
-											<a class="sidenav-item-link" href="#">
+											<a class="sidenav-item-link" href="{{route('courseType')}}">
 												<span class="nav-text">Types de Formations</span>
 											</a>
 										</li>
@@ -139,18 +139,13 @@
 								<div class="collapse">
 									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 										<li class="">
-											<a class="sidenav-item-link" href="order-history.html">
-												<span class="nav-text">Liste de Commandes</span>
+											<a class="sidenav-item-link" href="{{ route('grades') }}">
+												<span class="nav-text">Niveaux Scolaires</span>
 											</a>
 										</li>
 										<li class="">
-											<a class="sidenav-item-link" href="order-detail.html">
-												<span class="nav-text">Detail du Commandes</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="invoice.html">
-												<span class="nav-text">Factures</span>
+											<a class="sidenav-item-link" href="{{ route('gradesCategory') }}">
+												<span class="nav-text">Categories des Niveaux</span>
 											</a>
 										</li>
 									</ul>

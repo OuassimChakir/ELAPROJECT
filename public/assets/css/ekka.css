@@ -11067,6 +11067,7 @@ textarea.form-control-lg {
 }
 .ec-cat-list table tbody tr td {
   max-width: 300px;
+  vertical-align: middle;
 }
 .ec-cat-list table tbody tr td .ec-sub-cat-count {
   margin: 2px 0 2px 5px;

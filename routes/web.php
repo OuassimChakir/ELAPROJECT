@@ -15,3 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','HomeController@index')->name('acceuil');
+// GRADES
+Route::get('/niveau','GradesController@grades')->name('grades');
+Route::get('/niveau/categories','GradesController@gradesCategory')->name('gradesCategory');
+
+// Subjects and Course Type
+Route::get('/matieres/type','SubjectController@courseType')->name('courseType');
+Route::get('/matieres','SubjectController@subjects')->name('subjects');
+Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.add');
+Route::get('/matieres/type/action','SubjectController@courseType')->name('courses.action');

@@ -11,7 +11,6 @@
 <script src="{{asset('assets/js/chart.js')}}"></script>
 
 
-
 <!-- Date Range Picker -->
 <script src="{{asset('assets/plugins/daterangepicker/moment.min.js')}}"></script>
 <script src="{{asset('assets/plugins/daterangepicker/daterangepicker.js')}}"></script>
@@ -23,3 +22,8 @@
 <!-- Ekka Custom -->
 <script src="{{asset('assets/js/ekka.js')}}"></script>
 <script src="{{asset('assets/plugins/simplebar/simplebar.min.js')}}"></script>
+
+<!-- Data Tables -->
+<script src='assets/plugins/data-tables/jquery.datatables.min.js'></script>
+<script src='assets/plugins/data-tables/datatables.bootstrap5.min.js'></script>
+<script src='assets/plugins/data-tables/datatables.responsive.min.js'></script>
