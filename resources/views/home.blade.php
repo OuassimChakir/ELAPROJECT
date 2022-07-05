@@ -3,5 +3,5 @@
     Acceuil
 @endsection
 @section('content')
-    Hello
+    This is a TEST
 @endsection
