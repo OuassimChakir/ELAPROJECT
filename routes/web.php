@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\TypestaffController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +30,9 @@ Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.
 Route::get('/matieres/type/{action}/{idCourseType}','SubjectController@actionCourseType')->name('courses.action');
     // Update a Course Type Query
 Route::put('/matieres/type/update/{idCourseType}','SubjectController@actionCourseType')->name('courses.update');
+Route::get('/matieres/type/action','SubjectController@courseType')->name('courses.action');
+
+//  staff and student 
+Route::get('/staff', 'StaffController@staff')->name('staff.liste');
+//Route::get('/staff/add', 'StaffController@StaffType')->name('staff.add');
+//Route::resource('Stafftype', 'StaffController');

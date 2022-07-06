@@ -61,7 +61,7 @@
 								<div class="collapse">
 									<ul class="sub-menu" id="users" data-parent="#sidebar-menu">
 										<li class="">
-											<a class="sidenav-item-link" href="#">
+											<a class="sidenav-item-link" href="{{url('/staff')}}">
 												<span class="nav-text">Liste des Staff</span>
 											</a>
 										</li>
