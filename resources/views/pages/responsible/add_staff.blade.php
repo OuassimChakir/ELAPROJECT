@@ -2,7 +2,7 @@
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="{{route('staff.add')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header px-4">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Add New Staff</h5>
@@ -44,6 +44,11 @@
                                 <label for="form-label">Type de Staff</label>
                                 <select name="idStaffType" id="id-stafftype" class="form-select">
                                     <option>{{ trans('global.pleaseSelect') }}</option>
+                                    @foreach( $stafft as $type)
+                                    <option value="{{ $type->idStaffType }}" >
+                                        {{ $type->designation }}
+                                    </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -61,7 +66,7 @@
                             <div class="form-group mb-4">
                                 <label for="userName">CNIE</label>
                                 <input type="text" class="form-control" name="cnie" id="userName"
-                                    value="U4656" required>
+                                    value="U156" required>
                             </div>
                         </div>
 

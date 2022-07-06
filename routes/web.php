@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\TypestaffController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +29,5 @@ Route::get('/matieres/type/action','SubjectController@courseType')->name('course
 
 //  staff and student 
 Route::get('/staff', 'StaffController@staff')->name('staff.liste');
-Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
+Route::get('/staff/add', 'TypestaffController@StaffType')->name('staff.add');
+//Route::resource('Stafftype', 'StaffController');

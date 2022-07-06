@@ -12,7 +12,7 @@ class Stafftype extends Model
     protected $primaryKey = "idStaffType";
     public $timestamps = false;
     // add new Staff Type
-    public function addStaffType($designation){
+ /*   public function addStaffType($designation){
         $this->designation = $designation;
         $this->save();
     }
@@ -25,5 +25,9 @@ class Stafftype extends Model
     // Delete Staff Type
     public function deleteStaffType($id){
         $this::find($id)->delete();
+    }*/
+    public function selectStaffType(){
+        return $this::all();
     }
+    
 }
