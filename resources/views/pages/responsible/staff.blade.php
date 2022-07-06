@@ -76,7 +76,7 @@ data-bs-target="#addUser"> Add Staff
                                             </button>
                                 
                                             <div class="dropdown-menu">
-                 <a class="dropdown-item" href="{{ url('/staff/edit' , $staf->idStaff) }}">Edit</a>
+                <a class="dropdown-item" href="{{ url('/staff/edit' , $staf->idStaff) }}">Edit</a>
                       <form id="{{$staf->idStaff}}" method="POST"
                          action="{{ url('/staff/delete',$staf->idStaff)}}">
                                                     @csrf
