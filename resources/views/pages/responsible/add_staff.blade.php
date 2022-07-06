@@ -43,7 +43,7 @@
                             <div class="form-group mb-4">
                                 <label for="form-label">Type de Staff</label>
                                 <select name="idStaffType" id="id-stafftype" class="form-select">
-                                    <option>{{ trans('global.pleaseSelect') }}</option>
+                                    <option>{{ trans('global.Type') }}</option>
                                     @foreach( $stafft as $type)
                                     <option value="{{ $type->idStaffType }}" >
                                         {{ $type->designation }}
@@ -57,7 +57,12 @@
                             <div class="form-group mb-4">
                                 <label for="form-label">Subject</label>
                                 <select name="idSubject" id="id-Subject" class="form-select">
-                                    <option>{{ trans('global.pleaseSelect') }}</option>
+                                    <option>{{ trans('global.Subjects') }}</option>
+                                    @foreach( $subjects as $subject)
+                                    <option value="{{ $subject->idSubjects }}" >
+                                        {{ $subject->libelle  }}
+                                    </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
