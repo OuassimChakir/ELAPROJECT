@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,7 @@ Route::get('/matieres/type','SubjectController@courseType')->name('courseType');
 Route::get('/matieres','SubjectController@subjects')->name('subjects');
 Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.add');
 Route::get('/matieres/type/action','SubjectController@courseType')->name('courses.action');
+
+//  staff and student 
+Route::get('/staff', 'StaffController@staff')->name('staff.liste');
+Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
