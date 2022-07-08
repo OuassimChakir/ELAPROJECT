@@ -4,4 +4,5 @@
 @endsection
 @section('content')
 wtf man sss
+    Hello
 @endsection
