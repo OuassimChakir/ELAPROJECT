@@ -65,31 +65,33 @@
                         </thead>
 
                         <tbody>
-                            @php
+                            @if (isset($subjects))
+                                @php
                                 $i=1;
-                             @endphp
-                            @foreach ($subjects as $subject)
-                                <tr>
-                                    <td>{{$i++}}</td>
-                                    <td>{{$subjects->liballe}}</td>
-                                    <td>{{$subjects->course}}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a href="{{url('/matieres/type/update/'.$subjects->idCourseType)}}">
-                                                <button type="submit" name="edit" class="btn btn-outline-warning" value="{{$subjects->idCourseType}}">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                    
-                                                </button>
-                                             </a>
-                                            <a href="{{url('/matieres/type/delete/'.$course->idCourseType)}}">
-                                                <button type="submit" class="btn btn-outline-danger" name="delete" value="{{$course->idCourseType}}" onclick="return confirm('Vous êtes sûr?');">
-                                                        <i class="bi bi-trash-fill"></i>
-                                                </button>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                @endphp
+                                @foreach ($subjects as $subject)
+                                    <tr>
+                                        <td>{{$i++}}</td>
+                                        <td>{{$subjects->liballe}}</td>
+                                        <td>{{$subjects->course}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{url('/matieres/type/update/'.$subjects->idCourseType)}}">
+                                                    <button type="submit" name="edit" class="btn btn-outline-warning" value="{{$subjects->idCourseType}}">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                        
+                                                    </button>
+                                                </a>
+                                                <a href="{{url('/matieres/type/delete/'.$course->idCourseType)}}">
+                                                    <button type="submit" class="btn btn-outline-danger" name="delete" value="{{$course->idCourseType}}" onclick="return confirm('Vous êtes sûr?');">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
