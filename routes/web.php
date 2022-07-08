@@ -24,13 +24,13 @@ Route::get('/niveau/categories','GradesController@gradesCategory')->name('grades
 // Subjects and Course Type
 Route::get('/matieres/type','SubjectController@courseType')->name('courseType');
 Route::get('/matieres','SubjectController@subjects')->name('subjects');
-    // Add Course Type
-Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.add');
-    // Delete & Update Course Type
-Route::get('/matieres/type/{action}/{idCourseType}','SubjectController@actionCourseType')->name('courses.action');
-    // Update a Course Type Query
-Route::put('/matieres/type/update/{idCourseType}','SubjectController@actionCourseType')->name('courses.update');
-Route::get('/matieres/type/action','SubjectController@courseType')->name('courses.action');
+        // Add Course Type
+    Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.add');
+        // Delete & Update Course Type
+    Route::get('/matieres/type/{action}/{idCourseType}','SubjectController@actionCourseType')->name('courses.action');
+        // Update a Course Type Query
+    Route::put('/matieres/type/update/{idCourseType}','SubjectController@actionCourseType')->name('courses.update');
+    Route::get('/matieres/type/action','SubjectController@courseType')->name('courses.action');
 
 //  staff and student 
 Route::get('/staff', 'StaffController@staff')->name('staff.liste');

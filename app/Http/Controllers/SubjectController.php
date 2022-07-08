@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Courses\CourseType;
+use App\Models\Courses\Subjects;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class SubjectController extends Controller
 {
-    // Course Type Controller
+    //----------------- Course Type ---------------- //
     public function courseType(Request $request){
         $courseType = new CourseType();
         // List of Courses
@@ -24,7 +25,6 @@ class SubjectController extends Controller
 
         return view('pages.courses.courseType')->with(['courses' => $courses]);
     }
-
 
     // Course Type Deletion or Update
     public function actionCourseType(Request $request,$action,$idCourseType){
@@ -53,8 +53,15 @@ class SubjectController extends Controller
         
     }
 
+    //----------------- Subjects ---------------- //
     // Subjects Controller
     public function subjects(){
-        return view('pages.courses.subjects');
+        $courseType = new CourseType();
+        $subjectsClass = new Subjects();
+        $subjects = $subjectsClass->getSubjects();
+        $courses = $courseType->selectCourses();
+        return view('pages.courses.subjects')
+            ->with('subjects',$subjects)
+            ->with('courses',$courses);
     }
 }
