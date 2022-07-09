@@ -30,7 +30,13 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/matieres/type/{action}/{idCourseType}','SubjectController@actionCourseType')->name('courses.action');
         // Update a Course Type Query
     Route::put('/matieres/type/update/{idCourseType}','SubjectController@actionCourseType')->name('courses.update');
-    Route::get('/matieres/type/action','SubjectController@courseType')->name('courses.action');
+
+    // Add New Subject
+    Route::post('/matiere/add','SubjectController@subjects')->name('subjects.add');
+    // Delete & Update Subject
+    Route::get('/matieres/{action}/{idSubject}','SubjectController@actionSubject')->name('subjects.action');
+    // Update a Subject Query
+    Route::put('/matieres/update/{idSubject}','SubjectController@actionSubject')->name('subjects.update');
 
 //  staff and student 
 Route::get('/staff', 'StaffController@staff')->name('staff.liste');
