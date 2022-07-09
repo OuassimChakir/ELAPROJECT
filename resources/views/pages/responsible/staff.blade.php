@@ -53,6 +53,7 @@ data-bs-target="#addUser"> Add Staff
 
             <tbody>
                 @foreach ($Staff as $staf)
+                @if($staf->idStaffType == 2)
                     <tr>
                         <td>{{$staf->nom}}</td>
                         <td>{{$staf->prenom}}</td>
@@ -67,30 +68,23 @@ data-bs-target="#addUser"> Add Staff
                         </td>
                         <td>{{$staf->dateEngagement}}</td>
                         <td>
-                                        <div class="btn-group">                                                         
-                                            <button type="button"
-                                                class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                                                data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false" data-display="static">
-                                                <span class="sr-only">Info</span>
-                                            </button>
-                                
-                                            <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ url('/staff/edit' , $staf->idStaff) }}">Edit</a>
-                      <form id="{{$staf->idStaff}}" method="POST"
-                         action="{{ url('/staff/delete',$staf->idStaff)}}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                <button
-                                                onclick="event.preventDefault(); if (confirm('etre vous sur ?')) 
-                                                document.getElementById({{$staf->idStaff}}).submit();"
-
-                                                 type="submit" class="dropdown-item" >DELETE</button> 
-                                            </form>
-                                            </div>
-                                  </div>
+                            <form action="{{url('/staff/add/action')}}" method="delete">
+                               
+                                @method('delete')
+                                <div class="btn-group">
+                                    <button type="submit" name="edit" class="btn btn-outline-warning"
+                                     value="{{$staf->idStaff}}" onclick="return confirm('Vous êtes sûr?');">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-danger" name="delete" 
+                                    value="{{$staf->idStaff}}" onclick="return confirm('Vous êtes sûr?');">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </div>
+                            </form>
                         </td>
                     </tr>
+                    @endif
                 @endforeach
                 
             </tbody>

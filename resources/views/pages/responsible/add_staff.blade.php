@@ -2,8 +2,9 @@
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <form action="{{route('staff.add')}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('staff.add')}}" method="post">
                 @csrf
+                @method('post')
                 <div class="modal-header px-4">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Add New Staff</h5>
                 </div>
@@ -59,7 +60,7 @@
                                 <select name="idSubject" id="id-Subject" class="form-select">
                                     <option>{{ trans('global.Subjects') }}</option>
                                     @foreach( $subjects as $subject)
-                                    <option value="{{ $subject->idSubjects }}" >
+                                    <option value="{{ $subject->idSubject }}" >
                                         {{ $subject->libelle  }}
                                     </option>
                                     @endforeach

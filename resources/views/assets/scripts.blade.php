@@ -5,7 +5,10 @@
 <script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{asset('JS/jquery.min.js')}}"></script>
-
+    <script src="{{asset('assets/plugins/jquery/jquery-3.5.1.min.js')}}"></script>
+	<script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+	<script src="{{asset('assets/plugins/simplebar/simplebar.min.js')}}"></script>
+	<script src="{{asset('assets/plugins/jquery-zoom/jquery.zoom.min.js')}}"></script>
 <!-- Chart -->
 <script src="{{asset('assets/plugins/charts/Chart.min.js')}}"></script>
 <script src="{{asset('assets/js/chart.js')}}"></script>

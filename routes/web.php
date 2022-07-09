@@ -29,5 +29,6 @@ Route::get('/matieres/type/action','SubjectController@courseType')->name('course
 
 //  staff and student 
 Route::get('/staff', 'StaffController@staff')->name('staff.liste');
-//Route::get('/staff/add', 'StaffController@StaffType')->name('staff.add');
-//Route::resource('Stafftype', 'StaffController');
+Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
+Route::get('/staff/add/action','StaffController@staff')->name('staff.action');
+//Route::resource('Stafftype', 'StaffController');  

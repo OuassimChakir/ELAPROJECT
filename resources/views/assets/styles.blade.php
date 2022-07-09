@@ -1,4 +1,7 @@
     <!-- CSS -->
+    	<!-- PLUGINS CSS STYLE -->
+	<link href="{{asset('assets/plugins/daterangepicker/daterangepicker.css')}}" rel="stylesheet">
+	<link href="{{asset('assets/plugins/simplebar/simplebar.css')}}" rel="stylesheet" />
     <link rel='stylesheet' href='{{asset('Bootstrap/css/bootstrap.min.css')}}'>
     <link rel='stylesheet' href='{{asset('Boutstrap/css/bootstrap-utilities.css')}}'>
     <link rel='stylesheet' href='{{asset('Bootstrap/bootstrap-icons-1.3.0/bootstrap-icons.css')}}'>
