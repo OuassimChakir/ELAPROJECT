@@ -19,7 +19,7 @@ class SubjectController extends Controller
             $course = $request->course;
             $shortForm = $request->shortForm;
             $courseType->addType($course,$shortForm);
-            return Redirect::back()->with('successType',"L'ajout se fait avec succès");
+            return Redirect::back()->with('successType',"L'ajout est fait avec succès");
         }
 
 
@@ -64,7 +64,7 @@ class SubjectController extends Controller
             $libelle = $request->libelle;
             $idCourseType = $request->courseType;
             $subjectsClass->addSubject($libelle,$idCourseType);
-            return Redirect::back()->with('successType',"L'ajout se fait avec succès");
+            return Redirect::back()->with('successType',"L'ajout est fait avec succès");
         }
         $subjects = $subjectsClass->getSubjects();
         $courses = $courseType->selectCourses();

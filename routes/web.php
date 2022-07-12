@@ -19,8 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/','HomeController@index')->name('acceuil');
 // GRADES
 Route::get('/niveau','GradesController@grades')->name('grades');
+// Grades Categories
 Route::get('/niveau/categories','GradesController@gradesCategory')->name('gradesCategory');
-
+    // Adding New Grade Category
+    Route::post('/niveau/categories/add','GradesController@gradesCategory')->name('gradesCategory.add');
 // Subjects and Course Type
 Route::get('/matieres/type','SubjectController@courseType')->name('courseType');
 Route::get('/matieres','SubjectController@subjects')->name('subjects');
@@ -37,6 +39,7 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/matieres/{action}/{idSubject}','SubjectController@actionSubject')->name('subjects.action');
     // Update a Subject Query
     Route::put('/matieres/update/{idSubject}','SubjectController@actionSubject')->name('subjects.update');
+
 
 //  staff and student 
 Route::get('/staff', 'StaffController@staff')->name('staff.liste');

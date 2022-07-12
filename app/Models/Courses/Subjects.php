@@ -13,7 +13,7 @@ class Subjects extends Model
     protected $primaryKey = "idSubject";
     public $timestamps = false;
 
-           // Select of Subjects
+      // Select of Subjects
        public function selectSubjects(){
         return $this::all();
        }
