@@ -31,15 +31,16 @@ class GradesCategory extends Model
        }
 
     //    Update Subject
-       public function updateSubject($idGradeCategory,$category,$idCourseType){
+       public function updateGradeCategory($idGradeCategory,$category,$description,$idCourseType){
         $gradeCategory = $this::find($idGradeCategory);
         $gradeCategory->category = $category;
+        $gradeCategory->description = $description;
         $gradeCategory->idCourseType = $idCourseType;
         $gradeCategory->save();
        }
     
     //    Delete Subject
-       public function deleteSubject($idGradeCategory){
+       public function deleteGradeCategory($idGradeCategory){
         $this::find($idGradeCategory)->delete();
        }
 }

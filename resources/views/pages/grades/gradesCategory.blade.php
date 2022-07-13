@@ -18,9 +18,9 @@
     {{session()->get('deleteType')}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-@elseif(session()->has('updateType'))
+@elseif(session()->has('updateCategory'))
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{session()->get('updateType')}}
+    {{session()->get('updateCategory')}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
@@ -29,11 +29,11 @@
         <div class="ec-cat-list card card-default mb-24px">
             <div class="card-body">
                 <div class="ec-cat-form">
-                    @if (isset($updatedSubject))
+                    @if (isset($updatedCategory))
                         {{-- Update Form --}}
-                        <h4>Modifier une Matière</h4>
+                        <h4>Modifier une Categorie</h4>
 
-                        <form action="{{route('subjects.update',['idSubject' => $updatedSubject->idSubject])}}" method="put">
+                        <form action="{{route('gradesCategory.update',['idGradeCategory' => $updatedCategory->idGradeCategory])}}" method="put">
                             @method('put')
                             @csrf
                             <div class="form-group row">
@@ -45,7 +45,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-form-label">Description</label> 
                                 <div class="col-12">
-                                    <textarea id="sortdescription" name="description" cols="40" rows="2" class="form-control">{{$updatedCategory->description}}</textarea>
+                                    <textarea id="sortdescription" name="description" cols="40" rows="2" class="form-control" required>{{$updatedCategory->description}}</textarea>
                                 </div>
                             </div> 
                             <div class="form-group row">
@@ -64,14 +64,12 @@
                                     </select>
                                 </div>
                             </div>
-                            @if (isset($updatedSubject))
-                                <input type="hidden" name="idSubject" value="{{$updatedSubject->idSubject}}">
-                            @endif
+                            <input type="hidden" name="idSubject" value="{{$updatedCategory->idGradeCategory}}">
                             <div class="row">
                                 <div class="col-12">
                                     <button name="update" type="submit" class="btn btn-warning">Modifier</button>
                                         <button name="reset" type="reset" class="btn btn-secondary">Reset</button>
-                                        <a href="{{route('subjects')}}">
+                                        <a href="{{route('gradesCategory')}}">
                                             <button type="button" class="btn btn-secondary">
                                                 Annuler
                                             </button>
@@ -95,7 +93,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-form-label">Description</label> 
                                 <div class="col-12">
-                                    <textarea id="sortdescription" name="description" cols="40" rows="2" class="form-control"></textarea>
+                                    <textarea id="sortdescription" name="description" cols="40" rows="2" class="form-control" required></textarea>
                                 </div>
                             </div> 
 
@@ -110,9 +108,6 @@
                                     </select>
                                 </div>
                             </div>
-                            @if (isset($updatedSubject))
-                                <input type="hidden" name="idSubject" value="{{$updatedSubject->idSubject}}">
-                            @endif
                             <div class="row">
                                 <div class="col-12">
                                     <button name="addGrade" type="submit" class="btn btn-primary">Ajouter</button>
@@ -138,6 +133,7 @@
                                 <th>#</th>
                                 <th>Categorie</th>
                                 <th>Description</th>
+                                <th>Type de formation</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -149,6 +145,7 @@
                                         <td>{{$categorie->idGradeCategory}}</td>
                                         <td>{{$categorie->category}}</td>
                                         <td>{{$categorie->description}}</td>
+                                        <td><div class="badge bg-dark">{{$categorie->course}}</div></td>
                                         <td>
                                             <div class="btn-group">
                                                 <a href="{{url('/niveau/categories/update/'.$categorie->idGradeCategory)}}">

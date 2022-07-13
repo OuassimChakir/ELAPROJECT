@@ -21,8 +21,13 @@ Route::get('/','HomeController@index')->name('acceuil');
 Route::get('/niveau','GradesController@grades')->name('grades');
 // Grades Categories
 Route::get('/niveau/categories','GradesController@gradesCategory')->name('gradesCategory');
-    // Adding New Grade Category
+        // Adding New Grade Category
     Route::post('/niveau/categories/add','GradesController@gradesCategory')->name('gradesCategory.add');
+        // Delete & Update Category
+    Route::get('/niveau/categories/{action}/{idGradeCategory}','GradesController@actionGradeCategory')->name('gradesCategory.action');
+        // Update a Category Query
+    Route::put('/niveau/categories/update/{idGradeCategory}','GradesController@actionGradeCategory')->name('gradesCategory.update');
+
 // Subjects and Course Type
 Route::get('/matieres/type','SubjectController@courseType')->name('courseType');
 Route::get('/matieres','SubjectController@subjects')->name('subjects');

@@ -29,4 +29,34 @@ class GradesController extends Controller
             ->with('courses',$courses)
             ->with('gCategories',$gCategories);
     }
+        // Course Type Deletion or Update
+        public function actionGradeCategory(Request $request,$action,$idGradeCategory){
+            $gradesCategory = new GradesCategory();
+            $courseType = new CourseType();
+            // List of Course Types
+            $courses = $courseType->selectCourses();
+            // List of Grade Categories
+            $gCategories = $gradesCategory -> getGradeCategories();
+
+            // Deletion of GradeCategory
+            if($request->action == 'delete'){
+                $gradesCategory ->deleteGradeCategory($idGradeCategory);
+                return Redirect::back()->with('deleteType',"La suppression est faite avec succès");
+            }
+    
+            if($request->action == 'update'){
+                // Update GradeCategory (ACTION)
+                if($request->has('update')){
+                    $gradesCategory->updateGradeCategory($request->idGradeCategory,$request->category,$request->description,$request->courseType);
+                    return Redirect::route('gradesCategory')->with('updateCategory',"La Modification est faite avec succès");
+                }
+                // Update GradeCategory (PAGE)
+                $updatedCategory = $gradesCategory->getGradeCategory($idGradeCategory);
+                return view('pages.grades.gradesCategory')
+                    ->with('courses', $courses)
+                    ->with('gCategories',$gCategories)
+                    ->with('updatedCategory', $updatedCategory);
+            }
+            
+        }
 }
