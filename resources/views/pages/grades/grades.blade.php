@@ -116,10 +116,34 @@
         </div>
     </div>
 </div>
+@if (!isset($updatedGrade))
 <div class="row">
     <div class="col-xl-12 col-lg-12">
         <div class="ec-cat-list card card-default">
             <div class="card-body">
+                <small>Choisir par Catégorie du niveau</small>
+                <div class="ec-cat-form">
+                        <form>
+                            <div class="form-group row">
+                                <div class="col-8">
+                                    <select id="gradeCategory" name="gradeCategory" class="custom-select" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" required>
+                                        <option selected disabled>-- Choisir la Categorie du Niveau --</option>
+                                        @foreach ($gradeCategories as $gradeCategory)
+                                            <option value="{{route('grades',['idGradeCategory' => $gradeCategory->idGradeCategory])}}">{{$gradeCategory->category}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @if ($flag == 1)
+                                    <div class="col-4">
+                                        <a href="{{route('grades')}}">
+                                            <button class="btn btn-secondary">Retourner</button>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </form>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -157,11 +181,16 @@
                             @endif
                         </tbody>
                     </table>
+                    {{ $grades->links() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endif
+
+
+
 <script src="{{asset('JS/jquery.min.js')}}"></script>
 <script>
     

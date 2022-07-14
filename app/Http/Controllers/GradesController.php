@@ -16,7 +16,11 @@ class GradesController extends Controller
         $gradeCategories = $gradesCategory -> getGradeCategories();
         $grades = new Grades();
         $gradesTable = $grades->getGrades();
-
+        $flag = 0;
+        if($request->has('idGradeCategory')){
+            $gradesTable = $grades->getGradesByCategory($request->idGradeCategory);
+            $flag = 1;
+        }
         // Add new Grade
         if($request->has('addGrade')){
             $gradesArray = array();
@@ -29,6 +33,7 @@ class GradesController extends Controller
         }
         return view('pages.grades.grades')
             ->with('grades',$gradesTable)
+            ->with('flag',$flag)
             ->with('gradeCategories',$gradeCategories);
     }
     // Grade Deletion or Update

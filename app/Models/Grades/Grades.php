@@ -16,10 +16,16 @@ class Grades extends Model
         return $this::find($idGrade);
        }
 
+    public function getGradesByCategory($idGradeCategory){
+        return $this::where('grades.idGradeCategory',$idGradeCategory)
+                    ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
+                    ->orderBy('grade','ASC')
+                    ->paginate(20)->withQueryString();
+    }
     public function getGrades(){
         return $this::select('*')
             ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
-            ->get();
+            ->paginate(20)->withQueryString();
     }
 
        // INSERT DATA (New Subject)
