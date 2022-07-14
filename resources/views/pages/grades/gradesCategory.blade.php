@@ -64,7 +64,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <input type="hidden" name="idSubject" value="{{$updatedCategory->idGradeCategory}}">
+                            <input type="hidden" name="idGradeCategory" value="{{$updatedCategory->idGradeCategory}}">
                             <div class="row">
                                 <div class="col-12">
                                     <button name="update" type="submit" class="btn btn-warning">Modifier</button>
@@ -101,7 +101,7 @@
                                 <label for="parent-category" class="col-12 col-form-label">Type de Formation</label> 
                                 <div class="col-12">
                                     <select id="courseType" name="courseType" class="custom-select" required>
-                                        <option selected disabled>-- Choisir le Type de Formation du Matière --</option>
+                                        <option disabled>-- Choisir le Type de Formation du Matière --</option>
                                         @foreach ($courses as $course)
                                             <option value="{{$course->idCourseType}}">{{$course->course}}</option>
                                         @endforeach

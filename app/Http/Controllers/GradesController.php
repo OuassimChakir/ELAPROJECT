@@ -10,10 +10,60 @@ use Illuminate\Support\Facades\Redirect;
 
 class GradesController extends Controller
 {
-    public function grades(){
-        return view('pages.grades.grades');
+    // ------------- Grades ----------------- //
+    public function grades(Request $request){
+        $gradesCategory = new GradesCategory();
+        $gradeCategories = $gradesCategory -> getGradeCategories();
+        $grades = new Grades();
+        $gradesTable = $grades->getGrades();
+
+        // Add new Grade
+        if($request->has('addGrade')){
+            $gradesArray = array();
+            $idGradeCategory = $request->gradeCategory;
+            for ($i=0; $i < count($request->grade); $i++) {
+                $gradesArray[] = array('grade' => $request->grade[$i], 'idGradeCategory' => $idGradeCategory);
+            }
+            Grades::insert($gradesArray);
+            return Redirect::back()->with('successType',"L'ajout est fait avec succès");
+        }
+        return view('pages.grades.grades')
+            ->with('grades',$gradesTable)
+            ->with('gradeCategories',$gradeCategories);
+    }
+    // Grade Deletion or Update
+    public function actionGrade(Request $request,$action,$idGrade){
+        $gradesCategory = new GradesCategory();
+        $grades = new Grades();
+        // List of Grade Categories
+        $gCategories = $gradesCategory -> getGradeCategories();
+
+        // List of Grades
+        $gradesTable = $grades->getGrades();
+
+        // Deletion of GradeCategory
+        if($request->action == 'delete'){
+            $grades ->deleteGrade($idGrade);
+            return Redirect::back()->with('deleteType',"La suppression est faite avec succès");
+        }
+
+        if($request->action == 'update'){
+            // Update GradeCategory (ACTION)
+            if($request->has('update')){
+                $grades->updateGrade($request->idGrade,$request->grade,$request->gradeCategory);
+                return Redirect::route('grades')->with('updateGrade',"La Modification est faite avec succès");
+            }
+            // Update GradeCategory (PAGE)
+            $updatedGrade = $grades->getGrade($idGrade);
+            return view('pages.grades.grades')
+                ->with('grades', $gradesTable)
+                ->with('gradeCategories',$gCategories)
+                ->with('updatedGrade', $updatedGrade);
+        }
+        
     }
 
+    // ------------- Grade Category ----------------- //
     public function gradesCategory(Request $request){
         $gradesCategory = new GradesCategory();
         $courseType = new CourseType();
@@ -29,7 +79,7 @@ class GradesController extends Controller
             ->with('courses',$courses)
             ->with('gCategories',$gCategories);
     }
-        // Course Type Deletion or Update
+        // Grade Category Deletion or Update
         public function actionGradeCategory(Request $request,$action,$idGradeCategory){
             $gradesCategory = new GradesCategory();
             $courseType = new CourseType();
