@@ -72,7 +72,3 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
 
 ?>
 
-//  staff and student 
-Route::get('/staff', 'StaffController@staff')->name('staff.liste');
-//Route::get('/staff/add', 'StaffController@StaffType')->name('staff.add');
-//Route::resource('Stafftype', 'StaffController');
