@@ -24,8 +24,23 @@ class CourseType extends Model
         return $this::all();
     }
 
+    // Select One Course Type
+    public function selectCourse($idCourseType){
+        return $this::find($idCourseType);
+    }
+
+    // Update Course Type
+    public function updateCourse($idCourseType,$course,$shortForm){
+        $courseType = $this::find($idCourseType);
+        $courseType->course = $course;
+        $courseType->shortForm = $shortForm;
+        $courseType->save();
+    }
+
     // Delete Course Type
     public function deleteCourse($id){
         $this::find($id)->delete();
     }
+
+
 }

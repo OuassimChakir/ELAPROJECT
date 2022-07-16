@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TypestaffController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,11 +25,33 @@ Route::get('/niveau/categories','GradesController@gradesCategory')->name('grades
 // Subjects and Course Type
 Route::get('/matieres/type','SubjectController@courseType')->name('courseType');
 Route::get('/matieres','SubjectController@subjects')->name('subjects');
-Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.add');
-Route::get('/matieres/type/action','SubjectController@courseType')->name('courses.action');
+        // Add Course Type
+    Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.add');
+        // Delete & Update Course Type
+    Route::get('/matieres/type/{action}/{idCourseType}','SubjectController@actionCourseType')->name('courses.action');
+        // Update a Course Type Query
+    Route::put('/matieres/type/update/{idCourseType}','SubjectController@actionCourseType')->name('courses.update');
 
-//  staff and student 
-Route::get('/staff', 'StaffController@staff')->name('staff.liste');
-Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
-Route::get('/staff/add/action','StaffController@staff')->name('staff.action');
-//Route::resource('Stafftype', 'StaffController');  
+    // Add New Subject
+    Route::post('/matiere/add','SubjectController@subjects')->name('subjects.add');
+    // Delete & Update Subject
+    Route::get('/matieres/{action}/{idSubject}','SubjectController@actionSubject')->name('subjects.action');
+    // Update a Subject Query
+    Route::put('/matieres/update/{idSubject}','SubjectController@actionSubject')->name('subjects.update');
+
+//  staff and student and responsible
+    Route::get('/staff', 'StaffController@staff')->name('staff.liste');
+    // Add Course staff
+    Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
+    // Delete & Update Course Type
+    Route::get('/staff/add/action','StaffController@staff')->name('staff.action');
+    // add responsible
+    // Student 
+    Route::get('/student', 'StudentController@Student')->name('student.liste');
+
+    
+
+
+
+
+?>
