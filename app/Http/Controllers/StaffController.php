@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Staff;
-use App\Models\Stafftype;
-use App\Models\Subjects;
+use App\Models\Responsible\Staff;
+use App\Models\Responsible\Stafftype;
+use App\Models\Courses\Subjects;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
