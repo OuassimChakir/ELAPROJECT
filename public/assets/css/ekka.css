@@ -24974,3 +24974,12 @@ div.dataTables_wrapper div.dataTables_filter {
   border-radius: 15px;
 }
 /*# sourceMappingURL=ekka.css.map */
+
+/* SECTION TITLE + FORM TITLE */
+#showFormButton {
+  border-radius: 5px!important;
+  width: 100%;
+}
+#formSection {
+  display:none;
+}

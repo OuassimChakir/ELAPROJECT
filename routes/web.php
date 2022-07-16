@@ -18,13 +18,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','HomeController@index')->name('acceuil');
-// GRADES
-Route::get('/niveau','GradesController@grades')->name('grades');
-Route::get('/niveau/categories','GradesController@gradesCategory')->name('gradesCategory');
 
-// Subjects and Course Type
+// --------------- GRADES ------------ //
+Route::get('/niveau','GradesController@grades')->name('grades');
+        // Adding New Grade
+    Route::post('/niveau/add','GradesController@grades')->name('grades.add');
+        // Delete & Update Grade
+    Route::get('/niveau/{action}/{idGrade}','GradesController@actionGrade')->name('grades.action');
+        // Update a Grade Query
+    Route::put('/niveau/update/{idGrade}','GradesController@actionGrade')->name('grades.update');
+
+// --------------- Grades Categories ------------ //
+Route::get('/niveau/categories','GradesController@gradesCategory')->name('gradesCategory');
+        // Adding New Grade Category
+    Route::post('/niveau/categories/add','GradesController@gradesCategory')->name('gradesCategory.add');
+        // Delete & Update Category
+    Route::get('/niveau/categories/{action}/{idGradeCategory}','GradesController@actionGradeCategory')->name('gradesCategory.action');
+        // Update a Category Query
+    Route::put('/niveau/categories/update/{idGradeCategory}','GradesController@actionGradeCategory')->name('gradesCategory.update');
+
+// ------------ Course Type ----------- //
 Route::get('/matieres/type','SubjectController@courseType')->name('courseType');
-Route::get('/matieres','SubjectController@subjects')->name('subjects');
         // Add Course Type
     Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.add');
         // Delete & Update Course Type
@@ -32,6 +46,8 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
         // Update a Course Type Query
     Route::put('/matieres/type/update/{idCourseType}','SubjectController@actionCourseType')->name('courses.update');
 
+// ---------------- Subjects ------------- //
+Route::get('/matieres','SubjectController@subjects')->name('subjects');
     // Add New Subject
     Route::post('/matiere/add','SubjectController@subjects')->name('subjects.add');
     // Delete & Update Subject
@@ -55,3 +71,8 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
 
 
 ?>
+
+//  staff and student 
+Route::get('/staff', 'StaffController@staff')->name('staff.liste');
+//Route::get('/staff/add', 'StaffController@StaffType')->name('staff.add');
+//Route::resource('Stafftype', 'StaffController');
