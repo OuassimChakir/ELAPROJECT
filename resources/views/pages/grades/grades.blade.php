@@ -3,10 +3,19 @@
     Niveaux
 @endsection
 @section('content')
-<div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
-    <h1>Niveaux</h1>
-    <p class="breadcrumbs"><span><a href="{{route('acceuil')}}">Acceuil</a></span>
-        <span><i class="mdi mdi-chevron-right"></i></span>Niveaux</p>
+<div class="breadcrumb-wrapper breadcrumb-contacts">
+    <div>
+        <h1>Niveaux</h1>
+        <p class="breadcrumbs">
+            <span><a href="{{route('acceuil')}}">Acceuil</a></span>
+            <span><i class="mdi mdi-chevron-right"></i></span>Niveaux
+        </p>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" id="showFormButton">
+            <i class="bi bi-plus-square"></i> Ajouter un Niveau
+        </button>
+    </div>
 </div>
 @if (session()->has('successType'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -27,7 +36,7 @@
 <div class="row">
     <div class="col-xl-12 col-lg-12">
         <div class="ec-cat-list card card-default mb-24px">
-            <div class="card-body">
+            <div class="card-body" id="formSection">
                 <div class="ec-cat-form">
                     @if (isset($updatedGrade))
                         <h4>Modifier un niveau</h4>
@@ -73,42 +82,41 @@
                             </div>
                         </form>
                     @else
-                        <h4>Ajouter un niveau</h4>
-
-                        <form action="{{route('grades.add')}}" method="post">
-                            @csrf
-                            @method('post')
-                            <div class="form-group row">
-                                <label for="parent-category" class="col-12 col-form-label">Catégories</label> 
-                                <div class="col-12">
-                                    <select id="gradeCategory" name="gradeCategory" class="custom-select" required>
-                                        <option selected disabled>-- Choisir la Categorie du Niveau --</option>
-                                        @foreach ($gradeCategories as $gradeCategory)
-                                            <option value="{{$gradeCategory->idGradeCategory}}">{{$gradeCategory->category}}</option>
-                                        @endforeach
-                                    </select>
+                            <h4 id="sectionTitle">Ajouter un niveau</h4>
+                            <form action="{{route('grades.add')}}" method="post">
+                                @csrf
+                                @method('post')
+                                <div class="form-group row">
+                                    <label for="parent-category" class="col-12 col-form-label">Catégories</label> 
+                                    <div class="col-12">
+                                        <select id="gradeCategory" name="gradeCategory" class="custom-select" required>
+                                            <option selected disabled>-- Choisir la Categorie du Niveau --</option>
+                                            @foreach ($gradeCategories as $gradeCategory)
+                                                <option value="{{$gradeCategory->idGradeCategory}}">{{$gradeCategory->category}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="text" class="col-12 col-form-label">Niveau</label> 
-                                <div class="col-10">
-                                    <input id="text" name="grade[]" class="form-control" type="text">
+                                <div class="form-group row">
+                                    <label for="text" class="col-12 col-form-label">Niveau</label> 
+                                    <div class="col-10">
+                                        <input id="text" name="grade[]" class="form-control" type="text">
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" class="addInput btn btn-info">
+                                            <i class="bi bi-plus-circle"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-2">
-                                    <button type="button" class="addInput btn btn-info">
-                                        <i class="bi bi-plus-circle"></i>
-                                    </button>
+                                <div class="field_wrapper">
                                 </div>
-                            </div>
-                            <div class="field_wrapper">
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <button name="addGrade" type="submit" class="btn btn-primary">Ajouter</button>
-                                    <button name="Reset" type="reset" class="btn btn-secondary">Reset</button>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button name="addGrade" type="submit" class="btn btn-primary">Ajouter</button>
+                                        <button name="Reset" type="reset" class="btn btn-secondary">Reset</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
                     @endif
 
                 </div>
@@ -192,9 +200,16 @@
 
 
 <script src="{{asset('JS/jquery.min.js')}}"></script>
+<script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
 <script>
-    
     $(document).ready(function(){
+        $("#showFormButton").click(function(){
+            $("#formSection").slideToggle();
+        });
+    });
+
+    $(document).ready(function(){
+        
         var maxField = 10; //Input fields increment limitation
         var addInput = $('.addInput'); //Add button selector
         var wrapper = $('.field_wrapper'); //Input field wrapper
