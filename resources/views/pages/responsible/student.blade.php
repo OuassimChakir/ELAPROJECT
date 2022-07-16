@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 @section('title')
-    liste des Staff
+   liste des Etudiants
 @endsection
 @section('content')
   <!--message success -->
@@ -22,14 +22,14 @@
   <!-- end errour du validation -->
 <div class="breadcrumb-wrapper breadcrumb-contacts">
 <div>
-<h1>staff List</h1>
+<h1>Etudiant List</h1>
 <p class="breadcrumbs"><span><a href="index.html">Home</a></span>
-<span><i class="mdi mdi-chevron-right"></i></span>Staff
+<span><i class="mdi mdi-chevron-right"></i></span>Etudiant
 </p>
 </div>
 <div>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-data-bs-target="#addUser"> Add Staff
+data-bs-target="#addUser"> Add Etudiant
 </button>
 </div>
 </div>
@@ -43,48 +43,42 @@ data-bs-target="#addUser"> Add Staff
                 <tr>
                     <th>Nom</th>
                     <th>Prenom</th>
+                    <th>Sexe</th>
                     <th>Email</th>
                     <th>Téléphone</th>
-                    <th>Etat</th>
+                    <th>Adresse</th>
                     <th>Inscrie</th>
                     <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach ($Staff as $staf)
-                @if($staf->idStaffType == 2)
+                @foreach ($student as $studen)
                     <tr>
-                        <td>{{$staf->nom}}</td>
-                        <td>{{$staf->prenom}}</td>
-                        <td>{{$staf->email}}</td>
-                        <td>{{$staf->numTel}}</td>
+                        <td>{{$studen->nomfr}}</td>
+                        <td>{{$studen->prenomfr}}</td>
+                        <td>{{$studen->sexe}}</td>
+                        <td>{{$studen->email}}</td>
+                        <td>{{$studen->numTel}}</td>
+                        <td>{{$studen->adresse}}</td>
+                        <td>{{$studen->CREATED_AT}}</td>                        
                         <td>
-                            @if ($staf->idStaffType == 1)
-                             <span class="badge bg-success">Professeur</span>
-                            @else
-                             <span class="badge bg-danger">responsable</span>
-                            @endif
-                        </td>
-                        <td>{{$staf->dateEngagement}}</td>
-                        <td>
-                            <form action="{{url('/staff/add/action')}}" method="delete">
+                            <form action="{{url('/student/add/action')}}" method="delete">
                                
                                 @method('delete')
                                 <div class="btn-group">
                                     <button type="submit" name="edit" class="btn btn-outline-warning"
-                                     value="{{$staf->idStaff}}" onclick="return confirm('Vous êtes sûr?');">
+                                     value="{{$studen->matricule}}" onclick="return confirm('Vous êtes sûr?');">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
                                     <button type="submit" class="btn btn-outline-danger" name="delete" 
-                                    value="{{$staf->idStaff}}" onclick="return confirm('Vous êtes sûr?');">
+                                    value="{{$studen->matricule}}" onclick="return confirm('Vous êtes sûr?');">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </div>
                             </form>
                         </td>
                     </tr>
-                    @endif
                 @endforeach
                 
             </tbody>
@@ -95,6 +89,6 @@ data-bs-target="#addUser"> Add Staff
 </div>
 </div>
 </div>
-<!-- Ajouter un staff -->
-@include('pages.responsible.add_staff')
+<!-- Ajouter un student -->
+
 @endsection

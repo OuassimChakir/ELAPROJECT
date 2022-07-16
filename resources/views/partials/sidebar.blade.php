@@ -46,8 +46,13 @@
 								<div class="collapse">
 									<ul class="sub-menu" id="users" data-parent="#sidebar-menu">
 										<li class="">
-											<a class="sidenav-item-link" href="#">
+											<a class="sidenav-item-link" href="{{url('/student')}}">
 												<span class="nav-text">Liste des Etudiants</span>
+											</a>
+										</li>
+										<li class="">
+											<a class="sidenav-item-link" href="{{url('/responsible')}}">
+												<span class="nav-text">Liste des Responsables</span>
 											</a>
 										</li>
 									</ul>

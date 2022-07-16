@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\responsible;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,8 +28,23 @@ class Staff extends Model
         public function selectStaff(){
             return $this::all();
         }
+        public function getStaff($idStaff){
+            return $this::find($idStaff);
+           }
         // Delete Course Type
         public function deleteStaff($id){
         $this::find($id)->delete();
         }
+        // Update Staff
+       public function updateStaff($idStaff,$cnie,$prenom,$nom,$email,$numTel,$idStaffType,$idSubject){
+        $staff = $this::find($idStaff);
+        $staff->cnie = $cnie;
+        $staff->nom = $nom;
+        $staff->prenom = $prenom;
+        $staff->email = $email;
+        $staff->numTel = $numTel;
+        $staff->idStaffType = $idStaffType;
+        $staff->idSubject = $idSubject;
+        $staff->save();
+       }
 }

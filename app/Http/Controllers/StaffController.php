@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Staff;
-use App\Models\Stafftype;
-use App\Models\Subjects;
+use App\Models\responsible\Staff;
+use App\Models\responsible\Stafftype;
+use App\Models\Courses\Subjects;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -40,11 +40,12 @@ class StaffController extends Controller
                     $Staf ->deleteStaff($idStaff);
                     return Redirect::back()->with('deleteType',"La suppression est faite avec succès");
                 }
+              
        
         return view('pages.responsible.staff')->with(['Staff' => $Staff,
                                                       'stafft' => $stafft,
-                                                      'subjects'=>$subjects,]);
+                                                      'subjects'=>$subjects,
+                                                     ]);
     }
 
-
-}
+    }

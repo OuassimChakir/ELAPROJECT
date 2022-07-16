@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\responsible;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,5 +29,4 @@ class Stafftype extends Model
     public function selectStaffType(){
         return $this::all();
     }
-    
 }
