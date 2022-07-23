@@ -90,5 +90,5 @@ data-bs-target="#addUser"> Add Etudiant
 </div>
 </div>
 <!-- Ajouter un student -->
-
+@include('pages.responsible.add_student')
 @endsection
