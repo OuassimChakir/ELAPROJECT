@@ -62,9 +62,12 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     // Delete & Update Course Type
     Route::get('/staff/add/action','StaffController@staff')->name('staff.action');
     // add responsible
+
     // Student 
     Route::get('/student', 'StudentController@Student')->name('student.liste');
 
+    // Add Course student
+    Route::post('/student/add', 'StudentController@Student')->name('student.add');
     
 
 
