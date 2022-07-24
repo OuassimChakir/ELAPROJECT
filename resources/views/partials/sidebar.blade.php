@@ -145,7 +145,7 @@
 									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 										<li class="">
 											<a class="sidenav-item-link" href="{{ route('grades') }}">
-												<span class="nav-text">Niveaux Scolaires</span>
+												<span class="nav-text">Niveaux</span>
 											</a>
 										</li>
 										<li class="">
