@@ -1,0 +1,487 @@
+@extends('layouts.layout')
+@section('title')
+    {{$student->prenom_fr." ".$student->nom_fr}}
+@endsection
+@section('content')
+<div class="breadcrumb-wrapper breadcrumb-contacts">
+    <div>
+        <h1>{{$student->prenom_fr." ".$student->nom_fr}}</h1>
+        <p class="breadcrumbs"><span><a href="{{route('acceuil')}}">Acceuil</a></span>
+            <span><i class="mdi mdi-chevron-right"></i></span><a href="{{route('student.liste')}}">Etudiants</a>
+            <span><i class="mdi mdi-chevron-right"></i></span>{{$student->prenom_fr." ".$student->nom_fr}}
+        </p>
+    </div>
+</div>
+<div class="card bg-white profile-content">
+    <div class="row">
+        <div class="col-lg-4 col-xl-3">
+            <div class="profile-content-left profile-left-spacing">
+                <div class="text-center widget-profile px-0 border-0">
+                    <div class="card-body">
+                        <h4 class="py-2 text-dark">{{$student->prenom_fr." ".$student->nom_fr}}</h4>
+                        <p>{{$student->matricule}}</p>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between ">
+                    <div class="text-center pb-4">
+                        <h6 class="text-dark pb-2">10</h6>
+                        <p>Absences</p>
+                    </div>
+
+                    <div class="text-center pb-4">
+                        <h6 class="text-dark pb-2">32</h6>
+                        <p>Wish List</p>
+                    </div>
+
+                    <div class="text-center pb-4">
+                        <h6 class="text-dark pb-2">1150</h6>
+                        <p>Following</p>
+                    </div>
+                </div>
+
+                <hr class="w-100">
+
+                <div class="contact-info pt-4">
+                    <h5 class="text-dark">Information</h5>
+                    <p class="text-dark font-weight-medium pt-24px mb-2">Né(e) le:</p>
+                    <p>{{$student->dateNaissance}}</p>
+                    <p class="text-dark font-weight-medium pt-24px mb-2">Email</p>
+                    <p>{{$student->email}}</p>
+                    <p class="text-dark font-weight-medium pt-24px mb-2">Numéro de Téléphone</p>
+                    <p>{{$student->numTel}}</p>
+                    <p class="text-dark font-weight-medium pt-24px mb-2">Sexe</p>
+                    <p>{{ucfirst($student->sexe)}}</p>
+                    <p class="text-dark font-weight-medium pt-24px mb-2">Adresse</p>
+                    <p>{{$student->adresse}}</p>
+                    <p class="text-dark font-weight-medium pt-24px mb-2">Inscrie le:</p>
+                    <p>{{$student->CREATED_AT}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-xl-9">
+            <div class="profile-content-right profile-right-spacing py-5">
+                <ul class="nav nav-tabs px-3 px-xl-5 nav-style-border" id="myProfileTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab"
+                            data-bs-target="#profile" type="button" role="tab"
+                            aria-controls="profile" aria-selected="true">Profile</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="settings-tab" data-bs-toggle="tab"
+                            data-bs-target="#settings" type="button" role="tab"
+                            aria-controls="settings" aria-selected="false">Paramètres</button>
+                    </li>
+                </ul>
+                <div class="tab-content px-3 px-xl-5" id="myTabContent">
+
+                    <div class="tab-pane fade show active" id="profile" role="tabpanel"
+                        aria-labelledby="profile-tab">
+                        <div class="tab-widget mt-5">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <div class="media widget-media p-3 bg-white border">
+                                        <div class="icon rounded-circle mr-3 bg-primary">
+                                            <i class="mdi mdi-account-outline text-white "></i>
+                                        </div>
+
+                                        <div class="media-body align-self-center">
+                                            <h4 class="text-primary mb-2">546</h4>
+                                            <p>Bought</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4">
+                                    <div class="media widget-media p-3 bg-white border">
+                                        <div class="icon rounded-circle bg-warning mr-3">
+                                            <i class="mdi mdi-cart-outline text-white "></i>
+                                        </div>
+
+                                        <div class="media-body align-self-center">
+                                            <h4 class="text-primary mb-2">1953</h4>
+                                            <p>Wish List</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4">
+                                    <div class="media widget-media p-3 bg-white border">
+                                        <div class="icon rounded-circle mr-3 bg-success">
+                                            <i class="mdi mdi-ticket-percent text-white "></i>
+                                        </div>
+
+                                        <div class="media-body align-self-center">
+                                            <h4 class="text-primary mb-2">02</h4>
+                                            <p>Voucher</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-12">
+
+                                    <!-- Notification Table -->
+                                    <div class="card card-default">
+                                        <div class="card-header justify-content-between mb-1">
+                                            <h2>Absences</h2>
+                                        </div>
+                                        <div class="card-body compact-notifications" data-simplebar
+                                            style="height: 434px;">
+                                            <div
+                                                class="media pb-3 align-items-center justify-content-between">
+                                                <div
+                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
+                                                    <i
+                                                        class="mdi mdi-cart-outline font-size-20"></i>
+                                                </div>
+                                                <div class="media-body pr-3 ">
+                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                        href="#">New Order</a>
+                                                    <p>Selena has placed an new order</p>
+                                                </div>
+                                                <span class=" font-size-12 d-inline-block"><i
+                                                        class="mdi mdi-clock-outline"></i> 10
+                                                    AM</span>
+                                            </div>
+
+                                            <div
+                                                class="media py-3 align-items-center justify-content-between">
+                                                <div
+                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
+                                                    <i
+                                                        class="mdi mdi-email-outline font-size-20"></i>
+                                                </div>
+                                                <div class="media-body pr-3">
+                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                        href="#">New Enquiry</a>
+                                                    <p>Phileine has placed an new order</p>
+                                                </div>
+                                                <span class=" font-size-12 d-inline-block"><i
+                                                        class="mdi mdi-clock-outline"></i> 9
+                                                    AM</span>
+                                            </div>
+
+
+                                            <div
+                                                class="media py-3 align-items-center justify-content-between">
+                                                <div
+                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
+                                                    <i
+                                                        class="mdi mdi-stack-exchange font-size-20"></i>
+                                                </div>
+                                                <div class="media-body pr-3">
+                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                        href="#">Support Ticket</a>
+                                                    <p>Emma has placed an new order</p>
+                                                </div>
+                                                <span class=" font-size-12 d-inline-block"><i
+                                                        class="mdi mdi-clock-outline"></i> 10
+                                                    AM</span>
+                                            </div>
+
+                                            <div
+                                                class="media py-3 align-items-center justify-content-between">
+                                                <div
+                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
+                                                    <i
+                                                        class="mdi mdi-cart-outline font-size-20"></i>
+                                                </div>
+                                                <div class="media-body pr-3">
+                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                        href="#">New order</a>
+                                                    <p>Ryan has placed an new order</p>
+                                                </div>
+                                                <span class=" font-size-12 d-inline-block"><i
+                                                        class="mdi mdi-clock-outline"></i> 10
+                                                    AM</span>
+                                            </div>
+
+                                            <div
+                                                class="media py-3 align-items-center justify-content-between">
+                                                <div
+                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-info text-white">
+                                                    <i
+                                                        class="mdi mdi-calendar-blank font-size-20"></i>
+                                                </div>
+                                                <div class="media-body pr-3">
+                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                        href="">Comapny Meetup</a>
+                                                    <p>Phileine has placed an new order</p>
+                                                </div>
+                                                <span class=" font-size-12 d-inline-block"><i
+                                                        class="mdi mdi-clock-outline"></i> 10
+                                                    AM</span>
+                                            </div>
+
+                                            <div
+                                                class="media py-3 align-items-center justify-content-between">
+                                                <div
+                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
+                                                    <i
+                                                        class="mdi mdi-stack-exchange font-size-20"></i>
+                                                </div>
+                                                <div class="media-body pr-3">
+                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                        href="#">Support Ticket</a>
+                                                    <p>Emma has placed an new order</p>
+                                                </div>
+                                                <span class=" font-size-12 d-inline-block"><i
+                                                        class="mdi mdi-clock-outline"></i> 10
+                                                    AM</span>
+                                            </div>
+
+                                            <div
+                                                class="media py-3 align-items-center justify-content-between">
+                                                <div
+                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
+                                                    <i
+                                                        class="mdi mdi-email-outline font-size-20"></i>
+                                                </div>
+                                                <div class="media-body pr-3">
+                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                        href="#">New Enquiry</a>
+                                                    <p>Phileine has placed an new order</p>
+                                                </div>
+                                                <span class=" font-size-12 d-inline-block"><i
+                                                        class="mdi mdi-clock-outline"></i> 9
+                                                    AM</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="mt-3"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- SETTINGS OF THE ACCOUNT --}}
+                    <div class="tab-pane fade" id="settings" role="tabpanel"
+                        aria-labelledby="settings-tab">
+                        <div class="tab-pane-content mt-5">
+                            <form action="{{url('/student/update/')}}" method="put">
+                                @csrf
+                                @method('put')
+                                <div class="modal-header px-4">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter un Etudiant</h5>
+                                </div>
+                
+                                <div class="modal-body px-4">
+                                    <div class="row mb-2 g-3">                     
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="firstName">Prénom</label>
+                                                <input type="text" class="form-control" name="prenom_fr" id="firstName" value="Ouassim" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" dir="rtl">
+                                            <div class="form-group">
+                                                <label for="firstName_ar" lang="ar">الإسم الشخصي</label>
+                                                <input type="text" class="form-control keyboardInput" lang="ar" name="prenom_ar" id="firstName_ar" value="وسيم" dir="rtl" required>
+                                            </div>
+                                        </div>
+                                        <!-- les nom arabe et françe-->
+                                        
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="lastName">Nom</label>
+                                                <input type="text" class="form-control" name="nom_fr" id="lastName" value="Chakir" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" dir="rtl">
+                                            <div class="form-group">
+                                                <label for="lastName_ar" lang="ar">الإسم العائلي</label>
+                                                <input type="text" class="form-control keyboardInput" lang="ar" name="nom_ar" id="lastName_ar" dir="rtl" value="شاكير" required>
+                                            </div>
+                                        </div>
+                                        <!-- Email-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group mb-4">
+                                                <label for="email">Email</label>
+                                                <input type="email" class="form-control" name="email" id="email"
+                                                    value="johnexample@gmail.com" required>
+                                            </div>
+                                        </div>
+                                         <!-- Numéro de Téléphone-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group mb-4">
+                                                <label for="numTel">Numéro de Téléphone</label>
+                                                <input type="tel" class="form-control" name="numTel" id="numTel"
+                                                    value="0612345678" required>
+                                            </div>
+                                        </div>
+                                         <!-- date Naissance-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group mb-4">
+                                                <label for="date">date Naissance</label>
+                                                <input type="date" class="form-control" name="dateNaissance" id="date">
+                                            </div>
+                                        </div>
+                                         <!-- numéro de carte d'identifion-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group mb-4">
+                                                <label for="cnie">CNIE</label>
+                                                <input type="text" class="form-control" name="cnie" id="cnie"
+                                                    value="U207066" required>
+                                            </div>
+                                        </div>
+                                        <!-- sexe -->
+                                        <div class="col-lg-12">
+                                            <div class="form-group mb-2">
+                                                <label for="userName">Sexe</label>
+                                                <div class="col-6 d-flex align-items-center justify-content-between">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" value="Homme" type="radio" name="sexe" id="sexe1" checked>
+                                                    <label class="form-check-label" for="sexe1">
+                                                      Homme
+                                                    </label>
+                                                  </div>
+                                                  <div class="form-check">
+                                                    <input class="form-check-input" value="Femme" type="radio" name="sexe" id="sexe2" >
+                                                    <label class="form-check-label" for="sexe2">
+                                                      Femme
+                                                    </label>
+                                                  </div></div>
+                                            </div>
+                                        </div>
+                                        <!-- adresse-->
+                                        <div class="col-lg-12">
+                                            <div class="form-group mb-4">
+                                                <label for="adresse">Adresse</label>
+                                                <input type="text" class="form-control" name="adresse" id="adresse" value="N241 LOT RIAD ERRACHIDIA">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer px-4">
+                                    <button type="submit" name="updateStudent" class="btn btn-warning btn-pill">Mise à jour</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-xl-12 col-lg-12">
+        <div class="ec-cat-list card card-default mb-24px">
+            <div class="card-body">
+                <div class="ec-cat-form">
+                    <div class="row">
+                        <div class="col-9">
+                            <h4>Responsable</h4>
+                        </div>
+                        <div class="col-3 text-right responsableButtons">
+                            <button type="button" class="btn btn-warning"><i class="bi bi-pencil"></i></button>
+                            <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                            <button type="button" class="btn btn-primary btn-pill" id="showFormButton"><i class="bi bi-plus-square"></i></button>
+                        </div>
+                    </div>
+
+                    <div id="formSection">
+                        <form action="" method="post">
+                            @csrf
+                            @method('post')
+                            <div class="modal-header px-4">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter un Responsable</h5>
+                            </div>
+            
+                            <div class="modal-body px-4">
+                                <div class="row mb-2 g-3">                     
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="firstName">Prénom</label>
+                                            <input type="text" class="form-control" name="prenom" id="firstName" value="Ouassim" required>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="lastName">Nom</label>
+                                            <input type="text" class="form-control" name="nom" id="lastName" value="Chakir" required>
+                                        </div>
+                                    </div>
+                                    <!-- numéro de carte d'identifion-->
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="cnie">CNIE</label>
+                                            <input type="text" class="form-control" name="cnie" id="cnie" required>
+                                        </div>
+                                    </div>
+                                    <!-- sexe -->
+                                    <div class="col-lg-6">
+                                        <div class="form-group mb-2">
+                                            <label>Sexe</label>
+                                            <div class="col-6 d-flex align-items-center justify-content-between">
+                                            <div class="form-check">
+                                                <input class="form-check-input" value="Homme" type="radio" name="sexe" id="homme">
+                                                <label class="form-check-label" for="homme">
+                                                  Homme
+                                                </label>
+                                              </div>
+                                              <div class="form-check">
+                                                <input class="form-check-input" value="Femme" type="radio" name="sexe" id="femme" >
+                                                <label class="form-check-label" for="femme">
+                                                  Femme
+                                                </label>
+                                              </div></div>
+                                        </div>
+                                    </div>
+                                     <!-- Numéro de Téléphone-->
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="numTel">Numéro de Téléphone</label>
+                                            <input type="tel" class="form-control" name="numTel" id="numTel" required>
+                                        </div>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            <div class="modal-footer px-4">
+                                <button type="submit" name="addReponsible" class="btn btn-primary btn-pill">Ajouter</button>
+                                <button type="reset" name="reset" class="btn btn-secondary btn-pill">Reset</button>
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="contact-info pt-4">
+                                <p class="text-dark font-weight-medium pt-24px mb-2">Nom Complet</p>
+                                <p>John Smith</p>
+                                <p class="text-dark font-weight-medium pt-24px mb-2">CNIE</p>
+                                <p>U111222</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="contact-info pt-4">
+                                <p class="text-dark font-weight-medium pt-24px mb-2">Numéro de Téléphone</p>
+                                <p>+00 1234 5678 91</p>
+                                <p class="text-dark font-weight-medium pt-24px mb-2">Sexe</p>
+                                <p>Homme</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{asset('JS/jquery.min.js')}}"></script>
+<script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
+<script>
+    $(document).ready(function(){
+        $("#showFormButton").click(function(){
+            $("#formSection").slideToggle();
+        });
+    });
+</script>
+@endsection

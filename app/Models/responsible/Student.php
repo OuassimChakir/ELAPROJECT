@@ -13,9 +13,12 @@ class Student extends Model
     use HasFactory;
     protected $table = "students";
     protected $primaryKey = "matricule";
-  /*  protected $fillable = ['matricule','nom_fr','nom_ar','prenom_fr','prenom_ar','cnie',
-    'email','numTel','sexe','adresse','dateNaissance']; */
     public $incrementing = false;
+
+    // Get All Students
+    public function getStudents(){
+        return $this::all();
+    }
         // Adding a new student 
         public function addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,
         $email,$numTel,$sexe,$adresse,$dateNaissance){
@@ -33,21 +36,9 @@ class Student extends Model
             $this->save();
         }
 
-/*
-    // Select all Staff Type
-    public function selectStaffType(){
-        return $this::all();
-    }
-
-    // Delete Staff Type
-    public function deleteStaffType($id){
-        $this::find($id)->delete();
-    }*/
-    public function selectStudent(){
-        return $this::all();
-    }
-    public function lastid(){
-        return DB::getPdo()->lastInsertId();
+        // Select one Student
+    public function getStudent($matricule){
+        return $this::find($matricule);
     }
    
 }

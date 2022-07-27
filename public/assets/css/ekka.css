@@ -23999,11 +23999,16 @@ input[type=radio] {
 div.dataTables_wrapper div.dataTables_length select {
   margin: 0 5px;
   border-color: #f3f3f3;
+  width: auto;
   border-radius: 10px;
+  display: inline-block;
 }
 div.dataTables_wrapper div.dataTables_filter input {
   border-color: #f3f3f3;
   border-radius: 10px;
+  display: inline-block;
+  margin-left: 5px;
+  width: auto;
 }
 
 .bottom-information {
@@ -24048,15 +24053,15 @@ table.dataTable td .btn-group button {
   padding: 3px 10px;
 }
 table.dataTable td .btn-group button:first-of-type {
-  border-radius: 15px 0 0 15px !important;
+  border-radius: 15px 0 0 15px;
 }
 table.dataTable td .btn-group button:nth-last-child(-n+2) {
-  border-radius: 0 15px 15px 0 !important;
+  border-radius: 0 15px 15px 0;
 }
 .btn-group a:first-child button {
   border-radius: 15px 0 0 15px !important;
 }
-.btn-group button:last-child {
+.btn-group button:nth-last-child(-n+2) {
   border-radius: 0 15px 15px 0 !important;
 }
 .btn-group .btn.btn-outline-warning a {
@@ -24979,6 +24984,9 @@ div.dataTables_wrapper div.dataTables_filter {
 #showFormButton {
   border-radius: 5px!important;
   width: 100%;
+}
+.responsableButtons #showFormButton {
+  width: 50%;
 }
 #formSection {
   display:none;
