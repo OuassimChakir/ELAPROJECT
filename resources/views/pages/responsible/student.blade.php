@@ -3,7 +3,7 @@
    liste des Etudiants
 @endsection
 @section('content')
-<link rel="stylesheet" type="text/css" href="http://www.arabic-keyboard.org/keyboard/keyboard.css"> 
+<link rel="stylesheet" type="text/css" href="http://www.arabic-keyboard.org/keyboard/keyboard.css">
   <!--message success -->
   @if (session()->has('successType'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -30,8 +30,7 @@
 </p>
 </div>
 <div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-data-bs-target="#addUser"> Add Etudiant
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser"> Add Etudiant
 </button>
 </div>
 </div>
@@ -65,12 +64,12 @@ data-bs-target="#addUser"> Add Etudiant
                         <td>{{$student->CREATED_AT}}</td>                        
                         <td>
                             <div class="btn-group">
-                                <a href="{{url("/student/".$student->matricule)}}">
+                                <a href="{{route('student.profil',['matricule' => $student->matricule])}}">
                                     <button type="button" name="show" class="btn btn-outline-info" value="{{$student->matricule}}">
                                         <i class="bi bi-person-fill"></i>
                                     </button>
                                 </a>
-                                <a href="{{url('/student/delete/'.$student->matricule)}}">
+                                <a href="{{route('student.delete',['matricule'=>$student->matricule])}}">
                                     <button type="button" class="btn btn-outline-danger" name="delete" value="{{$student->matricule}}" onclick="return confirm('Vous êtes sûr?');">
                                             <i class="bi bi-trash-fill"></i>
                                     </button>
@@ -79,7 +78,6 @@ data-bs-target="#addUser"> Add Etudiant
                         </td>
                     </tr>
                 @endforeach
-                
             </tbody>
     </table>
 </div>

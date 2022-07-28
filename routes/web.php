@@ -61,13 +61,20 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
     // Delete & Update Course Type
     Route::get('/staff/add/action','StaffController@staff')->name('staff.action');
-    // add responsible
-    // Student 
-    Route::get('/student', 'StudentController@student')->name('student.liste');
-    Route::get('/student/{matricule}','StudentController@studentProfil')->name('student.profil');
 
+    
+// -------------- STUDENTS --------------------- //
+    Route::get('/students', 'StudentController@student')->name('student.liste');
+    Route::get('/students/{matricule}','StudentController@studentProfil')->name('student.profil');
+    // Adding Student
+    Route::post('/students/add', 'StudentController@student')->name('student.add');
+    // Update Student
+    Route::put('/students/update/{matricule}','StudentController@updateStudent')->name('student.update');
+    // Delete Student
+    Route::get('/students/delete/{matricule}','StudentController@deleteStudent')->name('student.delete');
+
+// -------------- Responsibles --------------------- //
     // Add Course student
-    Route::post('/student/add', 'StudentController@student')->name('student.add');
     
 
 

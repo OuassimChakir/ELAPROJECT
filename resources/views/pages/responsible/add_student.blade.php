@@ -3,7 +3,7 @@
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-            <form action="{{url('/student/add')}}" method="post">
+            <form action="{{route('student.add')}}" method="post">
                 @csrf
                 @method('post')
                 <div class="modal-header px-4">
