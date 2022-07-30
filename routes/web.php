@@ -73,8 +73,19 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     // Delete Student
     Route::get('/students/delete/{matricule}','StudentController@deleteStudent')->name('student.delete');
 
+    // ARCHIVED STUDENTS
+    Route::get('/archive/students','StudentController@archive')->name('student.archive');
+    Route::get('/archive/students/{matricule}','StudentController@archivedStudent')->name('student.archive.profil');
+    Route::get('/archive/students/delete/{matricule}','StudentController@deleteArchivedStudent')->name('student.archive.delete');
+    Route::get('/archive/students/restore/{matricule}','StudentController@restoreArchivedStudent')->name('student.archive.restore');
+    Route::post('/archive/students/action','StudentController@multipleArchivedStudents')->name('student.archive.multiple');
 // -------------- Responsibles --------------------- //
-    // Add Course student
+    // Adding Responsible
+    Route::post('/responsible/add', 'StudentController@addResponsible')->name('responsible.add');
+    // Update Responsible
+    Route::put('/responsible/update/{cnieResponsible}','StudentController@updateResponsible')->name('responsible.update');
+    // Delete Responsible
+    Route::get('student/{matricule}/delete/{cnieResponsible}','StudentController@deleteResponsible')->name('responsible.delete');
     
 
 

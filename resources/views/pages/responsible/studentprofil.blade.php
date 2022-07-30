@@ -13,17 +13,24 @@
         </p>
     </div>
 </div>
-@if(session()->has('deleteType'))
+  <!--message success -->
+  @if (session()->has('successType'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{session()->get('successType')}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  @elseif(session()->has('deleteType'))
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
       {{session()->get('deleteType')}}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-@elseif(session()->has('updateStudent'))
+  @elseif(session()->has('updateMessage'))
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      {{session()->get('updateStudent')}}
+      {{session()->get('updateMessage')}}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-@endif
+  @endif
+  <!-- end errour du validation -->
 <div class="card bg-white profile-content">
     <div class="row">
         <div class="col-lg-4 col-xl-3">
@@ -61,13 +68,15 @@
                     <p class="text-dark font-weight-medium pt-24px mb-2">Email</p>
                     <p>{{$student->email}}</p>
                     <p class="text-dark font-weight-medium pt-24px mb-2">Numéro de Téléphone</p>
-                    <p>{{$student->numTel}}</p>
+                    <p>{{$student->sNumTel}}</p>
                     <p class="text-dark font-weight-medium pt-24px mb-2">Sexe</p>
-                    <p>{{ucfirst($student->sexe)}}</p>
+                    <p>{{ucfirst($student->sSexe)}}</p>
                     <p class="text-dark font-weight-medium pt-24px mb-2">Adresse</p>
                     <p>{{$student->adresse}}</p>
                     <p class="text-dark font-weight-medium pt-24px mb-2">Inscrie le:</p>
-                    <p>{{$student->CREATED_AT}}</p>
+                    <p>{{$student->sCREATED_AT}}</p>
+                    <p class="text-dark font-weight-medium pt-24px mb-2">Modifié le:</p>
+                    <p>{{$student->sUPDATED_AT}}</p>
                 </div>
             </div>
         </div>
@@ -319,7 +328,7 @@
                                             <div class="form-group mb-4">
                                                 <label for="numTel">Numéro de Téléphone</label>
                                                 <input type="tel" class="form-control" name="numTel" id="numTel"
-                                                    value="{{$student->numTel}}" required>
+                                                    value="{{$student->sNumTel}}" required>
                                             </div>
                                         </div>
                                          <!-- date Naissance-->
@@ -332,8 +341,8 @@
                                          <!-- numéro de carte d'identifion-->
                                         <div class="col-lg-6">
                                             <div class="form-group mb-4">
-                                                <label for="cnie">CNIE</label>
-                                                <input type="text" class="form-control" name="cnie" id="cnie"
+                                                <label for="CINE">CINE</label>
+                                                <input type="text" class="form-control" name="cnie" id="CINE"
                                                     value="{{$student->cnie}}" required>
                                             </div>
                                         </div>
@@ -342,7 +351,7 @@
                                             <div class="form-group mb-2">
                                                 <label>Sexe</label>
                                                 <div class="col-6 d-flex align-items-center justify-content-between">
-                                                @if ($student->sexe == "Homme")
+                                                @if ($student->sSexe == "Homme")
                                                     <div class="form-check">
                                                         <input class="form-check-input" value="Homme" type="radio" name="sexe" id="sexe1" checked>
                                                         <label class="form-check-label" for="sexe1">Homme</label>
@@ -401,95 +410,174 @@
                             <h4>Responsable</h4>
                         </div>
                         <div class="col-3 text-right responsableButtons">
-                            <button type="button" class="btn btn-warning"><i class="bi bi-pencil"></i></button>
-                            <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                            <button type="button" class="btn btn-primary btn-pill" id="showFormButton"><i class="bi bi-plus-square"></i></button>
+                            @if (!is_null($student->cnieResponsible))
+                                <a href="{{route('responsible.delete',['matricule' => $student->matricule, 'cnieResponsible' => $student->cnieResponsible])}}">
+                                    <button type="button" class="btn btn-outline-danger btn-pill"  onclick="return confirm('Vous êtes sûr?');"><i class="bi bi-trash"></i></button>
+                                </a>
+                                <button type="button" class="btn btn-warning" id="showFormButton"><i class="bi bi-pencil" ></i></button> 
+                            @else
+                                <button type="button" class="btn btn-primary btn-pill" id="showFormButton"><i class="bi bi-plus-square"></i></button>
+                            @endif
                         </div>
                     </div>
 
                     <div id="formSection">
-                        <form action="" method="post">
-                            @csrf
-                            @method('post')
-                            <div class="modal-header px-4">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter un Responsable</h5>
-                            </div>
-            
-                            <div class="modal-body px-4">
-                                <div class="row mb-2 g-3">                     
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="firstName">Prénom</label>
-                                            <input type="text" class="form-control" name="prenom" id="firstName" value="Ouassim" required>
-                                        </div>
-                                    </div>                                    
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="lastName">Nom</label>
-                                            <input type="text" class="form-control" name="nom" id="lastName" value="Chakir" required>
-                                        </div>
-                                    </div>
-                                    <!-- numéro de carte d'identifion-->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="cnie">CNIE</label>
-                                            <input type="text" class="form-control" name="cnie" id="cnie" required>
-                                        </div>
-                                    </div>
-                                    <!-- sexe -->
-                                    <div class="col-lg-6">
-                                        <div class="form-group mb-2">
-                                            <label>Sexe</label>
-                                            <div class="col-6 d-flex align-items-center justify-content-between">
-                                            <div class="form-check">
-                                                <input class="form-check-input" value="Homme" type="radio" name="sexe" id="homme">
-                                                <label class="form-check-label" for="homme">
-                                                  Homme
-                                                </label>
-                                              </div>
-                                              <div class="form-check">
-                                                <input class="form-check-input" value="Femme" type="radio" name="sexe" id="femme" >
-                                                <label class="form-check-label" for="femme">
-                                                  Femme
-                                                </label>
-                                              </div></div>
-                                        </div>
-                                    </div>
-                                     <!-- Numéro de Téléphone-->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="numTel">Numéro de Téléphone</label>
-                                            <input type="tel" class="form-control" name="numTel" id="numTel" required>
-                                        </div>
-                                    </div>
-                                     
+                        @if (is_null($student->cnieResponsible))
+                            <form action="{{route('responsible.add')}}" method="post">
+                                @csrf
+                                @method('post')
+                                <div class="modal-header px-4">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter un Responsable</h5>
                                 </div>
-                            </div>
-                            <div class="modal-footer px-4">
-                                <button type="submit" name="addReponsible" class="btn btn-primary btn-pill">Ajouter</button>
-                                <button type="reset" name="reset" class="btn btn-secondary btn-pill">Reset</button>
-                            </div>
-                        </form>
+                                <input type="hidden" name="matricule" value="{{$student->matricule}}">
+                                <div class="modal-body px-4">
+                                    <div class="row mb-2 g-3">                     
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="firstName">Prénom</label>
+                                                <input type="text" class="form-control" name="prenom" id="firstName" required>
+                                            </div>
+                                        </div>                                    
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="lastName">Nom</label>
+                                                <input type="text" class="form-control" name="nom" id="lastName" required>
+                                            </div>
+                                        </div>
+                                        <!-- numéro de carte d'identifion-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="CINE">CINE</label>
+                                                <input type="text" class="form-control" name="cine" id="CINE" required>
+                                            </div>
+                                        </div>
+                                        <!-- sexe -->
+                                        <div class="col-lg-6">
+                                            <div class="form-group mb-2">
+                                                <label>Sexe</label>
+                                                <div class="col-6 d-flex align-items-center justify-content-between">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" value="Homme" type="radio" name="sexe" id="homme">
+                                                    <label class="form-check-label" for="homme">
+                                                    Homme
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" value="Femme" type="radio" name="sexe" id="femme" >
+                                                    <label class="form-check-label" for="femme">
+                                                    Femme
+                                                    </label>
+                                                </div></div>
+                                            </div>
+                                        </div>
+                                        <!-- Numéro de Téléphone-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="numTel">Numéro de Téléphone</label>
+                                                <input type="tel" class="form-control" name="numTel" id="numTel" required>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="modal-footer px-4">
+                                    <button type="submit" name="addReponsible" class="btn btn-primary btn-pill">Ajouter</button>
+                                    <button type="reset" name="reset" class="btn btn-secondary btn-pill">Reset</button>
+                                </div>
+                            </form>
+                        @else
+                            <form action="{{route('responsible.update', ['cnieResponsible' => $student->cnieResponsible])}}" method="post">
+                                @csrf
+                                @method('put')
+                                <div class="modal-header px-4">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Modifier le Responsable</h5>
+                                </div>
+                                <div class="modal-body px-4">
+                                    <div class="row mb-2 g-3">                     
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="firstName">Prénom</label>
+                                                <input type="text" class="form-control" name="prenom" id="firstName" value="{{$student->prenom}}" required>
+                                            </div>
+                                        </div>                                    
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="lastName">Nom</label>
+                                                <input type="text" class="form-control" name="nom" id="lastName" value="{{$student->nom}}" required>
+                                            </div>
+                                        </div>
+                                        <!-- numéro de carte d'identifion-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="CINE">CINE</label>
+                                                <input type="text" class="form-control" name="cine" id="CINE" value="{{$student->cnieResponsible}}" required>
+                                            </div>
+                                        </div>
+                                        <!-- sexe -->
+                                        <div class="col-lg-6">
+                                            <div class="form-group mb-2">
+                                                <label>Sexe</label>
+                                                <div class="col-6 d-flex align-items-center justify-content-between">
+                                                    @if ($student->rSexe == "Homme")
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" value="Homme" type="radio" name="sexe" id="homme" checked>
+                                                            <label class="form-check-label" for="homme">Homme</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" value="Femme" type="radio" name="sexe" id="femme" >
+                                                            <label class="form-check-label" for="femme">Femme</label>
+                                                        </div>
+                                                    @else
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" value="Homme" type="radio" name="sexe" id="homme" >
+                                                            <label class="form-check-label" for="homme">Homme</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" value="Femme" type="radio" name="sexe" id="femme" checked>
+                                                            <label class="form-check-label" for="femme">Femme</label>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Numéro de Téléphone-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="numTel">Numéro de Téléphone</label>
+                                                <input type="tel" class="form-control" name="numTel" id="numTel" value="{{$student->rTel}}" required>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="modal-footer px-4">
+                                    <button type="submit" name="updateResponsible" class="btn btn-warning btn-pill">Mettre à Jour</button>
+                                    <button type="reset" name="reset" class="btn btn-secondary btn-pill">Reset</button>
+                                </div>
+                            </form>
+                        @endif
                         <hr>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="contact-info pt-4">
-                                <p class="text-dark font-weight-medium pt-24px mb-2">Nom Complet</p>
-                                <p>John Smith</p>
-                                <p class="text-dark font-weight-medium pt-24px mb-2">CNIE</p>
-                                <p>U111222</p>
+                    @if (!is_null($student->cnieResponsible))
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="contact-info pt-4">
+                                    <p class="text-dark font-weight-medium pt-24px mb-2">Nom Complet</p>
+                                    <p>{{$student->prenom.' '.$student->nom}}</p>
+                                    <p class="text-dark font-weight-medium pt-24px mb-2">CINE</p>
+                                    <p>{{$student->cnieResponsible}}</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="contact-info pt-4">
+                                    <p class="text-dark font-weight-medium pt-24px mb-2">Numéro de Téléphone</p>
+                                    <p>{{$student->rTel}}</p>
+                                    <p class="text-dark font-weight-medium pt-24px mb-2">Sexe</p>
+                                    <p>{{$student->rSexe}}</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="contact-info pt-4">
-                                <p class="text-dark font-weight-medium pt-24px mb-2">Numéro de Téléphone</p>
-                                <p>+00 1234 5678 91</p>
-                                <p class="text-dark font-weight-medium pt-24px mb-2">Sexe</p>
-                                <p>Homme</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>

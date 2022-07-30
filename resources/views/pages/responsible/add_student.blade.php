@@ -72,18 +72,18 @@
                         <!-- sexe -->
                         <div class="col-lg-6">
                             <div class="form-group mb-2">
-                                <label for="userName">Sexe</label>
+                                <label>Sexe</label>
                                 <div class="col-6 d-flex align-items-center justify-content-between">
                                 <div class="form-check">
-                                    <input class="form-check-input" value="homme" type="radio" name="sexe" id="sexe1" checked>
+                                    <input class="form-check-input" value="Homme" type="radio" name="sexe" id="sexe1" checked>
                                     <label class="form-check-label" for="sexe1">
                                       Homme
                                     </label>
                                   </div>
                                   <div class="form-check">
-                                    <input class="form-check-input" value="famme" type="radio" name="sexe" id="sexe2" >
+                                    <input class="form-check-input" value="Femme" type="radio" name="sexe" id="sexe2" >
                                     <label class="form-check-label" for="sexe2">
-                                      Famme
+                                      Femme
                                     </label>
                                   </div></div>
                             </div>

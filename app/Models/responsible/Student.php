@@ -23,7 +23,9 @@ class Student extends Model
     
     // Select one Student
     public function getStudent($matricule){
-        return $this::find($matricule);
+        return $this::select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
+                ->where('students.matricule',$matricule)
+                ->leftJoin('responsibles','students.cnieResponsible','=','responsibles.cnieResponsible')->first();
     }
 
     // Adding a new student 
@@ -62,5 +64,28 @@ class Student extends Model
     public function deleteStudent($matricule){
         $this::find($matricule)->delete();
     }
+
+    // Select deleted Students
+    public function softDeletedStudents(){
+        return $this::onlyTrashed()->get();
+    }
+
+    public function getDeletedStudent($matricule){
+        return $this::onlyTrashed()
+            ->select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
+            ->where('students.matricule',$matricule)
+            ->leftJoin('responsibles','students.cnieResponsible','=','responsibles.cnieResponsible')->first();
+    }
+
+    public function restoreStudent($matricule){
+        $this::withTrashed()
+            ->where('matricule',$matricule)
+            ->restore();
+    }
    
+    public function forceDeleteStudent($matricule){
+        $this::withTrashed()
+            ->where('matricule',$matricule)
+            ->forceDelete();
+    }
 }
