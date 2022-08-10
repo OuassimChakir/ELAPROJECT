@@ -16,6 +16,7 @@ class Student extends Model
   /*  protected $fillable = ['matricule','nom_fr','nom_ar','prenom_fr','prenom_ar','cnie',
     'email','numTel','sexe','adresse','dateNaissance']; */
     public $incrementing = false;
+    
         // Adding a new student 
         public function addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,
         $email,$numTel,$sexe,$adresse,$dateNaissance){
