@@ -61,14 +61,33 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
     // Delete & Update Course Type
     Route::get('/staff/add/action','StaffController@staff')->name('staff.action');
-    // add responsible
 
-    // Student 
-    Route::get('/student', 'StudentController@Student')->name('student.liste');
-
-    // Add Course student
-    Route::post('/student/add', 'StudentController@Student')->name('student.add');
     
+// -------------- STUDENTS --------------------- //
+    Route::get('/students', 'StudentController@student')->name('student.liste');
+    Route::get('/students/{matricule}','StudentController@studentProfil')->name('student.profil');
+    // Adding Student
+    Route::post('/students/add', 'StudentController@student')->name('student.add');
+    // Update Student
+    Route::put('/students/update/{matricule}','StudentController@updateStudent')->name('student.update');
+    // Delete Student
+    Route::get('/students/delete/{matricule}','StudentController@deleteStudent')->name('student.delete');
+
+    // ARCHIVED STUDENTS
+    Route::get('/archive/students','StudentController@archive')->name('student.archive');
+    Route::get('/archive/students/{matricule}','StudentController@archivedStudent')->name('student.archive.profil');
+    Route::get('/archive/students/delete/{matricule}','StudentController@deleteArchivedStudent')->name('student.archive.delete');
+    Route::get('/archive/students/restore/{matricule}','StudentController@restoreArchivedStudent')->name('student.archive.restore');
+    Route::post('/archive/students/action','StudentController@multipleArchivedStudents')->name('student.archive.multiple');
+// -------------- Responsibles --------------------- //
+    // Adding Responsible
+    Route::post('/responsible/add', 'StudentController@addResponsible')->name('responsible.add');
+    // Update Responsible
+    Route::put('/responsible/update/{cnieResponsible}','StudentController@updateResponsible')->name('responsible.update');
+    // Delete Responsible
+    Route::get('student/{matricule}/delete/{cnieResponsible}','StudentController@deleteResponsible')->name('responsible.delete');
+    
+
 
 
 

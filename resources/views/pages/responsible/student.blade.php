@@ -3,22 +3,24 @@
    liste des Etudiants
 @endsection
 @section('content')
+<link rel="stylesheet" type="text/css" href="http://www.arabic-keyboard.org/keyboard/keyboard.css">
   <!--message success -->
-  @if(session()->has('success'))
-  <div class="alert alert-success">
-      {{session()->get('success')}}
+  @if (session()->has('successType'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{session()->get('successType')}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-@endif
-  <!--errour du validation -->
-                @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-     @endif
+  @elseif(session()->has('deleteType'))
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{session()->get('deleteType')}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  @elseif(session()->has('updateGrade'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{session()->get('updateGrade')}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  @endif
   <!-- end errour du validation -->
 <div class="breadcrumb-wrapper breadcrumb-contacts">
 <div>
@@ -28,8 +30,7 @@
 </p>
 </div>
 <div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-data-bs-target="#addUser"> Add Etudiant
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser"> Add Etudiant
 </button>
 </div>
 </div>
@@ -37,54 +38,48 @@ data-bs-target="#addUser"> Add Etudiant
 <div class="col-12">
 <div class="ec-vendor-list card card-default">
 <div class="card-body">
-    <div class="table-responsive">
-        <table id="responsive-data-table" class="table">
+    <table id="responsive-data-table" class="table">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Nom</th>
                     <th>Prenom</th>
                     <th>Sexe</th>
                     <th>Email</th>
                     <th>Téléphone</th>
-                    <th>Adresse</th>
                     <th>Inscrie</th>
                     <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach ($student as $studen)
+                @foreach ($students as $student)
                     <tr>
-                        <td>{{$studen->nomfr}}</td>
-                        <td>{{$studen->prenomfr}}</td>
-                        <td>{{$studen->sexe}}</td>
-                        <td>{{$studen->email}}</td>
-                        <td>{{$studen->numTel}}</td>
-                        <td>{{$studen->adresse}}</td>
-                        <td>{{$studen->CREATED_AT}}</td>                        
+                        <td>{{$student->matricule}}</td>
+                        <td>{{$student->nom_fr}}</td>
+                        <td>{{$student->prenom_fr}}</td>
+                        <td>{{$student->sexe}}</td>
+                        <td>{{$student->email}}</td>
+                        <td>{{$student->numTel}}</td>
+                        <td>{{$student->CREATED_AT}}</td>                        
                         <td>
-                            <form action="{{url('/student/add/action')}}" method="delete">
-                               
-                                @method('delete')
-                                <div class="btn-group">
-                                    <button type="submit" name="edit" class="btn btn-outline-warning"
-                                     value="{{$studen->matricule}}" onclick="return confirm('Vous êtes sûr?');">
-                                        <i class="bi bi-pencil-square"></i>
+                            <div class="btn-group">
+                                <a href="{{route('student.profil',['matricule' => $student->matricule])}}">
+                                    <button type="button" name="show" class="btn btn-outline-info" value="{{$student->matricule}}">
+                                        <i class="bi bi-person-fill"></i>
                                     </button>
-                                    <button type="submit" class="btn btn-outline-danger" name="delete" 
-                                    value="{{$studen->matricule}}" onclick="return confirm('Vous êtes sûr?');">
-                                        <i class="bi bi-trash-fill"></i>
+                                </a>
+                                <a href="{{route('student.delete',['matricule'=>$student->matricule])}}">
+                                    <button type="button" class="btn btn-outline-danger" name="delete" value="{{$student->matricule}}" onclick="return confirm('Vous êtes sûr?');">
+                                            <i class="bi bi-trash-fill"></i>
                                     </button>
-                                </div>
-                            </form>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
-                
             </tbody>
-        </table>
-    </div>
-
+    </table>
 </div>
 </div>
 </div>

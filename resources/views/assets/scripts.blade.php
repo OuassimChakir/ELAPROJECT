@@ -27,6 +27,6 @@
 <script src="{{asset('assets/plugins/simplebar/simplebar.min.js')}}"></script>
 
 <!-- Data Tables -->
-<script src='assets/plugins/data-tables/jquery.datatables.min.js'></script>
-<script src='assets/plugins/data-tables/datatables.bootstrap5.min.js'></script>
-<script src='assets/plugins/data-tables/datatables.responsive.min.js'></script>
+<script src='{{asset('assets/plugins/data-tables/jquery.datatables.min.js')}}'></script>
+<script src='{{asset('assets/plugins/data-tables/datatables.bootstrap5.min.js')}}'></script>
+<script src='{{asset('assets/plugins/data-tables/datatables.responsive.min.js')}}'></script>
