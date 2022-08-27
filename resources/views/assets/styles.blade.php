@@ -4,7 +4,7 @@
 	<link href="{{asset('assets/plugins/simplebar/simplebar.css')}}" rel="stylesheet" />
     <link rel='stylesheet' href='{{asset('Bootstrap/css/bootstrap.min.css')}}'>
     <link rel='stylesheet' href='{{asset('Boutstrap/css/bootstrap-utilities.css')}}'>
-    <link rel='stylesheet' href='{{asset('Bootstrap/bootstrap-icons-1.3.0/bootstrap-icons.css')}}'>
+    <link rel='stylesheet' href='{{asset('Bootstrap/bootstrap-icons/bootstrap-icons.css')}}'>
     <link rel='stylesheet' href='{{asset('assets/css/ekka.css')}}'>
 
 	<link href="{{asset('assets/plugins/simplebar/simplebar.css')}}" rel="stylesheet" />

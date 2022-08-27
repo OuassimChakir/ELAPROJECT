@@ -29,7 +29,7 @@ class GradesController extends Controller
                 $gradesArray[] = array('grade' => $request->grade[$i], 'idGradeCategory' => $idGradeCategory);
             }
             Grades::insert($gradesArray);
-            return Redirect::back()->with('successType',"L'ajout est fait avec succès");
+            return Redirect::back()->with('successMessage',"L'ajout est fait avec succès");
         }
         return view('pages.grades.grades')
             ->with('grades',$gradesTable)
@@ -49,7 +49,7 @@ class GradesController extends Controller
         // Deletion of GradeCategory
         if($request->action == 'delete'){
             $grades ->deleteGrade($idGrade);
-            return Redirect::back()->with('deleteType',"La suppression est faite avec succès");
+            return Redirect::back()->with('deleteMessage',"La suppression est faite avec succès");
         }
 
         if($request->action == 'update'){
@@ -78,7 +78,7 @@ class GradesController extends Controller
         // Add new Grade
         if($request->has('addGrade')){
             $gradesCategory->addGradeCategory($request->category,$request->description,$request->courseType);
-            return Redirect::back()->with('successType',"L'ajout est fait avec succès");
+            return Redirect::back()->with('successMessage',"L'ajout est fait avec succès");
         }
         return view('pages.grades.gradesCategory')
             ->with('courses',$courses)
@@ -96,7 +96,7 @@ class GradesController extends Controller
             // Deletion of GradeCategory
             if($request->action == 'delete'){
                 $gradesCategory ->deleteGradeCategory($idGradeCategory);
-                return Redirect::back()->with('deleteType',"La suppression est faite avec succès");
+                return Redirect::back()->with('deleteMessage',"La suppression est faite avec succès");
             }
     
             if($request->action == 'update'){

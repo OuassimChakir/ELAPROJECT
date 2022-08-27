@@ -23,55 +23,23 @@
 							</li>
 	
 							<!-- Persons -->
-							<li class="has-sub">
-								<a class="sidenav-item-link" href="javascript:void(0)">
+							<li>
+								<a class="sidenav-item-link" href="{{route('teachers.liste')}}">
 									<i class="bi bi-people-fill"></i>
-									<span class="nav-text">Professeurs</span> <b class="caret"></b>
+									<span class="nav-text">Professeurs</span>
 								</a>
-								<div class="collapse">
-									<ul class="sub-menu" id="users" data-parent="#sidebar-menu">
-										<li class="">
-											<a class="sidenav-item-link" href="#">
-												<span class="nav-text">Liste des Professeurs</span>
-											</a>
-										</li>
-									</ul>
-								</div>
 							</li>
-							<li class="has-sub">
-								<a class="sidenav-item-link" href="javascript:void(0)">
+							<li>
+								<a class="sidenav-item-link" href="{{route('student.liste')}}">
 									<i class="bi bi-people-fill"></i>
-									<span class="nav-text">Etudiants</span> <b class="caret"></b>
+									<span class="nav-text">Etudiants</span>
 								</a>
-								<div class="collapse">
-									<ul class="sub-menu" id="users" data-parent="#sidebar-menu">
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('student.liste')}}">
-												<span class="nav-text">Liste des Etudiants</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('student.archive')}}">
-												<span class="nav-text">Archive des Etudiants</span>
-											</a>
-										</li>
-									</ul>
-								</div>
 							</li>
-							<li class="has-sub">
-								<a class="sidenav-item-link" href="javascript:void(0)">
+							<li>
+								<a class="sidenav-item-link" href="{{route('staff.liste')}}">
 									<i class="bi bi-people-fill"></i>
-									<span class="nav-text">Staff</span> <b class="caret"></b>
+									<span class="nav-text">Staff</span>
 								</a>
-								<div class="collapse">
-									<ul class="sub-menu" id="users" data-parent="#sidebar-menu">
-										<li class="">
-											<a class="sidenav-item-link" href="{{url('/staff')}}">
-												<span class="nav-text">Liste des Staff</span>
-											</a>
-										</li>
-									</ul>
-								</div>
 								<hr>
 							</li>
 	
@@ -107,8 +75,8 @@
 								<div class="collapse">
 									<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
 										<li class="">
-											<a class="sidenav-item-link" href="#">
-												<span class="nav-text">Add</span>
+											<a class="sidenav-item-link" href="{{route('groups')}}">
+												<span class="nav-text">Liste des Groupes</span>
 											</a>
 										</li>
 									</ul>
@@ -211,7 +179,34 @@
 								</div>
 								<hr>
 							</li>
-							
+
+							<!-- ARCHIVE -->
+							<li class="has-sub">
+								<a class="sidenav-item-link" href="javascript:void(0)">
+									<i class="bi bi-archive-fill"></i>
+									<span class="nav-text">Archive</span> <b class="caret"></b>
+								</a>
+								<div class="collapse">
+									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
+										<li class="">
+											<a class="sidenav-item-link" href="{{route('student.archive')}}">
+												<span class="nav-text">Archive des Etudiants</span>
+											</a>
+										</li>
+										<li class="">
+											<a class="sidenav-item-link" href="{{route('teachers.archive')}}">
+												<span class="nav-text">Archive des Professeurs</span>
+											</a>
+										</li>
+										<li class="">
+											<a class="sidenav-item-link" href="{{route('staff.archive')}}">
+												<span class="nav-text">Archive des Staffs</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<hr>
+							</li>
 							<!-- Deconnexion -->
 							<li>
 								<a class="sidenav-item-link" href="review-list.html">

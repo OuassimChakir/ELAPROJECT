@@ -9,19 +9,19 @@
         <span><i class="mdi mdi-chevron-right"></i></span>Types de Formation</p>
 </div>
 
-@if (session()->has('successType'))
+@if (session()->has('successMessage'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{session()->get('successType')}}
+    {{session()->get('successMessage')}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-@elseif(session()->has('deleteType'))
+@elseif(session()->has('deleteMessage'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{session()->get('deleteType')}}
+    {{session()->get('deleteMessage')}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-@elseif(session()->has('updateType'))
+@elseif(session()->has('updateMessage'))
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{session()->get('updateType')}}
+    {{session()->get('updateMessage')}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif

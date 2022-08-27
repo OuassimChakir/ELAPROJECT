@@ -13,14 +13,23 @@ class Grades extends Model
     public $timestamps = false;
 
     public function getGrade($idGrade){
-        return $this::find($idGrade);
-       }
+        return $this::select('*')
+            ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
+            ->where('grades.idGrade',$idGrade)
+            ->first();
+    }
 
     public function getGradesByCategory($idGradeCategory){
         return $this::where('grades.idGradeCategory',$idGradeCategory)
                     ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
                     ->orderBy('grade','ASC')
                     ->paginate(20)->withQueryString();
+    }
+    public function selectGradesByCategory($idGradeCategory){
+        return $this::where('grades.idGradeCategory',$idGradeCategory)
+                    ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
+                    ->orderBy('grade','ASC')
+                    ->get();
     }
     public function getGrades(){
         return $this::select('*')

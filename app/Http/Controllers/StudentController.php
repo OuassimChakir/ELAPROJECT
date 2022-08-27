@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classrooms;
+use App\Models\Grades\Grades;
+use App\Models\Grades\GradesCategory;
+use App\Models\Group;
 use App\Models\Responsible\Responsible;
 use App\Models\responsible\Staff;
 use App\Models\responsible\Student;
@@ -13,12 +17,14 @@ class StudentController extends Controller
 {
     // -------------- Students -------------- //
     public function student(Request $request){
+        $Group = new Group();
+        $groupSubjects = $Group->existedGroupSubjects();
+        $groupCourseTypes = $Group->existedGroupCourseTypes();
         // Restart from 0 EACH YEAR
         if(date('d-m') == "01-01")
             Storage::disk('local')->put('student.txt',0);
         $Student = new Student();
         $students = $Student->getStudents();
-
         // New Student
         if($request->has('addStudent')){
             $studentsCounter = 1;
@@ -38,15 +44,30 @@ class StudentController extends Controller
             $sexe = $request->sexe;
             $adresse = $request->adresse;
             $Student->addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
-            return Redirect::back()->with('successType',"L'ajout est fait avec succès")->with('students',$students);
+            return Redirect::back()->with('successMessage',"L'ajout est fait avec succès")->with('students',$students);
         }
-        return view('pages.responsible.student')->with('students',$students);
+        return view('pages.students.student')->with('students',$students)
+                ->with('subjects',$groupSubjects)
+                ->with('courseTypes',$groupCourseTypes);
     }
+
 
     public function studentProfil(Request $request,$matricule){
         $Student = new Student();
+        $Classroom = new Classrooms();
+        $Group = new Group();
+        $groupSubjects = $Group->existedGroupSubjects();
+        $groupCourseTypes = $Group->existedGroupCourseTypes();
+        $classrooms = $Classroom->studentClassrooms($matricule);
         $studentInfo = $Student->getStudent($matricule);
-        return view('pages.responsible.studentprofil')->with('student',$studentInfo);
+        foreach($classrooms as $classroom){
+            $classroom->nbElement = $Classroom->classroomElements($classroom->idGroup);
+        }
+        return view('pages.students.studentprofil')
+            ->with('groupes',$classrooms)
+            ->with('subjects',$groupSubjects)
+            ->with('courseTypes',$groupCourseTypes)
+            ->with('student',$studentInfo);
     }
 
     public function updateStudent(Request $request,$matricule){
@@ -64,11 +85,21 @@ class StudentController extends Controller
             $sexe = $request->sexe;
             $adresse = $request->adresse;
             $Student->updateStudent($request->matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
-            
             return Redirect::back()
                 ->with('updateStudent',"La Modification est faite avec succès")
                 ->with('student',$studentInfo);
         }
+    }
+
+    public function deleteMultipleStudents(Request $request){
+        $Student = new Student();
+        if ($request->has('deleteAll')) {
+            foreach($request->students as $matricule){
+                $Student->deleteStudent($matricule);
+            }
+            return Redirect::back()->with('deleteMessage',"Les étudiants séléctionés ont été supprimer");
+        }else
+            return Redirect::back();
     }
 
     public function deleteStudent(Request $request,$matricule){
@@ -76,7 +107,7 @@ class StudentController extends Controller
         $Student->deleteStudent($matricule);
         $studentInfo = $Student->getStudents();
         return Redirect::route('student.liste')
-            ->with('deleteType',"La suppression est faite avec succès")
+            ->with('deleteMessage',"La suppression est faite avec succès")
             ->with('students',$studentInfo);;
     }
 
@@ -91,7 +122,7 @@ class StudentController extends Controller
             $sexe = $request->sexe;
             $matricule = $request->matricule;
             $Responsible->addResponsible($cnieResponsible,$nom,$prenom,$numTel,$sexe,$matricule);
-            return Redirect::back()->with('successType',"L'ajout du Responsable est faite avec succès");
+            return Redirect::back()->with('successMessage',"L'ajout du Responsable est faite avec succès");
         }
     }
 
@@ -104,7 +135,7 @@ class StudentController extends Controller
     public function deleteResponsible(Request $request,$matricule, $cnieResponsible){
         $Responsible = new Responsible();
         $Responsible->deleteResponsible($cnieResponsible,$matricule);
-        return Redirect::back()->with('deleteType',"La suppression du Responsable est faite avec succès")->with('matricule',$matricule);
+        return Redirect::back()->with('deleteMessage',"La suppression du Responsable est faite avec succès")->with('matricule',$matricule);
     }
 
 
@@ -112,13 +143,13 @@ class StudentController extends Controller
     public function archive(){
         $Student = new Student();
         $students = $Student->softDeletedStudents();
-        return view('pages.responsible.studentArchive')->with('students',$students);
+        return view('pages.students.studentArchive')->with('students',$students);
     }
 
     public function archivedStudent($matricule){
         $Student = new Student();
         $studentInfo = $Student->getDeletedStudent($matricule);
-        return view('pages.responsible.archivedStudentProfil')->with('student',$studentInfo);
+        return view('pages.students.archivedStudentProfil')->with('student',$studentInfo);
     }
 
     public function restoreArchivedStudent($matricule){
@@ -143,9 +174,35 @@ class StudentController extends Controller
         }
         if($request->has('deleteAll')){
             foreach($request->archivedStudents as $matricule){
+                $studentInfo = $Student->getStudent($matricule);
+                $Responsible = new Responsible();
+                if($studentInfo->cnieResponsible != 'NULL')
+                    $Responsible->deleteResponsible($studentInfo->cnieResponsible,$matricule);
                 $Student->forceDeleteStudent($matricule);
             }
             return Redirect::back()->with('deleteMessage',"Les étudiants séléctionés ont été supprimer Définitivement");
         }
+    }
+
+    // ------------ GROUPS AND CLASSROOMS -------------- //
+        
+    public function getGroupsByGrade($idSubject){
+        $Group = new Group();
+        $gradeData['data'] = $Group->existedGroupGradesBySubject($idSubject);
+        return response()->json($gradeData);
+    }
+
+    public function getGroupsByGradeAndSubject($idSubject,$idGrade,$matricule){
+        $Group = new Group();
+        $groups['data'] = $Group->selectGroupsBySubjectAndGrade($idSubject,$idGrade,$matricule);
+        return response()->json($groups);
+    }
+
+
+    public function assignClassroom($idGroup,$matricule){
+        $Classroom = new Classrooms();
+        $Classroom->add2Class($idGroup,$matricule);
+        $processResult = 'true';
+        return response()->json($processResult); 
     }
 }

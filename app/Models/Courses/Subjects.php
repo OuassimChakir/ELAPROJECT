@@ -25,20 +25,23 @@ class Subjects extends Model
        public function getSubjects(){
         return $this::select('*')
             ->join('coursetype','subjects.idCourseType','=','coursetype.idCourseType')
+            ->orderBy('subjects.idCourseType')
             ->get();
        }
 
        // INSERT DATA (New Subject)
-       public function addSubject($libelle,$idCourseType){
+       public function addSubject($libelle,$short,$idCourseType){
         $this->libelle = $libelle;
+        $this->short = $short;
         $this->idCourseType = $idCourseType;
         $this->save();
        }
 
     //    Update Subject
-       public function updateSubject($idSubject,$libelle,$idCourseType){
+       public function updateSubject($idSubject,$libelle,$short,$idCourseType){
         $subject = $this::find($idSubject);
         $subject->libelle = $libelle;
+        $subject->short = $short;
         $subject->idCourseType = $idCourseType;
         $subject->save();
        }

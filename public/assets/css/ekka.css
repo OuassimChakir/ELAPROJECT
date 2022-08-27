@@ -24058,6 +24058,19 @@ table.dataTable td .btn-group button:first-of-type {
 table.dataTable td .btn-group button:nth-last-child(-n+2) {
   border-radius: 0 15px 15px 0;
 }
+table.dataTable td .btn-group-spaced button {
+  margin: 0px 3px;
+}
+
+table.dataTable td .btn-group-spaced {
+  width: 100%;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
 .btn-group a:first-child button {
   border-radius: 15px 0 0 15px !important;
 }
@@ -24990,4 +25003,13 @@ div.dataTables_wrapper div.dataTables_filter {
 }
 #formSection {
   display:none;
+}
+
+#groupsResult .row{
+  margin-bottom: 8px;
+}
+
+#tab-widget-addBtn {
+  width: 100%;
+  padding: 34px 0;
 }

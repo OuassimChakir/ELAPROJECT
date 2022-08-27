@@ -13,6 +13,8 @@
 <script src="{{asset('assets/plugins/charts/Chart.min.js')}}"></script>
 <script src="{{asset('assets/js/chart.js')}}"></script>
 
+{{-- SweetAlert --}}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!-- Date Range Picker -->
 <script src="{{asset('assets/plugins/daterangepicker/moment.min.js')}}"></script>
@@ -30,3 +32,30 @@
 <script src='{{asset('assets/plugins/data-tables/jquery.datatables.min.js')}}'></script>
 <script src='{{asset('assets/plugins/data-tables/datatables.bootstrap5.min.js')}}'></script>
 <script src='{{asset('assets/plugins/data-tables/datatables.responsive.min.js')}}'></script>
+
+
+{{-- SCRIPT --}}
+<script>
+    // SWEET ALERT
+    $(document).ready(function(){
+        $( "#deleteButton" ).bind( "click", function() {
+            var idGroup = $(this).val();
+            var url = $(this).data('url');
+            var message = $(this).data('confirm');
+            var title = $(this).data('title');
+            var type = $(this).data('type');
+            swal({
+                title: title,
+                text: message,
+                icon: type,
+                buttons: ["Non","Oui"],
+                closeOnConfirm: true
+            })
+            .then((value) => {
+                if(value == true)
+                    return window.location.href = url;
+            });
+        });
+    });
+    
+</script>

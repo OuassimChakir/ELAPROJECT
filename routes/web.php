@@ -55,14 +55,55 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     // Update a Subject Query
     Route::put('/matieres/update/{idSubject}','SubjectController@actionSubject')->name('subjects.update');
 
-//  staff and student and responsible
+// ------------------ STAFF ----------------------- //
     Route::get('/staff', 'StaffController@staff')->name('staff.liste');
-    // Add Course staff
+    // Add staff
     Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
-    // Delete & Update Course Type
-    Route::get('/staff/add/action','StaffController@staff')->name('staff.action');
+    // Update Staff
+    Route::put('/staff/update/{idStaff}','StaffController@updateStaff')->name('staff.update');
+    // Delete Staff
+    Route::get('/staff/delete/{idStaff}','StaffController@deleteStaff')->name('staff.delete');
+    Route::delete('/staff/deleteAll','StaffController@deleteMultipleStaff')->name('staff.delete.multiple');
+    // Staff Profil
+    Route::get('/staff/{idStaff}-{nom}','StaffController@staffProfil')->name('staff.profil');
+    
+    // ARCHIVED Staff
+    Route::get('/archive/staff','StaffController@archive')->name('staff.archive');
+    Route::get('/archive/staff/{idStaff}','StaffController@archivedStaff')->name('staff.archive.profil');
+    Route::get('/archive/staff/delete/{idStaff}','StaffController@deleteArchivedStaff')->name('staff.archive.delete');
+    Route::get('/archive/staff/restore/{idStaff}','StaffController@restoreArchivedStaff')->name('staff.archive.restore');
+    Route::post('/archive/staff/action','StaffController@multipleArchivedStaff')->name('staff.archive.multiple');
 
     
+// ------------------ TEACHERS ----------------------- //
+    Route::get('/teachers', 'TeacherController@teacher')->name('teachers.liste');
+    // Add staff
+    Route::post('/teacher/add', 'TeacherController@teacher')->name('teachers.add');
+    // Update Staff
+    Route::put('/teacher/update/{idProfesseur}','TeacherController@updateTeacher')->name('teachers.update');
+    // Delete Staff
+    Route::get('/teacher/delete/{idProfesseur}','TeacherController@deleteTeacher')->name('teachers.delete');
+    Route::delete('/teacher/delete','TeacherController@deleteMultipleTeachers')->name('teachers.delete.multiple');
+    // Staff Profil
+    Route::get('/teacher/{idProfesseur}-{nom}','TeacherController@teacherProfil')->name('teachers.profil');
+
+     // ARCHIVED Teachers
+    Route::get('/archive/teachers','TeacherController@archive')->name('teachers.archive');
+    Route::get('/archive/teacher/{idProfesseur}','TeacherController@archivedTeacher')->name('teachers.archive.profil');
+    Route::get('/archive/teachers/delete/{idProfesseur}','TeacherController@deleteArchivedTeacher')->name('teachers.archive.delete');
+    Route::get('/archive/teachers/restore/{idProfesseur}','TeacherController@restoreArchivedTeacher')->name('teachers.archive.restore');
+    Route::post('/archive/teachers/action','TeacherController@multipleArchivedTeachers')->name('teachers.archive.multiple');
+
+// ----------------- STAFF TYPE ------------------ //
+    Route::get('/specialites', 'StaffController@staffType')->name('specialite');
+    // Add staff Type
+    Route::post('/specialites/add', 'StaffController@staffType')->name('specialite.add');
+    // Delete Staff Type
+    Route::get('/specialites/delete/{idStaffType}','StaffController@deleteStaffType')->name('specialite.delete');
+    // Update Staff Type
+    Route::get('/specialites/update/{idStaffType}','StaffController@updateStaffType')->name('specialite.update');
+    Route::put('/specialites/update/{idStaffType}','StaffController@updateStaffType')->name('specialite.update.request');
+
 // -------------- STUDENTS --------------------- //
     Route::get('/students', 'StudentController@student')->name('student.liste');
     Route::get('/students/{matricule}','StudentController@studentProfil')->name('student.profil');
@@ -72,6 +113,8 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::put('/students/update/{matricule}','StudentController@updateStudent')->name('student.update');
     // Delete Student
     Route::get('/students/delete/{matricule}','StudentController@deleteStudent')->name('student.delete');
+    Route::delete('/staff/delete','StudentController@deleteMultipleStudents')->name('student.delete.multiple');
+
 
     // ARCHIVED STUDENTS
     Route::get('/archive/students','StudentController@archive')->name('student.archive');
@@ -88,9 +131,30 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('student/{matricule}/delete/{cnieResponsible}','StudentController@deleteResponsible')->name('responsible.delete');
     
 
+// --------------- Groupes ------------------ //
+    Route::get('/groupes','GroupController@groups')->name('groups');
+    Route::post('/groupes/add','GroupController@groups')->name('groups.add');
+    // Load Data
+    Route::get('/groupes/get/{idGradeCategory}','GroupController@getGrade')->name('groups.getData');
 
+    // Group Page
+    Route::get('/groupe/{idGroup}','GroupController@groupPage')->name('groups.profil');
+    Route::put('/groupe/update/{idGroup}','GroupController@updateGroup')->name('groups.update');
+    // Delete Group
+    Route::get('/groupes/delete/{idGroup}','GroupController@deleteGroup')->name('groups.delete');
 
+// ------------- Classroom ---------- // 
+    // Add Student to Group
+    Route::get('/groupes/{idGroup}/classroom/{matricule}','StudentController@assignClassroom');
+
+    // Remove From Classroom
+    Route::get('/classrooms/remove/{id}','GroupController@cancelAssignment')->name('classroom.cancelAssignment');
+    
+    // JSON DATA
+    Route::get('/students/get/{idSubject}','StudentController@getGroupsByGrade');
+    Route::get('/students/getGroups/{idSubject}-{idGrade}-{matricule}','StudentController@getGroupsByGradeAndSubject');
 
 
 ?>
+
 
