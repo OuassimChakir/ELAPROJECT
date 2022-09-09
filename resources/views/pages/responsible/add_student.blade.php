@@ -69,7 +69,7 @@
                                     value="U207066" required>
                             </div>
                         </div>
-                        <!-- sexe -->
+                        <!-- sexe -->h
                         <div class="col-lg-6">
                             <div class="form-group mb-2">
                                 <label>Sexe</label>
