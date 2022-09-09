@@ -66,7 +66,7 @@
                                 <input type="text" class="form-control" name="cnie" id="cnie" required>
                             </div>
                         </div>
-                        <!-- sexe -->
+                        <!-- sexe -->h
                         <div class="col-lg-6">
                             <div class="form-group mb-2">
                                 <label>Sexe</label>

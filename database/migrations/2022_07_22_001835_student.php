@@ -13,8 +13,10 @@ class Student extends Migration
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
-            $table->bigIncrements('matricule');
+        Schema::create('students', function (Blueprint $table) 
+        {
+            $table->unsignedBigInteger('matricule', false)->primary(); 
+            $table->primary('matricule');
             $table->string('nom_fr');
             $table->string('nom_ar');
             $table->string('prenom_fr');
@@ -29,6 +31,8 @@ class Student extends Migration
             $table->timestamps();
         });
     }
+    
+    
 
     /**
      * Reverse the migrations.
