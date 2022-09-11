@@ -517,6 +517,11 @@
                              </div>
                                     <thead>
                                         <tr>
+                                            @if ($students->count()!=0)
+                                                <th>
+                                                    <input type="checkbox" class="form-check-input" id="selectAll">
+                                                </th>
+                                            @endif
                                             <th>#</th>
                                             <th>Nom</th>
                                             <th>Action</th>
@@ -525,6 +530,9 @@
                                     <tbody>
                                         @foreach ($students as $student)
                                             <tr>
+                                                <td>
+                                                    <input type="checkbox" class="form-check-input students">
+                                                </td>
                                                 <td>
                                                     {{$student->matricule}}
                                                     <input type="hidden" name="matricule[]" class="form-control" value="{{$student->matricule}}">  
@@ -542,7 +550,7 @@
                                                 </td>                     
                                                 <td>
                                                     <div class="col-4 btn-group-spaced">
-                                                          <select name="absence[]" id="id-Subject" class="form-select" required>
+                                                          <select name="absence[]" id="id-Subject" class="absenceState form-select" required>
                                                             <option value="0">
                                                                 Présent
                                                             </option>
@@ -611,6 +619,46 @@
                         }              
                     },
                 });
+            });
+        });
+        $('#selectAllArchived').click(function(event) {   
+            if(this.checked) {
+                // Iterate each checkbox
+                $(':checkbox').each(function() {
+                    this.checked = true;                        
+                });
+            } else {
+                $(':checkbox').each(function() {
+                    this.checked = false;                       
+                });
+            }
+        });
+        $('#selectAll').click(function(event) {   
+            if(this.checked) {
+                // Iterate each checkbox
+                $('.students').each(function() {
+                    this.checked = true; 
+                    $(this).closest('tr').find('.absenceState option:first-child').prop('selected',false);
+                    $(this).closest('tr').find('.absenceState option:nth-child(2)').prop('selected',true);                 
+                });
+            } else {
+                $('.students').each(function() {
+                    this.checked = false;
+                    $(this).closest('tr').find('.absenceState option:nth-child(2)').prop('selected',false);
+                    $(this).closest('tr').find('.absenceState option:first-child').prop('selected',true);                     
+                });
+            }
+        });
+        $(document).ready(function(){
+            $('.students').click(function(event) {   
+                if(this.checked) {
+                    // Iterate each checkbox
+                    $(this).closest('tr').find('.absenceState option:first-child').prop('selected',false);
+                    $(this).closest('tr').find('.absenceState option:nth-child(2)').prop('selected',true);
+                } else {
+                    $(this).closest('tr').find('.absenceState option:nth-child(2)').prop('selected',false);
+                    $(this).closest('tr').find('.absenceState option:first-child').prop('selected',true);
+                }
             });
         });
     </script>
