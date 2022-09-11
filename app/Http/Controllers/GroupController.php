@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classrooms;
+use App\Models\Attendance;
 use App\Models\Courses\CourseType;
 use App\Models\Courses\Subjects;
 use App\Models\Grades\Grades;
@@ -10,6 +11,7 @@ use App\Models\Grades\GradesCategory;
 use App\Models\Group;
 use App\Models\Responsible\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Student;
 
@@ -115,5 +117,27 @@ class GroupController extends Controller
         $Classroom = new Classrooms();
         $Classroom->cancelAssignment($id);
         return Redirect::back()->with('deleteMessage',"L'étudiant a été retiré du groupe avec succès");
+    }
+    //----------------add absence---------------// 
+    public function addAbsence(Request $request){
+        if($request->has('addabssence')){
+        //$Absence = new Attendance();
+        $absence = $request->absence;
+        $dateAbsence = $request->dateAbsence;
+        $matricule = $request->matricule;
+        $idGroup = $request->idGroup;
+        //$Absence->addAbsence($absence,$dateAbsence,$matricule,$idGroup);
+        for($i=0;$i<count($matricule);$i++)
+        {
+        $datesave =[
+            'absence'=>$absence[$i],
+            'dateAbsence'=>$dateAbsence,
+            'matricule'=>$matricule[$i],
+            'idGroup'=>$idGroup,
+        ];
+        DB::table('Attendance')->insert($datesave);
+    }
+        return Redirect::back()->with('successMessage',"L'ajout du Abssence est faite avec succès");
+        }
     }
 }

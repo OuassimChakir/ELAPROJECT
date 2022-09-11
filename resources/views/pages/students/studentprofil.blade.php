@@ -157,130 +157,29 @@
                                         </div>
                                         <div class="card-body compact-notifications" data-simplebar
                                             style="height: 434px;">
-                                            <div
-                                                class="media pb-3 align-items-center justify-content-between">
-                                                <div
-                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                                    <i
-                                                        class="mdi mdi-cart-outline font-size-20"></i>
-                                                </div>
-                                                <div class="media-body pr-3 ">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                        href="#">New Order</a>
-                                                    <p>Selena has placed an new order</p>
-                                                </div>
-                                                <span class=" font-size-12 d-inline-block"><i
-                                                        class="mdi mdi-clock-outline"></i> 10
-                                                    AM</span>
-                                            </div>
-
-                                            <div
-                                                class="media py-3 align-items-center justify-content-between">
-                                                <div
-                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
-                                                    <i
-                                                        class="mdi mdi-email-outline font-size-20"></i>
-                                                </div>
-                                                <div class="media-body pr-3">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                        href="#">New Enquiry</a>
-                                                    <p>Phileine has placed an new order</p>
-                                                </div>
-                                                <span class=" font-size-12 d-inline-block"><i
-                                                        class="mdi mdi-clock-outline"></i> 9
-                                                    AM</span>
-                                            </div>
-
-
-                                            <div
-                                                class="media py-3 align-items-center justify-content-between">
-                                                <div
-                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
-                                                    <i
-                                                        class="mdi mdi-stack-exchange font-size-20"></i>
-                                                </div>
-                                                <div class="media-body pr-3">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                        href="#">Support Ticket</a>
-                                                    <p>Emma has placed an new order</p>
-                                                </div>
-                                                <span class=" font-size-12 d-inline-block"><i
-                                                        class="mdi mdi-clock-outline"></i> 10
-                                                    AM</span>
-                                            </div>
-
-                                            <div
-                                                class="media py-3 align-items-center justify-content-between">
-                                                <div
-                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                                    <i
-                                                        class="mdi mdi-cart-outline font-size-20"></i>
-                                                </div>
-                                                <div class="media-body pr-3">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                        href="#">New order</a>
-                                                    <p>Ryan has placed an new order</p>
-                                                </div>
-                                                <span class=" font-size-12 d-inline-block"><i
-                                                        class="mdi mdi-clock-outline"></i> 10
-                                                    AM</span>
-                                            </div>
-
-                                            <div
-                                                class="media py-3 align-items-center justify-content-between">
-                                                <div
-                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-info text-white">
-                                                    <i
-                                                        class="mdi mdi-calendar-blank font-size-20"></i>
-                                                </div>
-                                                <div class="media-body pr-3">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                        href="">Comapny Meetup</a>
-                                                    <p>Phileine has placed an new order</p>
-                                                </div>
-                                                <span class=" font-size-12 d-inline-block"><i
-                                                        class="mdi mdi-clock-outline"></i> 10
-                                                    AM</span>
-                                            </div>
-
-                                            <div
-                                                class="media py-3 align-items-center justify-content-between">
-                                                <div
-                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
-                                                    <i
-                                                        class="mdi mdi-stack-exchange font-size-20"></i>
-                                                </div>
-                                                <div class="media-body pr-3">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                        href="#">Support Ticket</a>
-                                                    <p>Emma has placed an new order</p>
-                                                </div>
-                                                <span class=" font-size-12 d-inline-block"><i
-                                                        class="mdi mdi-clock-outline"></i> 10
-                                                    AM</span>
-                                            </div>
-
-                                            <div
-                                                class="media py-3 align-items-center justify-content-between">
-                                                <div
-                                                    class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
-                                                    <i
-                                                        class="mdi mdi-email-outline font-size-20"></i>
-                                                </div>
-                                                <div class="media-body pr-3">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                        href="#">New Enquiry</a>
-                                                    <p>Phileine has placed an new order</p>
-                                                </div>
-                                                <span class=" font-size-12 d-inline-block"><i
-                                                        class="mdi mdi-clock-outline"></i> 9
-                                                    AM</span>
-                                            </div>
-
+                                            @foreach ($absence as $absenc)
+                                            @if($absenc->matricule == $student->matricule )
+                                            @elseif($absenc->absence == 1 || $absenc->absence == 2)
+                                                <div class="media pb-3 align-items-center justify-content-between">
+                                                    <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
+                                                        <i class="bi bi-list-stars"></i>                                               
+                                                    </div>
+                                                    <div class="media-body pr-3 ">
+                                                        <a class="mt-0 mb-1 font-size-15 text-dark" href="#">                                                    @foreach($allgroup as $allgroups)
+                                                            @if($absenc->idGroup == $allgroups->idGroup)
+                                                            {{$allgroups->designation}}
+                                                            @endif
+                                                            @endforeach
+                                                        </a>
+                                                    </div>    
+                                                    <span class="font-size-12  d-inline-block mr-3"><i class="mdi mdi-clock-outline"></i> {{$absenc->dateAbsence}}</span>
+                                                    </a>
+                                                </div> 
+                                           @endif
+                                           @endforeach
                                         </div>
                                         <div class="mt-3"></div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -399,7 +298,6 @@
                             </form>
                         </div>
                     </div>
-
                     {{-- GROUPS TAB --}}
                     <div class="tab-pane fade" id="groups" role="tabpanel"
                         aria-labelledby="groups-tab">
@@ -471,6 +369,7 @@
                             </div>
                         </div>
                     </div>
+                    {{-- Absences TAB --}}
                 </div>
             </div>
         </div>

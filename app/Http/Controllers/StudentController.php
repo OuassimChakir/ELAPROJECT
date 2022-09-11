@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Classrooms;
 use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
@@ -56,10 +57,13 @@ class StudentController extends Controller
         $Student = new Student();
         $Classroom = new Classrooms();
         $Group = new Group();
+        $absences = new Attendance();
+        $allgroup =$Group->selectGroup();
         $groupSubjects = $Group->existedGroupSubjects();
         $groupCourseTypes = $Group->existedGroupCourseTypes();
         $classrooms = $Classroom->studentClassrooms($matricule);
         $studentInfo = $Student->getStudent($matricule);
+        $absence = $absences->selectAbsence();
         foreach($classrooms as $classroom){
             $classroom->nbElement = $Classroom->classroomElements($classroom->idGroup);
         }
@@ -67,7 +71,9 @@ class StudentController extends Controller
             ->with('groupes',$classrooms)
             ->with('subjects',$groupSubjects)
             ->with('courseTypes',$groupCourseTypes)
-            ->with('student',$studentInfo);
+            ->with('student',$studentInfo)
+            ->with('absence',$absence)
+            ->with('allgroup',$allgroup);
     }
 
     public function updateStudent(Request $request,$matricule){
@@ -142,7 +148,7 @@ class StudentController extends Controller
     // ----------- ARCHIVE ------------- //
     public function archive(){
         $Student = new Student();
-        $students = $Student->softDeletedStudents();
+        $students = $Student->softDeletedStudents(); 
         return view('pages.students.studentArchive')->with('students',$students);
     }
 

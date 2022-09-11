@@ -104,4 +104,10 @@ class Group extends Model
         public function deleteGroup($idGroup){
             $this::find($idGroup)->delete();
         }
+    //----------- all Group---------------//    
+        public function selectGroup(){
+            return $this::all();
+        }
+
+
 }

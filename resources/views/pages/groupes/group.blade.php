@@ -19,6 +19,11 @@
         {{session()->get('updateMessage')}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+    @elseif(session()->has('successMessage'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{session()->get('successMessage')}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     @endif
 
 
@@ -46,20 +51,29 @@
             <div class="col-lg-12 col-xl-12">
                 <div class="profile-content-right profile-right-spacing py-5">
                     <ul class="nav nav-tabs px-3 px-xl-5 nav-style-border" id="myProfileTab" role="tablist">
+                        {{--Informations--}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="profile-tab" data-bs-toggle="tab"
                                 data-bs-target="#profile" type="button" role="tab"
                                 aria-controls="profile" aria-selected="true">Informations</button>
                         </li>
+                        {{--Liste des Etudiants--}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="Groupe-tab" data-bs-toggle="tab"
                                 data-bs-target="#Groupe" type="button" role="tab"
                                 aria-controls="Groupe" aria-selected="false">Liste des Etudiants</button>
                         </li>
+                        {{--Paramètres--}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="settings-tab" data-bs-toggle="tab"
                                 data-bs-target="#settings" type="button" role="tab"
                                 aria-controls="settings" aria-selected="false">Paramètres</button>
+                        </li>
+                        {{--Absence--}}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="absence-tab" data-bs-toggle="tab"
+                                data-bs-target="#absence" type="button" role="tab"
+                                aria-controls="absence" aria-selected="false">Absence</button>
                         </li>
                     </ul>
                     <div class="tab-content px-3 px-xl-5" id="myTabContent">
@@ -373,7 +387,7 @@
                             </div>
                         </div>
                         
-                        <div class="tab-pane fade" id="settings" role="tabpanel"
+                        <div class="tab-pane fade" id="settings" role="tabpanel">
                             aria-labelledby="settings-tab">
                             <div class="tab-pane-content mt-5">
                                 <form action="{{route('groups.update',['idGroup'=>$group->idGroup])}}" method="post">
@@ -416,6 +430,7 @@
                                                     </select>
                                                 </div>
                                             </div>
+
                     
                                             {{-- Matières --}}
                                             <div class="col-lg-6">
@@ -487,6 +502,66 @@
                                         <button type="submit" name="updateGroup" class="btn btn-warning btn-pill">Modifier</button>
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+
+                        {{--Absence--}}
+                        <div class="tab-pane fade" id="absence" role="tabpanel" aria-labelledby="absence-tab">
+                            <div class="tab-pane-content mt-5">
+                            <table id="responsive-data-table" class="table">
+                             <div class="col-3 input-group-date">
+                            <form method="POST" action="{{url('/absence/ajout/{idGroup}')}}">
+                                @csrf
+                                @method('post')
+                             <input type="date" name="dateAbsence" class="form-control" value="{{date('Y-m-d')}}"> 
+                             <input type="hidden" name="idGroup" class="form-control" value="{{$group->idGroup}}">  
+                             </div>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nom</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($students as $student)
+                                            <tr>
+                                                <td>
+                                                    {{$student->matricule}}
+                                                    <input type="hidden" name="matricule[]" class="form-control" value="{{$student->matricule}}">  
+                                                </td>
+                                                <td>
+                                                    <a href="{{route('student.profil',['matricule'=>$student->matricule])}}">
+                                                        {{$student->prenom_fr}}
+                                                        {{$student->nom_fr}}
+                                                    </a>
+                                                    @if ($student->sexe == "Homme")
+                                                        <span class="badge badge-pill badge-info">M</span>
+                                                    @else
+                                                        <span class="badge badge-pill badge-purple">F</span>
+                                                    @endif
+                                                </td>                     
+                                                <td>
+                                                    <div class="col-4 btn-group-spaced">
+                                                          <select name="absence[]" id="id-Subject" class="form-select" required>
+                                                            <option value="0">
+                                                                Présent
+                                                            </option>
+                                                            <option value="1">
+                                                                Absent 
+                                                            </option>
+                                                            <option value="2">
+                                                                Justifié
+                                                            </option>                                                           
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <button type="submit" name="addabssence" class="btn btn-primary btn-pill">Valide</button>
+                            </form>
                             </div>
                         </div>
                     </div>
