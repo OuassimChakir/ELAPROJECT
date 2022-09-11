@@ -387,8 +387,7 @@
                             </div>
                         </div>
                         
-                        <div class="tab-pane fade" id="settings" role="tabpanel">
-                            aria-labelledby="settings-tab">
+                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab"> 
                             <div class="tab-pane-content mt-5">
                                 <form action="{{route('groups.update',['idGroup'=>$group->idGroup])}}" method="post">
                                     @csrf
