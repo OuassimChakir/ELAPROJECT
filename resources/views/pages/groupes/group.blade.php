@@ -549,19 +549,17 @@
                                                     @endif
                                                 </td>                     
                                                 <td>
-                                                    <div class="col-4 btn-group-spaced">
-                                                          <select name="absence[]" id="id-Subject" class="absenceState form-select" required>
-                                                            <option value="0">
-                                                                Présent
-                                                            </option>
-                                                            <option value="1">
-                                                                Absent 
-                                                            </option>
-                                                            <option value="2">
-                                                                Justifié
-                                                            </option>                                                           
-                                                        </select>
-                                                    </div>
+                                                    <select name="absence[]" id="id-Subject" class="absenceState form-select form-control" required>
+                                                        <option value="0">
+                                                            Présent
+                                                        </option>
+                                                        <option value="1">
+                                                               Absent 
+                                                        </option>
+                                                        <option value="2">
+                                                           Justifié
+                                                        </option>                                                           
+                                                    </select>
                                                 </td>
                                             </tr>
                                         @endforeach
