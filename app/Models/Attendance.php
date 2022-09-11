@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
@@ -13,13 +14,18 @@ class Attendance extends Model
 
 
         // ------------ add Absence ------------//     
-        public function addAbsence($absence,$dateAbsence,$matricule,$idGroup){
-            $this->absence=$absence;
-            $this->dateAbsence=$dateAbsence;    
-            $this->matricule=$matricule;
-            $this->idGroup=$idGroup;
-            $this->save();
-        } 
+        public function insertAbsence(array $absence,array $matricule,$dateAbsence,$idGroup){
+            for($i=0;$i<count($matricule);$i++)
+            {
+                $datesave =[
+                    'absence'=>$absence[$i],
+                    'dateAbsence'=>$dateAbsence,
+                    'matricule'=>$matricule[$i],
+                    'idGroup'=>$idGroup,
+                ];
+                DB::table('Attendance')->insert($datesave);
+            }
+        }
         //------------- select Absence----------//
         public function selectAbsence(){
             return $this::all();
