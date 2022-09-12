@@ -129,7 +129,6 @@
               }
  
               if(len > 0){
-                 // Read data and create <option >
                  for(var i=0; i<len; i++){
                     var idGroup = response['data'][i].idGroup;
                     var designation = response['data'][i].designation;
