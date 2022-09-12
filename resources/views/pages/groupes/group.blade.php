@@ -571,7 +571,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <button type="submit" name="addabssence" class="btn btn-primary btn-pill">Valide</button>
+                                <button type="submit" name="addabssence" class="btn btn-primary btn-pill">Marquée L'absence</button>
                             </form>
                             </div>
                         </div>
