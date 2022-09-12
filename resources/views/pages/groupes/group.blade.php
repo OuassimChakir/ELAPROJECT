@@ -57,12 +57,6 @@
                                 data-bs-target="#profile" type="button" role="tab"
                                 aria-controls="profile" aria-selected="true">Informations</button>
                         </li>
-                        {{--Liste des Etudiants--}}
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="Groupe-tab" data-bs-toggle="tab"
-                                data-bs-target="#Groupe" type="button" role="tab"
-                                aria-controls="Groupe" aria-selected="false">Liste des Etudiants</button>
-                        </li>
                         {{--Paramètres--}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="settings-tab" data-bs-toggle="tab"
@@ -167,7 +161,74 @@
                                     </div>
                                 </div>
 
-
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="tab-pane-content mt-5">
+                                            <form action="{{route('classroom.multipleCancel')}}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <table id="responsive-data-table" class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            @if ($students->count()!=0)
+                                                                <th>
+                                                                    <input type="checkbox" class="form-check-input" id="selectAllArchived">
+                                                                </th>
+                                                            @endif
+                                                            <th>#</th>
+                                                            <th>Nom</th>
+                                                            <th>Téléphone</th>
+                                                            <th>Rejoint le</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                    
+                                                    <tbody>
+                                                        @foreach ($students as $student)
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="checkbox" name="students[]" value="{{$student->id}}" class="form-check-input archivedStudents">
+                                                                </td>
+                                                                <td>
+                                                                    {{$student->matricule}}
+                                                                </td>
+                                                                <td>
+                                                                    <a href="{{route('student.profil',['matricule'=>$student->matricule])}}">
+                                                                        {{$student->prenom_fr}}
+                                                                        {{$student->nom_fr}}
+                                                                    </a>
+                                                                    @if ($student->sexe == "Homme")
+                                                                        <span class="badge badge-pill badge-info">M</span>
+                                                                    @else
+                                                                        <span class="badge badge-pill badge-purple">F</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{$student->numTel}}</td>
+                                                                <td>{{$student->CREATED_AT}}</td>                        
+                                                                <td>
+                                                                    <div class="btn-group-spaced">
+                                                                        <a href="{{route('classroom.cancelAssignment',['id'=>$student->id])}}">
+                                                                            <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Confirmer votre opération');">
+                                                                                    <i class="bi bi-trash-fill"></i>
+                                                                            </button>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <div class="row">
+                                                    <div class="col btns">
+                                                        <button type="submit" name="deleteAll" class="btn btn-outline-danger" onclick="return confirm('Voulez-vous supprimer définitivement ces Professeurs?');" value="{{$group->idGroup}}">
+                                                            <i class="bi bi-trash-fill"></i> Supprimer la Sélection
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                                 {{-- <div class="row">
                                     <div class="col-xl-12">
 
@@ -330,61 +391,7 @@
                                 </div> --}}
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="Groupe" role="tabpanel" aria-labelledby="Groupe-tab">
-                            <div class="tab-pane-content mt-5">
-                                <table id="responsive-data-table" class="table">
-                                    <thead>
-                                        <tr>
-                                            @if ($students->count()!=0)
-                                                <th>
-                                                    <input type="checkbox" class="form-check-input" id="selectAllArchived">
-                                                </th>
-                                            @endif
-                                            <th>#</th>
-                                            <th>Nom</th>
-                                            <th>Téléphone</th>
-                                            <th>Rejoint le</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-    
-                                    <tbody>
-                                        @foreach ($students as $student)
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" name="students[]" value="{{$student->matricule}}" class="form-check-input archivedStudents">
-                                                </td>
-                                                <td>
-                                                    {{$student->matricule}}
-                                                </td>
-                                                <td>
-                                                    <a href="{{route('student.profil',['matricule'=>$student->matricule])}}">
-                                                        {{$student->prenom_fr}}
-                                                        {{$student->nom_fr}}
-                                                    </a>
-                                                    @if ($student->sexe == "Homme")
-                                                        <span class="badge badge-pill badge-info">M</span>
-                                                    @else
-                                                        <span class="badge badge-pill badge-purple">F</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{$student->numTel}}</td>
-                                                <td>{{$student->CREATED_AT}}</td>                        
-                                                <td>
-                                                    <div class="btn-group-spaced">
-                                                        <a href="{{route('classroom.cancelAssignment',['id'=>$student->id])}}">
-                                                            <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Confirmer votre opération');">
-                                                                    <i class="bi bi-trash-fill"></i>
-                                                            </button>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+
                         
                         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab"> 
                             <div class="tab-pane-content mt-5">
@@ -657,6 +664,14 @@
                     $(this).closest('tr').find('.absenceState option:first-child').prop('selected',true);
                 }
             });
+        });
+        $(".btns").hide();
+        $(":checkbox").click(function() {
+            if($(this).is(":checked")) {
+                $(".btns").show();
+            } else {
+                $(".btns").hide();
+            }
         });
     </script>
 

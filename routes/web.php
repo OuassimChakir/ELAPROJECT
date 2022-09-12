@@ -151,6 +151,8 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
 
     // Remove From Classroom
     Route::get('/classrooms/remove/{id}','GroupController@cancelAssignment')->name('classroom.cancelAssignment');
+    // multiple remove from classroom
+    Route::delete('/classroom/multipleRemove','GroupController@multipleCancelAssignment')->name('classroom.multipleCancel');
     
     // JSON DATA
     Route::get('/students/get/{idSubject}','StudentController@getGroupsByGrade');

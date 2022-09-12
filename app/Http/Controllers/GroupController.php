@@ -122,6 +122,13 @@ class GroupController extends Controller
         $Classroom->cancelAssignment($id);
         return Redirect::back()->with('deleteMessage',"L'étudiant a été retiré du groupe avec succès");
     }
+
+    public function multipleCancelAssignment(Request $request){
+        $Classroom = new Classrooms();
+        foreach($request->students as $student)
+            $Classroom->cancelAssignment($student);
+        return Redirect::back()->with('deleteMessage',"Les étudiants séléctionés ont été retirés du groupe avec succès");
+    }
     
     //----------------add absence---------------// 
     public function addAbsence(Request $request){
