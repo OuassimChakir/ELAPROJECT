@@ -24,6 +24,7 @@ class GroupController extends Controller
         $CourseType = new CourseType();
         $GradesCategory = new GradesCategory();
         $Classroom = new Classrooms();
+
         $gradesCategories = $GradesCategory->getGradeCategories();
         $subjects = $Subject->getSubjects();
         $courseTypes = $CourseType->selectCourses();
@@ -47,7 +48,8 @@ class GroupController extends Controller
                 ->with('gradesCategories',$gradesCategories)
                 ->with('professeurs',$teachers)
                 ->with('subjects',$subjects)
-                ->with('courseTypes',$courseTypes);
+                ->with('courseTypes',$courseTypes)
+                ;
     }
 
     public function groupPage(Request $request,$idGroup){
@@ -60,6 +62,8 @@ class GroupController extends Controller
         $Grade = new Grades();
         $Classroom = new Classrooms();
         $students = $Classroom->groupClassroom($idGroup);
+        $Absence = new Attendance();
+        $absen= $Absence->selectAbsence();
         // Queries
         $gradesCategories = $GradesCategory->getGradeCategories();
         
@@ -81,7 +85,8 @@ class GroupController extends Controller
             ->with('subjects',$subjects)
             ->with('niveaux',$grades)
             ->with('students',$students)
-            ->with('courseTypes',$courseTypes);
+            ->with('courseTypes',$courseTypes)
+            ->with('absen',$absen);
     }
 
     public function getGrade($idGradeCategory){
@@ -126,8 +131,11 @@ class GroupController extends Controller
         $dateAbsence = $request->dateAbsence;
         $matricule = $request->matricule;
         $idGroup = $request->idGroup;
-        $Absence->insertAbsence($absence,$matricule,$dateAbsence,$idGroup);
-        return Redirect::back()->with('successMessage',"L'ajout du Abssence est faite avec succès");
+        $result = $Absence->insertAbsence($absence,$matricule,$dateAbsence,$idGroup);
+        if($result == 'true')
+            return Redirect::back()->with('successMessage',"L'ajout du Abssence est faite avec succès");
+        else
+            return Redirect::back()->with('updateMessage',"L'absence de ce groupe était déjà marquée.");
         }
     }
 }

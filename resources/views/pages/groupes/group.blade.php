@@ -330,7 +330,6 @@
                                 </div> --}}
                             </div>
                         </div>
-
                         <div class="tab-pane fade" id="Groupe" role="tabpanel" aria-labelledby="Groupe-tab">
                             <div class="tab-pane-content mt-5">
                                 <table id="responsive-data-table" class="table">
