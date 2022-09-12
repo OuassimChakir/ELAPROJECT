@@ -57,7 +57,6 @@ class StudentController extends Controller
         $Student = new Student();
         $Classroom = new Classrooms();
         $Group = new Group();
-        dd($Group ->selectGroupsBySubjectAndGrade(2,12,'ELA1-2022'));
         $absences = new Attendance();
         $allgroup =$Group->selectGroup();
         $groupSubjects = $Group->existedGroupSubjects();
