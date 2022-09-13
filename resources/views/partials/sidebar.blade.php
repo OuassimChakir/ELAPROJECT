@@ -54,13 +54,8 @@
 								<div class="collapse">
 									<ul class="sub-menu" id="categorys" data-parent="#sidebar-menu">
 										<li class="">
-											<a class="sidenav-item-link" href="#">
-												<span class="nav-text">Main Category</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="#">
-												<span class="nav-text">Sub Category</span>
+											<a class="sidenav-item-link" href="{{route('absence')}}">
+												<span class="nav-text">Presence</span>
 											</a>
 										</li>
 									</ul>

@@ -49,6 +49,13 @@ class Attendance extends Model
             $updatedAbsence->idGroup = $idGroup;
             $updatedAbsence->save();
         }
-        
+
+        public function selectListeAbsenceByDateIdgroup($dateAbsence,$idGroup){
+            return $this::select('*')
+                    ->join('students','students.matricule','=','attendance.matricule')
+                    ->where('dateAbsence',$dateAbsence)
+                    ->where('idGroup',$idGroup)
+                    ->get();
+       }
     
 }

@@ -142,8 +142,10 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::put('/groupe/update/{idGroup}','GroupController@updateGroup')->name('groups.update');
     // Delete Group
     Route::get('/groupes/delete/{idGroup}','GroupController@deleteGroup')->name('groups.delete');
-    // Delete Group
-    Route::post('/absence/ajout/{idGroup}','GroupController@addAbsence')->name('absence.ajout');
+//-----------------absence-------------------//    
+    Route::get('/absence','GroupController@allAbsences')->name('absence');
+    // add absence
+    Route::post('/absence','GroupController@allAbsences')->name('absence.add');
 
 // ------------- Classroom ---------- // 
     // Add Student to Group

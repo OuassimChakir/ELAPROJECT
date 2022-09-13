@@ -109,5 +109,4 @@ class Group extends Model
             return $this::all();
         }
 
-
 }

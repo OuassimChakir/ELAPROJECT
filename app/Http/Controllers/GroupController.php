@@ -145,4 +145,24 @@ class GroupController extends Controller
             return Redirect::back()->with('updateMessage',"L'absence de ce groupe était déjà marquée.");
         }
     }
+    public function allAbsences(Request $request){
+        $Absence = new Attendance();
+        $Group = new Group(); 
+        $allGroups=$Group->selectGroup();
+        if($request->has('getAbsence')){
+            $dateAbsence = $request->dateAbsence;
+            $idGroup = $request->idGroup;
+            $etudiants = $Absence->selectListeAbsenceByDateIdgroup($dateAbsence,$idGroup);
+            return view('pages.groupes.presence')->with('allGroups',$allGroups)->with('etudiants',$etudiants);
+        }
+        return view('pages.groupes.presence')->with('allGroups',$allGroups);
+        
+    }
+    //-------- liste absence by date and idGroup
+    public function getListeAbsence($dateAbsence,$idGroup){
+        $Grade = new Attendance();
+        $gradeData['data'] = $Grade->selectListeAbsenceByDateIdgroup($dateAbsence,$idGroup);
+        return response()->json($gradeData);
+    }
+
 }
