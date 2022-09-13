@@ -131,12 +131,7 @@
 									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 										<li class="">
 											<a class="sidenav-item-link" href="order-history.html">
-												<span class="nav-text">Liste de Commandes</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="order-detail.html">
-												<span class="nav-text">Detail du Commandes</span>
+												<span class="nav-text">Types de Dépenses</span>
 											</a>
 										</li>
 										<li class="">
@@ -157,17 +152,12 @@
 									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 										<li class="">
 											<a class="sidenav-item-link" href="order-history.html">
-												<span class="nav-text">Liste de Commandes</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="order-detail.html">
-												<span class="nav-text">Detail du Commandes</span>
+												<span class="nav-text">Types de Revenus</span>
 											</a>
 										</li>
 										<li class="">
 											<a class="sidenav-item-link" href="invoice.html">
-												<span class="nav-text">Factures</span>
+												<span class="nav-text">Reçus de Payment</span>
 											</a>
 										</li>
 									</ul>
