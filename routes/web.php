@@ -146,6 +146,8 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/absence','GroupController@allAbsences')->name('absence');
     // add absence
     Route::post('/absence','GroupController@allAbsences')->name('absence.add');
+        // Update Student
+    Route::put('/absence/update/{idAttendance}','GroupController@updateAbsence')->name('absence.update');
 
 // ------------- Classroom ---------- // 
     // Add Student to Group

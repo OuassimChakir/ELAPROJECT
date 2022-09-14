@@ -29,11 +29,10 @@
 
     <div class="breadcrumb-wrapper breadcrumb-contacts">
         <div>
-            <h1>hhh</h1>
+            <h1>Presence</h1>
             <p class="breadcrumbs">
                 <span><a href="{{route('acceuil')}}">Acceuil</a></span>
                 <span><i class="mdi mdi-chevron-right"></i></span><a href="{{route('groups')}}">Groupes</a>
-                <span><i class="mdi mdi-chevron-right"></i></span>hhhh
             </p>
         </div>
     </div>
@@ -53,7 +52,7 @@
                                                         <div class="form-group ">
                                                             <label for="form-label">Groupes</label>
                                                             <select name="idGroup" id="id-Group" class="form-select" required>
-                                                                <option disabled selected>-- Choisir un Groupe --</option>
+                                                            <option disabled selected>-- Choisir un Groupe --</option>
                                                                 @foreach($allGroups as $allGroup)
                                                                 <option value="{{ $allGroup->idGroup }}">
                                                                     {{ $allGroup->designation}}
@@ -81,34 +80,55 @@
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="tab-pane-content m-5">
-                                                <table id="responsive-data-table" class="table">
-                                                    <thead>
+                                         <form action="" method="PUT">
+                                            @csrf
+                                            @method('put')
+                                            <table id="responsive-data-table" class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nom</th>
+                                                        <th>Etat d'absence</th>
+                                                        <th>Date Absence</th>
+                                                        <th>Actoin</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($etudiants as $etudiant)
                                                         <tr>
-                                                            <th>#</th>
-                                                            <th>Nom</th>
-                                                            <th>Etat d'absence</th>
-                                                            <th>dateAbsence</th>
+                                                            <td>{{$etudiant->matricule}}</td>
+                                                            <td>{{$etudiant->prenom_fr.' '.$etudiant->nom_fr}}
+                                                                @if ($etudiant->sexe == "Homme")
+                                                            <span class="badge badge-pill badge-info">M</span>                                                
+                                                            @else
+                                                                <span class="badge badge-pill badge-purple">F</span>
+                                                            @endif
+                                                            </td>
+                                                            <td>
+                                                            @if ($etudiant->absence == 0)
+                                                            <span class="badge badge-pill badge-success">Present</span
+                                                            @elseif($etudiant->absence == 1)
+                                                                <span class="badge badge-pill badge-danger">Absent(e)</span>
+                                                            @else
+                                                            <span class="badge badge-pill badge-warning">Justifiée</span>
+                                                            @endif
+                                                            </td>
+                                                            <td>{{$etudiant->dateAbsence}}</td>
+                                                            <input type="hidden" name="idGroup" data-bs-target="#idGroup" id="idGroup" value="{{$etudiant->idGroup}}">
+                                                            <td>                                                    <a href="{{url('/absence/update/'.$etudiant->idAttendance)}}">
+                                                                <button type="submit" name="edit" class="btn btn-outline-warning" value="{{$etudiant->idAttendance}}">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                    
+                                                                </button>
+                                                            </a></td>
+
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($etudiants as $etudiant)
-                                                            <tr>
-                                                                <td>{{$etudiant->matricule}}</td>
-                                                                <td>{{$etudiant->prenom_fr.' '.$etudiant->nom_fr}}</td>
-                                                                <td>
-                                                                @if ($etudiant->absence == 0)
-                                                                    Present
-                                                                @elseif($etudiant->absence == 1)
-                                                                    Absent(e)
-                                                                @else
-                                                                    Justifiée
-                                                                @endif
-                                                                </td>
-                                                                <td>{{$etudiant->dateAbsence}}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+
+                                         </form>
+
                                         </div>
                                     </div>
                                 </div>
@@ -119,99 +139,20 @@
             </div>
         </div>
     </div>
-
+{{-- Modifier l'absence --}}
+@include('pages.groupes.modifierAbsence')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{asset('JS/sweetAlert.js')}}"></script>
     
-    <script type='text/javascript'>
-    
-        $(document).ready(function(){
-            $('#cancelBtn').click(function() {
-                location.reload(true);
-            });
-        // Department Change
-        $('#dateabsence').change(function(){
-    
-                // Department id
-                var id = $(this).val();
-    
-                // Empty the dropdown
-                $('#grade').find('option').not(':first').remove();
-    
-                // AJAX request 
-                $.ajax({
-                    url: '/absence/all/'+id,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(response){
-                        var len = 0;
-                        if(response['data'] != null){
-                            len = response['data'].length;
-                        }   
-                        if(len > 0){
-                            // Read data and create <table >
-                            for(var i=0; i<len; i++){
-                                var id = response['data'][i].idGrade;
-                                var name = response['data'][i].grade;
-            
-                                var table = "<option value='"+id+"'>"+name+"</option>";
-            
-                                $("#grade").append(table); 
-                            }
-                        }              
-                    },
-                });
-            });
-        });
-        $('#selectAllArchived').click(function(event) {   
-            if(this.checked) {
-                // Iterate each checkbox
-                $(':checkbox').each(function() {
-                    this.checked = true;                        
-                });
-            } else {
-                $(':checkbox').each(function() {
-                    this.checked = false;                       
-                });
-            }
-        });
-        $('#selectAll').click(function(event) {   
-            if(this.checked) {
-                // Iterate each checkbox
-                $('.students').each(function() {
-                    this.checked = true; 
-                    $(this).closest('tr').find('.absenceState option:first-child').prop('selected',false);
-                    $(this).closest('tr').find('.absenceState option:nth-child(2)').prop('selected',true);                 
-                });
-            } else {
-                $('.students').each(function() {
-                    this.checked = false;
-                    $(this).closest('tr').find('.absenceState option:nth-child(2)').prop('selected',false);
-                    $(this).closest('tr').find('.absenceState option:first-child').prop('selected',true);                     
-                });
-            }
-        });
-        $(document).ready(function(){
-            $('.students').click(function(event) {   
-                if(this.checked) {
-                    // Iterate each checkbox
-                    $(this).closest('tr').find('.absenceState option:first-child').prop('selected',false);
-                    $(this).closest('tr').find('.absenceState option:nth-child(2)').prop('selected',true);
-                } else {
-                    $(this).closest('tr').find('.absenceState option:nth-child(2)').prop('selected',false);
-                    $(this).closest('tr').find('.absenceState option:first-child').prop('selected',true);
-                }
-            });
-        });
-        $(".btns").hide();
-        $(":checkbox").click(function() {
-            if($(this).is(":checked")) {
-                $(".btns").show();
-            } else {
-                $(".btns").hide();
-            }
+   
+    </script>
+    <script>
+        $('.add2GroupBtn').click(function() {
+            $('#idStudent').val($(this).val());
+            $('#idGroup').val($(this).val());
+           
         });
     </script>
-
+    
     
 @endsection
