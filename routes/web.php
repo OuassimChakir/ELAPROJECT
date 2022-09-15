@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TypestaffController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ExpenseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -148,6 +149,17 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::post('/absence','GroupController@allAbsences')->name('absence.add');
         // Update Student
     Route::get('/absence/update/{idAttendance}-{absence}','GroupController@updateAbsence');
+
+    // --------------- Expenses ------------------ //
+    Route::get('/expenses','ExpenseController@allExpenses')->name('expenses');
+      // Add New Expenses
+      Route::post('/expenses/add','ExpenseController@allExpenses')->name('expenses.add');
+      // Delete & Update Expenses
+      Route::get('/expenses/{action}/{idSubject}','ExpenseController@actionExpense')->name('expenses.action');
+      // Update a Expenses Query
+     // Route::put('/expenses/update/{idSubject}','SubjectController@actionSubject')->name('expenses.update');
+  
+
 
 // ------------- Classroom ---------- // 
     // Add Student to Group

@@ -112,7 +112,7 @@
 								<div class="collapse">
 									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 										<li class="">
-											<a class="sidenav-item-link" href="order-history.html">
+											<a class="sidenav-item-link" href="{{route('expenses')}}">
 												<span class="nav-text">Types de Dépenses</span>
 											</a>
 										</li>
