@@ -54,9 +54,21 @@
                                                             <select name="idGroup" id="id-Group" class="form-select" required>
                                                             <option disabled selected>-- Choisir un Groupe --</option>
                                                                 @foreach($allGroups as $allGroup)
-                                                                <option value="{{ $allGroup->idGroup }}">
-                                                                    {{ $allGroup->designation}}
-                                                                </option>    
+                                                                    @if (isset($etudiants))
+                                                                        @if ($etudiants[0]->idGroup == $allGroup->idGroup)
+                                                                            <option value="{{ $allGroup->idGroup }}" selected>
+                                                                                {{ $allGroup->designation}}
+                                                                            </option>   
+                                                                        @else
+                                                                            <option value="{{ $allGroup->idGroup }}">
+                                                                                {{ $allGroup->designation}}
+                                                                            </option>  
+                                                                        @endif
+                                                                    @else
+                                                                        <option value="{{ $allGroup->idGroup }}" selected>
+                                                                            {{ $allGroup->designation}}
+                                                                        </option>  
+                                                                    @endif
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -64,7 +76,11 @@
                                                     <div class="col-lg-5">
                                                         <div class="form-group">
                                                         <label for="form-label">Date</label>
-                                                            <input type="date" name="dateAbsence" id="dateabsence" class="form-select" value="{{date('Y-m-d')}}"> 
+                                                            @if (isset($etudiants))
+                                                                <input type="date" name="dateAbsence" id="dateabsence" class="form-select" value="{{$etudiants[0]->dateAbsence}}"> 
+                                                            @else
+                                                                <input type="date" name="dateAbsence" id="dateabsence" class="form-select" value="{{date('Y-m-d')}}"> 
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-2 mt-5">
@@ -99,34 +115,36 @@
                                                             <td>{{$etudiant->matricule}}</td>
                                                             <td>{{$etudiant->prenom_fr.' '.$etudiant->nom_fr}}
                                                                 @if ($etudiant->sexe == "Homme")
-                                                            <span class="badge badge-pill badge-info">M</span>                                                
-                                                            @else
-                                                                <span class="badge badge-pill badge-purple">F</span>
-                                                            @endif
+                                                                    <span class="badge badge-pill badge-info">M</span>                                                
+                                                                @else
+                                                                    <span class="badge badge-pill badge-purple">F</span>
+                                                                @endif
                                                             </td>
                                                             <td>
-                                                            @if ($etudiant->absence == 0)
-                                                            <span class="badge badge-pill badge-success">Present</span
-                                                            @elseif($etudiant->absence == 1)
-                                                                <span class="badge badge-pill badge-danger">Absent(e)</span>
-                                                            @else
-                                                            <span class="badge badge-pill badge-warning">Justifiée</span>
-                                                            @endif
+                                                                <div class="absenceStatue">
+                                                                @if ($etudiant->absence == 0)
+                                                                    <span class="badge badge-pill badge-success">Present</span
+                                                                @elseif($etudiant->absence == 1)
+                                                                        <span class="badge badge-pill badge-danger">Absent(e)</span>
+                                                                @else
+                                                                    <span class="badge badge-pill badge-warning">Justifiée</span>
+                                                                @endif
+                                                                </div>
                                                             </td>
                                                             <td>{{$etudiant->dateAbsence}}</td>
                                                             <input type="hidden" name="idGroup" data-bs-target="#idGroup" id="idGroup" value="{{$etudiant->idGroup}}">
-                                                            <td>                                                    <a href="{{url('/absence/update/'.$etudiant->idAttendance)}}">
-                                                                <button type="submit" name="edit" class="btn btn-outline-warning" value="{{$etudiant->idAttendance}}">
+                                                            <td>                                                    
+                                                                <button type="button" name="editAbsence" class="editAbsence btn btn-outline-warning" value="{{$etudiant->idAttendance}}|{{$etudiant->absence}}">
                                                                     <i class="bi bi-pencil-square"></i>
-                                                                    
                                                                 </button>
-                                                            </a></td>
-
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
-
+                                            <button type="button" class="btn btn-outline-success" id="saveButton" onclick="window.location.reload();">
+                                                <i class="bi bi-save-fill"></i> Enregistrer les Modifications
+                                             </button>
                                          </form>
 
                                         </div>
@@ -139,19 +157,73 @@
             </div>
         </div>
     </div>
-{{-- Modifier l'absence --}}
-@include('pages.groupes.modifierAbsence')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{{asset('JS/sweetAlert.js')}}"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>    
    
     </script>
     <script>
         $('.add2GroupBtn').click(function() {
             $('#idStudent').val($(this).val());
             $('#idGroup').val($(this).val());
-           
         });
+        $('#saveButton').hide();
+    $(document).ready(function(){
+        
+        $('.editAbsence').click(function(){
+            var absence = $(this).val().split('|')[1];
+            $(this).closest('tr').find('.absenceStatue').empty();
+            var htmlOut = '<select name="absence" class="absenceState form-select form-control">';
+                
+            var option1 = option2 = option3 = '';
+            if (absence == 0)
+                option1 = 'selected';
+            if(absence == 1)
+                option2 = 'selected';
+            if(absence == 2)
+                option3 = 'selected';
+            
+            htmlOut += '<option value="0" '+option1+'>Présent</option>';
+            htmlOut += '<option value="1" '+option2+'>Absent(e)</option>';
+            htmlOut += '<option value="2" '+option3+'>Justifiée</option>';
+            htmlOut += '</select>';
+            $(this).closest('tr').find('.absenceStatue').append(htmlOut);
+            $(this).prop('disabled',true);
+            $(document).ready(function(){
+                $('.absenceState').change(function(){
+                    $('#saveButton').show();
+                    var editButton = $(this).closest('tr').find('.editAbsence');
+                    editButton.removeClass();
+                    editButton.attr('class','cancelEditAbsence btn btn-warning');
+                    editButton.empty();
+                    editButton.append('<i class="bi bi-arrow-clockwise"></i>'); 
+                    var etatAbsence = $(this).val();
+                    var idAttendance = $(this).closest('tr').find('.btn').val().split('|')[0];
+                    // AJAX request 
+                    $.ajax({
+                        url: '/absence/update/'+idAttendance+'-'+etatAbsence,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function(response){
+                            editButton.removeClass();
+                            editButton.attr('class','cancelEditAbsence btn btn-success');
+                            editButton.empty();
+                            editButton.append('<i class="bi bi-check-lg"></i>');    
+                        },
+                        fail: function (msg){
+                            alert('fail');
+                        },
+                    });
+                });  
+            });
+             
+        });
+        
+        
+
+        $('.cancelEditAbsence').click(function(){
+            
+        });
+        
+    });
     </script>
     
     

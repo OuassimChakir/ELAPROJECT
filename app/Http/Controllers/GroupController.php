@@ -156,7 +156,6 @@ class GroupController extends Controller
             return view('pages.groupes.presence')->with('allGroups',$allGroups)->with('etudiants',$etudiants);
         }
         return view('pages.groupes.presence')->with('allGroups',$allGroups);
-        
     }
     //-------- liste absence by date and idGroup
     public function getListeAbsence($dateAbsence,$idGroup){
@@ -164,16 +163,12 @@ class GroupController extends Controller
         $gradeData['data'] = $Grade->selectListeAbsenceByDateIdgroup($dateAbsence,$idGroup);
         return response()->json($gradeData);
     }
-    // ----------------Update Absence
-    public function updateAbsence(Request $request,$idAttendance){
-        $absence = new Attendance();
-        $Absence = $absence->getProfesseur($idAttendance);
-        if($request->has('modifierAbsence')){
-            $absence->updateProfesseur($idAttendance,$request->absence,$request->dateAbsence,$request->matricule,$request->idGroup);
-            return Redirect::back()
-                ->with('updateMessage',"La Modification est faite avec succès")
-                ->with('Absence',$Absence);
-        }
+    // ---------------- Update Absence -------------- //
+    public function updateAbsence($idAttendance,$absence){
+        $Absence = new Attendance();
+        $Absence->updateAbsence($idAttendance,$absence);
+        $absenceData['data'] = $Absence->getOneAbsence($idAttendance);
+        return response()->json($absenceData);  
     }
 
 }

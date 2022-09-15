@@ -21,6 +21,10 @@ class Attendance extends Model
                     ->where('idGroup',$idGroup)
                     ->count();
         }
+
+        public function getOneAbsence($idAttendance){
+            return $this::find($idAttendance);
+        }
         // ------------ add Absence ------------//     
         public function insertAbsence(array $absence,array $matricule,$dateAbsence,$idGroup){
 
@@ -41,12 +45,9 @@ class Attendance extends Model
                 return 'false';       
         }
         // ---------- Update absence ---------- //
-        public function updateAbsence($idAttendance,$absence,$dateAbsence,$matricule,$idGroup){
+        public function updateAbsence($idAttendance,$absence){
             $updatedAbsence = $this::find($idAttendance);
             $updatedAbsence->absence = $absence;
-            $updatedAbsence->dateAbsence = $dateAbsence;
-            $updatedAbsence->matricule = $matricule;
-            $updatedAbsence->idGroup = $idGroup;
             $updatedAbsence->save();
         }
 

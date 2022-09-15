@@ -46,36 +46,18 @@
 	
 							{{-- School --}}
 							<!-- Attendance -->
-							<li class="has-sub">
-								<a class="sidenav-item-link" href="javascript:void(0)">
+							<li>
+								<a class="sidenav-item-link" href="{{route('absence')}}">
 									<i class="bi bi-calendar2-check-fill"></i>
-									<span class="nav-text">Presence</span><b class="caret"></b>
+									<span class="nav-text">Presence</span>
 								</a>
-								<div class="collapse">
-									<ul class="sub-menu" id="categorys" data-parent="#sidebar-menu">
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('absence')}}">
-												<span class="nav-text">Presence</span>
-											</a>
-										</li>
-									</ul>
-								</div>
 							</li>
 							<!-- Groupes -->
-							<li class="has-sub">
-								<a class="sidenav-item-link" href="javascript:void(0)">
+							<li>
+								<a class="sidenav-item-link" href="{{route('groups')}}">
 									<i class="bi bi-list-stars"></i>
-									<span class="nav-text">Groupes</span> <b class="caret"></b>
+									<span class="nav-text">Groupes</span>
 								</a>
-								<div class="collapse">
-									<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('groups')}}">
-												<span class="nav-text">Liste des Groupes</span>
-											</a>
-										</li>
-									</ul>
-								</div>
 							</li>
 							<!-- Subjects -->
 							<li class="has-sub">
