@@ -37,7 +37,6 @@
 @endif
 
 {{-- UPDATING SECTION --}}
-@if (isset($updatedSubject))
 <div class="row">
     <div class="col-xl-12 col-lg-12">
         <div class="ec-cat-list card card-default mb-24px">
@@ -53,7 +52,7 @@
                                 <div class="form-group ">
                                     <label for="text" class="form-label">Designation</label> 
                                     <div class="col">
-                                        <input id="libelle" name="designation" value="{{$expenses->Designation}}" class="form-control" type="text" required>
+                                        <input id="libelle" name="designation"   value="{{$expenses->Designation}}" class="form-control" type="text" required>
                                     </div>
                                 </div>
                                 </div>
@@ -93,7 +92,6 @@
         </div>
     </div>
 </div>
-@else
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default mb-24px">
@@ -199,5 +197,5 @@
             });
         });
     </script>
-@endif
+
 @endsection
