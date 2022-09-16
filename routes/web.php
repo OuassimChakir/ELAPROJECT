@@ -150,17 +150,6 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
         // Update Student
     Route::get('/absence/update/{idAttendance}-{absence}','GroupController@updateAbsence');
 
-    // --------------- Expenses ------------------ //
-    Route::get('/expenses','ExpenseController@allExpenses')->name('expenses');
-      // Add New Expenses
-      Route::post('/expenses/add','ExpenseController@allExpenses')->name('expenses.add');
-      // Delete Expenses
-      Route::get('/expenses/delete/{idExpense}','ExpenseController@deleteExpense')->name('expenses.delete');
-      // Update a Expenses
-      Route::put('/expenses/update/{idExpense}','ExpenseController@updateTeacher')->name('expenses.update');
-  
-
-
 // ------------- Classroom ---------- // 
     // Add Student to Group
     Route::get('/groupes/{idGroup}/classroom/{matricule}','StudentController@assignClassroom');
@@ -173,6 +162,23 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     // JSON DATA
     Route::get('/students/get/{idSubject}','StudentController@getGroupsByGrade');
     Route::get('/students/getGroups/{idSubject}-{idGrade}-{matricule}','StudentController@getGroupsByGradeAndSubject');
+
+
+
+
+
+    
+    // --------------- Expenses ------------------ //
+    Route::get('/typeDepenses','ExpenseController@allExpenses')->name('typeDepenses');
+      // Add New Expenses
+    Route::post('/typeDepenses/add','ExpenseController@allExpenses')->name('typeDepenses.add');
+      // Delete Expenses
+    Route::get('/typeDepenses/delete/{idExpense}','ExpenseController@deleteExpense')->name('typeDepenses.delete');
+      // Update a Expenses
+    Route::get('/typeDepenses/update/{idExpense}','ExpenseController@updateExpense')->name('typeDepenses.update.page');
+    Route::put('/typeDepenses/update/{idExpense}','ExpenseController@updateExpense')->name('typeDepenses.update');
+
+
 
 
 ?>
