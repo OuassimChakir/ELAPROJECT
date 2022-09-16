@@ -43,55 +43,51 @@
         <div class="ec-cat-list card card-default mb-24px">
             <div class="card-body">
                 <div class="ec-cat-form">
+                    @if (isset($updateExpenses))
                         <h4>Modifier une Matière</h4>
-{{--                        <form action="{{route('subjects.update',['idSubject' => $updatedSubject->idSubject])}}" method="put">
-                            @method('put')
-                            @csrf
-                            <div class="form-group row">
-                                <label for="text" class="col-12 col-form-label">Libelle</label> 
-                                <div class="col-12">
-                                    <input id="libelle" name="libelle" class="form-control" type="text" value="{{$updatedSubject->libelle}}" required>
+                       <form action="{{route('expenses.update',['idSubject' => $expenses->idExpense])}}" method="put">
+                           @csrf  
+                           @method('put')   
+                            <div class="row">
+                                <div class="col-lg-6">
+                                <div class="form-group ">
+                                    <label for="text" class="form-label">Designation</label> 
+                                    <div class="col">
+                                        <input id="libelle" name="designation" value="{{$expenses->Designation}}" class="form-control" type="text" required>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="text" class="col-12 col-form-label">Abréviation</label> 
-                                <div class="col-12">
-                                    <input id="short" name="short" class="form-control" type="text" value="{{$updatedSubject->short}}" required>
                                 </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="parent-category" class="col-12 col-form-label">Type de Formation</label> 
-                                <div class="col-12">
-                                    <select id="courseType" name="courseType" class="custom-select" required>
-                                        <option disabled>-- Choisir le Type de Formation du Matière --</option>
-                                        @foreach ($courses as $course)
-                                            @if ($course->idCourseType == $updatedSubject->idSubject)
-                                                <option value="{{$course->idCourseType}}" selected>{{$course->course}}</option>
-                                            @else
-                                                <option value="{{$course->idCourseType}}">{{$course->course}}</option>
-                                            @endif
-                                            
-                                        @endforeach
-                                    </select>
+    
+                                <div class="col-lg-6">
+                                <div class="form-group ">
+                                    <label for="text" class="form-label">Code</label> 
+                                    <div class="col">
+                                        <input id="short" name="code" value="{{$expenses->Code}}" class="form-control" type="text" required>
+                                        <small class="text-muted">Professeurs: <b>000</b> -- Staff: <b>111</b> </small>
+                                    </div>
+                                   
                                 </div>
-                            </div>
-                            @if (isset($updatedSubject))
-                                <input type="hidden" name="idSubject" value="{{$updatedSubject->idSubject}}">
-                            @endif
+                                </div>
+                                <div class="col-lg-6">
+                                <div class="form-group ">
+                                    <label for="parent-category" class="form-label">Description</label> 
+                                        <textarea class="form-control" value="{{$expenses->Description}}" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                                </div>
+                               </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <button name="update" type="submit" class="btn btn-warning">Modifier</button>
+                                    <button name="updateExpenses" type="submit" class="btn btn-warning">Modifier</button>
                                         <button name="reset" type="reset" class="btn btn-secondary">Reset</button>
-                                        <a href="{{route('subjects')}}">
+                                        <a href="{{route('expenses')}}">
                                             <button type="button" class="btn btn-secondary">
                                                 Annuler
                                             </button>
                                         </a>
                                 </div>
                             </div>
-                        </form>--}}
+                        </form>
+                        @endif
                 </div>
             </div>
         </div>
@@ -135,9 +131,6 @@
                             </div>
                             </div>
                            </div>
-                          {{--  @if (isset($updatedSubject))
-                                <input type="hidden" name="idSubject" value="{{$updatedSubject->idSubject}}">
-                            @endif--}}
                             <div class="row">
                                 <div class="col-12">
                                     <button name="ajouterexpense" type="submit" class="btn btn-primary">Ajouter</button>
@@ -170,7 +163,7 @@
                                     @foreach ($expenses as $expense)
                                         <tr>
                                             <td>{{$expense->idExpense}}</td>
-                                            <td>{{$expense->designation}} <div class="badge badge-pill badge-primary">{{strtoupper($expense->short)}}</div></td>
+                                            <td>{{$expense->designation}} </td>
                                             <td>{{$expense->description}}</td>
                                             <td>
                                                 <div class="btn-group">

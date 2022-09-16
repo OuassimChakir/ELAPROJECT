@@ -154,10 +154,10 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/expenses','ExpenseController@allExpenses')->name('expenses');
       // Add New Expenses
       Route::post('/expenses/add','ExpenseController@allExpenses')->name('expenses.add');
-      // Delete & Update Expenses
-      Route::get('/expenses/{action}/{idSubject}','ExpenseController@actionExpense')->name('expenses.action');
-      // Update a Expenses Query
-     // Route::put('/expenses/update/{idSubject}','SubjectController@actionSubject')->name('expenses.update');
+      // Delete Expenses
+      Route::get('/expenses/delete/{idExpense}','ExpenseController@deleteExpense')->name('expenses.delete');
+      // Update a Expenses
+      Route::put('/expenses/update/{idExpense}','ExpenseController@updateTeacher')->name('expenses.update');
   
 
 
