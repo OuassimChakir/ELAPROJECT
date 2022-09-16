@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 @section('title')
-        Dépenses
+       Type Dépenses
 @endsection
 @section('content')
 <div class="breadcrumb-wrapper breadcrumb-contacts">
