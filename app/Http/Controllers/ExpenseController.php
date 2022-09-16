@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class ExpenseController extends Controller
 {
-        //-------------- List of Expenses ---------------- //
+        //-------------- List of Expenses Types ---------------- //
         public function allExpenses(Request $request){
             $Expenses = new Expenses();
             // List of Expenses
@@ -43,13 +43,16 @@ class ExpenseController extends Controller
             // ---------------Update Expense-----//
             public function updateExpense(Request $request,$idExpense){
                 $Expenses = new Expenses();
-                $expenses = $Expenses->selectExpenses($idExpense);
-                if($request->has('updateExpenses')){ 
+                $expenses = $Expenses->selectExpenses();
+                $updatedExpense = $Expenses->selectExpense($idExpense);
+                if($request->has('updateExpense')){ 
                     $Expenses->updateExpense($idExpense,$request->designation,$request->code,$request->description);
-                    return Redirect::back()
+                    return Redirect::route('expenses')
                         ->with('updateMessage',"La Modification est faite avec succès")
                         ->with('expenses',$expenses);
                 }
+                return view('pages.expense.updateTypeDepense')
+                        ->with('updatedExpense',$updatedExpense);
             }
         
         
