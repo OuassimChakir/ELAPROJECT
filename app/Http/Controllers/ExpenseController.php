@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Expenses\Expenses;
 use App\Models\Expenses\Facture;
 use Illuminate\Support\Facades\Redirect;
+use setasign\Fpdi\Fpdi;
 
 class ExpenseController extends Controller
 {
