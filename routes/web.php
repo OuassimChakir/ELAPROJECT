@@ -178,6 +178,16 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/typeDepenses/update/{idExpense}','ExpenseController@updateExpense')->name('typeDepenses.update.page');
     Route::put('/typeDepenses/update/{idExpense}','ExpenseController@updateExpense')->name('typeDepenses.update');
 
+    // --------------- Facture de dépenses ------------------ //
+    Route::get('/factureDepenses','ExpenseController@allFacture')->name('factureDepenses');
+        // Add New Facture
+    Route::post('/factureDepenses/add','ExpenseController@allFacture')->name('factureDepenses.add');
+        // Delete Facture
+    Route::get('/factureDepenses/delete/{idExpensePayment}','ExpenseController@deleteFacture')->name('factureDepenses.delete');
+        // Update a Facture
+    Route::get('/factureDepenses/update/{idExpensePayment}','ExpenseController@updateFacture')->name('factureDepenses.update.page');
+    Route::put('/factureDepenses/update/{idExpensePayment}','ExpenseController@updateFacture')->name('factureDepenses.update');
+    
 
 
 

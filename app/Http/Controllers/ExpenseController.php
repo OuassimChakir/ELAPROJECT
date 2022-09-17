@@ -3,16 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Models\Classrooms;
-use App\Models\Attendance;
-use App\Models\Expenses;
-use App\Models\Courses\CourseType;
-use App\Models\Courses\Subjects;
-use App\Models\Grades\Grades;
-use App\Models\Grades\GradesCategory;
-use App\Models\Group;
-use App\Models\Responsible\Staff;
+use App\Models\Expenses\Expenses;
+use App\Models\Expenses\Facture;
 use Illuminate\Support\Facades\Redirect;
 
 class ExpenseController extends Controller
@@ -54,7 +46,12 @@ class ExpenseController extends Controller
                 return view('pages.expense.updateTypeDepense')
                         ->with('updatedExpense',$updatedExpense);
             }
-        
-        
-
+        //-------------------Facture de dépenses----------------------//
+            //-------------- List of Facture  ---------------- //
+            public function allFacture(){
+                $Facture = new Facture();
+                $factureDepenses = $Facture->allFacture();
+                return view('pages.expense.factures')
+                      ->with('factureDepenses',$factureDepenses);
+            }
 }

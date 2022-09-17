@@ -117,7 +117,7 @@
 											</a>
 										</li>
 										<li class="">
-											<a class="sidenav-item-link" href="invoice.html">
+											<a class="sidenav-item-link" href="{{route('factureDepenses')}}">
 												<span class="nav-text">Factures</span>
 											</a>
 										</li>

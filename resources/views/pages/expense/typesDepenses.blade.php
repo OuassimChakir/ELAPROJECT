@@ -163,7 +163,7 @@
                                             <td>{{$expense->designation}} </td>
                                             <td>{{$expense->description}}</td>
                                             <td>
-                                                <div class="btn-group">
+                                                <div class="btn-group-spaced">
                                                     <a href="{{route('typeDepenses.update.page',['idExpense'=>$expense->idExpense])}}">
                                                         <button type="submit" name="edit" class="btn btn-outline-warning">
                                                             <i class="bi bi-pencil-square"></i>
