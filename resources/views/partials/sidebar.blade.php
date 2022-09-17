@@ -170,6 +170,11 @@
 												<span class="nav-text">Archive des Staffs</span>
 											</a>
 										</li>
+										<li class="">
+											<a class="sidenav-item-link" href="{{route('factureDepenses.archive')}}">
+												<span class="nav-text">Archive des Facture Dépenses</span>
+											</a>
+										</li>
 									</ul>
 								</div>
 								<hr>

@@ -187,6 +187,12 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
         // Update a Facture
     Route::get('/factureDepenses/update/{idExpensePayment}','ExpenseController@updateFacture')->name('factureDepenses.update.page');
     Route::put('/factureDepenses/update/{idExpensePayment}','ExpenseController@updateFacture')->name('factureDepenses.update');
+      // ARCHIVED Facture
+      Route::get('/archive/factureDepenses','ExpenseController@archive')->name('factureDepenses.archive');
+      Route::get('/archive/factureDepenses/delete/{idProfesseur}','ExpenseController@deleteArchivedFacture')->name('factureDepenses.archive.delete');
+      Route::get('/archive/factureDepenses/restore/{idProfesseur}','ExpenseController@restoreArchivedFacture')->name('factureDepenses.archive.restore');
+      Route::post('/archive/factureDepenses/action','ExpenseController@multipleArchivedFacture')->name('factureDepenses.archive.multiple');
+  
     
 
 

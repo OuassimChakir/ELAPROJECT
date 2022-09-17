@@ -13,7 +13,8 @@ Facture de Dépenses
     </div>
 
         <div>
-            <button type="button" class="btn btn-info" id="showFormButton">
+            <button type="button" class="btn btn-info" id="showFormButton" data-bs-toggle="modal"
+            data-bs-target="#addFacture">
                 <i class="bi bi-plus-square"></i> Ajouter une Facture 
             </button>
         </div>
@@ -42,7 +43,7 @@ Facture de Dépenses
                         <table id="responsive-data-table"  class="table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Numéro</th>
                                     <th>Description</th>
                                     <th>Prix</th>
                                     <th>Date de Facture</th>
@@ -61,12 +62,12 @@ Facture de Dépenses
                                             <td>{{$facture->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
-                                                    <a href="#" {{--href="{{route('factureDepenses.delete',['idExpense'=>$expense->idExpense])}}"--}}>
+                                                    <a href="href="{{route('factureDepenses.delete',['idExpensePayment'=>$facture->idExpensePayment])}}">
                                                         <button type="submit" class="btn btn-outline-success" name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
                                                             <i class="bi bi-printer-fill"></i></i>
                                                         </button>
                                                     </a>
-                                                    <a href="#">
+                                                    <a href="href="{{route('factureDepenses.delete',['idExpensePayment' => $facture->idExpensePayment])}}"">
                                                         <button type="submit" class="btn btn-outline-danger" name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
                                                                 <i class="bi bi-trash-fill"></i>
                                                         </button>
@@ -82,6 +83,8 @@ Facture de Dépenses
             </div>
         </div>
     </div>
+<!-- Ajouter un facture de dépenses -->
+@include('pages.expense.addFactuer')
     <script src="{{asset('JS/jquery.min.js')}}"></script>
     <script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
     <script>

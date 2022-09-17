@@ -17,4 +17,30 @@ class Facture extends Model
         public function allFacture(){
                 return $this::all();
         }
+
+        // --------------- Archive Factures ------------------ //
+
+        public function softDeletedFactures(){
+            return $this::onlyTrashed()->get();
+        }
+
+    
+        public function getDeletedFacture($idExpensePayment){
+            return $this::onlyTrashed()
+                        ->where('expensepayment.idExpensePayment',$idExpensePayment)
+                        ->where('expensepayment.idStaff',NULL)
+                        ->first();
+        }
+    
+        public function restoreFacture($idExpensePayment){
+            $this::withTrashed()
+                ->where('idExpensePayment',$idExpensePayment)
+                ->restore();
+        }
+       
+        public function forceDeleteFacture($idExpensePayment){
+            $this::withTrashed()
+                ->where('idExpensePayment',$idExpensePayment)
+                ->forceDelete();
+        }
 }

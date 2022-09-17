@@ -50,8 +50,52 @@ class ExpenseController extends Controller
             //-------------- List of Facture  ---------------- //
             public function allFacture(){
                 $Facture = new Facture();
+                $Expenses = new Expenses();
+                // List of Expenses
+                $expenses = $Expenses->selectExpenses();
+                // list of facture
                 $factureDepenses = $Facture->allFacture();
                 return view('pages.expense.factures')
-                      ->with('factureDepenses',$factureDepenses);
+                      ->with('factureDepenses',$factureDepenses)
+                      ->with('expenses',$expenses);
+            }
+
+
+
+
+                // ----------- ARCHIVE ------------- //
+            public function archive(){
+                $Facture = new Facture();
+                $factures = $Facture->softDeletedFacture();
+                return view('pages.expense.FactureArchive')->with('factures',$factures);
+            }
+
+            public function restoreArchivedFacture($idExpensePayment){
+                $Facture = new Facture();
+                $Facture->restoreFacture($idExpensePayment);
+                $factures = $Facture->softDeletedFacture();
+                return Redirect::route('factures.archive')->with('restoreMessage',"Le Professeur a été restorer avec succès")->with('teachers',$teachers);
+            }
+
+            public function deleteArchivedFacture($idExpensePayment){
+                $Facture = new Facture();
+                $Facture->forceDeleteFacture($idExpensePayment);
+                return Redirect::back()->with('deleteMessage',"Le Professeur a été supprimer Définitivement");
+            }
+
+            public function multipleArchivedFacture(Request $request){
+                $Facture = new Facture();
+                if($request->has('restoreAll')){
+                foreach($request->archivedFacture as $idExpensePayment){
+                $Facture->restoreFacture($idExpensePayment);
+                }
+                return Redirect::back()->with('restoreMessage',"Les Professeurs séléctionés ont été restorer avec succès");
+                }
+                if($request->has('deleteAll')){
+                foreach($request->archivedFacture as $idExpensePayment){
+                $Facture->forceDeleteFacture($idExpensePayment);
+                }
+                return Redirect::back()->with('deleteMessage',"Les Professeurs séléctionés ont été supprimer Définitivement");
+                }
             }
 }
