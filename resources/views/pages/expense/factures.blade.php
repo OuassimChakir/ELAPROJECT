@@ -62,8 +62,8 @@ Facture de Dépenses
                                             <td>{{$facture->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
-                                                    <a href="{{route('factureDepenses.delete',['idExpensePayment'=>$facture->idExpensePayment])}}">
-                                                        <button type="submit" class="btn btn-outline-success" name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
+                                                    <a href="{{route('pdf.generate',['idExpensePayment'=>$facture->idExpensePayment])}}">
+                                                        <button type="submit" class="btn btn-outline-success" name="print">
                                                             <i class="bi bi-printer-fill"></i></i>
                                                         </button>
                                                     </a>
@@ -84,7 +84,7 @@ Facture de Dépenses
         </div>
     </div>
 <!-- Ajouter un facture de dépenses -->
-@include('pages.expense.addFactuer')
+@include('pages.expense.addFacture')
     <script src="{{asset('JS/jquery.min.js')}}"></script>
     <script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
     <script>

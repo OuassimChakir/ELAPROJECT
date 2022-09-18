@@ -29,7 +29,7 @@ class ExpenseController extends Controller
                 $Expenses = new Expenses();
                 $Expenses->deleteExpense($idExpense);
                 $expenses = $Expenses->selectExpenses();
-                return Redirect::route('expenses')
+                return Redirect::route('typeDepenses')
                     ->with('deleteMessage',"La suppression est faite avec succès")
                     ->with('expenses',$expenses);;
             }
@@ -40,7 +40,7 @@ class ExpenseController extends Controller
                 $updatedExpense = $Expenses->selectExpense($idExpense);
                 if($request->has('updateExpense')){ 
                     $Expenses->updateExpense($idExpense,$request->designation,$request->code,$request->description);
-                    return Redirect::route('expenses')
+                    return Redirect::route('typeDepenses')
                         ->with('updateMessage',"La Modification est faite avec succès")
                         ->with('expenses',$expenses);
                 }

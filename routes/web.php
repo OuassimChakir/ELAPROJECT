@@ -194,7 +194,7 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
       Route::post('/archive/factureDepenses/action','ExpenseController@multipleArchivedFacture')->name('factureDepenses.archive.multiple');
   
     
-
+    Route::get('/pdf/{idExpensePayment}','PdfController@pdf')->name('pdf.generate');
 
 
 ?>

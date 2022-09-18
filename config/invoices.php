@@ -5,7 +5,7 @@ return [
         /**
          * Carbon date format
          */
-        'format'         => 'Y-m-d',
+        'format'         => 'd-m-Y',
         /**
          * Due date for payment since invoice's date.
          */
@@ -13,7 +13,7 @@ return [
     ],
 
     'serial_number' => [
-        'series'           => 'AA',
+        'series'           => 'ELA-SP',
         'sequence'         => 1,
         /**
          * Sequence will be padded accordingly, for ex. 00001
@@ -28,7 +28,7 @@ return [
     ],
 
     'currency' => [
-        'code'                => 'eur',
+        'code'                => 'DH',
         /**
          * Usually cents
          * Used when spelling out the amount and if your currency has decimals.
@@ -36,7 +36,7 @@ return [
          * Example: Amount in words: Eight hundred fifty thousand sixty-eight EUR and fifteen ct.
          */
         'fraction'            => 'ct.',
-        'symbol'              => '€',
+        'symbol'              => 'DH',
         /**
          * Example: 19.00
          */
@@ -78,11 +78,10 @@ return [
          * Default attributes for Seller::class
          */
         'attributes' => [
-            'name'          => 'Towne, Smith and Ebert',
-            'address'       => '89982 Pfeffer Falls Damianstad, CO 66972-8160',
-            'code'          => '41-1985581',
-            'vat'           => '123456789',
-            'phone'         => '760-355-3930',
+            'name'          => 'Easy Learn Academy',
+            'address'       => '1èr et 2ème étage N° 37 Lot El Oukhouwa Errachidia Maroc',
+            'Email'         => 'ela.communication.center@gmail.com',
+            'phone'         => '+212 658 183 965',
             'custom_fields' => [
                 /**
                  * Custom attributes for Seller::class
@@ -90,7 +89,7 @@ return [
                  * Used to display additional info on Seller section in invoice
                  * attribute => value
                  */
-                'SWIFT' => 'BANK101',
+                'phone2' => '+212 658 186 062',
             ],
         ],
     ],
