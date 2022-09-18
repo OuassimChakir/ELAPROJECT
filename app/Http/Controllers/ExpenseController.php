@@ -75,7 +75,7 @@ class ExpenseController extends Controller
                 $Facture = new Facture();
                 $Facture->restoreFacture($idExpensePayment);
                 $factures = $Facture->softDeletedFacture();
-                return Redirect::route('factures.archive')->with('restoreMessage',"Le Professeur a été restorer avec succès")->with('teachers',$teachers);
+                return Redirect::route('factures.archive')->with('restoreMessage',"Le Professeur a été restorer avec succès")->with('factures',$factures);
             }
 
             public function deleteArchivedFacture($idExpensePayment){
