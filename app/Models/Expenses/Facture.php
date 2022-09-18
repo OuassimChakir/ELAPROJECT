@@ -18,6 +18,16 @@ class Facture extends Model
                 return $this::all();
         }
 
+        // ---------- Select Facture for PDF Print ----------- //
+
+        public function getFacturePdf($idExpensePayment){
+            return $this::select('expensepayment.*','expenses.designation','expenses.code','staff.cnie','staff.nom','staff.prenom','staff.numTel')
+                ->join('expenses','expensepayment.idExpense','=','expenses.idExpense')
+                ->leftJoin('staff','expensepayment.idStaff','=','staff.idStaff')
+                ->where('idExpensePayment',$idExpensePayment)
+                ->first();
+        }
+
         // --------------- Archive Factures ------------------ //
 
         public function softDeletedFactures(){

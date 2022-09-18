@@ -36,64 +36,6 @@
 </div>
 @endif
 
-{{-- UPDATING SECTION --}}
-@if (isset($updatedSubject))
-<div class="row">
-    <div class="col-xl-12 col-lg-12">
-        <div class="ec-cat-list card card-default mb-24px">
-            <div class="card-body">
-                <div class="ec-cat-form">
-                    @if (isset($updateExpenses))
-                        <h4>Modifier une Matière</h4>
-                       <form action="{{route('expenses.update',['idSubject' => $expenses->idExpense])}}" method="put">
-                           @csrf  
-                           @method('put')   
-                            <div class="row">
-                                <div class="col-lg-6">
-                                <div class="form-group ">
-                                    <label for="text" class="form-label">Designation</label> 
-                                    <div class="col">
-                                        <input id="libelle" name="designation" value="{{$expenses->Designation}}" class="form-control" type="text" required>
-                                    </div>
-                                </div>
-                                </div>
-    
-                                <div class="col-lg-6">
-                                <div class="form-group ">
-                                    <label for="text" class="form-label">Code</label> 
-                                    <div class="col">
-                                        <input id="short" name="code" value="{{$expenses->Code}}" class="form-control" type="text" required>
-                                        <small class="text-muted">Professeurs: <b>000</b> -- Staff: <b>111</b> </small>
-                                    </div>
-                                   
-                                </div>
-                                </div>
-                                <div class="col-lg-6">
-                                <div class="form-group ">
-                                    <label for="parent-category" class="form-label">Description</label> 
-                                        <textarea class="form-control" value="{{$expenses->Description}}" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                </div>
-                                </div>
-                               </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <button name="updateExpenses" type="submit" class="btn btn-warning">Modifier</button>
-                                        <button name="reset" type="reset" class="btn btn-secondary">Reset</button>
-                                        <a href="{{route('expenses')}}">
-                                            <button type="button" class="btn btn-secondary">
-                                                Annuler
-                                            </button>
-                                        </a>
-                                </div>
-                            </div>
-                        </form>
-                        @endif
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@else
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default mb-24px">
@@ -194,5 +136,4 @@
             });
         });
     </script>
-@endif
 @endsection

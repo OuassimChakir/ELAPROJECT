@@ -1,277 +1,206 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>{{ $invoice->name }}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-        <link rel="stylesheet" href="{{ public_path('vendor/invoices/bootstrap.min.css') }}">
+<link rel='stylesheet' href='{{asset('Bootstrap/css/bootstrap.min.css')}}'>
+<div class="container">
+    <style >
+        body{
+            background:#eee;
+            margin-top:20px;
+        }
+        .text-danger strong {
+        	color: #9f181c;
+		}
+		.receipt-main {
+			background: #ffffff none repeat scroll 0 0;
+			border-bottom: 12px solid #333333;
+			border-top: 12px solid #9f181c;
+			margin-top: 50px;
+			margin-bottom: 50px;
+			padding: 40px 30px !important;
+			position: relative;
+			box-shadow: 0 1px 21px #acacac;
+			color: #333333;
+			font-family: open sans;
+		}
+		.receipt-main p {
+			color: #333333;
+			font-family: open sans;
+			line-height: 1.42857;
+		}
+		.receipt-footer h1 {
+			font-size: 15px;
+			font-weight: 400 !important;
+			margin: 0 !important;
+		}
+		.receipt-main::after {
+			background: #414143 none repeat scroll 0 0;
+			content: "";
+			height: 5px;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: -13px;
+		}
+		.receipt-main thead {
+			background: #414143 none repeat scroll 0 0;
+		}
+		.receipt-main thead th {
+			color:#fff;
+		}
+		.receipt-right h5 {
+			font-size: 16px;
+			font-weight: bold;
+			margin: 0 0 7px 0;
+		}
+		.receipt-right p {
+			font-size: 12px;
+			margin: 0px;
+		}
+		.receipt-right p i {
+			text-align: center;
+			width: 18px;
+		}
+		.receipt-main td {
+			padding: 9px 20px !important;
+		}
+		.receipt-main th {
+			padding: 13px 20px !important;
+		}
+		.receipt-main td {
+			font-size: 13px;
+			font-weight: initial !important;
+		}
+		.receipt-main td p:last-child {
+			margin: 0;
+			padding: 0;
+		}	
+		.receipt-main td h2 {
+			font-size: 20px;
+			font-weight: 900;
+			margin: 0;
+			text-transform: uppercase;
+		}
+		.receipt-header-mid .receipt-left h1 {
+			font-weight: 100;
+			margin: 34px 0 0;
+			text-align: right;
+			text-transform: uppercase;
+		}
+		.receipt-header-mid {
+			margin: 24px 0;
+			overflow: hidden;
+		}
+		
+		#container {
+			background-color: #dcdcdc;
+		}
+    </style>
+   <div class="col-md-12">   
+    <div class="row">
+           
+           <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+               <div class="row">
+                   <div class="receipt-header">
+                       <div class="col-xs-6 col-sm-6 col-md-6">
+                           <div class="receipt-left">
+                                {{-- Header --}}
+                                @if($invoice->logo)
+                                    <img class="img-responsive" alt="iamgurdeeposahan" src="{{ $invoice->getLogo() }}" style="width: 71px;">
+                                @endif
+                               
+                           </div>
+                       </div>
+                       <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                           <div class="receipt-right">
+                            @if($invoice->seller->name)
+                                <h5>{{ $invoice->seller->name }}</h5>
+                            @endif
 
-        <style type="text/css" media="screen">
-            * {
-                font-family: "DejaVu Sans";
-            }
-            html {
-                margin: 0;
-            }
-            body {
-                font-size: 10px;
-                margin: 36pt;
-            }
-            body, h1, h2, h3, h4, h5, h6, table, th, tr, td, p, div {
-                line-height: 1.1;
-            }
-            .party-header {
-                font-size: 1.5rem;
-                font-weight: 400;
-            }
-            .total-amount {
-                font-size: 12px;
-                font-weight: 700;
-            }
-        </style>
-    </head>
+                            @if($invoice->seller->address)
+                                <p class="seller-address">
+                                    {{ __('invoices::invoice.address') }}: {{ $invoice->seller->address }} <i class="fa fa-location-arrow"></i>
+                                </p>
+                            @endif
 
-    <body>
-        {{-- Header --}}
-        @if($invoice->logo)
-            <img src="{{ $invoice->getLogo() }}" alt="logo" height="100">
-        @endif
-        <table class="table mt-5">
-            <tbody>
-                <tr>
-                    <td class="border-0 pl-0" width="70%">
-                        <h4 class="text-uppercase">
-                            <strong>{{ $invoice->name }}</strong>
-                        </h4>
-                    </td>
-                    <td class="border-0 pl-0">
-                        <p>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></p>
-                        <p>{{ __('invoices::invoice.date') }}: <strong>{{ $invoice->getDate() }}</strong></p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        {{-- Seller - Buyer --}}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class="border-0 pl-0 party-header" width="48.5%">
-                        {{ __('invoices::invoice.seller') }}
-                    </th>
-                    <th class="border-0" width="3%"></th>
-                    <th class="border-0 pl-0 party-header">
-                        {{ __('invoices::invoice.buyer') }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="px-0">
-                        @if($invoice->seller->name)
-                            <p class="seller-name">
-                                <strong>{{ $invoice->seller->name }}</strong>
-                            </p>
-                        @endif
-
-                        @if($invoice->seller->address)
-                            <p class="seller-address">
-                                {{ __('invoices::invoice.address') }}: {{ $invoice->seller->address }}
-                            </p>
-                        @endif
-
-                        @if($invoice->seller->code)
-                            <p class="seller-code">
-                                {{ __('invoices::invoice.code') }}: {{ $invoice->seller->code }}
-                            </p>
-                        @endif
-
-                        @if($invoice->seller->vat)
-                            <p class="seller-vat">
-                                {{ __('invoices::invoice.vat') }}: {{ $invoice->seller->vat }}
-                            </p>
-                        @endif
-
-                        @if($invoice->seller->phone)
-                            <p class="seller-phone">
-                                {{ __('invoices::invoice.phone') }}: {{ $invoice->seller->phone }}
-                            </p>
-                        @endif
-
-                        @foreach($invoice->seller->custom_fields as $key => $value)
-                            <p class="seller-custom-field">
-                                {{ ucfirst($key) }}: {{ $value }}
-                            </p>
-                        @endforeach
-                    </td>
-                    <td class="border-0"></td>
-                    <td class="px-0">
-                        @if($invoice->buyer->name)
-                            <p class="buyer-name">
-                                <strong>{{ $invoice->buyer->name }}</strong>
-                            </p>
-                        @endif
-
-                        @if($invoice->buyer->address)
-                            <p class="buyer-address">
-                                {{ __('invoices::invoice.address') }}: {{ $invoice->buyer->address }}
-                            </p>
-                        @endif
-
-                        @if($invoice->buyer->code)
-                            <p class="buyer-code">
-                                {{ __('invoices::invoice.code') }}: {{ $invoice->buyer->code }}
-                            </p>
-                        @endif
-
-                        @if($invoice->buyer->vat)
-                            <p class="buyer-vat">
-                                {{ __('invoices::invoice.vat') }}: {{ $invoice->buyer->vat }}
-                            </p>
-                        @endif
-
-                        @if($invoice->buyer->phone)
-                            <p class="buyer-phone">
-                                {{ __('invoices::invoice.phone') }}: {{ $invoice->buyer->phone }}
-                            </p>
-                        @endif
-
-                        @foreach($invoice->buyer->custom_fields as $key => $value)
-                            <p class="buyer-custom-field">
-                                {{ ucfirst($key) }}: {{ $value }}
-                            </p>
-                        @endforeach
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        {{-- Table --}}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="border-0 pl-0">{{ __('invoices::invoice.description') }}</th>
-                    @if($invoice->hasItemUnits)
-                        <th scope="col" class="text-center border-0">{{ __('invoices::invoice.units') }}</th>
-                    @endif
-                    <th scope="col" class="text-center border-0">{{ __('invoices::invoice.quantity') }}</th>
-                    <th scope="col" class="text-right border-0">{{ __('invoices::invoice.price') }}</th>
-                    @if($invoice->hasItemDiscount)
-                        <th scope="col" class="text-right border-0">{{ __('invoices::invoice.discount') }}</th>
-                    @endif
-                    @if($invoice->hasItemTax)
-                        <th scope="col" class="text-right border-0">{{ __('invoices::invoice.tax') }}</th>
-                    @endif
-                    <th scope="col" class="text-right border-0 pr-0">{{ __('invoices::invoice.sub_total') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{-- Items --}}
-                @foreach($invoice->items as $item)
-                <tr>
-                    <td class="pl-0">{{ $item->title }}</td>
-                    @if($invoice->hasItemUnits)
-                        <td class="text-center">{{ $item->units }}</td>
-                    @endif
-                    <td class="text-center">{{ $item->quantity }}</td>
-                    <td class="text-right">
-                        {{ $invoice->formatCurrency($item->price_per_unit) }}
-                    </td>
-                    @if($invoice->hasItemDiscount)
-                        <td class="text-right">
-                            {{ $invoice->formatCurrency($item->discount) }}
-                        </td>
-                    @endif
-                    @if($invoice->hasItemTax)
-                        <td class="text-right">
-                            {{ $invoice->formatCurrency($item->tax) }}
-                        </td>
-                    @endif
-
-                    <td class="text-right pr-0">
-                        {{ $invoice->formatCurrency($item->sub_total_price) }}
-                    </td>
-                </tr>
-                @endforeach
-                {{-- Summary --}}
-                @if($invoice->hasItemOrInvoiceDiscount())
-                    <tr>
-                        <td colspan="{{ $invoice->table_columns - 2 }}" class="border-0"></td>
-                        <td class="text-right pl-0">{{ __('invoices::invoice.total_discount') }}</td>
-                        <td class="text-right pr-0">
-                            {{ $invoice->formatCurrency($invoice->total_discount) }}
-                        </td>
-                    </tr>
-                @endif
-                @if($invoice->taxable_amount)
-                    <tr>
-                        <td colspan="{{ $invoice->table_columns - 2 }}" class="border-0"></td>
-                        <td class="text-right pl-0">{{ __('invoices::invoice.taxable_amount') }}</td>
-                        <td class="text-right pr-0">
-                            {{ $invoice->formatCurrency($invoice->taxable_amount) }}
-                        </td>
-                    </tr>
-                @endif
-                @if($invoice->tax_rate)
-                    <tr>
-                        <td colspan="{{ $invoice->table_columns - 2 }}" class="border-0"></td>
-                        <td class="text-right pl-0">{{ __('invoices::invoice.tax_rate') }}</td>
-                        <td class="text-right pr-0">
-                            {{ $invoice->tax_rate }}%
-                        </td>
-                    </tr>
-                @endif
-                @if($invoice->hasItemOrInvoiceTax())
-                    <tr>
-                        <td colspan="{{ $invoice->table_columns - 2 }}" class="border-0"></td>
-                        <td class="text-right pl-0">{{ __('invoices::invoice.total_taxes') }}</td>
-                        <td class="text-right pr-0">
-                            {{ $invoice->formatCurrency($invoice->total_taxes) }}
-                        </td>
-                    </tr>
-                @endif
-                @if($invoice->shipping_amount)
-                    <tr>
-                        <td colspan="{{ $invoice->table_columns - 2 }}" class="border-0"></td>
-                        <td class="text-right pl-0">{{ __('invoices::invoice.shipping') }}</td>
-                        <td class="text-right pr-0">
-                            {{ $invoice->formatCurrency($invoice->shipping_amount) }}
-                        </td>
-                    </tr>
-                @endif
-                    <tr>
-                        <td colspan="{{ $invoice->table_columns - 2 }}" class="border-0"></td>
-                        <td class="text-right pl-0">{{ __('invoices::invoice.total_amount') }}</td>
-                        <td class="text-right pr-0 total-amount">
-                            {{ $invoice->formatCurrency($invoice->total_amount) }}
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
-
-        @if($invoice->notes)
-            <p>
-                {{ trans('invoices::invoice.notes') }}: {!! $invoice->notes !!}
-            </p>
-        @endif
-
-        <p>
-            {{ trans('invoices::invoice.amount_in_words') }}: {{ $invoice->getTotalAmountInWords() }}
-        </p>
-        <p>
-            {{ trans('invoices::invoice.pay_until') }}: {{ $invoice->getPayUntilDate() }}
-        </p>
-
-        <script type="text/php">
-            if (isset($pdf) && $PAGE_COUNT > 1) {
-                $text = "Page {PAGE_NUM} / {PAGE_COUNT}";
-                $size = 10;
-                $font = $fontMetrics->getFont("Verdana");
-                $width = $fontMetrics->get_text_width($text, $font, $size) / 2;
-                $x = ($pdf->get_width() - $width);
-                $y = $pdf->get_height() - 35;
-                $pdf->page_text($x, $y, $text, $font, $size);
-            }
-        </script>
-    </body>
-</html>
+                            @if($invoice->seller->phone)
+                                <p>
+                                    {{ __('invoices::invoice.phone') }}: {{ $invoice->seller->phone }} <i class="fa fa-phone"></i>
+                                </p>
+                            @endif
+                            @foreach($invoice->seller->custom_fields as $key => $value)
+                                <p class="seller-custom-field">
+                                    {{ ucfirst($key) }}: {{ $value }}
+                                </p>
+                            @endforeach
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               
+               <div class="row">
+                   <div class="receipt-header receipt-header-mid">
+                       <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                           <div class="receipt-right">
+                                <h5>{{ $invoice->buyer->name }} </h5>
+                                <p><b>Mobile :</b> {{ __('invoices::invoice.phone') }}: {{ $invoice->buyer->phone }}</p>
+                                @foreach($invoice->buyer->custom_fields as $key => $value)
+                                    <p>
+                                        <b>{{ ucfirst($key) }}</b>: {{ $value }}
+                                    </p>
+                                @endforeach
+                           </div>
+                       </div>
+                       <div class="col-xs-4 col-sm-4 col-md-4">
+                           <div class="receipt-left">
+                               <h3>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></h3>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               
+               <div>
+                   <table class="table table-bordered">
+                       <thead>
+                           <tr>
+                                <th>Type de Dépense</th>
+                                <th>Description</th>
+                                <th>Montant</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           <tr>
+                                <td class="col-md-4">Payment du Professeur</td>
+                                <td class="col-md-5">Payment for August 2016</td>
+                                <td class="col-md-3"> 
+                                    @if($invoice->hasItemUnits)
+                                        {{ $invoice->formatCurrency($item->price_per_unit) }}
+                                    @endif
+                                </td>
+                           </tr>
+                           <tr>
+                                <td></td>
+                                <td class="text-right"><h2><strong>Total: </strong></h2></td>
+                                <td class="text-left text-danger"><h2><strong><i class="fa fa-inr"></i> {{ $invoice->formatCurrency($invoice->total_amount) }}</strong></h2></td>
+                           </tr>
+                       </tbody>
+                   </table>
+               </div>
+               
+               <div class="row">
+                   <div class="receipt-header receipt-header-mid receipt-footer">
+                       <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                           <div class="receipt-right">
+                               <p><b>Date :</b> {{ $invoice->getDate() }}</p>
+                               <h5 style="color: rgb(140, 140, 140);">Merci pour Votre Service!</h5>
+                           </div>
+                       </div>
+                       <div class="col-xs-4 col-sm-4 col-md-4">
+                           <div class="receipt-left">
+                               <h1>Signature</h1>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               
+           </div>    
+       </div>
+   </div>
