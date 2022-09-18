@@ -62,12 +62,12 @@ Facture de Dépenses
                                             <td>{{$facture->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
-                                                    <a href="href="{{route('factureDepenses.delete',['idExpensePayment'=>$facture->idExpensePayment])}}">
+                                                    <a href="{{route('factureDepenses.delete',['idExpensePayment'=>$facture->idExpensePayment])}}">
                                                         <button type="submit" class="btn btn-outline-success" name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
                                                             <i class="bi bi-printer-fill"></i></i>
                                                         </button>
                                                     </a>
-                                                    <a href="href="{{route('factureDepenses.delete',['idExpensePayment' => $facture->idExpensePayment])}}"">
+                                                    <a href="{{route('factureDepenses.delete',['idExpensePayment' => $facture->idExpensePayment])}}">
                                                         <button type="submit" class="btn btn-outline-danger" name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
                                                                 <i class="bi bi-trash-fill"></i>
                                                         </button>
