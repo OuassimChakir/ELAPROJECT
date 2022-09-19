@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Expenses\Expenses;
 use App\Models\Expenses\Facture;
+use App\Models\Responsible\Staff;
 use Illuminate\Support\Facades\Redirect;
 use setasign\Fpdi\Fpdi;
 
@@ -61,9 +62,18 @@ class ExpenseController extends Controller
                       ->with('expenses',$expenses);
             }
 
-
-
-
+            public function getStaffData($idExpense){
+                $Expenses = new Expenses();
+                $Staff = new Staff();
+                $expense = $Expenses->selectExpense($idExpense);
+                $data = '';
+                if($expense->code == '000')
+                    $data = $Staff->getProfesseurs();
+                elseif($expense->code == '111')
+                    $data = $Staff->getStaffs();
+                $selectData['data'] = $data;
+                return response()->json($selectData);  
+            }
                 // ----------- ARCHIVE ------------- //
             public function archive(){
                 $Facture = new Facture();

@@ -15,7 +15,9 @@ class Facture extends Model
 
         //------------- all facture de dépenses----------//
         public function allFacture(){
-                return $this::all();
+                return $this::select('*')
+                        ->join('expenses','expenses.idExpense','=','expensepayment.idExpense')
+                        ->get();
         }
 
         // ---------- Select Facture for PDF Print ----------- //

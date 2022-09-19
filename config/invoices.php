@@ -13,12 +13,12 @@ return [
     ],
 
     'serial_number' => [
-        'series'           => 'ELA-SP',
+        'series'           => 'ELA-F',
         'sequence'         => 1,
         /**
          * Sequence will be padded accordingly, for ex. 00001
          */
-        'sequence_padding' => 5,
+        'sequence_padding' => 4,
         'delimiter'        => '.',
         /**
          * Supported tags {SERIES}, {DELIMITER}, {SEQUENCE}
@@ -89,7 +89,7 @@ return [
                  * Used to display additional info on Seller section in invoice
                  * attribute => value
                  */
-                'phone2' => '+212 658 186 062',
+                'phone 2' => '+212 658 186 062',
             ],
         ],
     ],

@@ -196,7 +196,8 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     
     Route::get('/pdf/{idExpensePayment}','PdfController@pdf')->name('pdf.generate');
 
-
+    // Facture Staff Data Ajax
+    Route::get('/factureDepenses/{idExpense}','ExpenseController@getStaffData');
 ?>
 
 

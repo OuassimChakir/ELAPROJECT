@@ -26,6 +26,7 @@ class PdfController extends Controller
             $customer = new Buyer([
                 'custom_fields' => [
                     'Payement' => $data->designation,
+                    'description' => $data->description,
                 ],
             ]);
         }
@@ -36,10 +37,10 @@ class PdfController extends Controller
         $invoice = Invoice::make()
             ->buyer($customer)
             ->addItem($item);
-        
+        $invoice->sequence($data->idExpensePayment);
         $invoice->name = "ELA Facture";
         $invoice->logo = asset('images/logo/logo_ela.png');
-    
+        $invoice->hasItemUnits = true;
         return $invoice->stream();
     }
 }

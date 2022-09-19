@@ -21,8 +21,7 @@ class Expenses extends Model
         public function selectExpense($idExpense){
                 return $this::find($idExpense);
         }
-
-        // ------ Creation Expenses ----------- //
+                // ------ Creation Expenses ----------- //
         public function createExpense($designation,$code,$description){
                 $this->designation = $designation;
                 $this->code = $code;

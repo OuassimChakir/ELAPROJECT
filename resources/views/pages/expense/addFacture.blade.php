@@ -6,31 +6,112 @@
                     <h5 class="modal-title" id="exampleModalCenterTitle">Ajoute à un Facture</h5>
                 </div>
 
+            <form action="">
                 <div class="modal-body px-4">
-                    <div class="row mb-2 g-3">  
-                        {{-- factures --}}
-                        <div class="col-lg-6">
-                            <div class="form-group mb-4">
-                                <label for="form-label">Facture</label>
-                                <select name="idExpense" id="typeExpensesSelect" class="form-select" required>
-                                    <option disabled selected>-- Choisir type de dépenses --</option>
+                    
+                        <div class="row mb-2 g-3">  
+                            <div class="col-lg-6">
+                                <div class="form-group mb-4">
+                                    <label for="form-label">Facture</label>
+                                    <select name="idExpense" id="typeExpensesSelect" class="form-select" required>
+                                        <option disabled selected>-- Choisir type de dépenses --</option>
                                             @foreach ($expenses as $expense)
-                                                    <option value="{{ $expense->idExpense }}">
-                                                        {{ $expense->designation  }}
-                                                    </option>
+                                                <option value="{{ $expense->idExpense.'|'.$expense->code }}">
+                                                    {{ $expense->designation  }}
+                                                </option>
                                             @endforeach
-                                </select>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="staffSelect form-group mb-4">
+                                    <label for="form-label" id="staffLabel">Staff</label>
+                                    <select name="idStaff" id="staffSelect" class="form-select" required>
+
+                                    </select>
+                                </div>
                             </div>
                         </div>
-
-                    </div>
+                        <div class="row mb-2 g-3">  
+                            <div class="col-lg-6">
+                                <div class="form-group mb-4">
+                                    <label for="datePayment">Date du Payement</label>
+                                    <input type="text" name="datePayment" class="form-control" id="datePayment">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group mb-4">
+                                    <label for="form-label">Montant</label>
+                                    <input type="number" name="amout" class="form-control" id="amount"> DH
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 g-3">  
+                            <div class="col-lg-12">
+                                <div class="form-group mb-4">
+                                    <label for="description">Description</label>
+                                    <textarea name="description" id="description" rows="3" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
                 </div>
                 <div class="modal-footer px-4">
-                    <button type="button" id="reloardBtn" class="btn btn-secondary btn-pill" data-bs-dismiss="modal">Ajouter</button>
+                    <button type="button" class="btn btn-secondary btn-pill" data-bs-dismiss="modal">Annuler</button>
+                    <button type="reset" class="btn btn-secondary btn-pill">Reset</button>
+                    <button type="submit" name="addFacture" class="btn btn-primary btn-pill">Ajouter</button>
                 </div>
+            </form>
         </div>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{asset('JS/jquery.min.js')}}"></script>
 <script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
+
+<script>
+    $('.staffSelect').hide();
+        $(document).ready(function(){
+        $('#typeExpensesSelect').change(function(){
+            $('#staffLabel').empty();
+            $('#staffSelect').find('option').remove();
+            var array = $(this).val().split('|');
+            var code = array[1];
+            var idExpense = array[0];
+            if (code == '000' || code == '111') {
+                $('#staffSelect').prop('disabled',false);
+                if(code === '000')
+                    $('#staffLabel').append('Professeurs');
+                else
+                    $('#staffLabel').append('Staffs');
+                // AJAX request 
+                $.ajax({
+                    url: '/factureDepenses/'+idExpense,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response){
+                        var len = 0;
+                        if(response['data'] != null){
+                            len = response['data'].length;
+                        }   
+                        if(len > 0){
+                            // Read data and create <option >
+                            for(var i=0; i<len; i++){
+                                var id = response['data'][i].idStaff;
+                                var name = response['data'][i].prenom+" "+response['data'][i].nom;
+            
+                                var option = "<option value='"+id+"'>"+name+"</option>";
+            
+                                $("#staffSelect").append(option); 
+                            }
+                        }
+                        $('.staffSelect').show();          
+                    },
+                });
+            } else {
+                $('.staffSelect').hide();
+                $('#staffSelect').prop('disabled',true);
+            }
+            
+        });
+    });
+</script>

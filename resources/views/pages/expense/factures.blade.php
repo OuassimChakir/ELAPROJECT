@@ -44,6 +44,7 @@ Facture de Dépenses
                             <thead>
                                 <tr>
                                     <th>Numéro</th>
+                                    <th>Type de Dépense</th>
                                     <th>Description</th>
                                     <th>Prix</th>
                                     <th>Date de Facture</th>
@@ -56,13 +57,14 @@ Facture de Dépenses
 
                                     @foreach ($factureDepenses as $facture)
                                         <tr>
-                                            <td>{{$facture->idExpensePayment}} </td>
+                                            <td>ELA-F.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
+                                            <td>{{$facture->designation}}</td>
                                             <td>{{$facture->description}}</td>
                                             <td>{{$facture->amout}} DH</td>
                                             <td>{{$facture->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
-                                                    <a href="{{route('pdf.generate',['idExpensePayment'=>$facture->idExpensePayment])}}">
+                                                    <a href="{{route('pdf.generate',['idExpensePayment'=>$facture->idExpensePayment])}}" target="_blank">
                                                         <button type="submit" class="btn btn-outline-success" name="print">
                                                             <i class="bi bi-printer-fill"></i></i>
                                                         </button>
