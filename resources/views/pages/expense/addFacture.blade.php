@@ -70,7 +70,7 @@
 
 <script>
     $('.staffSelect').hide();
-        $(document).ready(function(){
+    $(document).ready(function(){
         $('#typeExpensesSelect').change(function(){
             $('#staffLabel').empty();
             $('#staffSelect').find('option').remove();
