@@ -7,7 +7,6 @@ use App\Models\Expenses\Expenses;
 use App\Models\Expenses\Facture;
 use App\Models\Responsible\Staff;
 use Illuminate\Support\Facades\Redirect;
-use setasign\Fpdi\Fpdi;
 
 class ExpenseController extends Controller
 {
@@ -50,19 +49,28 @@ class ExpenseController extends Controller
             }
         //-------------------Facture de dépenses----------------------//
             //-------------- List of Facture  ---------------- //
-            public function allFacture(){
+            public function allFacture(Request $request){
                 $Facture = new Facture();
                 $Expenses = new Expenses();
                 // List of Expenses
                 $expenses = $Expenses->selectExpenses();
                 // list of facture
                 $factureDepenses = $Facture->allFacture();
+                if($request->has('addFacture')){
+                    $datePayment = $request->datePayment;
+                    $amout = $request->amout;
+                    $description = $request->description;
+                    $idStaff = $request->idStaff;
+                    $idExpense = $request->idExpense;
+                    $Facture->createFacture($datePayment,$amout,$description,$idStaff,$idExpense);
+                    return Redirect::back()->with('successMessage',"L'ajout est fait avec succès");
+                }
                 return view('pages.expense.factures')
                       ->with('factureDepenses',$factureDepenses)
                       ->with('expenses',$expenses);
             }
 
-            public function getStaffData($idExpense){
+            public function getStaffData($idExpense){           
                 $Expenses = new Expenses();
                 $Staff = new Staff();
                 $expense = $Expenses->selectExpense($idExpense);

@@ -5,6 +5,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TypestaffController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\IncomesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -184,15 +185,28 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::post('/factureDepenses/add','ExpenseController@allFacture')->name('factureDepenses.add');
         // Delete Facture
     Route::get('/factureDepenses/delete/{idExpensePayment}','ExpenseController@deleteFacture')->name('factureDepenses.delete');
-        // Update a Facture
-    Route::get('/factureDepenses/update/{idExpensePayment}','ExpenseController@updateFacture')->name('factureDepenses.update.page');
-    Route::put('/factureDepenses/update/{idExpensePayment}','ExpenseController@updateFacture')->name('factureDepenses.update');
       // ARCHIVED Facture
       Route::get('/archive/factureDepenses','ExpenseController@archive')->name('factureDepenses.archive');
       Route::get('/archive/factureDepenses/delete/{idProfesseur}','ExpenseController@deleteArchivedFacture')->name('factureDepenses.archive.delete');
       Route::get('/archive/factureDepenses/restore/{idProfesseur}','ExpenseController@restoreArchivedFacture')->name('factureDepenses.archive.restore');
       Route::post('/archive/factureDepenses/action','ExpenseController@multipleArchivedFacture')->name('factureDepenses.archive.multiple');
-  
+
+      // --------------- typeIncomes ------------------ //
+    Route::get('/typeIncome','IncomesController@allIncomes')->name('typeIncome');
+    // Add New typeIncomes
+    Route::post('/typeIncome/add','IncomesController@allIncomes')->name('typeIncome.add');
+    // Delete typeIncomes
+    Route::get('/typeIncome/delete/{idIncome}','IncomesController@deleteIncome')->name('typeIncome.delete');
+    // Update a typeIncomes
+    Route::get('/typeIncome/update/{idIncome}','IncomesController@updateIncome')->name('typeIncome.update.page');
+    Route::put('/typeIncome/update/{idIncome}','IncomesController@updateIncome')->name('typeIncome.update');
+     // --------------- typeIncomes Payment ------------------ //
+    Route::get('/incomePayment','IncomesController@allPayment')->name('incomePayment');
+    // Add New Facture
+    Route::post('/incomePayment/add','IncomesController@allPayment')->name('incomePayment.add');
+    // Delete Facture
+    Route::get('/incomePayment/delete/{idPayment}','IncomesController@allPayment')->name('incomePayment.delete');
+   
     
     Route::get('/pdf/{idExpensePayment}','PdfController@pdf')->name('pdf.generate');
 

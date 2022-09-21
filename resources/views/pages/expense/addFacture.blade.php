@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
                 <div class="modal-header px-4">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajoute à un Facture</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajoute un Facture</h5>
                 </div>
 
             <form action="">
@@ -36,7 +36,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
                                     <label for="datePayment">Date du Payement</label>
-                                    <input type="text" name="datePayment" class="form-control" id="datePayment">
+                                    <input type="date" name="datePayment" class="form-control" id="datePayment">
                                 </div>
                             </div>
                             <div class="col-lg-6">

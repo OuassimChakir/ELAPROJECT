@@ -54,7 +54,8 @@
                                     <label class="form-check-label" for="sexe2">
                                       Femme
                                     </label>
-                                  </div></div>
+                                  </div>
+                                </div>
                             </div>
                         </div>
 

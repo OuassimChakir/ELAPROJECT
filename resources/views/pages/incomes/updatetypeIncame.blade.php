@@ -1,20 +1,20 @@
 @extends('layouts.layout')
 @section('title')
-        Modifier le Type de Dépenses
+        Modifier le Type de Revenu
 @endsection
 @section('content')
 <div class="breadcrumb-wrapper breadcrumb-contacts">
     <div>
-        <h1>Types de Dépenses</h1>
+        <h1>Types de Revenus</h1>
         <p class="breadcrumbs">
             <span><a href="{{route('acceuil')}}">Acceuil</a></span>
-            <span><i class="mdi mdi-chevron-right"></i></span><a href="{{route('typeDepenses')}}">Types de Dépenses</a>
+            <span><i class="mdi mdi-chevron-right"></i></span><a href="{{route('typeIncome')}}">Types de Revenus</a>
             <span><i class="mdi mdi-chevron-right"></i></span>Modification
         </p>
     </div>
 
         <div>
-            <a href="{{route('typeDepenses')}}">
+            <a href="{{route('typeIncome')}}">
                 <button type="button" class="btn btn-primary" id="showFormButton">
                     <i class="bi bi-arrow-left"></i> Retourner
                 </button>
@@ -42,8 +42,8 @@
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default">
                 <div class="card-body">
-                    @if (isset($updatedExpense))
-                    <form action="{{route('typeDepenses.update',['idExpense' => $updatedExpense->idExpense])}}" method="post">
+                    @if (isset($updatedIncome))
+                    <form action="{{route('typeIncome.update',['idIncome' => $updatedIncome->idIncome])}}" method="post">
                        @csrf  
                        @method('put')   
                         <div class="row">
@@ -51,7 +51,7 @@
                             <div class="form-group ">
                                 <label for="text" class="form-label">Designation</label> 
                                 <div class="col">
-                                    <input id="libelle" name="designation" value="{{$updatedExpense->designation}}" class="form-control" type="text" required>
+                                    <input id="libelle" name="designation" value="{{$updatedIncome->designation}}" class="form-control" type="text" required>
                                 </div>
                             </div>
                             </div>
@@ -60,7 +60,7 @@
                             <div class="form-group ">
                                 <label for="text" class="form-label">Code</label> 
                                 <div class="col">
-                                    <input id="short" name="code" value="{{$updatedExpense->code}}" class="form-control" type="text">
+                                    <input id="short" name="code" value="{{$updatedIncome->code}}" class="form-control" type="text">
                                     <small class="text-muted">Professeurs: <b>000</b> -- Staff: <b>111</b> </small>
                                 </div>
                                
@@ -69,15 +69,15 @@
                             <div class="col-lg-6">
                             <div class="form-group ">
                                 <label for="parent-category" class="form-label">Description</label> 
-                                    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3">{{$updatedExpense->description}}</textarea>
+                                    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3">{{$updatedIncome->description}}</textarea>
                             </div>
                             </div>
                            </div>
                         <div class="row">
                             <div class="col-12">
-                                <button name="updateExpense" type="submit" class="btn btn-warning">Modifier</button>
+                                <button name="updateIncome" type="submit" class="btn btn-warning">Modifier</button>
                                     <button name="reset" type="reset" class="btn btn-secondary">Reset</button>
-                                    <a href="{{route('typeDepenses')}}">
+                                    <a href="{{route('typeIncome')}}">
                                         <button type="button" class="btn btn-secondary">
                                             Annuler
                                         </button>

@@ -133,12 +133,12 @@
 								<div class="collapse">
 									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 										<li class="">
-											<a class="sidenav-item-link" href="order-history.html">
+											<a class="sidenav-item-link" href="{{route('typeIncome')}}">
 												<span class="nav-text">Types de Revenus</span>
 											</a>
 										</li>
 										<li class="">
-											<a class="sidenav-item-link" href="invoice.html">
+											<a class="sidenav-item-link" href="{{route('incomePayment')}}">
 												<span class="nav-text">Reçus de Payment</span>
 											</a>
 										</li>

@@ -19,6 +19,15 @@ class Facture extends Model
                         ->join('expenses','expenses.idExpense','=','expensepayment.idExpense')
                         ->get();
         }
+        //------------- create facture ----------//         
+        public function createFacture($datePayment,$amout,$description,$idStaff,$idExpense){
+            $this->datePayment = $datePayment;
+            $this->amout = $amout;
+            $this->description = $description;
+            $this->idStaff = $idStaff;
+            $this->idExpense = $idExpense;
+            $this->save();
+    }
 
         // ---------- Select Facture for PDF Print ----------- //
 
