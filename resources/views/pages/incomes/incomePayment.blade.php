@@ -1,6 +1,7 @@
 @extends('layouts.layout')
 @section('title')
 Reçus de Payment
+@endsection
 @section('content')
 <div class="breadcrumb-wrapper breadcrumb-contacts">
     <div>
@@ -54,13 +55,13 @@ Reçus de Payment
                             <tbody>
                                 @if (isset($incomePayment))
 
-                                    @foreach ($incomePayment as $Pyment)
+                                    @foreach ($incomePayment as $Payment)
                                         <tr>
-                                            <td>ELA-F.{{str_pad((string) $Pyment->idPayment, 4, 0, STR_PAD_LEFT)}}</td>
-                                            <td>{{$Pyment->designation}}</td>
-                                            <td>{{$Pyment->paymentMode}}</td>
-                                            <td>{{$Pyment->amout}} DH</td>
-                                            <td>{{$Pyment->datePayment}}</td>
+                                            <td>ELA-R.{{str_pad((string) $Payment->idPayment, 4, 0, STR_PAD_LEFT)}}</td>
+                                            <td><span class="badge badge-primary">{{$Payment->designation}}</span></td>
+                                            <td>{{$Payment->paymentMode}}</td>
+                                            <td><span class="badge badge-dark">{{$Payment->amout}} DH</span></td>
+                                            <td>{{$Payment->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
                                                     <a href="" target="_blank">
@@ -68,8 +69,8 @@ Reçus de Payment
                                                             <i class="bi bi-printer-fill"></i></i>
                                                         </button>
                                                     </a>
-                                                    <a href="{{route('incomePayment.delete',['idPayment' => $Pyment->idPayment])}}">
-                                                        <button type="submit" class="btn btn-outline-danger" name="deletePyment" onclick="return confirm('Vous êtes sûr?');">
+                                                    <a href="{{route('incomePayment.delete',['idPayment' => $Payment->idPayment])}}">
+                                                        <button type="submit" class="btn btn-outline-danger" name="deletePayment" onclick="return confirm('Vous êtes sûr?');">
                                                                 <i class="bi bi-trash-fill"></i>
                                                         </button>
                                                     </a>
@@ -84,7 +85,7 @@ Reçus de Payment
             </div>
         </div>
     </div>
-<!-- add the Income pyment -->
+<!-- add the Income Payment -->
 @include('pages.incomes.addReçusPayment');
     <script src="{{asset('JS/jquery.min.js')}}"></script>
     <script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>

@@ -70,6 +70,13 @@ class ExpenseController extends Controller
                       ->with('expenses',$expenses);
             }
 
+            // ------------ Suppression du Facture --------- //
+            public function deleteFacture($idExpensePayment){
+                $Facture = new Facture();
+                $Facture->deleteFacture($idExpensePayment);
+                return Redirect::back()->with('deleteMessage',"La Suppression du Facture est faite avec succès");
+            }
+
             public function getStaffData($idExpense){           
                 $Expenses = new Expenses();
                 $Staff = new Staff();
@@ -85,8 +92,8 @@ class ExpenseController extends Controller
                 // ----------- ARCHIVE ------------- //
             public function archive(){
                 $Facture = new Facture();
-                $factures = $Facture->softDeletedFacture();
-                return view('pages.expense.FactureArchive')->with('factures',$factures);
+                $factures = $Facture->softDeletedFactures();
+                return view('pages.expense.FactureArchive')->with('factureDepenses',$factures);
             }
 
             public function restoreArchivedFacture($idExpensePayment){

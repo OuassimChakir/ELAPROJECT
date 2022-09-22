@@ -4,10 +4,12 @@ namespace App\Models\Expenses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Facture extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table = "expensepayment";
     protected $primaryKey = "idExpensePayment";  
     
@@ -37,6 +39,11 @@ class Facture extends Model
                 ->leftJoin('staff','expensepayment.idStaff','=','staff.idStaff')
                 ->where('idExpensePayment',$idExpensePayment)
                 ->first();
+        }
+
+        // --------- Delete Facture ----------------- //
+        public function deleteFacture($idExpensePayment){
+            $this::find($idExpensePayment)->delete();
         }
 
         // --------------- Archive Factures ------------------ //
