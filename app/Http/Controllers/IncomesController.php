@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
+use App\Models\responsible\Student;
 use Illuminate\Support\Facades\Redirect;
 
 class IncomesController extends Controller
@@ -33,7 +34,7 @@ class IncomesController extends Controller
                     $Incomes = $Income->allIncome();
                     return Redirect::route('typeIncome')
                         ->with('deleteMessage',"La suppression est faite avec succès")
-                        ->with('Incomes',$Incomes);;
+                        ->with('Incomes',$Incomes);
                 }
                 // ---------------Update Income-----//
                 public function updateIncome(Request $request,$idIncome){
@@ -55,23 +56,29 @@ class IncomesController extends Controller
             public function allPayment(Request $request){
                 $Payment = new Payment();
                 $Income = new Income();
+                $Student = new Student();
+                $students=$Student->getStudents();
+
                 // List of Payment
                 $Incomes = $Income->allIncome();
                 // list of Payment
                 $incomePayment = $Payment->allPayment();
-                if($request->has('addPayment')){
-                    $datePayment = $request->datePayment;
-                    $paymentMode = $request->paymentMode;  
-                    $amout = $request->amout;
-                    $description = $request->description;
-                    $matricule = $request->matricule;
-                    $idIncome = $request->idIncome;
-                    $Payment->createPayment($datePayment,$paymentMode,$amout,$description,$matricule,$idIncome);
-                    return Redirect::back()->with('successMessage',"L'ajout est fait avec succès");
+
+
+                if($request->has('addPayment')){                  
+
+                            $datePayment = $request->datePayment;
+                            $paymentMode = $request->paymentMode;  
+                            $amout = $request->amout;
+                            $description = $request->description;
+                            $idIncome = $request->idIncome;
+                            $matricule = $request->matricule;
+                            $Payment->createPayment($datePayment,$paymentMode,$amout,$description,$matricule,$idIncome);
+                            return Redirect::back()->with('successMessage',"L'ajout est fait avec succès");
                 }
                 return view('pages.incomes.incomePayment')
                       ->with('incomePayment',$incomePayment)
-                      ->with('Incomes',$Incomes);
+                      ->with('incomes',$Incomes);
             }
 
 }

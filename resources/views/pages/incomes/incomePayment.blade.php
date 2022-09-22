@@ -63,7 +63,7 @@ Reçus de Payment
                                             <td>{{$Pyment->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
-                                                    <a href="{{route('pdf.generate',['idPayment'=>$Pyment->idPayment])}}" target="_blank">
+                                                    <a href="" target="_blank">
                                                         <button type="submit" class="btn btn-outline-success" name="print">
                                                             <i class="bi bi-printer-fill"></i></i>
                                                         </button>

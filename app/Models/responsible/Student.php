@@ -37,7 +37,10 @@ class Student extends Model
     public function getStudents(){
         return $this::all();
     }
-    
+
+    public function selectStudents($matricule){
+        return $this::find($matricule);
+}
     // Select one Student
     public function getStudent($matricule){
         return $this::select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
