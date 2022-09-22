@@ -187,8 +187,8 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/factureDepenses/delete/{idExpensePayment}','ExpenseController@deleteFacture')->name('factureDepenses.delete');
       // ARCHIVED Facture
       Route::get('/archive/factureDepenses','ExpenseController@archive')->name('factureDepenses.archive');
-      Route::get('/archive/factureDepenses/delete/{idProfesseur}','ExpenseController@deleteArchivedFacture')->name('factureDepenses.archive.delete');
-      Route::get('/archive/factureDepenses/restore/{idProfesseur}','ExpenseController@restoreArchivedFacture')->name('factureDepenses.archive.restore');
+      Route::get('/archive/factureDepenses/delete/{idExpensePayment}','ExpenseController@deleteArchivedFacture')->name('factureDepenses.archive.delete');
+      Route::get('/archive/factureDepenses/restore/{idExpensePayment}','ExpenseController@restoreArchivedFacture')->name('factureDepenses.archive.restore');
       Route::post('/archive/factureDepenses/action','ExpenseController@multipleArchivedFacture')->name('factureDepenses.archive.multiple');
 
       // --------------- typeIncomes ------------------ //

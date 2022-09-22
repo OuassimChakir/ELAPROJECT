@@ -5,8 +5,7 @@
                 <div class="modal-header px-4">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Ajoute Reçus de Payment</h5>
                 </div>
-
-            <form action="{{route('incomePayment.add')}}" method="post"> 
+                <form action="{{route('incomePayment.add')}}" method="post"> 
                 @csrf
                 @method('post')
                 <div class="modal-body px-4">

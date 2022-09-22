@@ -58,15 +58,11 @@ class IncomesController extends Controller
                 $Income = new Income();
                 $Student = new Student();
                 $students=$Student->getStudents();
-
                 // List of Payment
                 $Incomes = $Income->allIncome();
                 // list of Payment
                 $incomePayment = $Payment->allPayment();
-
-
                 if($request->has('addPayment')){                  
-
                             $datePayment = $request->datePayment;
                             $paymentMode = $request->paymentMode;  
                             $amout = $request->amout;

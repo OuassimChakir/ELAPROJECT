@@ -50,20 +50,20 @@ Facture de Dépenses
 
                                     @foreach ($factureDepenses as $facture)
                                         <tr>
-                                            <td>ELA-F.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
+                                            <td>ELA-R.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
                                             <td>{{$facture->designation}}</td>
                                             <td>{{$facture->description}}</td>
                                             <td>{{$facture->amout}} DH</td>
                                             <td>{{$facture->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
-                                                    <a href="{{route('pdf.generate',['idExpensePayment'=>$facture->idExpensePayment])}}" target="_blank">
-                                                        <button type="submit" class="btn btn-outline-success" name="print">
-                                                            <i class="bi bi-printer-fill"></i></i>
+                                                    <a href="{{route('factureDepenses.archive.restore',['idExpensePayment' => $facture->idExpensePayment])}}">
+                                                        <button type="button" name="show" class="btn btn-outline-success" value="{{$facture->idExpensePayment}}" onclick="return confirm('Vous êtes sûr?');">
+                                                            <i class="bi bi-arrow-repeat"></i>
                                                         </button>
                                                     </a>
-                                                    <a href="{{route('factureDepenses.delete',['idExpensePayment' => $facture->idExpensePayment])}}">
-                                                        <button type="submit" class="btn btn-outline-danger" name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
+                                                    <a href="{{route('factureDepenses.archive.delete',['idExpensePayment'=>$facture->idExpensePayment])}}">
+                                                        <button type="button" class="btn btn-outline-danger" name="delete" value="{{$facture->idExpensePayment}}" onclick="return confirm('Voulez-vous supprimer définitivement cet étudiant?');">
                                                                 <i class="bi bi-trash-fill"></i>
                                                         </button>
                                                     </a>
