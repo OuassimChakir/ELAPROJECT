@@ -7,6 +7,7 @@ use App\Models\Classrooms;
 use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
 use App\Models\Group;
+use App\Models\Incomes\Income;
 use App\Models\Responsible\Responsible;
 use App\Models\responsible\Staff;
 use App\Models\responsible\Student;
@@ -58,6 +59,8 @@ class StudentController extends Controller
         $Classroom = new Classrooms();
         $Group = new Group();
         $absences = new Attendance();
+        $income= new Income();
+        $incomes=$income->allIncome();
         $allgroup =$Group->selectGroup();
         $groupSubjects = $Group->existedGroupSubjects();
         $groupCourseTypes = $Group->existedGroupCourseTypes();
@@ -73,7 +76,8 @@ class StudentController extends Controller
             ->with('courseTypes',$groupCourseTypes)
             ->with('student',$studentInfo)
             ->with('absence',$absence)
-            ->with('allgroup',$allgroup);
+            ->with('allgroup',$allgroup)
+            ->with('incomes',$incomes);
     }
 
     public function updateStudent(Request $request,$matricule){
@@ -211,4 +215,7 @@ class StudentController extends Controller
         $processResult = 'true';
         return response()->json($processResult); 
     }
+
+    //--------- Reçue de pyment------------//
+
 }

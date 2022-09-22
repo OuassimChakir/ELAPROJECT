@@ -36,6 +36,7 @@ class Student extends Model
     // Get All Students
     public function getStudents(){
         return $this::all();
+    
     }
 
     public function selectStudents($matricule){
