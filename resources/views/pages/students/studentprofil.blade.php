@@ -99,6 +99,11 @@
                             data-bs-target="#settings" type="button" role="tab"
                             aria-controls="settings" aria-selected="false">Paramètres</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="settings-tab" data-bs-toggle="tab"
+                            data-bs-target="#settings" type="button" role="tab"
+                            aria-controls="settings" aria-selected="false">Pay</button>
+                    </li>
 
                 </ul>
                 <div class="tab-content px-3 px-xl-5" id="myTabContent">

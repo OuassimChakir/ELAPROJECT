@@ -6,18 +6,19 @@
                     <h5 class="modal-title" id="exampleModalCenterTitle">Ajoute Reçus de Payment</h5>
                 </div>
 
-            <form action="">
+            <form action="{{route('incomePayment.add')}}" method="post"> 
+                @csrf
+                @method('post')
                 <div class="modal-body px-4">
-                    
                         <div class="row mb-2 g-3">  
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
                                     <label for="form-label">Reçus de Payment</label>
-                                    <select name="idIncome" id="incomeSelect" class="form-select" required>
-                                        <option disabled selected>-- Choisir type de Incomes --</option>
-                                            @foreach ($Incomes as $income)
-                                                <option value="{{ $income->idIncome.'|'.$income->code }}">
-                                                    {{ $income->designation  }}
+                                    <select name="idIncome"  class="form-select" required>
+                                        <option disabled selected>-- Choisir type de Revenus --</option>
+                                            @foreach ($incomes as $income)
+                                                <option value="{{$income->idIncome}}">
+                                                    {{$income->designation }}
                                                 </option>
                                             @endforeach
                                     </select>
@@ -26,9 +27,7 @@
                             <div class="col-lg-6">
                                 <div class="staffSelect form-group mb-4">
                                     <label for="form-label" id="staffLabel">Etudiants</label>
-                                    <select name="matricule" id="etudiantsSelect" class="form-select" required>
-
-                                    </select>
+                                    <input type="text" name="matricule" class="form-control" value="ELA" id="matricule" required>
                                 </div>
                             </div>
                         </div>
@@ -42,22 +41,22 @@
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
                                     <label for="form-label">Montant</label>
-                                    <input type="number" name="amout" class="form-control" id="amount"> DH
+                                    <input type="number" name="amout" class="form-control" id="amount"><small class="text-muted">HD</small>
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-2 g-3">
                             <div class="col-lg-6">
                                 <label>Type de Paiement</label>
-                                <div class="d-flex align-items-center justify-content-between">
+                                <div class="col">
                                 <div class="form-check">
-                                    <input class="form-check-input" value="E" type="radio" name="typePyament" id="typePyament1" checked>
+                                    <input class="form-check-input" value="Espece" type="radio" name="paymentMode" id="typePyament1" checked>
                                     <label class="form-check-label" for="typePyament1" checked>
                                         Espèce 	
                                     </label>
                                   </div>
                                   <div class="form-check">
-                                    <input class="form-check-input" value="B" type="radio" name="typePyament" id="typePyament2" >
+                                    <input class="form-check-input"  value="Virement" type="radio" name="paymentMode" id="typePyament2" >
                                     <label class="form-check-label" for="typePyament2">
                                         Virement Bancaire 
                                     </label>
@@ -75,7 +74,7 @@
                 <div class="modal-footer px-4">
                     <button type="button" class="btn btn-secondary btn-pill" data-bs-dismiss="modal">Annuler</button>
                     <button type="reset" class="btn btn-secondary btn-pill">Reset</button>
-                    <button type="submit" name="addFacture" class="btn btn-primary btn-pill">Ajouter</button>
+                    <button type="submit" name="addPayment" class="btn btn-primary btn-pill">Ajouter</button>
                 </div>
             </form>
         </div>

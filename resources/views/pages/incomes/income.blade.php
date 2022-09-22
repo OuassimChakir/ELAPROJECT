@@ -61,7 +61,7 @@
                                 <label for="text" class="form-label">Code</label> 
                                 <div class="col">
                                     <input id="short" name="code" class="form-control" type="text">
-                                    <small class="text-muted">Etudiant: <b>222</b> </small>
+                                    <small class="text-muted">Etudiant: <b>222</b></small>
                                 </div>
                                
                             </div>
