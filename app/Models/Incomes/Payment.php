@@ -13,13 +13,13 @@ class Payment extends Model
     protected $table = "payment";
     protected $primaryKey = "idPayment";  
 
-        //------------- all facture de incomes----------//
+        //------------- all Payment de incomes----------//
         public function allPayment(){
                 return $this::select('*')
                         ->join('incomes','incomes.idIncome','=','payment.idIncome')
                         ->get();
         }
-        //------------- create facture ----------//         
+        //------------- create Payment ----------//         
         public function createPayment($datePayment,$paymentMode,$amout,$description,$matricule,$idIncome){
             $this->datePayment = $datePayment;
             $this->paymentMode = $paymentMode; 	 
@@ -27,32 +27,36 @@ class Payment extends Model
             $this->description = $description;
             $this->matricule = $matricule;
             $this->idIncome = $idIncome;
-            $this->save();
-    }
+            $this->save(); 
+        }
+        // --------- Delete Payment ----------------- //
+        public function deletePayment($idPayment){
+            $this::find($idPayment)->delete();
+        }
 
        // --------------- Archive Payment ------------------ //
 
-       public function softDeletedPayment(){
-        return $this::onlyTrashed()->get();
-    }
+        public function softDeletedPayment(){
+            return $this::onlyTrashed()->get();
+        }
 
 
-    public function getDeletedPayment($idPayment){
-        return $this::onlyTrashed()
+        public function getDeletedPayment($idPayment){
+            return $this::onlyTrashed()
                     ->where('payment.idPayment',$idPayment)
                     ->where('payment.idIncome',NULL)
                     ->first();
-    }
+        }
 
-    public function restorePayment($idPayment){
-        $this::withTrashed()
+        public function restorePayment($idPayment){
+         $this::withTrashed()
             ->where('idPayment',$idPayment)
             ->restore();
-    }
+        }
    
-    public function forceDeletePayment($idPayment){
-        $this::withTrashed()
+        public function forceDeletePayment($idPayment){
+              $this::withTrashed()
             ->where('idPayment',$idPayment)
             ->forceDelete();
-    }
+        }
 }

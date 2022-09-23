@@ -207,11 +207,11 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     // Add New Incomes Payment 
     Route::post('/incomePayment/add','IncomesController@allPayment')->name('incomePayment.add');
     // Delete Incomes Payment 
-    Route::get('/incomePayment/delete/{idPayment}','IncomesController@allPayment')->name('incomePayment.delete');
+    Route::get('/incomePayment/delete/{idPayment}','IncomesController@deletePayment')->name('incomePayment.delete');
     // ARCHIVED Incomes Payment 
     Route::get('/archive/incomePayment','IncomesController@archive')->name('incomePayment.archive');
-    Route::get('/archive/incomePayment/delete/{idPayment}','IncomesController@deleteArchivedrecus')->name('incomePayment.archive.delete');
-    Route::get('/archive/incomePayment/restore/{idPayment}','IncomesController@restoreArchivedrecus')->name('incomePayment.archive.restore');
+    Route::get('/archive/incomePayment/delete/{idPayment}','IncomesController@deleteArchivedPayment')->name('incomePayment.archive.delete');
+    Route::get('/archive/incomePayment/restore/{idPayment}','IncomesController@restoreArchivedPayment')->name('incomePayment.archive.restore');
     Route::post('/archive/incomePayment/action','IncomesController@multipleArchivedPayment')->name('incomePayment.archive.multiple');
    
     

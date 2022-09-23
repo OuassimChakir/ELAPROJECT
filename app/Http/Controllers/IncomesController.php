@@ -76,6 +76,12 @@ class IncomesController extends Controller
                       ->with('incomePayment',$incomePayment)
                       ->with('incomes',$Incomes);
             }
+           // ------------ Suppression du Payment --------- //
+            public function deletePayment($idPayment){
+                $Payment = new Payment();
+                $Payment->deletePayment($idPayment);
+                return Redirect::back()->with('deleteMessage',"La Suppression du Reçus est faite avec succès");
+            }
 
 
             // ----------- ARCHIVE ------------- //

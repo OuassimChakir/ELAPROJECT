@@ -69,7 +69,7 @@ Reçus de Payment
                                                             <i class="bi bi-printer-fill"></i></i>
                                                         </button>
                                                     </a>
-                                                    <a href="{{route('incomePayment.delete',['idPayment' => $Payment->idPayment])}}">
+                                                    <a href="{{route('incomePayment.delete',['idPayment'=>$Payment->idPayment])}}">
                                                         <button type="submit" class="btn btn-outline-danger" name="deletePayment" onclick="return confirm('Vous êtes sûr?');">
                                                                 <i class="bi bi-trash-fill"></i>
                                                         </button>
