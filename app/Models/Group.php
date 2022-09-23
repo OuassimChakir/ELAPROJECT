@@ -13,6 +13,12 @@ class Group extends Model
 
     // ------- Selections ----------- //
 
+    
+        public function totalGroups(){
+            return $this::select()->get()->count();
+    
+         }
+
         // ***** Select Groupes ******* //
         public function getGroups(){
             return $this::select('groups.*','subjects.*','grades.*','coursetype.*','staff.idStaff','staff.nom','staff.prenom')

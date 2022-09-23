@@ -19,6 +19,10 @@ class Payment extends Model
                         ->join('incomes','incomes.idIncome','=','payment.idIncome')
                         ->get();
         }
+        //------ total amount
+        public function totalAmount(){
+            return $this::select()->get()->sum('amout');
+         }
         //------------ find reçue by matricule-------- //
         public function selectPayment($matricule){
             return $this::select('*')

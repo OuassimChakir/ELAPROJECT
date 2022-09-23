@@ -21,6 +21,10 @@ class Facture extends Model
                         ->join('expenses','expenses.idExpense','=','expensepayment.idExpense')
                         ->get();
         }
+        //------totalAmountExpense
+        public function totalAmountExpense(){
+                 return $this::select()->get()->sum('amout');
+        }
         //------------- create facture ----------//         
         public function createFacture($datePayment,$amout,$description,$idStaff,$idExpense){
             $this->datePayment = $datePayment;
