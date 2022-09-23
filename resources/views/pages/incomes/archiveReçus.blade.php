@@ -1,14 +1,14 @@
 @extends('layouts.layout')
 @section('title')
-Archive Reçus de Payment
+Archive Reçus de Paiement
 @endsection
 @section('content')
 <div class="breadcrumb-wrapper breadcrumb-contacts">
     <div>
-        <h1>Reçus de Payment</h1>
+        <h1>Archive Reçus de Paiement</h1>
         <p class="breadcrumbs">
             <span><a href="{{route('acceuil')}}">Acceuil</a></span>
-            <span><i class="mdi mdi-chevron-right"></i></span>Archive Reçus de Payment
+            <span><i class="mdi mdi-chevron-right"></i></span>Archive Reçus de Paiement
         </p>
     </div>
 </div>

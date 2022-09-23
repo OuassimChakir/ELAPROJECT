@@ -95,13 +95,13 @@ class IncomesController extends Controller
                 $Payment = new Payment();
                 $Payment->restorePayment($idPayment);
                 $incomePayment = $Payment->softDeletedPayment();
-                return Redirect::route('incomePayment.archive')->with('restoreMessage',"Le Professeur a été restorer avec succès")->with('incomePayment',$incomePayment);
+                return Redirect::route('incomePayment.archive')->with('restoreMessage',"Le Reçus a été restorer avec succès")->with('incomePayment',$incomePayment);
             }
 
             public function deleteArchivedPayment($idPayment){
                 $Payment = new Payment();
                 $Payment->forceDeletePayment($idPayment);
-                return Redirect::back()->with('deleteMessage',"Le Professeur a été supprimer Définitivement");
+                return Redirect::back()->with('deleteMessage',"Le Reçue a été supprimer Définitivement");
             }
 
             public function multipleArchivedPayment(Request $request){
@@ -110,13 +110,13 @@ class IncomesController extends Controller
                 foreach($request->archivedPayment as $idPayment){
                 $Payment->restorePayment($idPayment);
                 }
-                return Redirect::back()->with('restoreMessage',"Les Professeurs séléctionés ont été restorer avec succès");
+                return Redirect::back()->with('restoreMessage',"Les Reçues séléctionés ont été restorer avec succès");
                 }
                 if($request->has('deleteAll')){
                 foreach($request->archivedPayment as $idPayment){
                 $Payment->forceDeletePayment($idPayment);
                 }
-                return Redirect::back()->with('deleteMessage',"Les Professeurs séléctionés ont été supprimer Définitivement");
+                return Redirect::back()->with('deleteMessage',"Les Reçues séléctionés ont été supprimer Définitivement");
                 }
             }
 

@@ -5,7 +5,7 @@ Archive Facture de Dépenses
 @section('content')
 <div class="breadcrumb-wrapper breadcrumb-contacts">
     <div>
-        <h1>Facture de Dépenses</h1>
+        <h1>Archive Facture de Dépenses</h1>
         <p class="breadcrumbs">
             <span><a href="{{route('acceuil')}}">Acceuil</a></span>
             <span><i class="mdi mdi-chevron-right"></i></span>Archive Facture de Dépenses
