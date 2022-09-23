@@ -56,9 +56,9 @@ Archive Facture de Dépenses
                                         <tr>
                                             <td><input type="checkbox" name="archivedFacture[]" value="{{$facture->idExpensePayment}}" class="form-check-input archivedFacture"></td>
                                             <td>ELA-R.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
-                                            <td>{{$facture->designation}}</td>
+                                            <td><span class="badge badge-primary">{{$facture->designation}}</span></td>
                                             <td>{{$facture->description}}</td>
-                                            <td>{{$facture->amout}} DH</td>
+                                            <td><span class="badge badge-dark">{{$facture->amout}} DH</span></td>
                                             <td>{{$facture->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
