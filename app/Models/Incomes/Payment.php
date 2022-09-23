@@ -37,7 +37,9 @@ class Payment extends Model
        // --------------- Archive Payment ------------------ //
 
         public function softDeletedPayment(){
-            return $this::onlyTrashed()->get();
+            return $this::onlyTrashed()
+            ->join('incomes','incomes.idIncome','=','payment.idIncome')
+            ->get();
         }
 
 

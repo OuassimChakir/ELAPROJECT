@@ -44,7 +44,7 @@ Reçus de Payment
                             <thead>
                                 <tr>
                                     <th>Numéro</th>
-                                    <th>Description</th>
+                                    <th>Designation</th>
                                     <th>Type de Paiement</th>
                                     <th>Prix</th>
                                     <th>Date de Reçus</th>

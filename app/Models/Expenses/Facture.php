@@ -49,7 +49,9 @@ class Facture extends Model
         // --------------- Archive Factures ------------------ //
 
         public function softDeletedFactures(){
-            return $this::onlyTrashed()->get();
+            return $this::onlyTrashed()
+            ->join('expenses','expenses.idExpense','=','expensepayment.idExpense')
+            ->get();
         }
 
     
@@ -60,7 +62,7 @@ class Facture extends Model
                         ->first();
         }
     
-        public function restoreFacture($idExpensePayment){
+        public function restoreArchivedFacture($idExpensePayment){
             $this::withTrashed()
                 ->where('idExpensePayment',$idExpensePayment)
                 ->restore();

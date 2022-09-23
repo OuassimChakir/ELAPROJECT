@@ -41,7 +41,7 @@ Archive Reçus de Payment
                                 <tr>
                                     <th><input type="checkbox" class="form-check-input" id="selectAllArchived"></th>
                                     <th>Numéro</th>
-                                    <th>Description</th>
+                                    <th>Designation</th>
                                     <th>Type de Paiement</th>
                                     <th>Prix</th>
                                     <th>Date de Reçus</th>
