@@ -4,10 +4,12 @@ namespace App\Models\Incomes;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table = "payment";
     protected $primaryKey = "idPayment";  
 
@@ -28,5 +30,29 @@ class Payment extends Model
             $this->save();
     }
 
-      
+       // --------------- Archive Payment ------------------ //
+
+       public function softDeletedPayment(){
+        return $this::onlyTrashed()->get();
+    }
+
+
+    public function getDeletedPayment($idPayment){
+        return $this::onlyTrashed()
+                    ->where('payment.idPayment',$idPayment)
+                    ->where('payment.idIncome',NULL)
+                    ->first();
+    }
+
+    public function restorePayment($idPayment){
+        $this::withTrashed()
+            ->where('idPayment',$idPayment)
+            ->restore();
+    }
+   
+    public function forceDeletePayment($idPayment){
+        $this::withTrashed()
+            ->where('idPayment',$idPayment)
+            ->forceDelete();
+    }
 }

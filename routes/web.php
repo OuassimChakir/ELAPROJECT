@@ -200,14 +200,22 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     // Update a typeIncomes
     Route::get('/typeIncome/update/{idIncome}','IncomesController@updateIncome')->name('typeIncome.update.page');
     Route::put('/typeIncome/update/{idIncome}','IncomesController@updateIncome')->name('typeIncome.update');
-     // --------------- typeIncomes Payment ------------------ //
+
+
+     // --------------- Incomes Payment ------------------ //
     Route::get('/incomePayment','IncomesController@allPayment')->name('incomePayment');
-    // Add New Facture
+    // Add New Incomes Payment 
     Route::post('/incomePayment/add','IncomesController@allPayment')->name('incomePayment.add');
-    // Delete Facture
+    // Delete Incomes Payment 
     Route::get('/incomePayment/delete/{idPayment}','IncomesController@allPayment')->name('incomePayment.delete');
+    // ARCHIVED Incomes Payment 
+    Route::get('/archive/incomePayment','IncomesController@archive')->name('incomePayment.archive');
+    Route::get('/archive/incomePayment/delete/{idPayment}','IncomesController@deleteArchivedrecus')->name('incomePayment.archive.delete');
+    Route::get('/archive/incomePayment/restore/{idPayment}','IncomesController@restoreArchivedrecus')->name('incomePayment.archive.restore');
+    Route::post('/archive/incomePayment/action','IncomesController@multipleArchivedPayment')->name('incomePayment.archive.multiple');
    
     
+    // ----- pdf de facture
     Route::get('/pdf/{idExpensePayment}','PdfController@pdf')->name('pdf.generate');
 
     // Facture Staff Data Ajax

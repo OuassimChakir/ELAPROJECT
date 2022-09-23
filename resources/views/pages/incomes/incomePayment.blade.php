@@ -47,7 +47,7 @@ Reçus de Payment
                                     <th>Description</th>
                                     <th>Type de Paiement</th>
                                     <th>Prix</th>
-                                    <th>Date de Facture</th>
+                                    <th>Date de Reçus</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

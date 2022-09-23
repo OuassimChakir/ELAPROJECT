@@ -175,6 +175,11 @@
 												<span class="nav-text">Archive des Facture Dépenses</span>
 											</a>
 										</li>
+										<li class="">
+											<a class="sidenav-item-link" href="{{route('incomePayment.archive')}}">
+												<span class="nav-text">Archive des Reçus de Paiement</span>
+											</a>
+										</li>
 									</ul>
 								</div>
 								<hr>
