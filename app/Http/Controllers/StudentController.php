@@ -8,6 +8,7 @@ use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
 use App\Models\Group;
 use App\Models\Incomes\Income;
+use App\Models\Incomes\Payment;
 use App\Models\Responsible\Responsible;
 use App\Models\responsible\Staff;
 use App\Models\responsible\Student;
@@ -60,7 +61,9 @@ class StudentController extends Controller
         $Group = new Group();
         $absences = new Attendance();
         $income= new Income();
+        $Payment = new Payment();
         $incomes=$income->allIncome();
+        $incomePayment = $Payment->selectPayment($matricule);
         $allgroup =$Group->selectGroup();
         $groupSubjects = $Group->existedGroupSubjects();
         $groupCourseTypes = $Group->existedGroupCourseTypes();
@@ -77,7 +80,8 @@ class StudentController extends Controller
             ->with('student',$studentInfo)
             ->with('absence',$absence)
             ->with('allgroup',$allgroup)
-            ->with('incomes',$incomes);
+            ->with('incomes',$incomes)
+            ->with('incomePayment',$incomePayment);
     }
 
     public function updateStudent(Request $request,$matricule){
@@ -184,7 +188,7 @@ class StudentController extends Controller
         }
         if($request->has('deleteAll')){
             foreach($request->archivedStudents as $matricule){
-                $studentInfo = $Student->getStudent($matricule);
+                $studentInfo = $Student->getStudent($matricule); 
                 $Responsible = new Responsible();
                 if($studentInfo->cnieResponsible != 'NULL')
                     $Responsible->deleteResponsible($studentInfo->cnieResponsible,$matricule);

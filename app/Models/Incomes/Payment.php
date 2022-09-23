@@ -19,6 +19,13 @@ class Payment extends Model
                         ->join('incomes','incomes.idIncome','=','payment.idIncome')
                         ->get();
         }
+        //------------ find reçue by matricule-------- //
+        public function selectPayment($matricule){
+            return $this::select('*')
+            ->join('students','students.matricule','=','payment.matricule')
+            ->where('payment.matricule',$matricule)
+            ->get();
+        }
         //------------- create Payment ----------//         
         public function createPayment($datePayment,$paymentMode,$amout,$description,$matricule,$idIncome){
             $this->datePayment = $datePayment;

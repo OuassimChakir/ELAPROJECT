@@ -98,7 +98,7 @@ class IncomesController extends Controller
                 return Redirect::route('incomePayment.archive')->with('restoreMessage',"Le Reçus a été restorer avec succès")->with('incomePayment',$incomePayment);
             }
 
-            public function deleteArchivedPayment($idPayment){
+            public function deleteArchivedPayment($idPayment){ 
                 $Payment = new Payment();
                 $Payment->forceDeletePayment($idPayment);
                 return Redirect::back()->with('deleteMessage',"Le Reçue a été supprimer Définitivement");

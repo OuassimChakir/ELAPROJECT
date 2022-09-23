@@ -377,10 +377,15 @@
                     {{-- Reçus TAB --}}
                     <div class="tab-pane fade" id="recus" role="tabpanel"
                     aria-labelledby="recus-tab">
+                    <div class="col-5 modal-footer px-4">
+                        <button type="button" class="btn btn-primary" id="showFormButton">
+                            <i class="bi bi-plus-square"></i> Ajouter une Reçus
+                        </button>
+                    </div>
                     <form action="{{route('incomePayment.add')}}" method="post"> 
                         @csrf
                         @method('post')
-                        <div class="modal-body px-4">
+                        <div class="modal-body px-4" id="formSection">
                                 <div class="row mb-2 g-3">  
                                     <div class="col-lg-6">
                                         <div class="form-group mb-4">
@@ -448,6 +453,58 @@
                         </div>
                     </form>
                 </div>
+                                                    <!-- Notification Table -->
+                                                    <div class="card card-default">
+                                                        <div class="card-header justify-content-between mb-1">
+                                                            <h2>Les paiement de étudiant</h2>
+                                                        </div>
+                                                        <div class="card-body compact-notifications" data-simplebar
+                                                            style="height: 434px;">
+                                                            <table id="responsive-data-table"  class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Numéro</th>
+                                                                        <th>Designation</th>
+                                                                        <th>Type de Paiement</th>
+                                                                        <th>Prix</th>
+                                                                        <th>Date de Reçus</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                    
+                                                                <tbody>
+                                                                    @if (isset($incomePayment))
+                                    
+                                                                        @foreach ($incomePayment as $Payment)
+                                                                            <tr>
+                                                                                <td>ELA-R.{{str_pad((string) $Payment->idPayment, 4, 0, STR_PAD_LEFT)}}</td>
+                                                                                <td><span class="badge badge-primary">{{$Payment->designation}}</span></td>
+                                                                                <td>{{$Payment->paymentMode}}</td>
+                                                                                <td><span class="badge badge-dark">{{$Payment->amout}} DH</span></td>
+                                                                                <td>{{$Payment->datePayment}}</td>
+                                                                                <td>
+                                                                                    <div class="btn-group-spaced">
+                                                                                        <a href="" target="_blank">
+                                                                                            <button type="submit" class="btn btn-outline-success" name="print">
+                                                                                                <i class="bi bi-printer-fill"></i></i>
+                                                                                            </button>
+                                                                                        </a>
+                                                                                        <a href="{{route('incomePayment.delete',['idPayment'=>$Payment->idPayment])}}">
+                                                                                            <button type="submit" class="btn btn-outline-danger" name="deletePayment" onclick="return confirm('Vous êtes sûr?');">
+                                                                                                    <i class="bi bi-trash-fill"></i>
+                                                                                            </button>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                        <div class="mt-3"></div>
+                                                    </div>
                 </div>
                 </div>
             </div>
