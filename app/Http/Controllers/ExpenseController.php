@@ -99,7 +99,7 @@ class ExpenseController extends Controller
             public function restoreArchivedFacture($idExpensePayment){
                 $Facture = new Facture();
                 $Facture->restoreFacture($idExpensePayment);
-                $factures = $Facture->softDeletedFacture();
+                $factures = $Facture->softDeletedFactures();
                 return Redirect::route('factures.archive')->with('restoreMessage',"La facture a été restorer avec succès")->with('factures',$factures);
             }
 

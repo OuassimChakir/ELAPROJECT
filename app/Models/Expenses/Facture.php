@@ -66,7 +66,7 @@ class Facture extends Model
                         ->first();
         }
     
-        public function restoreArchivedFacture($idExpensePayment){
+        public function restoreFacture($idExpensePayment){
             $this::withTrashed()
                 ->where('idExpensePayment',$idExpensePayment)
                 ->restore();
