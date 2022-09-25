@@ -22,7 +22,7 @@
                         <div class="card-body">
                             <h2 class="mb-1">{{$NumGroups}}</h2>
                             <p>Les groups</p>
-                            <span class="mdi mdi-account-clock"></span>
+                            <span class="mdi mdi-content-paste"></span>
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <div class="card-body">
                             <h2 class="mb-1">{{$Factures}} DH</h2>
                             <p>Les dépenses</p>
-                            <span class="mdi mdi-package-variant"></span>
+                            <span><i class="bi bi-cash"></i></span>
                         </div>
                     </div>
                 </div>
