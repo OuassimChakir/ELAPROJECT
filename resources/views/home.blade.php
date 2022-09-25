@@ -31,7 +31,7 @@
                         <div class="card-body">
                             <h2 class="mb-1">{{$Factures}} DH</h2>
                             <p>Les dépenses</p>
-                            <span><i class="bi bi-cash"></i></span>
+                            <span><i class="bi bi-wallet2"></i></span>
                         </div>
                     </div>
                 </div>
