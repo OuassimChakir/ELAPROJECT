@@ -34,7 +34,7 @@ class HomeController extends Controller
         $Facture=new Facture();
         $students=$student->totalStudents(); 
         $NumGroups=$Group->totalGroups(); 
-        $Payments=$Payment->totalAmount(); 
+        $Payments=$Payment->totalAmount();  
         $Factures=$Facture->totalAmountExpense();
 
         /* ------------------------------------
@@ -43,7 +43,9 @@ class HomeController extends Controller
         $scolareYears = Storage::get('anneeScolaire.txt');
         $scolareYears = explode("\n",$scolareYears);
         $salesGraph = $Facture->totalAmountExepenseMonth($scolareYears[0],$scolareYears[1]);
+        $salesGraphPayment = $Payment->totalAmountIncomeMonth($scolareYears[0],$scolareYears[1]);
         $depenses = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $inconespayment = [0,0,0,0,0,0,0,0,0,0,0,0];
         for($i = 0; $i<12; $i++){
             foreach($salesGraph as $month){
                 switch ($month->mois) {
@@ -62,12 +64,36 @@ class HomeController extends Controller
                 }
             }
         }
+        for($i = 0; $i<12; $i++){
+            foreach($salesGraphPayment as $month){
+                switch ($month->mois) {
+                    case 9: $inconespayment[0] = $month->amount; break;
+                    case 10: $inconespayment[1] = $month->amount; break;
+                    case 11: $inconespayment[2] = $month->amount; break;
+                    case 12: $inconespayment[3] = $month->amount; break;
+                    case 1: $inconespayment[4] = $month->amount; break;
+                    case 2: $inconespayment[5] = $month->amount; break;
+                    case 3: $inconespayment[6] = $month->amount; break;
+                    case 4: $inconespayment[7] = $month->amount; break;
+                    case 5: $inconespayment[8] = $month->amount; break;
+                    case 6: $inconespayment[9] = $month->amount; break;
+                    case 7: $inconespayment[10] = $month->amount; break;
+                    case 8: $inconespayment[11] = $month->amount; break;                    
+                }
+            }
+        }
+        if(max($inconespayment)>=max($depenses))
+             $max=$inconespayment;
+             else $max=$depenses;
+             
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)
                            ->with('Factures',$Factures)
                            ->with('scolareYears',$scolareYears)
-                           ->with('depenses',$depenses);
+                           ->with('depenses',$depenses)
+                           ->with('inconespayment',$inconespayment)
+                           ->with('max',$max);
     }     
 
 }

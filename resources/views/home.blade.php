@@ -337,7 +337,7 @@
             var acqData = [
             {
                 first: [{{implode(',',$depenses)}}],
-                second: [144, 44, 177, 76, 23, 189, 12, 0, 0, 0, 0, 0]
+                second: [{{implode(',',$inconespayment)}}]
             }
             ];
 
@@ -416,7 +416,7 @@
                     ticks: {
                         beginAtZero: true,
                         stepSize: 100,
-                        max: {{max($depenses)}}
+                        max: {{max($max)}}
                     }
                     }
                 ]
