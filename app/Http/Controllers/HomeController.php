@@ -82,10 +82,11 @@ class HomeController extends Controller
                 }
             }
         }
-        if(max($inconespayment)>=max($depenses))
-             $max=$inconespayment;
-             else $max=$depenses;
-             
+        $maxinconespayment=max($inconespayment);
+        $maxdepenses=max($depenses);
+        if($maxinconespayment >= $maxdepenses)
+             $max=$maxinconespayment;
+             else $max=$maxdepenses;
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)

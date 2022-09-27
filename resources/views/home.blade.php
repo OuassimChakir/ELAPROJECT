@@ -416,7 +416,7 @@
                     ticks: {
                         beginAtZero: true,
                         stepSize: 100,
-                        max: {{max($max)}}
+                        max: {{ $max }},
                     }
                     }
                 ]
