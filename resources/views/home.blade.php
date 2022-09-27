@@ -416,7 +416,7 @@
                     ticks: {
                         beginAtZero: true,
                         stepSize: 100,
-                        max: {{max($revenus)}}
+                        max: {{max($depenses)}}
                     }
                     }
                 ]
