@@ -51,7 +51,7 @@
                     <!-- Sales Graph -->
                     <div id="user-acquisition" class="card card-default">
                         <div class="card-header">
-                            <h2>Sales Report</h2>
+                            <h2>Rapport des dépense et revenus</h2>
                         </div>
                         <div class="card-body">
                             <ul class="nav nav-tabs nav-style-border justify-content-between justify-content-lg-start border-bottom"
