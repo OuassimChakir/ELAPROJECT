@@ -58,7 +58,7 @@
                                 role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-bs-toggle="tab" href="#todays" role="tab"
-                                        aria-selected="true">2022 - 2023</a>
+                                        aria-selected="true">{{$scolareYears[0]}} - {{$scolareYears[1]}}</a>
                                 </li>
                             </ul>
                             <div class="tab-content pt-4" id="salesReport">
