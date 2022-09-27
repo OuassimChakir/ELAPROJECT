@@ -336,7 +336,7 @@
         if (acquisition !== null) {
             var acqData = [
             {
-                first: [{{implode(',',$revenus)}}],
+                first: [{{implode(',',$depenses)}}],
                 second: [144, 44, 177, 76, 23, 189, 12, 0, 0, 0, 0, 0]
             }
             ];
