@@ -58,15 +58,7 @@
                                 role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-bs-toggle="tab" href="#todays" role="tab"
-                                        aria-selected="true">Today's</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#monthly" role="tab"
-                                        aria-selected="false">Monthly </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#yearly" role="tab"
-                                        aria-selected="false">Yearly</a>
+                                        aria-selected="true">2022 - 2023</a>
                                 </li>
                             </ul>
                             <div class="tab-content pt-4" id="salesReport">
@@ -344,19 +336,8 @@
         if (acquisition !== null) {
             var acqData = [
             {
-                first: [200, 180, 44, 75, 150, 66, 70],
-                second: [144, 44, 177, 76, 23, 189, 12],
-                third: [44, 167, 102, 123, 183, 88, 134]
-            },
-            {
-                first: [144, 44, 110, 5, 123, 89, 12],
-                second: [22, 123, 45, 130, 112, 54, 181],
-                third: [55, 44, 144, 75, 155, 166, 70]
-            },
-            {
-                first: [134, 80, 123, 65, 171, 33, 22],
-                second: [44, 144, 77, 76, 123, 89, 112],
-                third: [156, 23, 165, 88, 112, 54, 181]
+                first: [{{implode(',',$revenus)}}],
+                second: [144, 44, 177, 76, 23, 189, 12, 0, 0, 0, 0, 0]
             }
             ];
 
@@ -367,17 +348,22 @@
             // The data for our dataset
             data: {
                 labels: [
-                "4 Jan",
-                "5 Jan",
-                "6 Jan",
-                "7 Jan",
-                "8 Jan",
-                "9 Jan",
-                "10 Jan"
+                "Sept",
+                "Oct",
+                "Nov",
+                "Déc",
+                "Janv",
+                "Févr",
+                "Mars",
+                "Avr",
+                "Mai",
+                "Juin",
+                "juill",
+                "Août"
                 ],
                 datasets: [
                 {
-                    label: "Via Referral",
+                    label: "Dépenses",
                     backgroundColor: "rgba(52, 116, 212, .2)",
                     borderColor: "rgba(52, 116, 212, .7)",
                     data: acqData[0].first,
@@ -390,26 +376,13 @@
                     pointStyle: "rectRounded"
                 },
                 {
-                    label: "Direct",
+                    label: "Revenus",
                     backgroundColor: "rgba(255, 192, 203, .3)",
                     borderColor: "rgba(255, 192, 203, .7)",
                     data: acqData[0].second,
                     lineTension: 0.3,
                     pointBackgroundColor: "rgba(255, 192, 203, 0)",
                     pointHoverBackgroundColor: "rgba(255, 192, 203, 1)",
-                    pointHoverRadius: 3,
-                    pointHitRadius: 30,
-                    pointBorderWidth: 2,
-                    pointStyle: "rectRounded"
-                },
-                {
-                    label: "Via Social",
-                    backgroundColor: "rgb(178, 251, 212, .3)",
-                    borderColor: "rgba(178, 251, 212, .7)",
-                    data: acqData[0].third,
-                    lineTension: 0.3,
-                    pointBackgroundColor: "rgba(178, 251, 212, 0)",
-                    pointHoverBackgroundColor: "rgba(178, 251, 212, 1)",
                     pointHoverRadius: 3,
                     pointHitRadius: 30,
                     pointBorderWidth: 2,
@@ -442,8 +415,8 @@
                     },
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 50,
-                        max: 200
+                        stepSize: 100,
+                        max: {{max($revenus)}}
                     }
                     }
                 ]

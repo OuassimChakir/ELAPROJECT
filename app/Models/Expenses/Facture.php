@@ -5,6 +5,7 @@ namespace App\Models\Expenses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Facture extends Model
 {
@@ -33,7 +34,19 @@ class Facture extends Model
             $this->idStaff = $idStaff;
             $this->idExpense = $idExpense;
             $this->save();
-    }
+        }
+        // ---------- Total Amount for Each Month in the Scolare Year ---------- //
+        public function totalAmountExepenseMonth($firstYear,$secondYear){
+            return DB::table('expensepayment')
+                ->selectRaw('SUM(amout) AS amount, MONTH(datePayment) AS mois')
+                ->whereYear("datePayment",$firstYear)
+                ->orWhereYear("datePayment",$secondYear)
+                ->whereRaw("MONTH(datePayment) BETWEEN '09' AND '12'")
+                ->orWhereRaw("MONTH(datePayment) BETWEEN '01' AND '08'")
+                ->groupByRaw("MONTH(datePayment)")
+                ->get();
+        }
+        
 
         // ---------- Select Facture for PDF Print ----------- //
 
