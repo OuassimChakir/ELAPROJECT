@@ -121,7 +121,7 @@
                         <div class="no-gutters">
                             <div>
                                 <div class="card-header justify-content-between">
-                                    <h2>User Activity</h2>
+                                    <h2>Rapport des absences</h2>
                                     <div class="date-range-report ">
                                         <span></span>
                                     </div>
