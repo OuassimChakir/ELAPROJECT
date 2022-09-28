@@ -114,5 +114,14 @@ class Group extends Model
         public function selectGroup(){
             return $this::all();
         }
-
+    // statistic des types groupes
+    
+        public function StatisticTypesGroupes(){
+            return $this::select('course')
+            ->selectRaw('COUNT(groups.idGroup) as nbtypegroupes')
+            ->rightJoin('subjects','groups.idSubject','=','subjects.idSubject')
+            ->rightJoin('coursetype','coursetype.idCourseType','=','subjects.idCourseType')
+            ->GROUPBY('subjects.idCourseType')
+            ->get();
+        }
 }

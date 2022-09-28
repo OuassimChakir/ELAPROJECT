@@ -77,26 +77,12 @@
                     <!-- Doughnut Chart -->
                     <div class="card card-default">
                         <div class="card-header justify-content-center">
-                            <h2>Orders Overview</h2>
+                            <h2>Type des groupes</h2>
                         </div>
                         <div class="card-body">
-                            <canvas id="doChart"></canvas>
+                            <canvas id="Chart"></canvas>
                         </div>
-                        <a href="#" class="pb-5 d-block text-center text-muted"><i
-                                class="mdi mdi-download mr-2"></i> Download overall report</a>
                         <div class="card-footer d-flex flex-wrap bg-white p-0">
-                            <div class="col-6">
-                                <div class="p-20">
-                                    <ul class="d-flex flex-column justify-content-between">
-                                        <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-                                                style="color: #4c84ff"></i>Order Completed</li>
-                                        <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-                                                style="color: #80e1c1 "></i>Order Unpaid</li>
-                                        <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-                                                style="color: #ff7b7b "></i>Order returned</li>
-                                    </ul>
-                                </div>
-                            </div>
                             <div class="col-6 border-left">
                                 <div class="p-20">
                                     <ul class="d-flex flex-column justify-content-between">
@@ -377,11 +363,11 @@
                 },
                 {
                     label: "Revenus",
-                    backgroundColor: "rgba(255, 192, 203, .3)",
-                    borderColor: "rgba(255, 192, 203, .7)",
+                    backgroundColor: "rgba(255, 100, 203, .3)",
+                    borderColor: "rgba(255, 100, 203, .7)",
                     data: acqData[0].second,
                     lineTension: 0.3,
-                    pointBackgroundColor: "rgba(255, 192, 203, 0)",
+                    pointBackgroundColor: "rgba(255, 100, 203, 0)",
                     pointHoverBackgroundColor: "rgba(255, 192, 203, 1)",
                     pointHoverRadius: 3,
                     pointHitRadius: 30,
@@ -586,5 +572,54 @@
       });
     });
   }
+   /*======== 11. types groupes CHART ========*/
+  var doughnut = document.getElementById("Chart");
+  if (doughnut !== null) {
+    var myDoughnutChart = new Chart(doughnut, {
+      type: "doughnut",
+      data: {
+        labels: ["completed", "unpaid", "pending"],
+        datasets: [
+          {
+            label: ["completed", "unpaid", "pending"],
+            data: [4100, 2500, 1800, 2300, 400, 150],
+            backgroundColor: ["#88aaf3", "#50d7ab", "#9586cd"],
+            borderWidth: 1
+            // borderColor: ['#88aaf3','#29cc97','#8061ef','#fec402']
+            // hoverBorderColor: ['#88aaf3', '#29cc97', '#8061ef', '#fec402']
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        cutoutPercentage: 75,
+        tooltips: {
+          callbacks: {
+            title: function(tooltipItem, data) {
+              return "Order : " + data["labels"][tooltipItem[0]["index"]];
+            },
+            label: function(tooltipItem, data) {
+              return data["datasets"][0]["data"][tooltipItem["index"]];
+            }
+          },
+          titleFontColor: "#888",
+          bodyFontColor: "#555",
+          titleFontSize: 12,
+          bodyFontSize: 14,
+          backgroundColor: "rgba(256,256,256,0.95)",
+          displayColors: true,
+          borderColor: "rgba(220, 220, 220, 0.9)",
+          borderWidth: 2
+        }
+      }
+    });
+  }
+
+  
+
     </script>
 @endsection
