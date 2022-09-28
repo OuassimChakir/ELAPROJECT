@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\responsible\Student;
 use App\Models\Group;
+use App\Models\Attendance;
 use App\Models\Incomes\Payment;
 use App\Models\Expenses\Facture;
 use DateTime;
@@ -30,6 +31,7 @@ class HomeController extends Controller
 
         $student=new Student();
         $Group=new Group();
+        $Attendance=new Attendance();
         $Payment=new Payment();
         $Facture=new Facture();
         $students=$student->totalStudents(); 
@@ -87,6 +89,55 @@ class HomeController extends Controller
         if($maxinconespayment >= $maxdepenses)
              $max=$maxinconespayment;
              else $max=$maxdepenses;
+
+
+        // totalAbsenceMonth
+        $Attendances = $Attendance->totalAbsenceMonth($scolareYears[0],$scolareYears[1]);
+        $Absences = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $present = [0,0,0,0,0,0,0,0,0,0,0,0];
+        for($i = 0; $i<12; $i++){
+            foreach($Attendances as $month){
+                if($month->etatabsence==0){
+                switch ($month->mois) {
+                    case 9: $Absences[0] = $month->absence; break;
+                    case 10: $Absences[1] = $month->absence; break;
+                    case 11: $Absences[2] = $month->absence; break;
+                    case 12: $Absences[3] = $month->absence; break;
+                    case 1: $Absences[4] = $month->absence; break;
+                    case 2: $Absences[5] = $month->absence; break;
+                    case 3: $Absences[6] = $month->absence; break;
+                    case 4: $Absences[7] = $month->absence; break;
+                    case 5: $Absences[8] = $month->absence; break;
+                    case 6: $Absences[9] = $month->absence; break;
+                    case 7: $Absences[10] = $month->absence; break;
+                    case 8: $Absences[11] = $month->absence; break;                    
+                }}
+                elseif($month->etatabsence==2){
+                    switch ($month->mois) {
+                        case 9: $present[0] = $month->absence; break;
+                        case 10: $present[1] = $month->absence; break;
+                        case 11: $present[2] = $month->absence; break;
+                        case 12: $present[3] = $month->absence; break;
+                        case 1: $present[4] = $month->absence; break;
+                        case 2: $present[5] = $month->absence; break;
+                        case 3: $present[6] = $month->absence; break;
+                        case 4: $present[7] = $month->absence; break;
+                        case 5: $present[8] = $month->absence; break;
+                        case 6: $present[9] = $month->absence; break;
+                        case 7: $present[10] = $month->absence; break;
+                        case 8: $present[11] = $month->absence; break;                    
+                    }
+                }
+                
+            }
+            }
+            $maxpresent=max($present);
+            $maxAbsences=max($Absences);
+            if($maxpresent >= $maxAbsences)
+                 $maxAP=$maxpresent;
+                 else $maxAP=$maxAbsences;
+        
+        dd($Absences);
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)
@@ -94,7 +145,8 @@ class HomeController extends Controller
                            ->with('scolareYears',$scolareYears)
                            ->with('depenses',$depenses)
                            ->with('inconespayment',$inconespayment)
-                           ->with('max',$max);
+                           ->with('max',$max)
+                           ->with('maxAP',$maxAP);
     }     
 
 }

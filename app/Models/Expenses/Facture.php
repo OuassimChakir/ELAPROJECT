@@ -46,8 +46,6 @@ class Facture extends Model
                 ->groupByRaw("MONTH(datePayment)")
                 ->get();
         }
-        
-
         // ---------- Select Facture for PDF Print ----------- //
 
         public function getFacturePdf($idExpensePayment){

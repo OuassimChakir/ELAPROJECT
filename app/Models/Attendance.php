@@ -59,4 +59,17 @@ class Attendance extends Model
                     ->get();
        }
     
+        // ---------- Total absence for Each Month in the Scolare Year ---------- //
+        public function totalAbsenceMonth($firstYear,$secondYear){
+           return DB::table('attendance')
+                    ->selectRaw('count(idAttendance) AS absence, MONTH(dateAbsence) AS mois ,absence AS etatabsence')
+                    ->whereYear("dateAbsence",$firstYear)
+                    ->orWhereYear("dateAbsence",$secondYear)
+                    ->whereRaw("MONTH(dateAbsence) BETWEEN '09' AND '12'")
+                    ->orWhereRaw("MONTH(dateAbsence) BETWEEN '01' AND '08'")
+                    ->groupByRaw("absence")
+                    ->groupByRaw("MONTH(dateAbsence)")
+                    ->get();
+        }
+            
 }
