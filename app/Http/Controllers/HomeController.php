@@ -112,7 +112,7 @@ class HomeController extends Controller
                     case 7: $Absences[10] = $month->absence; break;
                     case 8: $Absences[11] = $month->absence; break;                    
                 }}
-                elseif($month->etatabsence==2){
+                elseif($month->etatabsence==1){
                     switch ($month->mois) {
                         case 9: $present[0] = $month->absence; break;
                         case 10: $present[1] = $month->absence; break;
@@ -137,7 +137,6 @@ class HomeController extends Controller
                  $maxAP=$maxpresent;
                  else $maxAP=$maxAbsences;
         
-        dd($Absences);
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)
@@ -145,6 +144,8 @@ class HomeController extends Controller
                            ->with('scolareYears',$scolareYears)
                            ->with('depenses',$depenses)
                            ->with('inconespayment',$inconespayment)
+                           ->with('present',$present)
+                           ->with('Absences',$Absences)
                            ->with('max',$max)
                            ->with('maxAP',$maxAP);
     }     

@@ -1308,7 +1308,7 @@ $(document).ready(function() {
       // The data for our dataset
       data: {
         labels: [
-          "4 Jan",
+          "100 Jan",
           "5 Jan",
           "6 Jan",
           "7 Jan",
