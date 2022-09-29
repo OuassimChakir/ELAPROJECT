@@ -18,9 +18,10 @@ class HomeController extends Controller
     // Bisextil Method 
     public static function est_bissextile($annee)
     {
-        return date("m-d", strtotime("$annee-02-29")) == "02-29";
+        return date("m-d", strtotime("$annee-02-29")) == "02-29";    
     }
-
+   
+     
 
     public function index(){
         // ---------------- Année Scolaire ----------- //
@@ -102,12 +103,15 @@ class HomeController extends Controller
         / ---------------------------------*/
         // total Absence Month
         $Attendances = $Attendance->totalAbsenceMonth($scolareYears[0],$scolareYears[1]);
+        $Attend = $Attendance->totalAbsenceDay($scolareYears[0],$scolareYears[1]);
+        dd($Attend);
         $Absences = [0,0,0,0,0,0,0,0,0,0,0,0];
         $present = [0,0,0,0,0,0,0,0,0,0,0,0];
         for($i = 0; $i<12; $i++){
             foreach($Attendances as $month){
                 if($month->etatabsence==0){
                 switch ($month->mois) {
+    
                     case 9: $Absences[0] = $month->absence; break;
                     case 10: $Absences[1] = $month->absence; break;
                     case 11: $Absences[2] = $month->absence; break;
@@ -145,6 +149,44 @@ class HomeController extends Controller
             if($maxpresent >= $maxAbsences)
                  $maxAP=$maxpresent;
                  else $maxAP=$maxAbsences;
+
+                //  Day 
+                 $anne=date('Y');
+                 $bsixtil=HomeController::est_bissextile($anne);
+                 $mois = intval(date('m')); 
+                if($mois==4 ||$mois==6  ||$mois==9  ||$mois==11  ){
+                    for ($i=1; $i <=30 ; $i++) { 
+                        $day[]=$i;
+                    }
+                }elseif($mois==1||$mois==3||$mois==5||$mois==7||$mois==8||$mois==10||$mois==12){
+                    for ($i=1; $i <=31 ; $i++) { 
+                        $day[]=$i;
+                    }
+                }
+                elseif($mois==2){
+                    if($bsixtil== true){
+                        for ($i=1; $i <=29 ; $i++) { 
+                            $day[]=$i;
+                        }
+                     }else {
+                      for ($i=1; $i <=28 ; $i++) { 
+                        $day[]=$i;
+                    } }
+                }
+                //end Day  
+                // Number the absence 
+                 $Absencesday=[];
+                foreach($Attend as $Atten){
+                    if($Atten->etatabsence==0){
+                     
+                    }}
+                    
+
+                    
+                    
+                 
+                  
+
         // end absences
 
         // types Groupe
@@ -181,6 +223,7 @@ class HomeController extends Controller
                            ->with('inconespayment',$inconespayment)
                            ->with('present',$present)
                            ->with('Absences',$Absences)
+                           ->with('day',$day)
                            ->with('chartjs',$chartjs)
                            ->with('max',$max)
                            ->with('maxAP',$maxAP);

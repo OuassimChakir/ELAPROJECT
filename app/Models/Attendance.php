@@ -71,5 +71,16 @@ class Attendance extends Model
                     ->groupByRaw("MONTH(dateAbsence)")
                     ->get();
         }
+        public function totalAbsenceDay($firstYear,$secondYear){
+            return DB::table('attendance')
+                     ->selectRaw('count(idAttendance) AS absence, DAY(dateAbsence) AS day ,absence AS etatabsence')
+                     ->whereYear("dateAbsence",$firstYear)
+                     ->orWhereYear("dateAbsence",$secondYear)
+                     ->whereRaw("MONTH(dateAbsence) BETWEEN '09' AND '12'")
+                     ->orWhereRaw("MONTH(dateAbsence) BETWEEN '01' AND '08'")
+                     ->groupByRaw("absence")
+                     ->groupByRaw("DAY(dateAbsence)")
+                     ->get();
+         }
             
 }

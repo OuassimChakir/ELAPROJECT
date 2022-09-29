@@ -444,20 +444,7 @@
         type: "line",
         // The data for our dataset
         data: {
-            labels: [
-                    "Sept",
-                    "Oct",
-                    "Nov",
-                    "Déc",
-                    "Janv",
-                    "Févr",
-                    "Mars",
-                    "Avr",
-                    "Mai",
-                    "Juin",
-                    "juill",
-                    "Août"
-            ],
+            labels: [{{implode(',',$day)}}],
             datasets: [
             {
                 label: "Present(e)",
