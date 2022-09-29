@@ -172,7 +172,6 @@ class HomeController extends Controller
         ->options([]);
 
         
-        dd($chartjs);
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)
