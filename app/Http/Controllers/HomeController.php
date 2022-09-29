@@ -170,7 +170,7 @@ class HomeController extends Controller
             ]
         ])
         ->options([]);
-
+        // dd($chartjs->get('datasets')[0]['backgroundColor']);
         
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
