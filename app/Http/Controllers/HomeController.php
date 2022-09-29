@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
+    // Bisextil Method 
+    public static function est_bissextile($annee)
+    {
+        return date("m-d", strtotime("$annee-02-29")) == "02-29";
+    }
+
+
     public function index(){
         // ---------------- Année Scolaire ----------- //
         if(!Storage::exists('anneeScolaire.txt')){
@@ -90,7 +97,9 @@ class HomeController extends Controller
              $max=$maxinconespayment;
              else $max=$maxdepenses;
 
-
+        /* ---------------------------------
+        / Absence Activity CHART
+        / ---------------------------------*/
         // total Absence Month
         $Attendances = $Attendance->totalAbsenceMonth($scolareYears[0],$scolareYears[1]);
         $Absences = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -139,15 +148,31 @@ class HomeController extends Controller
         // end absences
 
         // types Groupe
-        $tygroup = [];
          $typesgroupes=$Group->StatisticTypesGroupes();
          foreach($typesgroupes as $type){
-                $tygroup[0][]=$type->course;
-                $tygroup[1][]=$type->nbtypegroupes;
+                $tygroup[]=$type->course;
+                $nbTypeGroup[]=$type->nbtypegroupes;
          }
-         $typeGroup = implode(',',$tygroup[0]);
-         $typeGroup = '"'.str_replace(',','","',$typeGroup).'"';
-         $nbTypeGroup = implode(',',$tygroup[1]);
+
+        /* ---------------------------------
+        / Groups Types CHART PIE
+        / ---------------------------------*/
+        $chartjs = app()->chartjs
+        ->name('pieChartTest')
+        ->type('pie')
+        ->size(['width' => 300, 'height' => 300])
+        ->labels($tygroup)
+        ->datasets([
+            [
+                'backgroundColor' => ['#FF6384', '#36A2EB',"8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
+                'hoverBackgroundColor' => ['#FF6384', '#36A2EB',"8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
+                'data' => $nbTypeGroup
+            ]
+        ])
+        ->options([]);
+
+        
+        dd($chartjs);
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)
@@ -157,8 +182,7 @@ class HomeController extends Controller
                            ->with('inconespayment',$inconespayment)
                            ->with('present',$present)
                            ->with('Absences',$Absences)
-                           ->with('typeGroup',$typeGroup)
-                           ->with('nbTypeGroup',$nbTypeGroup)
+                           ->with('chartjs',$chartjs)
                            ->with('max',$max)
                            ->with('maxAP',$maxAP);
     }     
