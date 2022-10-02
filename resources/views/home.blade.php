@@ -111,7 +111,8 @@
                                             <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: rgba(255, 199, 15, .8)"></i>Absences</li>
                                             <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: rgba(82, 136, 255, .8)"></i>Présences</li>
                                         </ul>
-                                    </div>                                </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
