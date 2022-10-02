@@ -87,13 +87,13 @@
             </div>
 
             <div class="row">
-                <div class="col-xl-8 col-md-12 p-b-15">
+                <div class="col-xl-12 col-md-12 p-b-15">
                     <!-- User absence statistics -->
                     <div class="card card-default" id="user-absence">
                         <div class="no-gutters">
                             <div>
                                 <div class="card-header justify-content-between">
-                                    <h2>Rapport des absences</h2>
+                                    <h2>Rapport des Absences</h2>
                                     <div class="date-range-report ">
                                         <span></span>
                                     </div>
@@ -106,22 +106,13 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex flex-wrap bg-white border-top">
-                                    <a href="#" class="text-uppercase py-3">In-Detail Overview</a>
-                                </div>
+                                    <div class="p-20">
+                                        <ul class="d-flex flex-column justify-content-between">
+                                            <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: rgba(255, 199, 15, .8)"></i>Absences</li>
+                                            <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: rgba(82, 136, 255, .8)"></i>Présences</li>
+                                        </ul>
+                                    </div>                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-12 p-b-15">
-                    <div class="card card-default">
-                        <div class="card-header flex-column align-items-start">
-                            <h2>Current Users</h2>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="currentUser" class="chartjs"></canvas>
-                        </div>
-                        <div class="card-footer d-flex flex-wrap bg-white border-top">
-                            <a href="#" class="text-uppercase py-3">In-Detail Overview</a>
                         </div>
                     </div>
                 </div>
@@ -444,7 +435,7 @@
         type: "line",
         // The data for our dataset
         data: {
-            labels: [{{implode(',',$day)}}],
+            labels: [{{implode(',',$days)}}],
             datasets: [
             {
                 label: "Present(e)",

@@ -101,94 +101,56 @@ class HomeController extends Controller
         /* ---------------------------------
         / Absence Activity CHART
         / ---------------------------------*/
-        // total Absence Month
-        $Attendances = $Attendance->totalAbsenceMonth($scolareYears[0],$scolareYears[1]);
-        $Attend = $Attendance->totalAbsenceDay($scolareYears[0],$scolareYears[1]);
-        dd($Attend);
-        $Absences = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $present = [0,0,0,0,0,0,0,0,0,0,0,0];
-        for($i = 0; $i<12; $i++){
-            foreach($Attendances as $month){
-                if($month->etatabsence==0){
-                switch ($month->mois) {
+        $currentMonth = date('m');
+        $Attend = $Attendance->totalAbsenceDay($scolareYears[0],$scolareYears[1],$currentMonth);
+        // Fill Month Days
+        $nombreJours = 0;
+        switch ($currentMonth) {
+            case '01': $nombreJours = 31; break;
+            case '03': $nombreJours = 31; break;
+            case '04': $nombreJours = 30; break;
+            case '05': $nombreJours = 31; break;
+            case '06': $nombreJours = 30; break;
+            case '07': $nombreJours = 31; break;
+            case '08': $nombreJours = 31; break;      
+            case '09': $nombreJours = 30; break;
+            case '10': $nombreJours = 31; break;
+            case '11': $nombreJours = 30; break;
+            case '12': $nombreJours = 31; break;              
+        }
+        if($currentMonth == '02'){
+            if(HomeController::est_bissextile(date('Y')))
+                $nombreJours = 29;
+            else 
+                $nombreJours = 28;
+        }
+        
+        // Fill Arrays With Values
+        $Absences = $present = array_fill(0,$nombreJours,0);
+        foreach ($Attend as $value) {
+            if($value->etatabsence == '0')
+                $present[$value->day-1] = $value->absence;
+            elseif($value->etatabsence == '1')
+                $Absences[$value->day-1] = $value->absence;
+        }
+
+        $maxpresent=max($present);
+        $maxAbsences=max($Absences);
+
+        if($maxpresent >= $maxAbsences)
+            $maxAP=$maxpresent;
+        else 
+            $maxAP=$maxAbsences;
+        
+        $days = [];
+        foreach ($Absences as $key => $value) {
+            $days[$key] = $key + 1;
+        }
+        // End Absences
     
-                    case 9: $Absences[0] = $month->absence; break;
-                    case 10: $Absences[1] = $month->absence; break;
-                    case 11: $Absences[2] = $month->absence; break;
-                    case 12: $Absences[3] = $month->absence; break;
-                    case 1: $Absences[4] = $month->absence; break;
-                    case 2: $Absences[5] = $month->absence; break;
-                    case 3: $Absences[6] = $month->absence; break;
-                    case 4: $Absences[7] = $month->absence; break;
-                    case 5: $Absences[8] = $month->absence; break;
-                    case 6: $Absences[9] = $month->absence; break;
-                    case 7: $Absences[10] = $month->absence; break;
-                    case 8: $Absences[11] = $month->absence; break;                    
-                }}
-                elseif($month->etatabsence==1){
-                    switch ($month->mois) {
-                        case 9: $present[0] = $month->absence; break;
-                        case 10: $present[1] = $month->absence; break;
-                        case 11: $present[2] = $month->absence; break;
-                        case 12: $present[3] = $month->absence; break;
-                        case 1: $present[4] = $month->absence; break;
-                        case 2: $present[5] = $month->absence; break;
-                        case 3: $present[6] = $month->absence; break;
-                        case 4: $present[7] = $month->absence; break;
-                        case 5: $present[8] = $month->absence; break;
-                        case 6: $present[9] = $month->absence; break;
-                        case 7: $present[10] = $month->absence; break;
-                        case 8: $present[11] = $month->absence; break;                    
-                    }
-                }
-                
-            }
-            }
-            $maxpresent=max($present);
-            $maxAbsences=max($Absences);
-            if($maxpresent >= $maxAbsences)
-                 $maxAP=$maxpresent;
-                 else $maxAP=$maxAbsences;
-
-                //  Day 
-                 $anne=date('Y');
-                 $bsixtil=HomeController::est_bissextile($anne);
-                 $mois = intval(date('m')); 
-                if($mois==4 ||$mois==6  ||$mois==9  ||$mois==11  ){
-                    for ($i=1; $i <=30 ; $i++) { 
-                        $day[]=$i;
-                    }
-                }elseif($mois==1||$mois==3||$mois==5||$mois==7||$mois==8||$mois==10||$mois==12){
-                    for ($i=1; $i <=31 ; $i++) { 
-                        $day[]=$i;
-                    }
-                }
-                elseif($mois==2){
-                    if($bsixtil== true){
-                        for ($i=1; $i <=29 ; $i++) { 
-                            $day[]=$i;
-                        }
-                     }else {
-                      for ($i=1; $i <=28 ; $i++) { 
-                        $day[]=$i;
-                    } }
-                }
-                //end Day  
-                // Number the absence 
-                 $Absencesday=[];
-                foreach($Attend as $Atten){
-                    if($Atten->etatabsence==0){
-                     
-                    }}
-                    
-
-                    
-                    
-                 
-                  
-
-        // end absences
-
+        /* ---------------------------------
+        / Groups Types CHART PIE
+        / ---------------------------------*/
         // types Groupe
          $typesgroupes=$Group->StatisticTypesGroupes();
          foreach($typesgroupes as $type){
@@ -196,9 +158,6 @@ class HomeController extends Controller
                 $nbTypeGroup[]=$type->nbtypegroupes;
          }
 
-        /* ---------------------------------
-        / Groups Types CHART PIE
-        / ---------------------------------*/
         $chartjs = app()->chartjs
         ->name('pieChartTest')
         ->type('pie')
@@ -223,10 +182,10 @@ class HomeController extends Controller
                            ->with('inconespayment',$inconespayment)
                            ->with('present',$present)
                            ->with('Absences',$Absences)
-                           ->with('day',$day)
                            ->with('chartjs',$chartjs)
                            ->with('max',$max)
-                           ->with('maxAP',$maxAP);
+                           ->with('maxAP',$maxAP)
+                           ->with('days',$days);
     }     
 
 }
