@@ -490,7 +490,7 @@
                 {
                 gridLines: {
                     fontColor: "#8a909d",
-                    fontFamily: "Roboto, sans-serif",
+                    fontFamily: "Raleway, sans-serif",
                     display: true,
                     color: "#eee",
                     zeroLineColor: "#eee"
@@ -501,7 +501,7 @@
                     // }
                     stepSize: 10,
                     fontColor: "#8a909d",
-                    fontFamily: "Roboto, sans-serif",
+                    fontFamily: "Rraleway, sans-serif",
                     max: {{ $maxAP }},
                 }
                 }

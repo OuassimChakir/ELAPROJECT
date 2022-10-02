@@ -136,7 +136,6 @@ class HomeController extends Controller
 
         $maxpresent=max($present);
         $maxAbsences=max($Absences);
-
         if($maxpresent >= $maxAbsences)
             $maxAP=$maxpresent;
         else 
