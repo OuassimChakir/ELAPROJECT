@@ -121,10 +121,10 @@
 
             <div class="row">
                 <div class="col-12 p-b-15">
-                    <!-- Recent Order Table -->
+                    <!-- les facture  -->
                     <div class="card card-table-border-none card-default recent-orders" id="recent-orders">
                         <div class="card-header justify-content-between">
-                            <h2>Recent Orders</h2>
+                            <h2>Les Factures</h2>
                             <div class="date-range-report">
                                 <span></span>
                             </div>
