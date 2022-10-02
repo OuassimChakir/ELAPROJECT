@@ -172,6 +172,11 @@ class HomeController extends Controller
         ->options([]);
         // dd($chartjs->get('datasets')[0]['backgroundColor']);
         
+        // table de   facture 
+
+        $allfacture=$Facture->allFactureParDate();
+
+
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)
@@ -184,7 +189,8 @@ class HomeController extends Controller
                            ->with('chartjs',$chartjs)
                            ->with('max',$max)
                            ->with('maxAP',$maxAP)
-                           ->with('days',$days);
+                           ->with('days',$days)
+                           ->with('allfacture',$allfacture);
     }     
 
 }
