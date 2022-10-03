@@ -94,9 +94,6 @@
                             <div>
                                 <div class="card-header justify-content-between">
                                     <h2>Rapport des Absences</h2>
-                                    <div class="date-range-report ">
-                                        <span></span>
-                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="tab-content" id="userabsenceContent"> 
@@ -118,7 +115,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12 p-b-15">
                     <!-- les facture  -->
@@ -139,7 +135,6 @@
                                         <th class="d-none d-lg-table-cell">Description</th>
                                         <th class="d-none d-lg-table-cell">Date de Facture</th>
                                         <th class="d-none d-lg-table-cell">Prix</th>
-                                        <th>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -151,25 +146,15 @@
                                         <td class="d-none d-lg-table-cell">{{$facture->description}}</td>
                                         <td class="d-none d-lg-table-cell">{{$facture->datePayment}}</td>
                                         <td class="d-none d-lg-table-cell"><span class="badge badge-dark">{{$facture->amout}} DH</td>
-                                        <td>
-                                            <span class="badge badge-success">Completed</span>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="dropdown show d-inline-block widget-dropdown">
-                                                <a class="dropdown-toggle icon-burger-mini" href=""
-                                                    role="button" id="dropdown-recent-order1"
-                                                    data-bs-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false" data-display="static"></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li class="dropdown-item">
-                                                        <a href="#">View</a>
-                                                    </li>
-                                                    <li class="dropdown-item">
-                                                        <a href="#">Remove</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
+                                            <td class="text-right">
+                                                <div class="btn-group-spaced">
+                                                    <a href="{{route('pdf.generate',['idExpensePayment'=>$facture->idExpensePayment])}}" target="_blank">
+                                                        <button type="submit" class="btn btn-outline-success" name="print">
+                                                            <i class="bi bi-file-earmark-pdf"></i></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </td>
                                     </tr> 
                                     @endforeach
                                 </tbody>
