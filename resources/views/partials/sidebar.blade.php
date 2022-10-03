@@ -184,6 +184,13 @@
 								</div>
 								<hr>
 							</li>
+							<!-- Setting -->
+							<li>
+							    <a class="sidenav-item-link" href="review-list.html">
+									<i class="bi bi-gear"></i>
+									<span class="nav-text">Paramètre</span>
+								</a>
+							</li>
 							<!-- Deconnexion -->
 							<li>
 								<a class="sidenav-item-link" href="review-list.html">
