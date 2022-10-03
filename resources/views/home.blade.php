@@ -125,9 +125,6 @@
                     <div class="card card-table-border-none card-default recent-orders" id="recent-orders">
                         <div class="card-header justify-content-between">
                             <h2>Les Factures</h2>
-                            <div class="date-range-report">
-                                <span></span>
-                            </div>
                         </div>
                         <div class="card-body pt-0 pb-5">
                             <table class="table card-table table-responsive table-responsive-large"
@@ -163,9 +160,6 @@
                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                     <li class="dropdown-item">
                                                         <a href="#">View</a>
-                                                    </li>
-                                                    <li class="dropdown-item">
-                                                        <a href="#">Remove</a>
                                                     </li>
                                                 </ul>
                                             </div>
