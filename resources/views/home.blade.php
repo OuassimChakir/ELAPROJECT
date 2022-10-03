@@ -135,7 +135,7 @@
                                         <th class="d-none d-lg-table-cell">Description</th>
                                         <th class="d-none d-lg-table-cell">Date de Facture</th>
                                         <th class="d-none d-lg-table-cell">Prix</th>
-                                        <th></th>
+                                        <th>PDF</th>
                                     </tr>
                                 </thead>
                                 <tbody>
