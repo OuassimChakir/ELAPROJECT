@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TypestaffController;
 use App\Http\Controllers\StudentController;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','HomeController@index')->name('acceuil');
+
 
 // --------------- GRADES ------------ //
 Route::get('/niveau','GradesController@grades')->name('grades');
@@ -213,7 +215,10 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/archive/incomePayment/delete/{idPayment}','IncomesController@deleteArchivedPayment')->name('incomePayment.archive.delete');
     Route::get('/archive/incomePayment/restore/{idPayment}','IncomesController@restoreArchivedPayment')->name('incomePayment.archive.restore');
     Route::post('/archive/incomePayment/action','IncomesController@multipleArchivedPayment')->name('incomePayment.archive.multiple');
-   
+    
+    //------------Setting------------------------//
+
+    Route::get('/stting','SettingController@index')->name('stting');
     
     // ----- pdf de facture
     Route::get('/pdf/{idExpensePayment}','PdfController@pdf')->name('pdf.generate');

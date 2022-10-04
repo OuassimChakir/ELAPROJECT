@@ -186,7 +186,7 @@
 							</li>
 							<!-- Setting -->
 							<li>
-							    <a class="sidenav-item-link" href="review-list.html">
+							    <a class="sidenav-item-link" href="{{route('stting')}}">
 									<i class="bi bi-gear"></i>
 									<span class="nav-text">Paramètre</span>
 								</a>
