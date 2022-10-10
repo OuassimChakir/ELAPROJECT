@@ -218,13 +218,30 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     
     //------------Setting------------------------//
 
-    Route::get('/stting','SettingController@index')->name('stting');
+    Route::get('/settings','SettingController@index')->name('settings');
     
     // ----- pdf de facture
     Route::get('/pdf/{idExpensePayment}','PdfController@pdf')->name('pdf.generate');
 
     // Facture Staff Data Ajax
     Route::get('/factureDepenses/{idExpense}','ExpenseController@getStaffData');
+
+    /* --------------------------------------
+    / USERS
+    / --------------------------------------- */
+        // Users Page
+    Route::get('/utilisateurs','UserController@users')->name('users');
+        // Add User
+    Route::post('/utilisateurs','UserController@users')->name('users.add');
+
+    /* --------------------------------------
+    / Authentification
+    / --------------------------------------- */
+    Route::get("/login","UserController@login")->name('login');
 ?>
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

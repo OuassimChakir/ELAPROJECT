@@ -40,9 +40,29 @@
 									<i class="bi bi-people-fill"></i>
 									<span class="nav-text">Staff</span>
 								</a>
+							</li>
+							<!-- Subjects -->
+							<li class="has-sub">
+								<a class="sidenav-item-link" href="javascript:void(0)">
+									<i class="bi bi-people-fill"></i>
+									<span class="nav-text">Utilisateurs</span> <b class="caret"></b>
+								</a>
+								<div class="collapse">
+									<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
+										<li class="">
+											<a class="sidenav-item-link" href="#">
+												<span class="nav-text">Roles</span>
+											</a>
+										</li>
+										<li class="">
+											<a class="sidenav-item-link" href="{{route('users')}}">
+												<span class="nav-text">Listes des Utilisateurs</span>
+											</a>
+										</li>
+									</ul>
+								</div>
 								<hr>
 							</li>
-	
 	
 							{{-- School --}}
 							<!-- Attendance -->
@@ -186,7 +206,7 @@
 							</li>
 							<!-- Setting -->
 							<li>
-							    <a class="sidenav-item-link" href="{{route('stting')}}">
+							    <a class="sidenav-item-link" href="{{route('settings')}}">
 									<i class="bi bi-gear"></i>
 									<span class="nav-text">Paramètre</span>
 								</a>

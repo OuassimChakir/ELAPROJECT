@@ -1,20 +1,20 @@
 @extends('layouts.layout')
 @section('title')
-   Paramètre
+   Paramètres
 @endsection
 @section('content')
 <div class="ec-content-wrapper">
 <div class="content">
 <div class="breadcrumb-wrapper breadcrumb-contacts">
     <div>
-        <h1>Paramètre</h1>
+        <h1>Paramètres</h1>
         <p class="breadcrumbs">
             <span><a href="{{route('acceuil')}}">Acceuil</a></span>
-            <span><i class="mdi mdi-chevron-right"></i></span>Paramètre
+            <span><i class="mdi mdi-chevron-right"></i></span>Paramètres
         </p>
     </div>
     <div>
-       <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addNewYear"><i class="bi bi-arrow-clockwise"></i> Nouvel Année</button>
+       <button type="button" id="newYear" class="newYear btn btn-danger" data-bs-toggle="modal" data-bs-target="#addNewYear"><i class="bi bi-arrow-clockwise"></i> Nouvel Année</button>
     </div>
 </div>
 @if (session()->has('successMessage'))
@@ -48,7 +48,7 @@
                                                         <!--ICOUN-->
 														<div class="avatar-edit">
 															<input type='file' id="imageUpload" class="ec-image-upload"
-																accept=".png, .jpg, .jpeg" />
+																accept=".png, .gif, .svg" />
 															<label for="imageUpload"><img
 																	src="assets/img/icons/edit.svg"
 																	class="svg_img header_svg" alt="edit" /></label>
@@ -92,7 +92,24 @@
 				</div> <!-- End Content -->
 			</div> <!-- End Content Wrapper -->
 
-    <script src="{{asset('assets/plugins/charts/Chart.min.js')}}"></script>
-    <script src="{{asset('assets/js/chart.js')}}"></script>
+	<script src="{{asset('JS/jquery.min.js')}}"></script>
 
+	<script>
+		$(document).ready(function(){
+			$("#newYear").click(function(){
+				swal({
+					title: "Confirmation",
+					text: "Pour Confirmer votre demande d'avoir une nouvelle année entrer votre Mot de Passe",
+					icon: "warning",
+					buttons: true,
+					dangerMode: true,
+					content: "input",
+				})
+				.then((value) => {
+					swal(`You typed: ${value}`);
+				});
+			});
+		});
+		
+	</script>
 @endsection
