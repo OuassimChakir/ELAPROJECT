@@ -21,4 +21,6 @@ class RolesController extends Controller
         return view('pages.users.role')->with('roles',$roles);
     }
 
+    
+
 }
