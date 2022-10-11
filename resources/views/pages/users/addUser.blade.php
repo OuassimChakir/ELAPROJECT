@@ -29,6 +29,7 @@
                             <div class="form-group mb-4">
                                 <label for="password">Mot de Passe</label>
                                 <input type="password" class="form-control" name="password" id="password" required>
+                                <div style="color: red;" id="CheckPasswordLength"></div>
                             </div>
                         </div>
 
@@ -71,9 +72,19 @@
         var password = $("#password").val();
         var confirmPassword = $("#confirmPass").val();
         if (password != confirmPassword)
-          $("#CheckPasswordMatch").html("Password does not match !").css("color", "red");
+          $("#CheckPasswordMatch").html("Le mot de passe ne correspond pas !").css("color", "red");
         else
-          $("#CheckPasswordMatch").html("Password match !").css("color", "green");
+          $("#CheckPasswordMatch").html("Le mot de passe correspond !").css("color", "green");
       });
+    });
+    $(document).ready(function(){
+        $('#password').on('keyup',function(){
+                var Password = $(this).val();
+                if (Password.length < 8){
+                    $('#password').next('#CheckPasswordLength').css('display', 'inline');
+                }else{
+                    $(this).next('#CheckPasswordLength').css('display', 'none');
+                }
+        });
     });
 </script>
