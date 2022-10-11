@@ -115,7 +115,7 @@
 											<tbody>
                                                 @foreach ($roles as $role)
                                                     <tr>
-                                                        <td>{{}}</td>
+                                                        <td>{{$role->code}}</td>
                                                     </tr>
                                                 @endforeach
 												
