@@ -14,14 +14,14 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->BigIncrements('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->BigIncrements('idUser');
+            $table->string('name',100);
+            $table->string('login',100);
+            $table->string('password',50);
             $table->boolean('is_admin')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->integer('idRole')->nullable();
         });
     }
     // php artisan migrate --path=/database/migrations/2014_10_12_000000_create_users_table.php
