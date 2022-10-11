@@ -185,11 +185,26 @@
 								<hr>
 							</li>
 							<!-- Setting -->
-							<li>
-							    <a class="sidenav-item-link" href="{{route('stting')}}">
+							<li class="has-sub">
+								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-gear"></i>
-									<span class="nav-text">Paramètre</span>
+									<span class="nav-text">Paramètre</span> <b class="caret"></b>
 								</a>
+								<div class="collapse">
+									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
+										<li class="">
+											<a class="sidenav-item-link" href="{{route('stting')}}">
+												<span class="nav-text">Application</span>
+											</a>
+										</li>
+										<li class="">
+											<a class="sidenav-item-link" href="#">
+												<span class="nav-text">Profile</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<hr>
 							</li>
 							<!-- Deconnexion -->
 							<li>
