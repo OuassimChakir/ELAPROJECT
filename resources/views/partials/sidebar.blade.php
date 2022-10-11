@@ -40,9 +40,29 @@
 									<i class="bi bi-people-fill"></i>
 									<span class="nav-text">Staff</span>
 								</a>
+							</li>
+							<!-- Subjects -->
+							<li class="has-sub">
+								<a class="sidenav-item-link" href="javascript:void(0)">
+									<i class="bi bi-people-fill"></i>
+									<span class="nav-text">Utilisateurs</span> <b class="caret"></b>
+								</a>
+								<div class="collapse">
+									<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
+										<li class="">
+											<a class="sidenav-item-link" href="#">
+												<span class="nav-text">Roles</span>
+											</a>
+										</li>
+										<li class="">
+											<a class="sidenav-item-link" href="{{route('users')}}">
+												<span class="nav-text">Listes des Utilisateurs</span>
+											</a>
+										</li>
+									</ul>
+								</div>
 								<hr>
 							</li>
-	
 	
 							{{-- School --}}
 							<!-- Attendance -->
@@ -185,26 +205,11 @@
 								<hr>
 							</li>
 							<!-- Setting -->
-							<li class="has-sub">
-								<a class="sidenav-item-link" href="javascript:void(0)">
+							<li>
+							    <a class="sidenav-item-link" href="{{route('stting')}}">
 									<i class="bi bi-gear"></i>
-									<span class="nav-text">Paramètre</span> <b class="caret"></b>
+									<span class="nav-text">Paramètre</span>
 								</a>
-								<div class="collapse">
-									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('stting')}}">
-												<span class="nav-text">Application</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="#">
-												<span class="nav-text">Profile</span>
-											</a>
-										</li>
-									</ul>
-								</div>
-								<hr>
 							</li>
 							<!-- Deconnexion -->
 							<li>
