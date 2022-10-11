@@ -227,6 +227,11 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/factureDepenses/{idExpense}','ExpenseController@getStaffData');
 
     /* --------------------------------------
+    / Roles 
+    / --------------------------------------- */
+    Route::get('/roles','RolesController@role')->name('roles');
+
+    /* --------------------------------------
     / USERS
     / --------------------------------------- */
         // Users Page
