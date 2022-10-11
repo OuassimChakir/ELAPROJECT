@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Roles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class RolesController extends Controller
 {
@@ -14,7 +15,7 @@ class RolesController extends Controller
             $roles = $request->roles;
             $codeRole = $request->codeRole;
             $color = $request->color;
-            $RoleObject->addRoles($roles,$codeRole,$code);
+            $RoleObject->addRoles($roles,$codeRole,$color);
             return Redirect::back()->with('successMessage',"L'ajout est fait avec succès");
         }
         return view('pages.users.role')->with('roles',$roles);
