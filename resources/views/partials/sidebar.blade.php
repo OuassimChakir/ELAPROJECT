@@ -206,7 +206,7 @@
 							</li>
 							<!-- Setting -->
 							<li>
-							    <a class="sidenav-item-link" href="{{route('stting')}}">
+							    <a class="sidenav-item-link" href="{{route('settings')}}">
 									<i class="bi bi-gear"></i>
 									<span class="nav-text">Paramètre</span>
 								</a>
