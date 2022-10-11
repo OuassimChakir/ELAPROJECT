@@ -12,16 +12,16 @@
 
                 <div class="modal-body px-4">
                     <div class="row mb-2">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="name">Nom Complet</label>
-                                <input type="text" class="form-control" name="name" id="name" value="John Smith" required>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="John Smith" required>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group mb-4">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" value="johnexample@gmail.com" required>
+                                <label for="login">Login</label>
+                                <input type="login" class="form-control" name="login" id="login" placeholder="Login" required>
                             </div>
                         </div>
 
