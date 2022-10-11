@@ -30,25 +30,25 @@
         </div>
     @endif
   <!-- end errour du validation -->
-    <div class="breadcrumb-wrapper breadcrumb-contacts">
-        <div>
-        <h1>Liste des Roles</h1>
-            <p class="breadcrumbs"><span><a href="{{route('acceuil')}}">Acceuil</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>Roles
-            </p>
-        </div>
-    <div>
+    
 			<!-- CORT WRAPPER -->
 			<div class="ec-content-wrapper">
 				<div class="content">
+                    <div class="row">
+                        <div class="breadcrumb-wrapper breadcrumb-contacts">
+                            <h1>Liste des Roles</h1>
+                            <p class="breadcrumbs"><span><a href="{{route('acceuil')}}">Acceuil</a></span>
+                                <span><i class="mdi mdi-chevron-right"></i></span>Roles
+                            </p>
+                        </div>
+                    <div>
 					<div class="row">
 						<div class="col-xl-4 col-lg-12">
 							<div class="ec-cat-list card card-default mb-24px">
 								<div class="card-body">
 									<div class="ec-cat-form">
 										<h4>Add New Category</h4>
-
-										<form>
+                                        <form>
 
 											<div class="form-group row">
 												<label for="text" class="col-12 col-form-label">Role</label> 
@@ -58,38 +58,23 @@
 											</div>
 
 											<div class="form-group row">
-												<label for="slug" class="col-12 col-form-label">Slug</label> 
+												<label for="codeRole" class="col-12 col-form-label">Code Roles</label> 
 												<div class="col-12">
-													<input id="slug" name="slug" class="form-control here set-slug" type="text">
-													<small>01 : admine  11 : contab</small>
+													<input id="codeRole" name="codeRole" class="form-control" type="text">
+													<small>01 : Administrateur - 02 : Comptable</small>
 												</div>
 											</div>
 
 											<div class="form-group row">
-												<label class="col-12 col-form-label">Sort Description</label> 
+												<label for="color" class="col-12 col-form-label">Couleur</label> 
 												<div class="col-12">
-													<textarea id="sortdescription" name="sortdescription" cols="40" rows="2" class="form-control"></textarea>
-												</div>
-											</div> 
-
-											<div class="form-group row">
-												<label class="col-12 col-form-label">Full Description</label> 
-												<div class="col-12">
-													<textarea id="fulldescription" name="fulldescription" cols="40" rows="4" class="form-control"></textarea>
-												</div>
-											</div> 
-
-											<div class="form-group row">
-												<label class="col-12 col-form-label">Product Tags <span>( Type and
-														make comma to separate tags )</span></label>
-												<div class="col-12">
-													<input type="text" class="form-control" id="group_tag" name="group_tag" value="" placeholder="" data-role="tagsinput">
+													<input id="color" name="color" type="color">
 												</div>
 											</div>
 
 											<div class="row">
 												<div class="col-12">
-													<button name="submit" type="submit" class="btn btn-primary">Submit</button>
+													<button name="ajouterRoles" type="submit" class="btn btn-primary">Ajouter Roles</button>
 												</div>
 											</div>
 
@@ -103,7 +88,7 @@
 							<div class="ec-cat-list card card-default">
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="responsive-data-table" class="table">
+										<table class="table">
 											<thead>
 												<tr>
 													<th>#</th>
@@ -115,7 +100,22 @@
 											<tbody>
                                                 @foreach ($roles as $role)
                                                     <tr>
-                                                        <td>{{$role->code}}</td>
+                                                        <td>{{$role->codeRole}}</td>
+                                                        <td>{{$role->role}}</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href="#">
+                                                                    <button type="button" name="edit" class="btn btn-outline-info" value="{{$user->id}}">
+                                                                        <i class="bi bi-person-fill"></i>
+                                                                    </button>
+                                                                </a>
+                                                                <a href="#">
+                                                                    <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Vous êtes sûr?');">
+                                                                        <i class="bi bi-trash-fill"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
 												

@@ -36,6 +36,7 @@
                             <div class="form-group mb-4">
                                 <label for="confirmPass">Confirmation du Mot de Passe</label>
                                 <input type="password" class="form-control" id="confirmPass" name="confirmPass" required>
+                                <div id="CheckPasswordMatch"></div>
                             </div>
                         </div>
 
@@ -62,3 +63,17 @@
         </div>
     </div>
 </div>
+<script src="{{asset('JS/jquery.min.js')}}"></script>
+
+<script>
+    $(document).ready(function() {
+      $("#confirmPass").on('keyup', function() {
+        var password = $("#password").val();
+        var confirmPassword = $("#confirmPass").val();
+        if (password != confirmPassword)
+          $("#CheckPasswordMatch").html("Password does not match !").css("color", "red");
+        else
+          $("#CheckPasswordMatch").html("Password match !").css("color", "green");
+      });
+    });
+</script>

@@ -12,4 +12,12 @@ class Roles extends Model
     public function getRoles(){
         return $this::all();
     }
+    // ------ Creation roles ----------- //
+    public function addRoles($roles,$codeRole,$color){
+            $this->roles = $roles;
+            $this->codeRole = $codeRole;
+            $this->color = $color;
+            $this->save();
+    }
+    
 }

@@ -96,4 +96,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="http://www.arabic-keyboard.org/keyboard/keyboard.js" charset="UTF-8"></script> 
