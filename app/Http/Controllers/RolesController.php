@@ -12,7 +12,7 @@ class RolesController extends Controller
         $RoleObject = new Roles();
         $roles = $RoleObject->getRoles();
         if($request->has('ajouterRoles')){
-            $roles = $request->roles;
+            $roles = $request->role;
             $codeRole = $request->codeRole;
             $color = $request->color;
             $RoleObject->addRoles($roles,$codeRole,$color);
@@ -20,7 +20,32 @@ class RolesController extends Controller
         }
         return view('pages.users.role')->with('roles',$roles);
     }
-
+    // ---------------delete Roles------//
+    public function deleteRoles($idRole){
+            $role = new Roles();
+            $role->deleteRoles($idRole);
+            $roles = $role->getRoles();
+            return Redirect::route('roles')
+                            ->with('deleteMessage',"La suppression est faite avec succès")
+                            ->with('roles',$roles);
+    }
+    // ---------------Update Roles-----//
+    public function updateRoles(Request $request,$idRole){
+            $role = new Roles();
+            $roles = $role->getRoles();
+            $updatedRoles = $role->selectRoles($idRole);
+            if($request->has('updateRoles')){ 
+            $role->updateRoles($idRole,$request->role,$request->codeRole,$request->color);
+            return Redirect::route('roles')
+                            ->with('updateMessage',"La Modification est faite avec succès")
+                            ->with('roles',$roles);
+            }
+            return view('pages.users.role')
+                ->with('updatedRoles',$updatedRoles)
+                ->with('roles',$roles);
+    }    
     
+
+
 
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\TypestaffController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomesController;
+use App\Http\Controllers\RolesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -230,7 +231,11 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     / Roles 
     / --------------------------------------- */
     Route::get('/roles','RolesController@role')->name('roles');
-
+    // Delete roles
+    Route::get('/roles/delete/{idRole}','RolesController@deleteRoles')->name('roles.delete');
+    // Update roles
+    Route::get('/roles/update/{idRole}','RolesController@updateRoles')->name('roles.update.page');
+    Route::put('/roles/update/{idRole}','RolesController@updateRoles')->name('roles.update');
     /* --------------------------------------
     / USERS
     / --------------------------------------- */
