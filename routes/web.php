@@ -215,7 +215,7 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     Route::get('/archive/incomePayment','IncomesController@archive')->name('incomePayment.archive');
     Route::get('/archive/incomePayment/delete/{idPayment}','IncomesController@deleteArchivedPayment')->name('incomePayment.archive.delete');
     Route::get('/archive/incomePayment/restore/{idPayment}','IncomesController@restoreArchivedPayment')->name('incomePayment.archive.restore');
-    Route::post('/archive/incomePayment/action','IncomesController@multipleArchivedPayment')->name('incomePayment.archive.multiple');
+    Route::post('/archive/incomePayment/acction','IncomesController@multipleArchivedPayment')->name('incomePayment.archive.multiple');
     
     //------------Setting------------------------//
 
@@ -248,10 +248,17 @@ Route::get('/matieres','SubjectController@subjects')->name('subjects');
     / Authentification
     / --------------------------------------- */
     Route::get("/login","UserController@login")->name('login');
+
+    Route::middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified'
+    ])->group(function () {
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
+    });
+    
 ?>
 
 
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
