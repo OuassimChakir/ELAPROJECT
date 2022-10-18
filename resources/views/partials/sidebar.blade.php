@@ -35,13 +35,13 @@
 									<span class="nav-text">Etudiants</span>
 								</a>
 							</li>
-							<li>
-								<a class="sidenav-item-link" href="{{route('staff.liste')}}">
-									<i class="bi bi-people-fill"></i>
-									<span class="nav-text">Staff</span>
-								</a>
-							</li>
-							<!-- Subjects -->
+							@if (!is_null(session()->get('user')->idRole))
+								<li>
+									<a class="sidenav-item-link" href="{{route('staff.liste')}}">
+										<i class="bi bi-people-fill"></i>
+										<span class="nav-text">Staff</span>
+									</a>
+								</li>								
 							<li class="has-sub">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-people-fill"></i>
@@ -49,11 +49,13 @@
 								</a>
 								<div class="collapse">
 									<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
+										@if (session()->get('user')->idRole && session()->get('user')->codeRole == '00')
 										<li class="">
 											<a class="sidenav-item-link" href="{{route('roles')}}">
 												<span class="nav-text">Roles</span>
 											</a>
 										</li>
+										@endif
 										<li class="">
 											<a class="sidenav-item-link" href="{{route('users')}}">
 												<span class="nav-text">Listes des Utilisateurs</span>
@@ -61,8 +63,11 @@
 										</li>
 									</ul>
 								</div>
-								<hr>
 							</li>
+							@endif
+							<hr>
+							<!-- Subjects -->
+							
 	
 							{{-- School --}}
 							<!-- Attendance -->
@@ -144,6 +149,7 @@
 									</ul>
 								</div>
 							</li>
+
 							<!-- Incomes -->
 							<li class="has-sub">
 								<a class="sidenav-item-link" href="javascript:void(0)">
@@ -167,68 +173,74 @@
 								<hr>
 							</li>
 
-							<!-- ARCHIVE -->
-							<li class="has-sub">
-								<a class="sidenav-item-link" href="javascript:void(0)">
-									<i class="bi bi-archive-fill"></i>
-									<span class="nav-text">Archive</span> <b class="caret"></b>
-								</a>
-								<div class="collapse">
-									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('student.archive')}}">
-												<span class="nav-text">Archive des Etudiants</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('teachers.archive')}}">
-												<span class="nav-text">Archive des Professeurs</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('staff.archive')}}">
-												<span class="nav-text">Archive des Staffs</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('factureDepenses.archive')}}">
-												<span class="nav-text">Archive des Facture Dépenses</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('incomePayment.archive')}}">
-												<span class="nav-text">Archive des Reçus de Paiement</span>
-											</a>
-										</li>
-									</ul>
-								</div>
-								<hr>
-							</li>
-							<!-- Setting -->
-							<li class="has-sub">
-								<a class="sidenav-item-link" href="javascript:void(0)">
-									<i class="bi bi-gear"></i>
-									<span class="nav-text">Paramètre</span> <b class="caret"></b>
-								</a>
-								<div class="collapse">
-									<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
-										<li class="">
-											<a class="sidenav-item-link" href="{{route('settings')}}">
-												<span class="nav-text">Application</span>
-											</a>
-										</li>
-										<li class="">
-											<a class="sidenav-item-link" href="#">
-												<span class="nav-text">Profile</span>
-											</a>
-										</li>
-									</ul>
-								</div>
-								<hr>
-							</li>
+							@if (!is_null(session()->get('user')->idRole))
+								<!-- ARCHIVE -->
+								<li class="has-sub">
+									<a class="sidenav-item-link" href="javascript:void(0)">
+										<i class="bi bi-archive-fill"></i>
+										<span class="nav-text">Archive</span> <b class="caret"></b>
+									</a>
+									<div class="collapse">
+										<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
+											<li class="">
+												<a class="sidenav-item-link" href="{{route('student.archive')}}">
+													<span class="nav-text">Archive des Etudiants</span>
+												</a>
+											</li>
+											<li class="">
+												<a class="sidenav-item-link" href="{{route('teachers.archive')}}">
+													<span class="nav-text">Archive des Professeurs</span>
+												</a>
+											</li>
+											<li class="">
+												<a class="sidenav-item-link" href="{{route('staff.archive')}}">
+													<span class="nav-text">Archive des Staffs</span>
+												</a>
+											</li>
+											<li class="">
+												<a class="sidenav-item-link" href="{{route('factureDepenses.archive')}}">
+													<span class="nav-text">Archive des Facture Dépenses</span>
+												</a>
+											</li>
+											<li class="">
+												<a class="sidenav-item-link" href="{{route('incomePayment.archive')}}">
+													<span class="nav-text">Archive des Reçus de Paiement</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+									<hr>
+								</li>
+							@endif
+
+							@if (!is_null(session()->get('user')->idRole) && session()->get('user')->codeRole == '00')
+								<!-- Setting -->
+								<li class="has-sub">
+									<a class="sidenav-item-link" href="javascript:void(0)">
+										<i class="bi bi-gear"></i>
+										<span class="nav-text">Paramètre</span> <b class="caret"></b>
+									</a>
+									<div class="collapse">
+										<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
+											<li class="">
+												<a class="sidenav-item-link" href="{{route('settings')}}">
+													<span class="nav-text">Application</span>
+												</a>
+											</li>
+											<li class="">
+												<a class="sidenav-item-link" href="#">
+													<span class="nav-text">Profile</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+									<hr>
+								</li>
+							@endif
+
 							<!-- Deconnexion -->
 							<li>
-								<a class="sidenav-item-link" href="review-list.html">
+								<a class="sidenav-item-link" href="{{route('logout')}}">
 									<i class="bi bi-box-arrow-left"></i>
 									<span class="nav-text">Deconnexion</span>
 								</a>

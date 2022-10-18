@@ -16,7 +16,8 @@
 						<div class="card-body p-5">
 							<h4 class="text-dark mb-5">S'Authentifier</h4>
 							
-							<form action="/index.html">
+							<form action="{{route('login')}}" method="POST">
+								@csrf
 								<div class="row">
 									<div class="form-group col-md-12 mb-4">
 										<input type="email" class="form-control" id="email" placeholder="Username">

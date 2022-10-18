@@ -27,6 +27,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'idRole',
     ];
 
     /**
@@ -58,4 +59,15 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-}
+
+    public function getUsers(){
+        return $this::select('*')
+                ->leftJoin('roles','users.idRole','=','roles.idRole')
+                ->get();
+    }
+
+    public static function getUser($email){
+        return User::select('*')
+                    ->leftJoin('roles','users.idRole','=','roles.idRole')
+                    ->where('email',$email)->first();
+    }}

@@ -15,6 +15,10 @@ class Roles extends Model
     public function getRoles(){
         return $this::all();
     }
+
+    public static function getRole($idRole){
+        return Roles::find($idRole);
+    }
     public function selectRoles($idRole){
         return $this::find($idRole);
     }
