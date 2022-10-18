@@ -21,7 +21,7 @@ class Attendance extends Model
                     ->where('idGroup',$idGroup)
                     ->count();
         }
-
+        //          gt
         public function getOneAbsence($idAttendance){
             return $this::find($idAttendance);
         }
