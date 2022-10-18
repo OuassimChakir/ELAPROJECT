@@ -66,10 +66,10 @@ data-bs-target="#addUser"><i class="bi bi-plus-square"></i> Créer un Compte
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
                     <td>
-                        @if (!is_null($user->color))
+                        @if (!is_null($user->idRole))
                             <div class="badge" style="color: white;background-color: {{$user->color}}">{{$user->role}}</div>
                         @else
-                            <div class="badge bg-dark">{{$user->role}}</div>
+                            <div class="badge badge-dark">Utilisateur</div>
                         @endif
                     </td>
                     <td><i class="bi bi-clock"></i> {{$user->created_at}}</td>
