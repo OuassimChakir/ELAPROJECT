@@ -1,14 +1,6 @@
-
 @extends('layouts.layout')
 @section('title')
     Profil
-@endsection
-@section('style')
-    <!-- Scripts -->
-    <link rel="stylesheet" href="/css/app.css">
-    <script src="/js/app.js"></script>
-    <!-- Styles -->
-    @livewireStyles
 @endsection
 @section('content')
 @if (session()->has('successMessage'))

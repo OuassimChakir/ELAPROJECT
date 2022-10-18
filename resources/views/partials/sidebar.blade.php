@@ -215,29 +215,14 @@
 
 							@if (!is_null(session()->get('user')->idRole) && session()->get('user')->codeRole == '00')
 								<!-- Setting -->
-								<li class="has-sub">
-									<a class="sidenav-item-link" href="javascript:void(0)">
+								<li>
+									<a class="sidenav-item-link" href="{{route('settings')}}">
 										<i class="bi bi-gear"></i>
-										<span class="nav-text">Paramètre</span> <b class="caret"></b>
+										<span class="nav-text">Paramètre</span>
 									</a>
-									<div class="collapse">
-										<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
-											<li class="">
-												<a class="sidenav-item-link" href="{{route('settings')}}">
-													<span class="nav-text">Application</span>
-												</a>
-											</li>
-											<li class="">
-												<a class="sidenav-item-link" href="#">
-													<span class="nav-text">Profile</span>
-												</a>
-											</li>
-										</ul>
-									</div>
-									<hr>
 								</li>
+								<hr>
 							@endif
-
 							<!-- Deconnexion -->
 							<li>
 								<a class="sidenav-item-link" href="{{route('logout')}}">

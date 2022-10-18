@@ -10,8 +10,10 @@
 	<title>@yield('title') - ELA CENTER</title>
 	<!-- FAVICON -->
 	<link href="favicon.ico" rel="shortcut icon" />
-
-
+    <!-- Scripts -->
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="/js/app.js"></script>
+    <!-- Styles -->
     @include('assets.styles')
 
 </head>
