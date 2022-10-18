@@ -25,6 +25,7 @@ class HomeController extends Controller
 
     public function index(){
         // ---------------- Année Scolaire ----------- //
+        //dd(session()->get("user"));
         if(!Storage::exists('anneeScolaire.txt')){
             $mois = intval(date('m'));
             if($mois >= 9 && $mois <= 12){
