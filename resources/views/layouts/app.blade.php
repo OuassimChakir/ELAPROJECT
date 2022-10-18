@@ -9,13 +9,13 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
-        <!-- Styles -->
-        @livewireStyles
-
         <!-- Scripts -->
         <link rel="stylesheet" href="/css/app.css">
         <script src="/js/app.js"></script>
+        <!-- Styles -->
+        @livewireStyles
+
+        
     </head>
     <body class="font-sans antialiased">
         <x-jet-banner />
