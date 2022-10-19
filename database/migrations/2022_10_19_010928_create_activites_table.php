@@ -13,12 +13,12 @@ class CreateActivitesTable extends Migration
      */
     public function up()
     {
-        Schema::create('activites', function (Blueprint $table) {
-            $table->increments('idActivite');
-            $table->string('typeActivite');
-            $table->timestamps();
+        Schema::create('activities', function (Blueprint $table) {
+            $table->increments('idActivity');
+            $table->string('typeActivity',100);
             $table->unsignedBigInteger('idUser');
             $table->string('description',100);
+            $table->timestamps();
             $table->foreign('idUser')->references('id')->on('users');
         });
     }
@@ -30,6 +30,6 @@ class CreateActivitesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activites');
+        Schema::dropIfExists('activities');
     }
 }
