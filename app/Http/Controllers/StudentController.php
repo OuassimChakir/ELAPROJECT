@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activite;
 use App\Models\Attendance;
 use App\Models\Classrooms;
 use App\Models\Grades\Grades;
@@ -47,6 +48,11 @@ class StudentController extends Controller
             $sexe = $request->sexe;
             $adresse = $request->adresse;
             $Student->addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
+            if(session()->get('user')){
+                $typeActivity = 0; 
+                $activityDescription = 'Le étudiants'.$prenom_fr." ".$nom_fr;
+                Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+            }
             return Redirect::back()->with('successMessage',"L'ajout est fait avec succès")->with('students',$students);
         }
         return view('pages.students.student')->with('students',$students)
@@ -99,6 +105,11 @@ class StudentController extends Controller
             $sexe = $request->sexe;
             $adresse = $request->adresse;
             $Student->updateStudent($request->matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
+            if(session()->get('user')){
+                $typeActivity = 2; 
+                $activityDescription = 'Le étudiants'.$prenom_fr." ".$nom_fr."(".$matricule.")";
+                Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+            }
             return Redirect::back()
                 ->with('updateStudent',"La Modification est faite avec succès")
                 ->with('student',$studentInfo);
@@ -110,6 +121,12 @@ class StudentController extends Controller
         if ($request->has('deleteAll')) {
             foreach($request->students as $matricule){
                 $Student->deleteStudent($matricule);
+                $stu=$Student->selectStudents($matricule);
+                if(session()->get('user')){
+                    $typeActivity = 2; 
+                    $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+                    Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                }
             }
             return Redirect::back()->with('deleteMessage',"Les étudiants séléctionés ont été supprimer");
         }else
@@ -120,6 +137,12 @@ class StudentController extends Controller
         $Student = new Student();
         $Student->deleteStudent($matricule);
         $studentInfo = $Student->getStudents();
+        $stu=$Student->selectStudents($matricule);
+        if(session()->get('user')){
+            $typeActivity = 2; 
+            $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+            Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+        }
         return Redirect::route('student.liste')
             ->with('deleteMessage',"La suppression est faite avec succès")
             ->with('students',$studentInfo);;
@@ -169,12 +192,24 @@ class StudentController extends Controller
     public function restoreArchivedStudent($matricule){
         $Student = new Student();
         $Student->restoreStudent($matricule);
+        $stu=$Student->selectStudents($matricule);
+        if(session()->get('user')){
+            $typeActivity = 3; 
+            $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+            Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+        }
         return Redirect::back()->with('restoreMessage',"L'étudiant a été restorer avec succès");
     }
 
     public function deleteArchivedStudent($matricule){
         $Student = new Student();
         $Student->forceDeleteStudent($matricule);
+        $stu=$Student->selectStudents($matricule);
+        if(session()->get('user')){
+            $typeActivity = 10; 
+            $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+            Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+        }
         return Redirect::back()->with('deleteMessage',"L'étudiant a été supprimer Définitivement");
     }
 
@@ -183,6 +218,12 @@ class StudentController extends Controller
         if($request->has('restoreAll')){
             foreach($request->archivedStudents as $matricule){
                 $Student->restoreStudent($matricule);
+                $stu=$Student->selectStudents($matricule);
+                if(session()->get('user')){
+                    $typeActivity = 3; 
+                    $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+                    Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                }
             }
             return Redirect::back()->with('restoreMessage',"Les étudiants séléctionés ont été restorer avec succès");
         }
@@ -193,6 +234,12 @@ class StudentController extends Controller
                 if($studentInfo->cnieResponsible != 'NULL')
                     $Responsible->deleteResponsible($studentInfo->cnieResponsible,$matricule);
                 $Student->forceDeleteStudent($matricule);
+                $stu=$Student->selectStudents($matricule);
+                if(session()->get('user')){
+                    $typeActivity = 10; 
+                    $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+                    Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                }
             }
             return Redirect::back()->with('deleteMessage',"Les étudiants séléctionés ont été supprimer Définitivement");
         }
