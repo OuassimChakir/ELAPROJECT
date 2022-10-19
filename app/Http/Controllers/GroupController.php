@@ -37,6 +37,7 @@ class GroupController extends Controller
             $numGroups = $Group->getNumGroups($request->idSubject,$request->idGrade)+1;
             $matiere = $Subject->getSubject($request->idSubject);
             $designation = "G".$numGroups."-".$matiere->short;
+            
             if(!is_null($request->description))
                 $designation = "G".$numGroups."-".$matiere->short."-".$request->description;
             $Group -> createGroup($designation,$request->capacity, $request->idSubject,$request->idGrade,$request->idStaff);
