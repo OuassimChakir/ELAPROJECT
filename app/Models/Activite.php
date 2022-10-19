@@ -15,6 +15,7 @@ class Activite extends Model
     }
     */
     use HasFactory;
+    
         public static function addActivity($idUser,$typeActivity,$description){
             /* @typeActivity
             /   0 = Ajout | 1 = Suppression | 2 = Modification
