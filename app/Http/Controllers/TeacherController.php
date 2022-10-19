@@ -23,7 +23,7 @@ class TeacherController extends Controller
             $Staff->addProfesseur($request->cine,$request->prenom,$request->nom,$request->sexe,$request->email,$request->numTel,$request->idSubject);
             if(session()->get('user')){
                 $typeActivity = 0; 
-                $activityDescription = 'Le profisseur'.$request->prenom .$request->nom .($request->cine); 
+                $activityDescription = 'Le profisseur'." ".$request->prenom .$request->nom .($request->cine); 
                 Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
             } 
             return Redirect::back()
@@ -56,7 +56,7 @@ class TeacherController extends Controller
             $Staff->updateProfesseur($idProfesseur,$request->cine,$request->prenom,$request->nom,$request->sexe,$request->email,$request->numTel,$request->idStaffType,$request->idSubject);
             if(session()->get('user')){
                 $typeActivity = 2; 
-                $activityDescription = 'Le profisseur'.$request->prenom .$request->nom .($idProfesseur); 
+                $activityDescription = 'Le profisseur'." ".$request->prenom .$request->nom .($idProfesseur); 
                 Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
             } 
             return Redirect::back()
@@ -71,7 +71,7 @@ class TeacherController extends Controller
         $teach=$Staff->getProfesseur($idProfesseur);
         if(session()->get('user')){
             $typeActivity = 1; 
-            $activityDescription = 'Le profisseur'.$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
+            $activityDescription = 'Le profisseur'." ".$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('teachers.liste')
@@ -87,7 +87,7 @@ class TeacherController extends Controller
                 $teach=$Staff->getProfesseur($idStaff);
                 if(session()->get('user')){
                     $typeActivity = 10; 
-                    $activityDescription = 'Le profisseur'.$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
+                    $activityDescription = 'Le profisseur'." ".$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
@@ -116,7 +116,7 @@ class TeacherController extends Controller
         $teach=$Staff->getProfesseur($idStaff);
         if(session()->get('user')){
             $typeActivity = 3; 
-            $activityDescription = 'Le profisseur'.$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
+            $activityDescription = 'Le profisseur'." ".$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('teachers.archive')->with('restoreMessage',"Le Professeur a été restorer avec succès")->with('teachers',$teachers);
@@ -128,7 +128,7 @@ class TeacherController extends Controller
         $teach=$Staff->getProfesseur($idStaff);
         if(session()->get('user')){
             $typeActivity = 10; 
-            $activityDescription = 'Le profisseur'.$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
+            $activityDescription = 'Le profisseur'." ".$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::back()->with('deleteMessage',"Le Professeur a été supprimer Définitivement");
@@ -145,6 +145,12 @@ class TeacherController extends Controller
         if($request->has('deleteAll')){
             foreach($request->archivedTeacher as $idStaff){
                 $Staff->forceDeleteTeacher($idStaff);
+                $teach=$Staff->getProfesseur($idStaff);
+                if(session()->get('user')){
+                    $typeActivity = 10; 
+                    $activityDescription = 'Le profisseur'." ".$teach->name .$teach->prenom ."(".$teach->idProfesseur.")"; 
+                    Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                }
             }
             return Redirect::back()->with('deleteMessage',"Les Professeurs séléctionés ont été supprimer Définitivement");
         }

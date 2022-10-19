@@ -25,7 +25,7 @@ class StaffController extends Controller
             $Staff->addStaff($request->cine,$request->prenom,$request->nom,$request->sexe,$request->email,$request->numTel,$request->idStaffType);
             if(session()->get('user')){
                 $typeActivity = 0; 
-                $activityDescription = 'Le étudiants'.$request->prenom." ".$request->nom;
+                $activityDescription = 'Le étudiants'." ".$request->prenom." ".$request->nom;
                 Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
             }
             return Redirect::back()
@@ -56,7 +56,7 @@ class StaffController extends Controller
             $Staff->updateStaff($idStaff,$request->cine,$request->prenom,$request->nom,$request->sexe,$request->email,$request->numTel,$request->idStaffType);
             if(session()->get('user')){
                 $typeActivity = 2; 
-                $activityDescription = 'Le étudiants'.$request->prenom." ".$request->nom."(".$idStaff.")";
+                $activityDescription = 'Le étudiants'." ".$request->prenom." ".$request->nom."(".$idStaff.")";
                 Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
             }
             return Redirect::back()
@@ -72,7 +72,7 @@ class StaffController extends Controller
         $st=$Staff->getStaff($idStaff);
         if(session()->get('user')){
             $typeActivity = 2; 
-            $activityDescription = 'Le étudiants'.$st->prenom." ".$st->nom."(".$idStaff.")";
+            $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('staff.liste')
@@ -88,7 +88,7 @@ class StaffController extends Controller
                 $st=$Staff->getStaff($idStaff);
                 if(session()->get('user')){
                     $typeActivity = 1; 
-                    $activityDescription = 'Le étudiants'.$st->prenom." ".$st->nom."(".$idStaff.")";
+                    $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
@@ -117,7 +117,7 @@ class StaffController extends Controller
         $st=$Staff->getStaff($idStaff);
         if(session()->get('user')){
             $typeActivity = 3; 
-            $activityDescription = 'Le étudiants'.$st->prenom." ".$st->nom."(".$idStaff.")";
+            $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('staff.archive')->with('restoreMessage',"Le Staff a été restorer avec succès")->with('staffs',$staffs);
@@ -129,7 +129,7 @@ class StaffController extends Controller
         $st=$Staff->getStaff($idStaff);
         if(session()->get('user')){
             $typeActivity = 10; 
-            $activityDescription = 'Le étudiants'.$st->prenom." ".$st->nom."(".$idStaff.")";
+            $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('staff.archive')->with('deleteMessage',"Le Staff a été supprimer Définitivement");
@@ -143,7 +143,7 @@ class StaffController extends Controller
                 $st=$Staff->getStaff($idStaff);
                 if(session()->get('user')){
                     $typeActivity = 3; 
-                    $activityDescription = 'Le étudiants'.$st->prenom." ".$st->nom."(".$idStaff.")";
+                    $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
@@ -155,7 +155,7 @@ class StaffController extends Controller
                 $st=$Staff->getStaff($idStaff);
                 if(session()->get('user')){
                     $typeActivity = 10; 
-                    $activityDescription = 'Le étudiants'.$st->prenom." ".$st->nom."(".$idStaff.")";
+                    $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }

@@ -50,7 +50,7 @@ class StudentController extends Controller
             $Student->addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
             if(session()->get('user')){
                 $typeActivity = 0; 
-                $activityDescription = 'Le étudiants'.$prenom_fr." ".$nom_fr;
+                $activityDescription = 'Le étudiants'." "." ".$prenom_fr." ".$nom_fr;
                 Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
             }
             return Redirect::back()->with('successMessage',"L'ajout est fait avec succès")->with('students',$students);
@@ -107,7 +107,7 @@ class StudentController extends Controller
             $Student->updateStudent($request->matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
             if(session()->get('user')){
                 $typeActivity = 2; 
-                $activityDescription = 'Le étudiants'.$prenom_fr." ".$nom_fr."(".$matricule.")";
+                $activityDescription = 'Le étudiants'." ".$prenom_fr." ".$nom_fr."(".$matricule.")";
                 Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
             }
             return Redirect::back()
@@ -124,7 +124,7 @@ class StudentController extends Controller
                 $stu=$Student->selectStudents($matricule);
                 if(session()->get('user')){
                     $typeActivity = 2; 
-                    $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+                    $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
@@ -140,7 +140,7 @@ class StudentController extends Controller
         $stu=$Student->selectStudents($matricule);
         if(session()->get('user')){
             $typeActivity = 2; 
-            $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+            $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('student.liste')
@@ -195,7 +195,7 @@ class StudentController extends Controller
         $stu=$Student->selectStudents($matricule);
         if(session()->get('user')){
             $typeActivity = 3; 
-            $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+            $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::back()->with('restoreMessage',"L'étudiant a été restorer avec succès");
@@ -207,7 +207,7 @@ class StudentController extends Controller
         $stu=$Student->selectStudents($matricule);
         if(session()->get('user')){
             $typeActivity = 10; 
-            $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+            $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::back()->with('deleteMessage',"L'étudiant a été supprimer Définitivement");
@@ -221,7 +221,7 @@ class StudentController extends Controller
                 $stu=$Student->selectStudents($matricule);
                 if(session()->get('user')){
                     $typeActivity = 3; 
-                    $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+                    $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
@@ -237,7 +237,7 @@ class StudentController extends Controller
                 $stu=$Student->selectStudents($matricule);
                 if(session()->get('user')){
                     $typeActivity = 10; 
-                    $activityDescription = 'Le étudiants'.$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
+                    $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
