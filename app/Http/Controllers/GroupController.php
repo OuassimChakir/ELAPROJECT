@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activite;
 use App\Models\Classrooms;
 use App\Models\Attendance;
 use App\Models\Courses\CourseType;
@@ -41,6 +42,11 @@ class GroupController extends Controller
             if(!is_null($request->description))
                 $designation = "G".$numGroups."-".$matiere->short."-".$request->description;
             $Group -> createGroup($designation,$request->capacity, $request->idSubject,$request->idGrade,$request->idStaff);
+            if(session()->get('user')){
+                $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
+                $activityDescription = "Le Groupe ".$designation;
+                Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+            }
             return Redirect::back() 
                 ->with('successMessage',"La Creation du Groupe est faite avec succès");
         }
@@ -100,6 +106,12 @@ class GroupController extends Controller
     public function deleteGroup($idGroup){
         $Group = new Group();
         $Group->deleteGroup($idGroup);
+        if(session()->get('user')){
+            $groupInfo = $Group->getGroup($idGroup);
+            $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
+            $activityDescription = "Le Groupe ".$groupInfo->designation." (ID = ".$groupInfo->idGroup.")";
+            Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+        }
         return Redirect::back()->with('deleteMessage',"La Suppression du Groupe est faite avec succès");
     }
 
@@ -114,6 +126,11 @@ class GroupController extends Controller
             if(!is_null($request->description))
                 $designation .= "-".$request->description;
             $Group->updateGroup($idGroup,$designation,$request->capacity,$request->idSubject,$request->idGrade,$request->idStaff);
+            if(session()->get('user')){
+                $typeActivity = 2; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
+                $activityDescription = "Le Groupe ".$designation." (ID = ".$idGroup.")";
+                Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+            }
             return Redirect::back()->with('updateMessage','La Modification du Groupe est faite avec Succès');
         }
     }
@@ -121,6 +138,7 @@ class GroupController extends Controller
     public function cancelAssignment($id){
         $Classroom = new Classrooms();
         $Classroom->cancelAssignment($id);
+        
         return Redirect::back()->with('deleteMessage',"L'étudiant a été retiré du groupe avec succès");
     }
 
