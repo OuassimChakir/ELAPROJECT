@@ -51,19 +51,26 @@
     @foreach($activites as $activite)
     <div class="card-body compact-notifications" data-simplebar style="height: 434px;">
         <div class="media pb-3 align-items-center justify-content-between">
-                @if ({{ $activite->typeActivity}} =="a Ajouté")
+            @php
+                $a = "a Ajouté"; 
+                $s = "a Supprimé"; 
+                $m = "a Modifié";
+                $r = "a Réstauré";
+                $sall = "a Supprimé définitivement"; 
+            @endphp
+                @if ( {{ $activite->typeActivity}} == $a)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
                 <i class="bi bi-plus font-size-20"></i>
                 </div>
-                @elseif({{ $activite->typeActivity}}=="a Supprimé")
+                @elseif({{ $activite->typeActivity}} == $s || {{ $activite->typeActivity}} == $sall)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
                     <i class="mdi mdi-stack-exchange font-size-20"></i>
                     </div>
-                @elseif({{ $activite->typeActivity}}=="a Modifié")
+                @elseif({{ $activite->typeActivity}} == $m)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
                     <i class="bi bi-pencil-square font-size-20"></i>
                     </div>
-                @elseif({{ $activite->typeActivity}} =="a Réstauré"||{{ $activite->typeActivity}} =="a Supprimé définitivement")
+                @elseif({{ $activite->typeActivity}} == $a)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
                     <i class="bi bi-arrow-clockwise font-size-20"></i>
                     </div>
