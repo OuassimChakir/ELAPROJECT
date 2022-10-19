@@ -7,6 +7,7 @@ use App\Http\Controllers\TypestaffController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomesController;
+use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\RolesController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
@@ -254,6 +255,12 @@ use Illuminate\Support\Facades\Route;
 
             // Admin Permission View
             Route::middleware(['is_admin'])->group(function() {
+
+                /* --------------------------------------
+                / activites 
+                / --------------------------------------- */  
+                Route::get('/activites', 'ActiviteController@activite')->name('activite');
+
                 /* --------------------------------------
                 / Settings 
                 / --------------------------------------- */    

@@ -211,6 +211,14 @@
 									</div>
 									<hr>
 								</li>
+							<!-- activation -->
+							<li>
+								<a class="sidenav-item-link" href="{{route('activite')}}">
+									<i class="mdi mdi-bell-outline"></i>
+									<span class="nav-text">Activation</span>
+								</a>
+							</li>
+							<hr>
 							@endif
 
 							@if (!is_null(session()->get('user')->idRole) && session()->get('user')->codeRole == '00')
