@@ -49,4 +49,13 @@ class Classrooms extends Model
     public function cancelAssignment($id){
         return $this::find($id)->delete();
     }
+
+    // Get Assignment
+    public function getAssignment($id){
+        return $this::select('*')
+            ->join('groups','classrooms.idGroup','=','groups.idGroup')
+            ->join('students','classrooms.matricule','=','students.matricule')
+            ->where('id',$id)
+            ->first();
+    }
 }

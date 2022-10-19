@@ -14,6 +14,8 @@ class Activite extends Model
         Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
     }
     */
+    protected $table = "activities";
+    protected $primaryKey = "idActivity";
     use HasFactory;
         public static function addActivity($idUser,$typeActivity,$description){
             /* @typeActivity
@@ -36,7 +38,7 @@ class Activite extends Model
         //------------- select all activites----------//
         public function selectaActivite(){
             return $this::select('*')
-            ->leftJoin('users','users.id','=','activite.idUser')
+            ->leftJoin('users','users.id','=','activities.idUser')
             ->get();
         }
 }
