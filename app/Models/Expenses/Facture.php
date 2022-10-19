@@ -41,6 +41,7 @@ class Facture extends Model
             $this->idStaff = $idStaff;
             $this->idExpense = $idExpense;
             $this->save();
+            return $this->idExpensePayment;
         }
         // ---------- Total Amount for Each Month in the Scolare Year ---------- //
         public function totalAmountExepenseMonth($firstYear,$secondYear){

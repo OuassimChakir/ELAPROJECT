@@ -24,6 +24,8 @@ class HomeController extends Controller
      
 
     public function index(){
+        if(session()->get('user'))
+            dd(session()->get('user')->id);
         // ---------------- Année Scolaire ----------- //
         //dd(session()->get("user"));
         if(!Storage::exists('anneeScolaire.txt')){
