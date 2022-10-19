@@ -17,7 +17,9 @@ class CreateActivitesTable extends Migration
             $table->increments('idActivite');
             $table->string('typeActivite');
             $table->timestamps();
-            $table->string('idUser');
+            $table->unsignedBigInteger('idUser');
+            $table->string('description',100);
+            $table->foreign('idUser')->references('id')->on('users');
         });
     }
     // php artisan migrate --path=database/migrations/2022_10_19_010928_create_activites_table.php
