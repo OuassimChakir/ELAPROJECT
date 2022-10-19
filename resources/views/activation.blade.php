@@ -58,30 +58,31 @@
                 $r = "a Réstauré";
                 $sall = "a Supprimé définitivement"; 
             @endphp
-                @if ( {{ $activite->typeActivity}} == $a)
+                       
+                @if ($activite->typeActivity == $a)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
                 <i class="bi bi-plus font-size-20"></i>
                 </div>
-                @elseif({{ $activite->typeActivity}} == $s || {{ $activite->typeActivity}} == $sall)
+                @elseif($activite->typeActivity == $s ||  $activite->typeActivity == $sall)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
                     <i class="mdi mdi-stack-exchange font-size-20"></i>
                     </div>
-                @elseif({{ $activite->typeActivity}} == $m)
+                @elseif($activite->typeActivity == $m)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
                     <i class="bi bi-pencil-square font-size-20"></i>
                     </div>
-                @elseif({{ $activite->typeActivity}} == $a)
+                @elseif($activite->typeActivity == $a)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
                     <i class="bi bi-arrow-clockwise font-size-20"></i>
                     </div>
                 @endif
-            </div>
+           
             <div class="media-body pr-3 ">
               <a class="mt-0 mb-1 font-size-15 text-dark"
-                href="#">{{ $activite->typeActivity}}</a>
+                href="#"><b>{{$activite->name}}</b> {{ $activite->typeActivity}}</a>
                 <a class="mt-0 mb-1 font-size-15 text-dark"
                 href="#">{{ $activite->description}}</a>
-              <p>cette activité fait par <b>{{$activite->name}}</b></p>
+              
             </div>
             <span class=" font-size-12 d-inline-block"><i class="mdi mdi-clock-outline"></i>{{$activite->created_at}}</span>
         </div>
