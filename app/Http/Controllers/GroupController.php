@@ -137,14 +137,19 @@ class GroupController extends Controller
 
     public function cancelAssignment($id){
         $Classroom = new Classrooms();
+        if(session()->get('user')){
+            $assignment = $Classroom->getAssignment($id);
+            $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
+            $activityDescription = "L'Etudiant ".$assignment->nom_fr." ". $assignment->prenom_fr." (".$assignment->matricule.') du Group '.$assignment->designation." (ID = ".$assignment->idGroup.")";
+            Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+        }
         $Classroom->cancelAssignment($id);
-        
         return Redirect::back()->with('deleteMessage',"L'étudiant a été retiré du groupe avec succès");
     }
 
     public function multipleCancelAssignment(Request $request){
         $Classroom = new Classrooms();
-        foreach($request->students as $student)
+        foreach($request->students as $student){}
             $Classroom->cancelAssignment($student);
         return Redirect::back()->with('deleteMessage',"Les étudiants séléctionés ont été retirés du groupe avec succès");
     }
