@@ -51,12 +51,29 @@
     @foreach($activites as $activite)
     <div class="card-body compact-notifications" data-simplebar style="height: 434px;">
         <div class="media pb-3 align-items-center justify-content-between">
-            <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-              <i class="mdi mdi-stack-exchange font-size-20"></i>
+                @if ({{ $activite->typeActivity}} =="a Ajouté")
+                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
+                <i class="bi bi-plus font-size-20"></i>
+                </div>
+                @elseif({{ $activite->typeActivity}}=="a Supprimé")
+                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
+                    <i class="mdi mdi-stack-exchange font-size-20"></i>
+                    </div>
+                @elseif({{ $activite->typeActivity}}=="a Modifié")
+                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
+                    <i class="bi bi-pencil-square font-size-20"></i>
+                    </div>
+                @elseif({{ $activite->typeActivity}} =="a Réstauré"||{{ $activite->typeActivity}} =="a Supprimé définitivement")
+                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
+                    <i class="bi bi-arrow-clockwise font-size-20"></i>
+                    </div>
+                @endif
             </div>
             <div class="media-body pr-3 ">
               <a class="mt-0 mb-1 font-size-15 text-dark"
-                href="#">{{ $activite->typeActivite}}</a>
+                href="#">{{ $activite->typeActivity}}</a>
+                <a class="mt-0 mb-1 font-size-15 text-dark"
+                href="#">{{ $activite->description}}</a>
               <p>cette activité fait par <b>{{$activite->name}}</b></p>
             </div>
             <span class=" font-size-12 d-inline-block"><i class="mdi mdi-clock-outline"></i>{{$activite->created_at}}</span>
