@@ -46,11 +46,11 @@
 			    </div>   
 		</div>
     </form>
-
+    <div class="card-body compact-notifications" data-simplebar style="height: 434px;">
+        
     @if (isset($activites))
     @foreach($activites as $activite)
-    <div class="card-body compact-notifications" data-simplebar style="height: 434px;">
-        <div class="media pb-3 align-items-center justify-content-between">
+<div class="media pb-3 align-items-center justify-content-between">
             @php
                 $a = "a Ajouté"; 
                 $s = "a Supprimé"; 
@@ -58,7 +58,7 @@
                 $r = "a Réstauré";
                 $sall = "a Supprimé définitivement"; 
             @endphp
-                       
+
                 @if ($activite->typeActivity == $a)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
                 <i class="bi bi-plus font-size-20"></i>
@@ -71,7 +71,7 @@
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
                     <i class="bi bi-pencil-square font-size-20"></i>
                     </div>
-                @elseif($activite->typeActivity == $a)
+                @elseif($activite->typeActivity == $r)
                 <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
                     <i class="bi bi-arrow-clockwise font-size-20"></i>
                     </div>
@@ -86,8 +86,8 @@
             </div>
             <span class=" font-size-12 d-inline-block"><i class="mdi mdi-clock-outline"></i>{{$activite->created_at}}</span>
         </div>
-     </div>
     @endforeach
-    @endif
+    @endif        
+    </div>
 </div>
 @endsection
