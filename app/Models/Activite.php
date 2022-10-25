@@ -32,6 +32,7 @@ class Activite extends Model
             $activity = new Activite();
             $activity->typeActivity = $type;
             $activity->idUser = $idUser;
+            $activity->dateActivite=date('d-m-Y');
             $activity->description = $description;
             $activity->save();
         }
@@ -42,4 +43,11 @@ class Activite extends Model
             ->leftJoin('users','users.id','=','activities.idUser')
             ->get();
         }
+        //------------------ select activite by date 
+        public function selectListeActiviteByDate($dateActivite){
+            return $this::select('*')
+            ->leftJoin('users','users.id','=','activities.idUser')
+            ->where('dateActivite',$dateActivite)
+            ->get();
+       }
 }

@@ -260,6 +260,7 @@ use Illuminate\Support\Facades\Route;
                 / activites 
                 / --------------------------------------- */  
                 Route::get('/activites', 'ActiviteController@activite')->name('activite');
+                Route::post('/activites', 'ActiviteController@activite')->name('activite.date');
 
                 /* --------------------------------------
                 / Settings 

@@ -203,13 +203,13 @@ class StudentController extends Controller
 
     public function deleteArchivedStudent($matricule){
         $Student = new Student();
-        $Student->forceDeleteStudent($matricule);
         $stu=$Student->selectStudents($matricule);
         if(session()->get('user')){
             $typeActivity = 10; 
             $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
+        $Student->forceDeleteStudent($matricule);
         return Redirect::back()->with('deleteMessage',"L'étudiant a été supprimer Définitivement");
     }
 

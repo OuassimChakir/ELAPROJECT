@@ -124,13 +124,13 @@ class TeacherController extends Controller
 
     public function deleteArchivedTeacher($idStaff){
         $Staff = new Staff();
-        $Staff->forceDeleteTeacher($idStaff);
         $teach=$Staff->getProfesseur($idStaff);
         if(session()->get('user')){
             $typeActivity = 10; 
             $activityDescription = 'Le profisseur'." ".$teach->nom .$teach->prenom ."(".$teach->idProfesseur.")"; 
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
+        $Staff->forceDeleteTeacher($idStaff);
         return Redirect::back()->with('deleteMessage',"Le Professeur a été supprimer Définitivement");
     }
 
