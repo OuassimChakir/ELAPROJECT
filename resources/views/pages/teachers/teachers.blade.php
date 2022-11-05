@@ -91,7 +91,7 @@
                                 <a href="{{route('teachers.profil',['idProfesseur' => $teacher->idStaff,'nom' => $teacher->nom])}}">
                                     <button type="button" name="edit" class="btn btn-outline-info" value="{{$teacher->idStaff}}">
                                         <i class="bi bi-person-fill"></i>
-                                    </button>
+                                    </button> 
                                 </a>
                                 <a href="{{route('teachers.delete',['idProfesseur' => $teacher->idStaff])}}">
                                     <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Vous êtes sûr?');">
