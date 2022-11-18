@@ -107,7 +107,7 @@
         </table>
         <div class="row">
             <div class="col btns">
-                <button type="submit" name="deleteAll" class="btn btn-outline-danger" onclick="return confirm('Voulez-vous supprimer définitivement ces Professeurs?');">
+                <button type="submit" name="deleteAll" class="btn btn-outline-danger" onclick="return confirm('Voulez-vous supprimer ces Professeurs?');">
                     <i class="bi bi-trash-fill"></i> Supprimer la Sélection
                 </button>
             </div>

@@ -194,7 +194,7 @@
                     <div class="tab-pane fade" id="settings" role="tabpanel"
                         aria-labelledby="settings-tab">
                         <div class="tab-pane-content mt-5">
-                            <form action="{{route('student.update',['matricule' => $student->matricule])}}" method="put">
+                            <form action="{{route('student.update',['matricule' => $student->matricule])}}" method="post">
                                 @csrf
                                 @method('put')  
                                 <div class="modal-body px-4">

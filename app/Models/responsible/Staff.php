@@ -127,7 +127,7 @@ class Staff extends Model
     // --------------- TEACHER ARCHIVE ------------------ //
 
     // Select deleted Staff
-    public function softDeletedTeachers(){
+    public function softDeletedTeachers(){ 
         return $this::onlyTrashed()->where('staff.idStaffType',NULL)
         ->leftJoin('subjects','subjects.idSubject','=','staff.idSubject')
         ->get();

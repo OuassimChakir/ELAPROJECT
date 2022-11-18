@@ -37,6 +37,9 @@ class Responsible extends Model
         $updatedStudent -> save();
         $this::find($cnieResponsible)->delete();
     }
+    public static function fordeleteResponsible($cnieResponsible){
+          Responsible::find($cnieResponsible)->delete();
+    }
 
     public function updateResponsible($cnieResponsible,$nom,$prenom,$numTel,$sexe){
         $responsible = $this::find($cnieResponsible);

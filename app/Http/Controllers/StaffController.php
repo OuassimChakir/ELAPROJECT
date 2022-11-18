@@ -69,10 +69,10 @@ class StaffController extends Controller
         $Staff = new Staff();
         $Staff->deleteStaff($idStaff);
         $staffs = $Staff->getStaffs();
-        $st=$Staff->getStaff($idStaff);
+        $st=$Staff->getDeletedStaff($idStaff);
         if(session()->get('user')){
-            $typeActivity = 2; 
-            $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
+            $typeActivity = 1; 
+            $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('staff.liste')
@@ -85,10 +85,10 @@ class StaffController extends Controller
         if ($request->has('deleteAll')) {
             foreach($request->staffs as $idStaff){
                 $Staff->deleteStaff($idStaff);
-                $st=$Staff->getStaff($idStaff);
+                $st=$Staff->getDeletedStaff($idStaff);
                 if(session()->get('user')){
                     $typeActivity = 1; 
-                    $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
+                    $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
@@ -117,7 +117,7 @@ class StaffController extends Controller
         $st=$Staff->getStaff($idStaff);
         if(session()->get('user')){
             $typeActivity = 3; 
-            $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
+            $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('staff.archive')->with('restoreMessage',"Le Staff a été restorer avec succès")->with('staffs',$staffs);
@@ -125,13 +125,13 @@ class StaffController extends Controller
 
     public function deleteArchivedStaff($idStaff){
         $Staff = new Staff();
-        $Staff->forceDeleteStaff($idStaff);
-        $st=$Staff->getStaff($idStaff);
-        if(session()->get('user')){
+        $st=$Staff->getDeletedStaff($idStaff);
+        if(session()->get('user')){ 
             $typeActivity = 10; 
-            $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
+            $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
+        $Staff->forceDeleteStaff($idStaff);
         return Redirect::route('staff.archive')->with('deleteMessage',"Le Staff a été supprimer Définitivement");
     }
 
@@ -143,7 +143,7 @@ class StaffController extends Controller
                 $st=$Staff->getStaff($idStaff);
                 if(session()->get('user')){
                     $typeActivity = 3; 
-                    $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
+                    $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
@@ -151,13 +151,13 @@ class StaffController extends Controller
         }
         if($request->has('deleteAll')){
             foreach($request->archivedStaff as $idStaff){
-                $Staff->forceDeleteStaff($idStaff);
-                $st=$Staff->getStaff($idStaff);
+                $st=$Staff->getDeletedStaff($idStaff);
                 if(session()->get('user')){
                     $typeActivity = 10; 
-                    $activityDescription = 'Le étudiants'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
+                    $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
+                $Staff->forceDeleteStaff($idStaff);
             }
             return Redirect::route('staff.archive')->with('deleteMessage',"Les Staffs séléctionés ont été supprimer Définitivement");
         }

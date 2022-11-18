@@ -48,7 +48,6 @@
 		</div>
     </form>
     <div class="card-body compact-notifications" data-simplebar style="height: 434px;">
-        
     @if (isset($Activitedate))
     @foreach($Activitedate as $activitedat)
     <div class="media pb-3 align-items-center justify-content-between">
