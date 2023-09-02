@@ -45,7 +45,7 @@ Facture de Dépenses
                                 <tr>
                                     <th>Numéro</th>
                                     <th>Type de Dépense</th>
-                                    <th>Description</th>
+                                    <th>Description</th> 
                                     <th>Prix</th>
                                     <th>Date de Facture</th>
                                     <th>Action</th>
