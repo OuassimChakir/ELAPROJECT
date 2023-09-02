@@ -13,6 +13,7 @@ class Facture extends Model
     use SoftDeletes;
     protected $table = "expensepayment";
     protected $primaryKey = "idExpensePayment";
+    protected $fillable = ['datePayment', 'amount', 'description', 'idStaff', 'idExpense', 'CREATED_AT', 'UPDATED_AT'];
 
     //------------- all facture de dépenses----------//
     public static function allFacture()
@@ -34,7 +35,6 @@ class Facture extends Model
     {
         return Facture::select()->get()->sum('amount');
     }
-    protected $fillable = ['datePayment', 'amount', 'description', 'idStaff', 'idExpense', 'CREATED_AT', 'UPDATED_AT'];
 
     //------------- create facture ----------//         
     public static function createFacture($datePayment, $amount, $description, $idStaff, $idExpense)

@@ -10,6 +10,7 @@ class Group extends Model
     use HasFactory;
     protected $table = "groups";
     protected $primaryKey = "idGroup";
+    protected $fillable = ['designation', 'capacity', 'idSubject', 'idGrade', 'idStaff', 'CREATED_AT', 'UPDATED_AT'];
 
     // ------- Selections ----------- //
     public static function totalGroups()
@@ -90,7 +91,6 @@ class Group extends Model
             ->orHavingRaw('id IS NULL')
             ->get();
     }
-    protected $fillable = ['designation', 'capacity', 'idSubject', 'idGrade', 'idStaff', 'CREATED_AT', 'UPDATED_AT'];
     // ------ Creation ----------- //
     public static function createGroup($designation, $capacity, $idSubject, $idGrade, $idStaff)
     {
