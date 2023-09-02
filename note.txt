@@ -1,0 +1,19 @@
+CRUD CHECK:
+Users, Professors, Students, Staffs
+
+GROUPS, Matieres, Niveaux
+
+DEPENSES
+
+Revenus
+
+Debug:
+Presence
+
+Factures
+
+Reçus
+
+Activités
+
+Parametres

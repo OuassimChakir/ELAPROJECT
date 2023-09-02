@@ -208,7 +208,6 @@
                            <thead>
                                <tr>
                                     <th>Type de Dépense</th>
-                                    <th>Description</th>
                                     <th>Montant</th>
                                </tr>
                            </thead>
@@ -216,7 +215,6 @@
                                @foreach ($invoice->items as $item)
                                 <tr>
                                     <td class="col-md-4">{{$item->title}}</td>
-                                    <td class="col-md-5">{{$invoice->buyer->custom_fields['description']}}</td>
                                     <td class="col-md-3"> 
                                         {{ $invoice->formatCurrency($item->price_per_unit) }}
                                     </td>
