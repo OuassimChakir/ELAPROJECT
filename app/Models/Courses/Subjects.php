@@ -12,34 +12,35 @@ class Subjects extends Model
     protected $table = "subjects";
     protected $primaryKey = "idSubject";
     public $timestamps = false;
-
+   protected $fillable = ['libelle','short','idCourseType'];
       // Select of Subjects
-       public function selectSubjects(){
-        return $this::all();
+       public static function selectSubjects(){
+        return Subjects::all();
        }
 
-       public function getSubject($idSubject){
-        return $this::find($idSubject);
+       public static function getSubject($idSubject){
+        return Subjects::find($idSubject);
        }
 
-       public function getSubjects(){
-        return $this::select('*')
+       public static function getSubjects(){
+        return Subjects::select('*')
             ->join('coursetype','subjects.idCourseType','=','coursetype.idCourseType')
             ->orderBy('subjects.idCourseType')
             ->get();
        }
 
        // INSERT DATA (New Subject)
-       public function addSubject($libelle,$short,$idCourseType){
-        $this->libelle = $libelle;
-        $this->short = $short;
-        $this->idCourseType = $idCourseType;
-        $this->save();
+       public static function addSubject($libelle,$short,$idCourseType){
+        Subjects::create([
+         'libelle' => $libelle,
+         'short' => $short,
+         'idCourseType' => $idCourseType
+        ]);
        }
 
     //    Update Subject
-       public function updateSubject($idSubject,$libelle,$short,$idCourseType){
-        $subject = $this::find($idSubject);
+       public static function updateSubject($idSubject,$libelle,$short,$idCourseType){
+        $subject = Subjects::find($idSubject);
         $subject->libelle = $libelle;
         $subject->short = $short;
         $subject->idCourseType = $idCourseType;
@@ -47,8 +48,8 @@ class Subjects extends Model
        }
     
     //    Delete Subject
-       public function deleteSubject($idSubject){
-        $this::find($idSubject)->delete();
+       public static function deleteSubject($idSubject){
+        Subjects::find($idSubject)->delete();
        }
        
 }

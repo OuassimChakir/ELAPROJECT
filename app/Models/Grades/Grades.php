@@ -11,50 +11,59 @@ class Grades extends Model
     protected $table = "grades";
     protected $primaryKey = "idGrade";
     public $timestamps = false;
+    protected $fillable = ['grade', 'idGradeCategory'];
 
-    public function getGrade($idGrade){
-        return $this::select('*')
-            ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
-            ->where('grades.idGrade',$idGrade)
+    public static function getGrade($idGrade)
+    {
+        return Grades::select('*')
+            ->join('gradescategories', 'grades.idGradeCategory', '=', 'gradescategories.idGradeCategory')
+            ->where('grades.idGrade', $idGrade)
             ->first();
     }
 
-    public function getGradesByCategory($idGradeCategory){
-        return $this::where('grades.idGradeCategory',$idGradeCategory)
-                    ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
-                    ->orderBy('grade','ASC')
-                    ->paginate(20)->withQueryString();
+    public static function getGradesByCategory($idGradeCategory)
+    {
+        return Grades::where('grades.idGradeCategory', $idGradeCategory)
+            ->join('gradescategories', 'grades.idGradeCategory', '=', 'gradescategories.idGradeCategory')
+            ->orderBy('grade', 'ASC')
+            ->paginate(20)->withQueryString();
     }
-    public function selectGradesByCategory($idGradeCategory){
-        return $this::where('grades.idGradeCategory',$idGradeCategory)
-                    ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
-                    ->orderBy('grade','ASC')
-                    ->get();
+    public static function selectGradesByCategory($idGradeCategory)
+    {
+        return Grades::where('grades.idGradeCategory', $idGradeCategory)
+            ->join('gradescategories', 'grades.idGradeCategory', '=', 'gradescategories.idGradeCategory')
+            ->orderBy('grade', 'ASC')
+            ->get();
     }
-    public function getGrades(){
-        return $this::select('*')
-            ->join('gradescategories','grades.idGradeCategory','=','gradescategories.idGradeCategory')
+    public static function getGrades()
+    {
+        return Grades::select('*')
+            ->join('gradescategories', 'grades.idGradeCategory', '=', 'gradescategories.idGradeCategory')
             ->paginate(20)->withQueryString();
     }
 
-       // INSERT DATA (New Subject)
-    public function addGrade($grade,$idGradeCategory){
-        $this->grade = $grade;
-        $this->idGradeCategory = $idGradeCategory;
-        $this->save();
+    // INSERT DATA (New Subject)
+    public static function addGrade($grade, $idGradeCategory)
+    {
+        Grades::create([
+            'grade' => $grade,
+            'idGradeCategory' => $idGradeCategory
+        ]);
     }
-    
+
 
     //    Update Subject
-    public function updateGrade($idGrade,$grade,$idGradeCategory){
-        $gradeClass = $this::find($idGrade);
+    public static function updateGrade($idGrade, $grade, $idGradeCategory)
+    {
+        $gradeClass = Grades::find($idGrade);
         $gradeClass->grade = $grade;
         $gradeClass->idGradeCategory = $idGradeCategory;
         $gradeClass->save();
     }
-    
+
     //    Delete Subject
-    public function deleteGrade($idGrade){
-        $this::find($idGrade)->delete();
+    public static function deleteGrade($idGrade)
+    {
+        Grades::find($idGrade)->delete();
     }
 }

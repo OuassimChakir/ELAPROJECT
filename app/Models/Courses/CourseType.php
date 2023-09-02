@@ -11,35 +11,37 @@ class CourseType extends Model
     protected $table = "coursetype";
     protected $primaryKey = "idCourseType";
     public $timestamps = false;
+    protected $fillable = ['course','shortForm'];
 
     // Adding a new Course Type
-    public function addType($course,$shortForm){
-        $this->course = $course;
-        $this->shortForm = $shortForm;
-        $this->save();
+    public static function addType($course,$shortForm){
+        CourseType::create([
+            'course' => $course,
+            'shortForm' => $shortForm
+        ]);
     }
 
     // Select all Course Types
-    public function selectCourses(){
-        return $this::all();
+    public static function selectCourses(){
+        return CourseType::all();
     }
 
     // Select One Course Type
-    public function selectCourse($idCourseType){
-        return $this::find($idCourseType);
+    public static function selectCourse($idCourseType){
+        return CourseType::find($idCourseType);
     }
 
     // Update Course Type
-    public function updateCourse($idCourseType,$course,$shortForm){
-        $courseType = $this::find($idCourseType);
+    public static function updateCourse($idCourseType,$course,$shortForm){
+        $courseType = CourseType::find($idCourseType);
         $courseType->course = $course;
         $courseType->shortForm = $shortForm;
         $courseType->save();
     }
 
     // Delete Course Type
-    public function deleteCourse($id){
-        $this::find($id)->delete();
+    public static function deleteCourse($id){
+        CourseType::find($id)->delete();
     }
 
 

@@ -44,7 +44,7 @@
             <div class="card-body">
                 <div class="ec-cat-form">
                         <h4>Modifier une Matière</h4>
-                        <form action="{{route('subjects.update',['idSubject' => $updatedSubject->idSubject])}}" method="put">
+                        <form action="{{route('subjects.update.query',['idSubject' => $updatedSubject->idSubject])}}" method="put">
                             @method('put')
                             @csrf
                             <div class="form-group row">
@@ -173,13 +173,13 @@
                                             <td>{{$subject->course}}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="{{url('/matieres/update/'.$subject->idSubject)}}">
+                                                    <a href="{{route('subjects.update',['idSubject' => $subject->idSubject])}}">
                                                         <button type="submit" name="edit" class="btn btn-outline-warning" value="{{$subject->idSubject}}">
                                                             <i class="bi bi-pencil-square"></i>
                                                             
                                                         </button>
                                                     </a>
-                                                    <a href="{{url('/matieres/delete/'.$subject->idSubject)}}">
+                                                    <a href="{{route('subjects.delete',['idSubject' => $subject->idSubject])}}">
                                                         <button type="submit" class="btn btn-outline-danger" name="delete" value="{{$subject->idSubject}}" onclick="return confirm('Vous êtes sûr?');">
                                                                 <i class="bi bi-trash-fill"></i>
                                                         </button>

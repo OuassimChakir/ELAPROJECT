@@ -32,7 +32,7 @@ class PdfController extends Controller
         }
 
     
-        $item = (new InvoiceItem())->title($data->designation)->pricePerUnit($data->amout);
+        $item = (new InvoiceItem())->title($data->designation)->pricePerUnit($data->amount);
         
         $invoice = Invoice::make()
             ->buyer($customer)

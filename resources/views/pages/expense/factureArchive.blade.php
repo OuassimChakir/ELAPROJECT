@@ -58,7 +58,7 @@ Archive Facture de Dépenses
                                             <td>ELA-R.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
                                             <td><span class="badge badge-primary">{{$facture->designation}}</span></td>
                                             <td>{{$facture->description}}</td>
-                                            <td><span class="badge badge-dark">{{$facture->amout}} DH</span></td>
+                                            <td><span class="badge badge-dark">{{$facture->amount}} DH</span></td>
                                             <td>{{$facture->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">

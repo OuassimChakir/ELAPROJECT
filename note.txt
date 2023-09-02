@@ -1,19 +1,16 @@
 CRUD CHECK:
-Users, Professors, Students, Staffs
+Users, Professors, Students, Staffs ( @Otman )
 
-GROUPS, Matieres, Niveaux
-
-DEPENSES
-
-Revenus
+GROUPS, Matieres, Niveaux, dépenses, revenus ( @Ouassim )
 
 Debug:
-Presence
+Presence ( @Ouassim )
+Factures ( @Ouassim )
 
-Factures
+Reçus ( @Otman )
+Activités ( @Otman )
+Parametres ( @Otman )
 
-Reçus
 
-Activités
-
-Parametres
+https://codecanyon.net/item/posly-pos-with-inventory-management-system/46842690
+https://1.envato.market/GjyGV9

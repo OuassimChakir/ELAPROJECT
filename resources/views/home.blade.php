@@ -158,7 +158,7 @@
                                         <td><span class="badge badge-primary">{{$facture->designation}}</span></td>   
                                         <td class="d-none d-lg-table-cell">{{$facture->description}}</td>
                                         <td class="d-none d-lg-table-cell">{{$facture->datePayment}}</td>
-                                        <td class="d-none d-lg-table-cell"><span class="badge badge-dark">{{$facture->amout}} DH</td>
+                                        <td class="d-none d-lg-table-cell"><span class="badge badge-dark">{{$facture->amount}} DH</td>
                                             <td class="text-right">
                                                 <div class="btn-group-spaced">
                                                     <a href="{{route('pdf.generate',['idExpensePayment'=>$facture->idExpensePayment])}}" target="_blank">

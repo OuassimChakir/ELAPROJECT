@@ -34,7 +34,7 @@
                     @if (isset($courseInfo))
                         <h4>Modifier Le Type de Formation</h4>
 
-                        <form action="{{route('courses.update',['idCourseType' => $courseInfo->idCourseType])}}" method="put">
+                        <form action="{{route('courses.update.query',['idCourseType' => $courseInfo->idCourseType])}}" method="put">
                             @method('put')
                             @csrf
                             <div class="form-group row">
@@ -125,14 +125,14 @@
                                     <td>{{$course->shortForm}}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="{{url('/matieres/type/update/'.$course->idCourseType)}}">
-                                                <button type="submit" name="edit" class="btn btn-outline-warning" value="{{$course->idCourseType}}">
+                                            <a href="{{route('courses.update',['idCourseType' => $course->idCourseType])}}">
+                                                <button name="edit" class="btn btn-outline-warning" value="{{$course->idCourseType}}">
                                                     <i class="bi bi-pencil-square"></i>
                                                     
                                                 </button>
                                              </a>
-                                            <a href="{{url('/matieres/type/delete/'.$course->idCourseType)}}">
-                                                <button type="submit" class="btn btn-outline-danger" name="delete" value="{{$course->idCourseType}}" onclick="return confirm('Vous êtes sûr?');">
+                                            <a href="{{route('courses.delete',['idCourseType' => $course->idCourseType])}}">
+                                                <button class="btn btn-outline-danger" name="delete" value="{{$course->idCourseType}}" onclick="return confirm('Vous êtes sûr?');">
                                                         <i class="bi bi-trash-fill"></i>
                                                 </button>
                                             </a>

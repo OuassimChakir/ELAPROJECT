@@ -45,7 +45,8 @@
                 </div>
                 <input type="hidden" name="matricule" id="idStudent" value="hello">
                 <div class="modal-footer px-4">
-                    <button type="button" id="reloardBtn" class="btn btn-secondary btn-pill" data-bs-dismiss="modal">Terminer</button>
+                    <button type="button" id="reloardBtn" class="btn btn-primary btn-pill" data-bs-dismiss="modal">Ajouter</button>
+                    <button type="button" class="btn btn-secondary btn-pill" data-bs-dismiss="modal">Annuler</button>
                 </div>
         </div>
     </div>

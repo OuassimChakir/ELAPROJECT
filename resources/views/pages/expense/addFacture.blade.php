@@ -42,7 +42,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
                                     <label for="form-label">Montant</label>
-                                    <input type="number" name="amout" class="form-control" id="amount"> DH
+                                    <input type="number" name="amount" class="form-control" id="amount"> DH
                                 </div>
                             </div>
                         </div>

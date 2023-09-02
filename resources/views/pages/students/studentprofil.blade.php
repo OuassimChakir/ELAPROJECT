@@ -417,7 +417,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group mb-4">
                                             <label for="form-label">Montant</label>
-                                            <input type="number" name="amout" class="form-control" id="amount"><small class="text-muted">HD</small>
+                                            <input type="number" name="amount" class="form-control" id="amount"><small class="text-muted">HD</small>
                                         </div>
                                     </div>
                                 </div>
@@ -480,7 +480,7 @@
                                                                                 <td>ELA-R.{{str_pad((string) $Payment->idPayment, 4, 0, STR_PAD_LEFT)}}</td>
                                                                                 <td><span class="badge badge-primary">{{$Payment->designation}}</span></td>
                                                                                 <td>{{$Payment->paymentMode}}</td>
-                                                                                <td><span class="badge badge-dark">{{$Payment->amout}} DH</span></td>
+                                                                                <td><span class="badge badge-dark">{{$Payment->amount}} DH</span></td>
                                                                                 <td>{{$Payment->datePayment}}</td>
                                                                                 <td>
                                                                                     <div class="btn-group-spaced">

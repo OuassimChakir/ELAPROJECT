@@ -8,7 +8,10 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomesController;
 use App\Http\Controllers\ActiviteController;
+use App\Http\Controllers\GradesController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\SubjectController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -25,297 +28,301 @@ use Illuminate\Support\Facades\Route;
 
 
 
-    /* --------------------------------------
-    / Authentification
-    / --------------------------------------- */
-    // Route::get("/login","UserController@login")->name('login');
+/* --------------------------------------
+/ Authentification
+/ --------------------------------------- */
+// Route::get("/login","UserController@login")->name('login');
 
-    Route::middleware([
-        'auth:sanctum',
-        config('jetstream.auth_session'),
-        'verified'
-    ])->group(function () {
-        Route::get('/','HomeController@index')->name('acceuil');
-
-
-        // --------------- GRADES ------------ //
-        Route::get('/niveau','GradesController@grades')->name('grades');
-                // Adding New Grade
-            Route::post('/niveau/add','GradesController@grades')->name('grades.add');
-                // Update a Grade Query
-            Route::put('/niveau/update/{idGrade}','GradesController@actionGrade')->name('grades.update');
-        
-        // --------------- Grades Categories ------------ //
-        Route::get('/niveau/categories','GradesController@gradesCategory')->name('gradesCategory');
-                // Adding New Grade Category
-            Route::post('/niveau/categories/add','GradesController@gradesCategory')->name('gradesCategory.add');
-                // Delete & Update Category
-            Route::get('/niveau/categories/{action}/{idGradeCategory}','GradesController@actionGradeCategory')->name('gradesCategory.action');
-                // Update a Category Query
-            Route::put('/niveau/categories/update/{idGradeCategory}','GradesController@actionGradeCategory')->name('gradesCategory.update');
-        
-        // ------------ Course Type ----------- //
-        Route::get('/matieres/type','SubjectController@courseType')->name('courseType');
-                // Add Course Type
-            Route::post('/matieres/type/add','SubjectController@courseType')->name('courses.add');
-                // Delete & Update Course Type
-            Route::get('/matieres/type/{action}/{idCourseType}','SubjectController@actionCourseType')->name('courses.action');
-                // Update a Course Type Query
-            Route::put('/matieres/type/update/{idCourseType}','SubjectController@actionCourseType')->name('courses.update');
-        
-        // ---------------- Subjects ------------- //
-        Route::get('/matieres','SubjectController@subjects')->name('subjects');
-            // Add New Subject
-            Route::post('/matiere/add','SubjectController@subjects')->name('subjects.add');
-            // Delete & Update Subject
-            Route::get('/matieres/{action}/{idSubject}','SubjectController@actionSubject')->name('subjects.action');
-            // Update a Subject Query
-            Route::put('/matieres/update/{idSubject}','SubjectController@actionSubject')->name('subjects.update');
-    
-        // ------------------ TEACHERS ----------------------- //
-            Route::get('/teachers', 'TeacherController@teacher')->name('teachers.liste');
-            // Add staff
-            Route::post('/teacher/add', 'TeacherController@teacher')->name('teachers.add');
-            // Update Staff
-            Route::put('/teacher/update/{idProfesseur}','TeacherController@updateTeacher')->name('teachers.update');
-            // Delete Staff
-            Route::get('/teacher/delete/{idProfesseur}','TeacherController@deleteTeacher')->name('teachers.delete');
-            Route::delete('/teacher/delete','TeacherController@deleteMultipleTeachers')->name('teachers.delete.multiple');
-            // Staff Profil
-            Route::get('/teacher/{idProfesseur}-{nom}','TeacherController@teacherProfil')->name('teachers.profil');
-
-        
-        // -------------- STUDENTS --------------------- //
-            Route::get('/students', 'StudentController@student')->name('student.liste');
-            Route::get('/students/{matricule}','StudentController@studentProfil')->name('student.profil');
-            // Adding Student
-            Route::post('/students/add', 'StudentController@student')->name('student.add');
-            // Update Student
-            Route::put('/students/update/{matricule}','StudentController@updateStudent')->name('student.update');
-        
-        // -------------- Responsibles --------------------- //
-            // Adding Responsible
-            Route::post('/responsible/add', 'StudentController@addResponsible')->name('responsible.add');
-            // Update Responsible
-            Route::put('/responsible/update/{cnieResponsible}','StudentController@updateResponsible')->name('responsible.update');
-            // Delete Responsible
-            Route::get('student/{matricule}/delete/{cnieResponsible}','StudentController@deleteResponsible')->name('responsible.delete');
-            
-        
-        // --------------- Groupes ------------------ //
-            Route::get('/groupes','GroupController@groups')->name('groups');
-            Route::post('/groupes/add','GroupController@groups')->name('groups.add');
-            // Load Data
-            Route::get('/groupes/get/{idGradeCategory}','GroupController@getGrade')->name('groups.getData');
-        
-            // Group Page
-            Route::get('/groupe/{idGroup}','GroupController@groupPage')->name('groups.profil');
-            Route::put('/groupe/update/{idGroup}','GroupController@updateGroup')->name('groups.update');
-
-        //-----------------absence-------------------//    
-            Route::get('/absence','GroupController@allAbsences')->name('absence');
-                // add absence
-            Route::post('/absence','GroupController@allAbsences')->name('absence.add');
-                // Update Student
-            Route::get('/absence/update/{idAttendance}-{absence}','GroupController@updateAbsence');
-        
-
-        // ------------- Classroom ---------- // 
-            // Add Student to Group
-            Route::get('/groupes/{idGroup}/classroom/{matricule}','StudentController@assignClassroom');
-        
-            // Remove From Classroom
-            Route::get('/classrooms/remove/{id}','GroupController@cancelAssignment')->name('classroom.cancelAssignment');
-
-            // multiple remove from classroom
-            Route::delete('/classroom/multipleRemove','GroupController@multipleCancelAssignment')->name('classroom.multipleCancel');
-            
-            // JSON DATA
-            Route::get('/students/get/{idSubject}','StudentController@getGroupsByGrade');
-            Route::get('/students/getGroups/{idSubject}-{idGrade}-{matricule}','StudentController@getGroupsByGradeAndSubject');
-        
-            
-            // --------------- Expenses ------------------ //
-            Route::get('/typeDepenses','ExpenseController@allExpenses')->name('typeDepenses');
-              // Add New Expenses
-            Route::post('/typeDepenses/add','ExpenseController@allExpenses')->name('typeDepenses.add');
-              // Delete Expenses
-            Route::get('/typeDepenses/delete/{idExpense}','ExpenseController@deleteExpense')->name('typeDepenses.delete');
-              // Update a Expenses
-            Route::get('/typeDepenses/update/{idExpense}','ExpenseController@updateExpense')->name('typeDepenses.update.page');
-            Route::put('/typeDepenses/update/{idExpense}','ExpenseController@updateExpense')->name('typeDepenses.update');
-        
-            // --------------- Facture de dépenses ------------------ //
-            Route::get('/factureDepenses','ExpenseController@allFacture')->name('factureDepenses');
-                // Add New Facture
-            Route::post('/factureDepenses/add','ExpenseController@allFacture')->name('factureDepenses.add');
-                // Delete Facture
-            Route::get('/factureDepenses/delete/{idExpensePayment}','ExpenseController@deleteFacture')->name('factureDepenses.delete');
-
-        
-              // --------------- typeIncomes ------------------ //
-            Route::get('/typeIncome','IncomesController@allIncomes')->name('typeIncome');
-            // Add New typeIncomes
-            Route::post('/typeIncome/add','IncomesController@allIncomes')->name('typeIncome.add');
-            // Delete typeIncomes
-            Route::get('/typeIncome/delete/{idIncome}','IncomesController@deleteIncome')->name('typeIncome.delete');
-            // Update a typeIncomes
-            Route::get('/typeIncome/update/{idIncome}','IncomesController@updateIncome')->name('typeIncome.update.page');
-            Route::put('/typeIncome/update/{idIncome}','IncomesController@updateIncome')->name('typeIncome.update');
-        
-        
-             // --------------- Incomes Payment ------------------ //
-            Route::get('/incomePayment','IncomesController@allPayment')->name('incomePayment');
-            // Add New Incomes Payment 
-            Route::post('/incomePayment/add','IncomesController@allPayment')->name('incomePayment.add');
-            // Delete Incomes Payment 
-            Route::get('/incomePayment/delete/{idPayment}','IncomesController@deletePayment')->name('incomePayment.delete');
-            
-            
-            
-            // ----- pdf de facture
-            Route::get('/pdf/{idExpensePayment}','PdfController@pdf')->name('pdf.generate');
-        
-            // Facture Staff Data Ajax
-            Route::get('/factureDepenses/{idExpense}','ExpenseController@getStaffData');
-        
-            
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/', 'HomeController@index')->name('acceuil');
 
 
-            Route::get('/dashboard', function () {
-                return view('dashboard');
-            })->name('dashboard');
+    // --------------- GRADES ------------ //
+    Route::get('/niveau', [GradesController::class, 'grades'])->name('grades');
+    // Adding New Grade
+    Route::post('/niveau/add', [GradesController::class, 'grades'])->name('grades.add');
+    // Update a Grade Query
+    Route::get('/niveau/update/{idGrade}', [GradesController::class, 'updateGrade'])->name('grades.update');
+    Route::put('/niveau/update/{idGrade}', [GradesController::class, 'updateGrade'])->name('grades.update.query');
+
+    // Delete a Grade
+    Route::get('/niveau/delete/{idGrade}', [GradesController::class, 'deleteGrade'])->name('grades.delete');
+
+    // --------------- Grades Categories ------------ //
+    Route::get('/niveau/categories', [GradesController::class, 'gradesCategory'])->name('gradesCategory');
+    // Adding New Grade Category
+    Route::post('/niveau/categories/add', [GradesController::class, 'gradesCategory'])->name('gradesCategory.add');
+    // Update Category
+    Route::get('/niveau/categories/update/{idGradeCategory}', [GradesController::class, 'updateGradeCategory'])->name('gradesCategory.update');
+    Route::put('/niveau/categories/update/{idGradeCategory}', [GradesController::class, 'updateGradeCategory'])->name('gradesCategory.update.query');
+    // Delete a Category Query
+    Route::get('/niveau/categories/delete/{idGradeCategory}', [GradesController::class, 'deleteGradeCategory'])->name('gradesCategory.delete');
 
 
-                    
-            // Moderator Permission View
-            Route::middleware(['is_moderator'])->group(function () {
-                /* -----------------------------------------------
-                / STAFFs
-                / --------------------------------------------- */
+    // ------------ Course Type ----------- //
+    Route::get('/matieres/type', [SubjectController::class, 'courseType'])->name('courseType');
+    // Add Course Type
+    Route::post('/matieres/type/add', [SubjectController::class, 'courseType'])->name('courses.add');
 
-                Route::get('/staff', 'StaffController@staff')->name('staff.liste');
-                // Add staff
-                Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
-                // Update Staff
-                Route::put('/staff/update/{idStaff}','StaffController@updateStaff')->name('staff.update');
-                // Delete Staff
-                Route::get('/staff/delete/{idStaff}','StaffController@deleteStaff')->name('staff.delete');
-                Route::delete('/staff/deleteAll','StaffController@deleteMultipleStaff')->name('staff.delete.multiple');
-                // Staff Profil
-                Route::get('/staff/{idStaff}-{nom}','StaffController@staffProfil')->name('staff.profil');
-                
-                /* -----------------------------------------------
-                / ARCHIVE
-                / --------------------------------------------- */
-                // ARCHIVED Staff
-                Route::get('/archive/staff','StaffController@archive')->name('staff.archive');
-                Route::get('/archive/staff/{idStaff}','StaffController@archivedStaff')->name('staff.archive.profil');
-                Route::get('/archive/staff/restore/{idStaff}','StaffController@restoreArchivedStaff')->name('staff.archive.restore');
+    // Delete Course Type
+    Route::get('/matieres/type/delete/{idCourseType}', [SubjectController::class, 'deleteCourseType'])->name('courses.delete');
+
+    // Update a Course Type
+    Route::get('/matieres/type/update/{idCourseType}', [SubjectController::class, 'updateCourseType'])->name('courses.update');
+    Route::put('/matieres/type/update/{idCourseType}', [SubjectController::class, 'updateCourseType'])->name('courses.update.query');
 
 
-                // ARCHIVED STUDENTS
-                Route::get('/archive/students','StudentController@archive')->name('student.archive');
-                Route::get('/archive/students/{matricule}','StudentController@archivedStudent')->name('student.archive.profil');
-                Route::get('/archive/students/restore/{matricule}','StudentController@restoreArchivedStudent')->name('student.archive.restore');
+    // ---------------- Subjects ------------- //
+    Route::get('/matieres', [SubjectController::class, 'subjects'])->name('subjects');
+    // Add New Subject
+    Route::post('/matiere/add', [SubjectController::class, 'subjects'])->name('subjects.add');
+    // Delete & Update Subject
+    Route::delete('/matieres/delete/{idSubject}', [SubjectController::class, 'deleteSubject'])->name('subjects.delete');
+    // Update a Subject Query
+    Route::get('/matieres/update/{idSubject}', [SubjectController::class, 'updateSubject'])->name('subjects.update');
+    Route::put('/matieres/update/{idSubject}', [SubjectController::class, 'updateSubject'])->name('subjects.update.query');
 
-                // ARCHIVED Incomes Payment 
-                Route::get('/archive/incomePayment','IncomesController@archive')->name('incomePayment.archive');
-                Route::get('/archive/incomePayment/restore/{idPayment}','IncomesController@restoreArchivedPayment')->name('incomePayment.archive.restore');
-
-                // ARCHIVED Facture
-                Route::get('/archive/factureDepenses','ExpenseController@archive')->name('factureDepenses.archive');
-                Route::get('/archive/factureDepenses/restore/{idExpensePayment}','ExpenseController@restoreArchivedFacture')->name('factureDepenses.archive.restore');
-        
-                // ARCHIVED Teachers
-                Route::get('/archive/teachers','TeacherController@archive')->name('teachers.archive');
-                Route::get('/archive/teacher/{idProfesseur}','TeacherController@archivedTeacher')->name('teachers.archive.profil');
-                Route::get('/archive/teachers/restore/{idProfesseur}','TeacherController@restoreArchivedTeacher')->name('teachers.archive.restore');
-
-
-                
-                // ----------------- STAFF TYPE ------------------ //
-                Route::get('/specialites', 'StaffController@staffType')->name('specialite');
-                // Add staff Type
-                Route::post('/specialites/add', 'StaffController@staffType')->name('specialite.add');
-                // Update Staff Type
-                Route::get('/specialites/update/{idStaffType}','StaffController@updateStaffType')->name('specialite.update');
-                Route::put('/specialites/update/{idStaffType}','StaffController@updateStaffType')->name('specialite.update.request');
-
-                /* --------------------------------------
-                / USERS
-                / --------------------------------------- */
-                    // Users Page
-                Route::get('/utilisateurs','UserController@users')->name('users');
-                    // Add User
-                 Route::post('/utilisateurs','UserController@users')->name('users.add');
+    // ------------------ TEACHERS ----------------------- //
+    Route::get('/teachers', 'TeacherController@teacher')->name('teachers.liste');
+    // Add staff
+    Route::post('/teacher/add', 'TeacherController@teacher')->name('teachers.add');
+    // Update Staff
+    Route::put('/teacher/update/{idProfesseur}', 'TeacherController@updateTeacher')->name('teachers.update');
+    // Delete Staff
+    Route::get('/teacher/delete/{idProfesseur}', 'TeacherController@deleteTeacher')->name('teachers.delete');
+    Route::delete('/teacher/delete', 'TeacherController@deleteMultipleTeachers')->name('teachers.delete.multiple');
+    // Staff Profil
+    Route::get('/teacher/{idProfesseur}-{nom}', 'TeacherController@teacherProfil')->name('teachers.profil');
 
 
-            });
+    // -------------- STUDENTS --------------------- //
+    Route::get('/students', 'StudentController@student')->name('student.liste');
+    Route::get('/students/{matricule}', 'StudentController@studentProfil')->name('student.profil');
+    // Adding Student
+    Route::post('/students/add', 'StudentController@student')->name('student.add');
+    // Update Student
+    Route::put('/students/update/{matricule}', 'StudentController@updateStudent')->name('student.update');
 
-            // Admin Permission View
-            Route::middleware(['is_admin'])->group(function() {
+    // -------------- Responsibles --------------------- //
+    // Adding Responsible
+    Route::post('/responsible/add', 'StudentController@addResponsible')->name('responsible.add');
+    // Update Responsible
+    Route::put('/responsible/update/{cnieResponsible}', 'StudentController@updateResponsible')->name('responsible.update');
+    // Delete Responsible
+    Route::get('student/{matricule}/delete/{cnieResponsible}', 'StudentController@deleteResponsible')->name('responsible.delete');
 
-                /* --------------------------------------
-                / activites 
-                / --------------------------------------- */  
-                Route::get('/activites', 'ActiviteController@activite')->name('activite');
-                Route::post('/activites', 'ActiviteController@activite')->name('activite.date');
 
-                /* --------------------------------------
-                / Settings 
-                / --------------------------------------- */    
-                Route::get('/settings','SettingController@index')->name('settings');
+    // --------------- Groupes ------------------ //
+    Route::get('/groupes', [GroupController::class,'groups'])->name('groups');
+    Route::post('/groupes/add', [GroupController::class,'groups'])->name('groups.add');
+    // Load Data
+    Route::get('/groupes/get/{idGradeCategory}', [GroupController::class,'getGrade'])->name('groups.getData');
 
-                /* --------------------------------------
-                / Roles 
-                / --------------------------------------- */
-                Route::get('/roles','RolesController@role')->name('roles');
-                // Delete roles
-                Route::get('/roles/delete/{idRole}','RolesController@deleteRoles')->name('roles.delete');
-                // Update roles
-                Route::get('/roles/update/{idRole}','RolesController@updateRoles')->name('roles.update.page');
-                Route::put('/roles/update/{idRole}','RolesController@updateRoles')->name('roles.update');
+    // Group Page
+    Route::get('/groupe/{idGroup}', [GroupController::class,'groupPage'])->name('groups.profil');
+    Route::put('/groupe/update/{idGroup}', [GroupController::class,'updateGroup'])->name('groups.update');
 
-            });
+    //-----------------absence-------------------//    
+    Route::get('/absence', [GroupController::class,'allAbsences'])->name('absence');
+    // add absence
+    Route::post('/absence', [GroupController::class,'allAbsences'])->name('absence.add');
+    // Update Student
+    Route::get('/absence/update/{idAttendance}-{absence}', [GroupController::class,'updateAbsence']);
 
-            // Moderator Deletion Permissions
-            Route::middleware(['is_admin'])->group(function(){
-                // Delete Staff Type
-                Route::get('/specialites/delete/{idStaffType}','StaffController@deleteStaffType')->name('specialite.delete');
 
-                // Archive Teachers
-                Route::get('/archive/teachers/delete/{idProfesseur}','TeacherController@deleteArchivedTeacher')->name('teachers.archive.delete');
-                Route::post('/archive/teachers/action','TeacherController@multipleArchivedTeachers')->name('teachers.archive.multiple');
+    // ------------- Classroom ---------- // 
+    // Add Student to Group
+    Route::get('/groupes/{idGroup}/classroom/{matricule}', 'StudentController@assignClassroom');
 
-                // Facture Archive
-                Route::post('/archive/factureDepenses/action','ExpenseController@multipleArchivedFacture')->name('factureDepenses.archive.multiple');
-                Route::get('/archive/factureDepenses/delete/{idExpensePayment}','ExpenseController@deleteArchivedFacture')->name('factureDepenses.archive.delete');
+    // Remove From Classroom
+    Route::get('/classrooms/remove/{id}', [GroupController::class,'cancelAssignment'])->name('classroom.cancelAssignment');
 
-                // Incomes
-                Route::post('/archive/incomePayment/action','IncomesController@multipleArchivedPayment')->name('incomePayment.archive.multiple');
-                Route::get('/archive/incomePayment/delete/{idPayment}','IncomesController@deleteArchivedPayment')->name('incomePayment.archive.delete');
+    // multiple remove from classroom
+    Route::delete('/classroom/multipleRemove', [GroupController::class,'multipleCancelAssignment'])->name('classroom.multipleCancel');
 
-                // Students Archive
-                Route::post('/archive/students/action','StudentController@multipleArchivedStudents')->name('student.archive.multiple');
-                Route::get('/archive/students/delete/{matricule}','StudentController@deleteArchivedStudent')->name('student.archive.delete');
+    // JSON DATA
+    Route::get('/students/get/{idSubject}', 'StudentController@getGroupsByGrade');
+    Route::get('/students/getGroups/{idSubject}-{idGrade}-{matricule}', 'StudentController@getGroupsByGradeAndSubject');
 
-                // Staff Archive
-                Route::post('/archive/staff/action','StaffController@multipleArchivedStaff')->name('staff.archive.multiple');
-                Route::get('/archive/staff/delete/{idStaff}','StaffController@deleteArchivedStaff')->name('staff.archive.delete');
 
-                // Delete Group
-                Route::get('/groupes/delete/{idGroup}','GroupController@deleteGroup')->name('groups.delete');
+    // --------------- Expenses ------------------ //
+    Route::get('/typeDepenses', [ExpenseController::class,'allExpenses'])->name('typeDepenses');
+    // Add New Expenses
+    Route::post('/typeDepenses/add', [ExpenseController::class,'allExpenses'])->name('typeDepenses.add');
+    // Delete Expenses
+    Route::get('/typeDepenses/delete/{idExpense}', [ExpenseController::class,'deleteExpense'])->name('typeDepenses.delete');
+    // Update a Expenses
+    Route::get('/typeDepenses/update/{idExpense}', [ExpenseController::class,'updateExpense'])->name('typeDepenses.update.page');
+    Route::put('/typeDepenses/update/{idExpense}', [ExpenseController::class,'updateExpense'])->name('typeDepenses.update');
 
-                // Delete Student
-                Route::get('/students/delete/{matricule}','StudentController@deleteStudent')->name('student.delete');
-                Route::delete('/staff/delete','StudentController@deleteMultipleStudents')->name('student.delete.multiple');
+    // --------------- Facture de dépenses ------------------ //
+    Route::get('/factureDepenses', [ExpenseController::class,'allFacture'])->name('factureDepenses');
+    // Add New Facture
+    Route::post('/factureDepenses/add', [ExpenseController::class,'allFacture'])->name('factureDepenses.add');
+    // Delete Facture
+    Route::get('/factureDepenses/delete/{idExpensePayment}', [ExpenseController::class,'deleteFacture'])->name('factureDepenses.delete');
 
-                // Delete & Update Grade
-                Route::get('/niveau/{action}/{idGrade}','GradesController@actionGrade')->name('grades.action');
-            });
+
+    // --------------- typeIncomes ------------------ //
+    Route::get('/typeIncome', [IncomesController::class,'allIncomes'])->name('typeIncome');
+    // Add New typeIncomes
+    Route::post('/typeIncome/add', [IncomesController::class,'allIncomes'])->name('typeIncome.add');
+    // Delete typeIncomes
+    Route::get('/typeIncome/delete/{idIncome}', [IncomesController::class,'deleteIncome'])->name('typeIncome.delete');
+    // Update a typeIncomes
+    Route::get('/typeIncome/update/{idIncome}', [IncomesController::class,'updateIncome'])->name('typeIncome.update.page');
+    Route::put('/typeIncome/update/{idIncome}', [IncomesController::class,'updateIncome'])->name('typeIncome.update');
+
+
+    // --------------- Incomes Payment ------------------ //
+    Route::get('/incomePayment', [IncomesController::class,'allPayment'])->name('incomePayment');
+    // Add New Incomes Payment 
+    Route::post('/incomePayment/add', [IncomesController::class,'allPayment'])->name('incomePayment.add');
+    // Delete Incomes Payment 
+    Route::get('/incomePayment/delete/{idPayment}', [IncomesController::class,'deletePayment'])->name('incomePayment.delete');
+
+
+
+    // ----- pdf de facture
+    Route::get('/pdf/{idExpensePayment}', 'PdfController@pdf')->name('pdf.generate');
+
+    // Facture Staff Data Ajax
+    Route::get('/factureDepenses/{idExpense}', [ExpenseController::class,'getStaffData']);
+
+
+
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+
+
+    // Moderator Permission View
+    Route::middleware(['is_moderator'])->group(function () {
+        /* -----------------------------------------------
+        / STAFFs
+        / --------------------------------------------- */
+
+        Route::get('/staff', 'StaffController@staff')->name('staff.liste');
+        // Add staff
+        Route::post('/staff/add', 'StaffController@staff')->name('staff.add');
+        // Update Staff
+        Route::put('/staff/update/{idStaff}', 'StaffController@updateStaff')->name('staff.update');
+        // Delete Staff
+        Route::get('/staff/delete/{idStaff}', 'StaffController@deleteStaff')->name('staff.delete');
+        Route::delete('/staff/deleteAll', 'StaffController@deleteMultipleStaff')->name('staff.delete.multiple');
+        // Staff Profil
+        Route::get('/staff/{idStaff}-{nom}', 'StaffController@staffProfil')->name('staff.profil');
+
+        /* -----------------------------------------------
+        / ARCHIVE
+        / --------------------------------------------- */
+        // ARCHIVED Staff
+        Route::get('/archive/staff', 'StaffController@archive')->name('staff.archive');
+        Route::get('/archive/staff/{idStaff}', 'StaffController@archivedStaff')->name('staff.archive.profil');
+        Route::get('/archive/staff/restore/{idStaff}', 'StaffController@restoreArchivedStaff')->name('staff.archive.restore');
+
+
+        // ARCHIVED STUDENTS
+        Route::get('/archive/students', 'StudentController@archive')->name('student.archive');
+        Route::get('/archive/students/{matricule}', 'StudentController@archivedStudent')->name('student.archive.profil');
+        Route::get('/archive/students/restore/{matricule}', 'StudentController@restoreArchivedStudent')->name('student.archive.restore');
+
+        // ARCHIVED Incomes Payment 
+        Route::get('/archive/incomePayment', 'IncomesController@archive')->name('incomePayment.archive');
+        Route::get('/archive/incomePayment/restore/{idPayment}', 'IncomesController@restoreArchivedPayment')->name('incomePayment.archive.restore');
+
+        // ARCHIVED Facture
+        Route::get('/archive/factureDepenses', [ExpenseController::class,'archive'])->name('factureDepenses.archive');
+        Route::get('/archive/factureDepenses/restore/{idExpensePayment}', [ExpenseController::class,'restoreArchivedFacture'])->name('factureDepenses.archive.restore');
+
+        // ARCHIVED Teachers
+        Route::get('/archive/teachers', 'TeacherController@archive')->name('teachers.archive');
+        Route::get('/archive/teacher/{idProfesseur}', 'TeacherController@archivedTeacher')->name('teachers.archive.profil');
+        Route::get('/archive/teachers/restore/{idProfesseur}', 'TeacherController@restoreArchivedTeacher')->name('teachers.archive.restore');
+
+
+
+        // ----------------- STAFF TYPE ------------------ //
+        Route::get('/specialites', 'StaffController@staffType')->name('specialite');
+        // Add staff Type
+        Route::post('/specialites/add', 'StaffController@staffType')->name('specialite.add');
+        // Update Staff Type
+        Route::get('/specialites/update/{idStaffType}', 'StaffController@updateStaffType')->name('specialite.update');
+        Route::put('/specialites/update/{idStaffType}', 'StaffController@updateStaffType')->name('specialite.update.request');
+
+        /* --------------------------------------
+        / USERS
+        / --------------------------------------- */
+        // Users Page
+        Route::get('/utilisateurs', 'UserController@users')->name('users');
+        // Add User
+        Route::post('/utilisateurs', 'UserController@users')->name('users.add');
     });
-    
-?>
 
+    // Admin Permission View
+    Route::middleware(['is_admin'])->group(function () {
 
+        /* --------------------------------------
+        / activites 
+        / --------------------------------------- */
+        Route::get('/activites', 'ActiviteController@activite')->name('activite');
+        Route::post('/activites', 'ActiviteController@activite')->name('activite.date');
+
+        /* --------------------------------------
+        / Settings 
+        / --------------------------------------- */
+        Route::get('/settings', 'SettingController@index')->name('settings');
+
+        /* --------------------------------------
+        / Roles 
+        / --------------------------------------- */
+        Route::get('/roles', 'RolesController@role')->name('roles');
+        // Delete roles
+        Route::get('/roles/delete/{idRole}', 'RolesController@deleteRoles')->name('roles.delete');
+        // Update roles
+        Route::get('/roles/update/{idRole}', 'RolesController@updateRoles')->name('roles.update.page');
+        Route::put('/roles/update/{idRole}', 'RolesController@updateRoles')->name('roles.update');
+    });
+
+    // Moderator Deletion Permissions
+    Route::middleware(['is_admin'])->group(function () {
+        // Delete Staff Type
+        Route::get('/specialites/delete/{idStaffType}', 'StaffController@deleteStaffType')->name('specialite.delete');
+
+        // Archive Teachers
+        Route::get('/archive/teachers/delete/{idProfesseur}', 'TeacherController@deleteArchivedTeacher')->name('teachers.archive.delete');
+        Route::post('/archive/teachers/action', 'TeacherController@multipleArchivedTeachers')->name('teachers.archive.multiple');
+
+        // Facture Archive
+        Route::post('/archive/factureDepenses/action', [ExpenseController::class,'multipleArchivedFacture'])->name('factureDepenses.archive.multiple');
+        Route::get('/archive/factureDepenses/delete/{idExpensePayment}', [ExpenseController::class,'deleteArchivedFacture'])->name('factureDepenses.archive.delete');
+
+        // Incomes
+        Route::post('/archive/incomePayment/action', 'IncomesController@multipleArchivedPayment')->name('incomePayment.archive.multiple');
+        Route::get('/archive/incomePayment/delete/{idPayment}', 'IncomesController@deleteArchivedPayment')->name('incomePayment.archive.delete');
+
+        // Students Archive
+        Route::post('/archive/students/action', 'StudentController@multipleArchivedStudents')->name('student.archive.multiple');
+        Route::get('/archive/students/delete/{matricule}', 'StudentController@deleteArchivedStudent')->name('student.archive.delete');
+
+        // Staff Archive
+        Route::post('/archive/staff/action', 'StaffController@multipleArchivedStaff')->name('staff.archive.multiple');
+        Route::get('/archive/staff/delete/{idStaff}', 'StaffController@deleteArchivedStaff')->name('staff.archive.delete');
+
+        // Delete Group
+        Route::get('/groupes/delete/{idGroup}', [GroupController::class,'deleteGroup'])->name('groups.delete');
+
+        // Delete Student
+        Route::get('/students/delete/{matricule}', 'StudentController@deleteStudent')->name('student.delete');
+        Route::delete('/staff/delete', 'StudentController@deleteMultipleStudents')->name('student.delete.multiple');
+
+        // Delete & Update Grade
+        Route::get('/niveau/{action}/{idGrade}', [GradesController::class,'actionGrade'])->name('grades.action');
+    });
+});

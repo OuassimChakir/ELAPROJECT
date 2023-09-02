@@ -62,7 +62,7 @@ Reçus de Payment
                                             <td><span class="badge badge-warning">{{$Payment->matricule}}</span></td>
                                             <td><span class="badge badge-primary">{{$Payment->designation}}</span></td>
                                             <td>{{$Payment->paymentMode}}</td>
-                                            <td><span class="badge badge-dark">{{$Payment->amout}} DH</span></td>
+                                            <td><span class="badge badge-dark">{{$Payment->amount}} DH</span></td>
                                             <td>{{$Payment->datePayment}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">

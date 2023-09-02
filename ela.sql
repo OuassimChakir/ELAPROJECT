@@ -148,7 +148,7 @@ DROP TABLE IF EXISTS `expensepayment`;
 CREATE TABLE IF NOT EXISTS `expensepayment` (
   `idExpensePayment` int(11) NOT NULL AUTO_INCREMENT,
   `datePayment` date DEFAULT NULL,
-  `amout` double DEFAULT NULL,
+  `amount` double DEFAULT NULL,
   `description` text,
   `CREATED_AT` timestamp NULL DEFAULT NULL,
   `UPDATED_AT` timestamp NULL DEFAULT NULL,
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `expensepayment` (
 -- Déchargement des données de la table `expensepayment`
 --
 
-INSERT INTO `expensepayment` (`idExpensePayment`, `datePayment`, `amout`, `description`, `CREATED_AT`, `UPDATED_AT`, `DELETED_AT`, `idStaff`, `idExpense`) VALUES
+INSERT INTO `expensepayment` (`idExpensePayment`, `datePayment`, `amount`, `description`, `CREATED_AT`, `UPDATED_AT`, `DELETED_AT`, `idStaff`, `idExpense`) VALUES
 (4, '2022-09-23', 500, 'dqdqzdqzdqzd', '2022-09-22 23:43:34', '2022-09-24 10:03:18', NULL, 6, 3);
 
 -- --------------------------------------------------------
@@ -381,7 +381,7 @@ CREATE TABLE IF NOT EXISTS `payment` (
   `idPayment` int(11) NOT NULL AUTO_INCREMENT,
   `datePayment` date DEFAULT NULL,
   `paymentMode` varchar(50) DEFAULT NULL COMMENT 'Virement Bancaire / Espèce',
-  `amout` double DEFAULT NULL,
+  `amount` double DEFAULT NULL,
   `description` text,
   `CREATED_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `UPDATED_AT` timestamp NULL DEFAULT NULL,
@@ -397,7 +397,7 @@ CREATE TABLE IF NOT EXISTS `payment` (
 -- Déchargement des données de la table `payment`
 --
 
-INSERT INTO `payment` (`idPayment`, `datePayment`, `paymentMode`, `amout`, `description`, `CREATED_AT`, `UPDATED_AT`, `DELETED_AT`, `matricule`, `idIncome`) VALUES
+INSERT INTO `payment` (`idPayment`, `datePayment`, `paymentMode`, `amount`, `description`, `CREATED_AT`, `UPDATED_AT`, `DELETED_AT`, `matricule`, `idIncome`) VALUES
 (4, '2022-09-21', 'Espece', 200, 'arabe', '2022-09-23 01:31:16', '2022-09-22 23:31:16', NULL, 'ELA100-2022', 2),
 (5, '2022-09-23', 'Espece', 200, 'espanol', '2022-09-23 01:26:11', '2022-09-22 23:26:11', NULL, 'ELA1-2022', 2),
 (6, '2022-09-23', 'Espece', 200, 'dqqdqdqd', '2022-09-23 09:30:42', '2022-09-23 09:30:42', NULL, 'ELA1-2022', 2);

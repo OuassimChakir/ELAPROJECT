@@ -7,42 +7,45 @@ use Illuminate\Database\Eloquent\Model;
 
 class Expenses extends Model
 {
-    use HasFactory;
-    protected $table = "expenses";
-    protected $primaryKey = "idExpense";  
-    public $timestamps = false;
+        use HasFactory;
+        protected $table = "expenses";
+        protected $primaryKey = "idExpense";
+        public $timestamps = false;
+        protected $fillable = ['designation', 'code', 'description'];
 
 
         //------------- select Expenses----------//
-        public function selectExpenses(){
-                return $this::all();
+        public static function selectExpenses()
+        {
+                return Expenses::all();
         }
 
-        public function selectExpense($idExpense){
-                return $this::find($idExpense);
+        public static function selectExpense($idExpense)
+        {
+                return Expenses::find($idExpense);
         }
-                // ------ Creation Expenses ----------- //
-        public function createExpense($designation,$code,$description){
-                $this->designation = $designation;
-                $this->code = $code;
-                $this->description = $description;
-                $this->save();
+        // ------ Creation Expenses ----------- //
+        public static function createExpense($designation, $code, $description)
+        {
+                Expenses::create([
+                        'designation' => $designation,
+                        'code' => $code,
+                        'description' => $description
+                ]);
         }
         //------ Update Expense Type-----//
-        public function updateExpense($idExpense,$designation,$code,$description){
-        $expenses = $this::find($idExpense);
-        $expenses->designation = $designation;
-        $expenses->code = $code;
-        $expenses->description = $description;
-        $expenses->save();
+        public static function updateExpense($idExpense, $designation, $code, $description)
+        {
+                $expenses = Expenses::find($idExpense);
+                $expenses->designation = $designation;
+                $expenses->code = $code;
+                $expenses->description = $description;
+                $expenses->save();
         }
 
         //------ Delete Expense Type-----//
-        public function deleteExpense($idExpense){
-        $this::find($idExpense)->delete();
+        public static function deleteExpense($idExpense)
+        {
+                Expenses::find($idExpense)->delete();
         }
-
-
 }
-
-
