@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 
 
 class GroupController extends Controller
-{
+{ 
     // Groups List
     public function groups(Request $request)
     {
