@@ -39,22 +39,18 @@ class HomeController extends Controller
         }
 
         $student=new Student();
-        $Group=new Group();
-        $Attendance=new Attendance();
-        $Payment=new Payment();
-        $Facture=new Facture();
         $students=$student->totalStudents(); 
-        $NumGroups=$Group->totalGroups(); 
-        $Payments=$Payment->totalAmount();  
-        $Factures=$Facture->totalAmountExpense();
+        $NumGroups=Group::totalGroups(); 
+        $Payments=Payment::totalAmount();  
+        $Factures=Facture::totalAmountExpense();
 
         /* ------------------------------------
         / Graph Dépenses et Revenus
         / -------------------------------------*/
         $scolareYears = Storage::get('anneeScolaire.txt');
         $scolareYears = explode("\n",$scolareYears);
-        $salesGraph = $Facture->totalAmountExepenseMonth($scolareYears[0],$scolareYears[1]);
-        $salesGraphPayment = $Payment->totalAmountIncomeMonth($scolareYears[0],$scolareYears[1]);
+        $salesGraph = Facture::totalAmountExepenseMonth($scolareYears[0],$scolareYears[1]);
+        $salesGraphPayment = Payment::totalAmountIncomeMonth($scolareYears[0],$scolareYears[1]);
         $depenses = [0,0,0,0,0,0,0,0,0,0,0,0];
         $inconespayment = [0,0,0,0,0,0,0,0,0,0,0,0];
         for($i = 0; $i<12; $i++){
@@ -103,7 +99,7 @@ class HomeController extends Controller
         / Absence Activity CHART
         / ---------------------------------*/
         $currentMonth = date('m');
-        $Attend = $Attendance->totalAbsenceDay($scolareYears[0],$scolareYears[1],$currentMonth);
+        $Attend = Attendance::totalAbsenceDay($scolareYears[0],$scolareYears[1],$currentMonth);
         // Fill Month Days
         $nombreJours = 0;
         switch ($currentMonth) {
@@ -152,7 +148,7 @@ class HomeController extends Controller
         / Groups Types CHART PIE
         / ---------------------------------*/
         // types Groupe
-         $typesgroupes=$Group->StatisticTypesGroupes();
+         $typesgroupes=Group::StatisticTypesGroupes();
          foreach($typesgroupes as $type){
                 $tygroup[]=$type->course;
                 $nbTypeGroup[]=$type->nbtypegroupes;
@@ -175,9 +171,9 @@ class HomeController extends Controller
         
         // table de   facture 
 
-        $allfacture=$Facture->allFactureParDate();
+        $allfacture=Facture::allFactureParDate();
 
-
+        dd($inconespayment);
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)
