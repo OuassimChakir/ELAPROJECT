@@ -39,7 +39,7 @@ class PdfController extends Controller
             ->addItem($item);
         $invoice->sequence($data->idExpensePayment);
         $invoice->name = "ELA Facture";
-        $invoice->logo = asset('images/logo/logo_ela.png');
+        $invoice->logo = asset('images/Logo/logo_ela.png');
         $invoice->hasItemUnits = true;
         return $invoice->stream();
     }
