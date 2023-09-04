@@ -30,8 +30,7 @@ class Payment extends Model
     // ---------- Total Amount for Each Month in the Scolare Year ---------- //
     public static function totalAmountIncomeMonth($firstYear, $secondYear)
     {
-        return DB::table('payment')
-            ->selectRaw('SUM(amount) AS amount, MONTH(datePayment) AS mois')
+        return Payment::selectRaw('SUM(amount) AS amount, MONTH(datePayment) AS mois')
             ->whereYear("datePayment", $firstYear)
             ->orWhereYear("datePayment", $secondYear)
             ->whereRaw("MONTH(datePayment) BETWEEN '09' AND '12'")
