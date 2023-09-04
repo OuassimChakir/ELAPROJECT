@@ -173,7 +173,6 @@ class HomeController extends Controller
 
         $allfacture=Facture::allFactureParDate();
 
-        dd($inconespayment);
         return view('home')->with('students',$students)
                            ->with('NumGroups',$NumGroups)
                            ->with('Payments',$Payments)
