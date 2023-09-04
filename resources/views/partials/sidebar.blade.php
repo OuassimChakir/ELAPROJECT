@@ -237,7 +237,7 @@
 							@endif
 							<!-- Deconnexion -->
 							<li>
-								<a class="sidenav-item-link" href="{{route('logout')}}">
+								<a class="sidenav-item-link" href="javascript:void(0)" id="logoutSidebar">
 									<i class="bi bi-box-arrow-left"></i>
 									<span class="nav-text">Deconnexion</span>
 								</a>

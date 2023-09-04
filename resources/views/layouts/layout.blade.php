@@ -22,6 +22,8 @@
 
 	<!--  WRAPPER  -->
 	<div class="wrapper">
+		<form id="logoutForm" action="{{route('logout')}}" method="post">@csrf</form>
+		
 		{{-- LEFT MAIN SIDEBAR --}}
 		@include('partials.sidebar')
 
@@ -48,7 +50,15 @@
   <!-- End Wrapper -->
 
   @include('assets.scripts')
-
+			
+  <script>
+	document.getElementById("logoutHeader").addEventListener("click", function () {
+		document.getElementById('logoutForm').submit();
+	});
+	document.getElementById("logoutSidebar").addEventListener("click", function () {
+		document.getElementById('logoutForm').submit();
+	});
+</script>
 </body>
 
 </html>
