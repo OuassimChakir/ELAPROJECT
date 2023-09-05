@@ -22,7 +22,7 @@ class CreateAttendanceTable extends Migration
             $table->unsignedBigInteger('idElement',false,true);
         });
         Schema::table('attendance', function (Blueprint $table){
-            $table->foreign('idElement')->references('idElement')->on('groupelemnts');
+            $table->foreign('idElement')->references('idElement')->on('groupelements');
         });
     }
 

@@ -19,7 +19,7 @@ class CreateSubjectsTable extends Migration
             $table->bigInteger('idCourseType',false,true);
         });
         Schema::table('subjects', function (Blueprint $table) {
-            $table->foreign('idCourseType')->references('$idCourseType')->on('coursetype');
+            $table->foreign('idCourseType')->references('idCourseType')->on('coursetype');
         });
     }
 

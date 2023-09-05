@@ -25,7 +25,7 @@ class CreatePaymentTable extends Migration
             $table->bigInteger('idIncome',false,true);
         });
         Schema::table('payment', function (Blueprint $table){
-            $table->foreign('idElement')->references('idElement')->on('groupelemnts');
+            $table->foreign('idElement')->references('idElement')->on('groupelements');
             $table->foreign('idIncome')->references('idIncome')->on('incomes');
         });
     }
