@@ -21,6 +21,7 @@ class CreatePaymentTable extends Migration
             $table->text('note')->nullable();
             $table->tinyInteger('etat')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
             $table->bigInteger('idElement',false,true)->nullable();
             $table->bigInteger('idIncome',false,true);
         });

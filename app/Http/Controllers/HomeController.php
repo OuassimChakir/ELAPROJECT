@@ -149,6 +149,7 @@ class HomeController extends Controller
         / ---------------------------------*/
         // types Groupe
          $typesgroupes=Group::StatisticTypesGroupes();
+         $tygroup = $nbTypeGroup = [];
          foreach($typesgroupes as $type){
                 $tygroup[]=$type->course;
                 $nbTypeGroup[]=$type->nbtypegroupes;

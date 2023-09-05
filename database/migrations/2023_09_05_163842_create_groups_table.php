@@ -22,6 +22,7 @@ class CreateGroupsTable extends Migration
             $table->bigInteger('idGrade',false,true)->nullable();
             $table->bigInteger('idProfesseur',false,true);
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
         Schema::table('groups', function (Blueprint $table){
             $table->foreign('idSubject')->references('idSubject')->on('subjects');

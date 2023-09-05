@@ -27,11 +27,13 @@ class Students extends Migration
             $table->string('adresse')->nullable();
             $table->date('dateNaissance')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
             $table->bigInteger('idResponsible',false,true)->nullable();
         });
         Schema::table('students', function (Blueprint $table){
             $table->foreign('idResponsible')->references('idResponsible')->on('responsibles');
         });
+        
     }
     
     

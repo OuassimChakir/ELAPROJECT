@@ -21,6 +21,7 @@ class CreateStaffsTable extends Migration
             $table->string('numTel',50);
             $table->bigInteger('idStaffType',false,true);
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
         Schema::table('staffs', function (Blueprint $table){
             $table->foreign('idStaffType')->references('idStaffType')->on('stafftype');

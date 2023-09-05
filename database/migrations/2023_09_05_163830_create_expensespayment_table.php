@@ -21,6 +21,7 @@ class CreateExpensespaymentTable extends Migration
             $table->double('amount');
             $table->text('description');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
             $table->bigInteger('idStaff',false,true)->nullable();
             $table->bigInteger('idProfesseur',false,true)->nullable();
             $table->bigInteger('idExpense',false,true);

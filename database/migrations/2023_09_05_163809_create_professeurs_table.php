@@ -21,6 +21,7 @@ class CreateProfesseursTable extends Migration
             $table->string('numTel',50);
             $table->bigInteger('idSubject',false,true);
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
         Schema::table('professeurs', function (Blueprint $table){
             $table->foreign('idSubject')->references('idSubject')->on('subjects');

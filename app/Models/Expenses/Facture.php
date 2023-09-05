@@ -11,7 +11,7 @@ class Facture extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $table = "expensepayment";
+    protected $table = "expensespayment";
     protected $primaryKey = "idExpensePayment";
     protected $fillable = ['datePayment', 'amount', 'description', 'idStaff', 'idExpense', 'CREATED_AT', 'UPDATED_AT'];
 
@@ -19,14 +19,14 @@ class Facture extends Model
     public static function allFacture()
     {
         return Facture::select('*')
-            ->join('expenses', 'expenses.idExpense', '=', 'expensepayment.idExpense')
+            ->join('expenses', 'expenses.idExpense', '=', 'expensespayment.idExpense')
             ->get();
     }
     //------------- all facture de dépenses par date----------//
     public static function allFactureParDate()
     {
         return Facture::select('*')
-            ->join('expenses', 'expenses.idExpense', '=', 'expensepayment.idExpense')
+            ->join('expenses', 'expenses.idExpense', '=', 'expensespayment.idExpense')
             ->orderBy('datePayment')
             ->get();
     }
@@ -53,7 +53,7 @@ class Facture extends Model
     // ---------- Total Amount for Each Month in the Scolare Year ---------- //
     public static function totalAmountExepenseMonth($firstYear, $secondYear)
     {
-        return DB::table('expensepayment')
+        return DB::table('expensespayment')
             ->selectRaw('SUM(amount) AS amount, MONTH(datePayment) AS mois')
             ->whereYear("datePayment", $firstYear)
             ->orWhereYear("datePayment", $secondYear)
@@ -66,9 +66,9 @@ class Facture extends Model
 
     public static function getFacturePdf($idExpensePayment)
     {
-        return Facture::select('expensepayment.*', 'expenses.designation', 'expenses.code', 'staff.cnie', 'staff.nom', 'staff.prenom', 'staff.numTel')
-            ->join('expenses', 'expensepayment.idExpense', '=', 'expenses.idExpense')
-            ->leftJoin('staff', 'expensepayment.idStaff', '=', 'staff.idStaff')
+        return Facture::select('expensespayment.*', 'expenses.designation', 'expenses.code', 'staff.cnie', 'staff.nom', 'staff.prenom', 'staff.numTel')
+            ->join('expenses', 'expensespayment.idExpense', '=', 'expenses.idExpense')
+            ->leftJoin('staff', 'expensespayment.idStaff', '=', 'staff.idStaff')
             ->where('idExpensePayment', $idExpensePayment)
             ->first();
     }
@@ -84,7 +84,7 @@ class Facture extends Model
     public static function softDeletedFactures()
     {
         return Facture::onlyTrashed()
-            ->join('expenses', 'expenses.idExpense', '=', 'expensepayment.idExpense')
+            ->join('expenses', 'expenses.idExpense', '=', 'expensespayment.idExpense')
             ->get();
     }
 
@@ -92,8 +92,8 @@ class Facture extends Model
     public static function getDeletedFacture($idExpensePayment)
     {
         return Facture::onlyTrashed()
-            ->where('expensepayment.idExpensePayment', $idExpensePayment)
-            ->where('expensepayment.idStaff', NULL)
+            ->where('expensespayment.idExpensePayment', $idExpensePayment)
+            ->where('expensespayment.idStaff', NULL)
             ->first();
     }
 
