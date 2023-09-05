@@ -15,20 +15,22 @@ class Student extends Migration
     {
         Schema::create('students', function (Blueprint $table) 
         {
-            $table->unsignedBigInteger('matricule', false)->primary(); 
-            $table->primary('matricule');
+            $table->bigIncrements('idStudent'); 
+            $table->string('matricule',50)->unique();
             $table->string('nom_fr');
-            $table->string('nom_ar');
+            $table->string('nom_ar')->nullable();
             $table->string('prenom_fr');
-            $table->string('prenom_ar');
-            $table->string('cnie');
-            $table->string('email');
+            $table->string('prenom_ar')->nullable();
+            $table->string('cnie')->nullable();
             $table->string('numTel');
             $table->string('sexe');
-            $table->string('adresse');
-            $table->string('dateNaissance');
-            $table->string('idResponsible')->nullable();
+            $table->string('adresse')->nullable();
+            $table->date('dateNaissance')->nullable();
             $table->timestamps();
+            $table->bigInteger('idResponsible',false,true)->nullable();
+        });
+        Schema::table('students', function (Blueprint $table){
+            $table->foreign('idResponsible')->references('idResponsible')->on('responsibles');
         });
     }
     
