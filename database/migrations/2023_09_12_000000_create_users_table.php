@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->unsignedBigInteger('idRole',false,true)->nullable();
+            $table->unsignedBigInteger('idRole',false,true);
             $table->unsignedBigInteger('idStaff',false,true)->nullable();
             $table->unsignedBigInteger('idProfesseur',false,true)->nullable();
             $table->unsignedBigInteger('idResponsible',false,true)->nullable();
