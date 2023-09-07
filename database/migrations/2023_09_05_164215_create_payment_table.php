@@ -15,18 +15,22 @@ class CreatePaymentTable extends Migration
     {
         Schema::create('payment', function (Blueprint $table) {
             $table->bigIncrements('idPayment');
-            $table->date('datePayment');
-            $table->string('paymentMode',50);
+            $table->date('datePayment')->nullable();
+            $table->string('paymentMode',50)->nullable();
             $table->double('amount');
             $table->text('note')->nullable();
-            $table->tinyInteger('etat')->nullable();
+            $table->tinyInteger('etat')->nullable()->comment('NULL (Disactivated)
+            0 (Activated)
+            1 (Payed)');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->bigInteger('idElement',false,true)->nullable();
+            $table->bigInteger('idStudent',false,true)->nullable();
             $table->bigInteger('idIncome',false,true);
         });
         Schema::table('payment', function (Blueprint $table){
             $table->foreign('idElement')->references('idElement')->on('groupelements');
+            $table->foreign('idStudent')->references('idStudent')->on('students');
             $table->foreign('idIncome')->references('idIncome')->on('incomes');
         });
     }

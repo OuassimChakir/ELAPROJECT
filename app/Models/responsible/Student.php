@@ -13,51 +13,58 @@ class Student extends Model
     use SoftDeletes;
     use HasFactory;
     protected $table = "students";
-    protected $primaryKey = "matricule";
+    protected $primaryKey = "idStudent";
     public $incrementing = false;
+    protected $fillable = ['matricule','nom_fr','nom_ar','prenom_fr','prenom_ar','cnie','numTel','sexe','adresse','dateNaissance','created_at','updated_at'];
     
         // Adding a new student 
-    public function addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,
-        $email,$numTel,$sexe,$adresse,$dateNaissance){
-            $this->matricule = $matricule;
-            $this->nom_fr = $nom_fr;
-            $this->nom_ar = $nom_ar;
-            $this->prenom_fr = $prenom_fr;
-            $this->prenom_ar = $prenom_ar;
-            $this->cnie = $cnie;
-            $this->email = $email;
-            $this->numTel = $numTel;
-            $this->sexe = $sexe;
-            $this->adresse = $adresse;
-            $this->dateNaissance = $dateNaissance;
-            $this->save();
+    public static function addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$numTel,$sexe,$adresse,$dateNaissance){
+            $student = Student::create([
+                'matricule' => $matricule,
+                'nom_fr' => $nom_fr,
+                'nom_ar' => $nom_ar,
+                'prenom_fr' => $prenom_fr,
+                'prenom_ar' => $prenom_ar,
+                'cnie' => $cnie,
+                'numTel' => $numTel,
+                'sexe' => $sexe,
+                'adresse' => $adresse,
+                'dateNaissance' => $dateNaissance,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+            return $student->idStudent;
     }
 
     // Get All Students
-    public function getStudents(){
-        return $this::all();
+    public static function getStudents(){
+        return Student::selectRaw("students.*,count('idPayment') as pendingPayment")
+            ->join('payment','payment.idStudent','=','students.idStudent')        
+            ->where('etat',0)
+            ->get();
     
     }
-    public function totalStudents(){
-        return $this::select()->get()->count();
+    public static function totalStudents(){
+        return Student::select()->get()->count();
     
     }
-    public function selectStudents($matricule){
-        return $this::find($matricule);
+    public static function selectStudents($matricule){
+        return Student::find($matricule);
     }
+
+
     // Select one Student
-    public function getStudent($matricule){
-        return $this::select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
-                ->where('students.matricule',$matricule)
+    public static function getStudent($matricule){
+        return Student::select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
+                ->where('students.idStudent',$matricule)
                 ->leftJoin('responsibles','students.cnieResponsible','=','responsibles.cnieResponsible')->first();
     }
 
-    // Adding a new student 
 
 
     // Update Student
-    public function updateStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance){
-        $student = $this::find($matricule);
+    public static function updateStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance){
+        $student = Student::find($matricule);
         $student->nom_fr = $nom_fr;
         $student->nom_ar = $nom_ar;
         $student->prenom_fr = $prenom_fr;
@@ -71,31 +78,36 @@ class Student extends Model
         $student->save();
     }
 
+
+
+    /* ---------------------------------------
+    / Archive & Delete
+    / ---------------------------------------*/
+
     // Delete Student
-    public function deleteStudent($matricule){
-        $this::find($matricule)->delete();
+    public static function deleteStudent($matricule){
+        Student::find($matricule)->delete();
     }
 
-    // Select deleted Students
-    public function softDeletedStudents(){
-        return $this::onlyTrashed()->get();
+    public static function softDeletedStudents(){
+        return Student::onlyTrashed()->get();
     }
 
-    public function getDeletedStudent($matricule){
-        return $this::onlyTrashed()
+    public static function getDeletedStudent($matricule){
+        return Student::onlyTrashed()
             ->select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
-            ->where('students.matricule',$matricule)
+            ->where('students.idStudent',$matricule)
             ->leftJoin('responsibles','students.cnieResponsible','=','responsibles.cnieResponsible')->first();
     }
 
-    public function restoreStudent($matricule){
-        $this::withTrashed()
+    public static function restoreStudent($matricule){
+        Student::withTrashed()
             ->where('matricule',$matricule)
             ->restore();
     }
    
-    public function forceDeleteStudent($matricule){
-        $this::withTrashed()
+    public static function forceDeleteStudent($matricule){
+        Student::withTrashed()
             ->where('matricule',$matricule)
             ->forceDelete();
     }

@@ -13,7 +13,7 @@ class Payment extends Model
     use SoftDeletes;
     protected $table = "payment";
     protected $primaryKey = "idPayment";
-    protected $fillable = ['datePayment', 'paymentMode', 'amount', 'description', 'matricule', 'idIncome', 'CREATED_AT', 'UPDATED_AT'];
+    protected $fillable = ['datePayment', 'paymentMode', 'amount', 'note', 'etat','idElement','idStudent', 'idIncome', 'created_at', 'updated_at'];
 
     //------------- all Payment de incomes----------//
     public static function allPayment()
@@ -22,11 +22,15 @@ class Payment extends Model
             ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
             ->get();
     }
+
+
     //------ total amount
     public static function totalAmount()
     {
         return Payment::select()->get()->sum('amount');
     }
+
+
     // ---------- Total Amount for Each Month in the Scolare Year ---------- //
     public static function totalAmountIncomeMonth($firstYear, $secondYear)
     {
@@ -38,14 +42,18 @@ class Payment extends Model
             ->groupByRaw("MONTH(datePayment)")
             ->get();
     }
+
+
     //------------ find reçue by matricule-------- //
     public static function selectPayment($matricule)
     {
         return Payment::select('*')
-            ->join('students', 'students.matricule', '=', 'payment.matricule')
-            ->where('payment.matricule', $matricule)
+            ->join('students', 'students.idStudent', '=', 'payment.idStudent')
+            ->where('payment.idStudent', $matricule)
             ->get();
     }
+
+
     //------------- create Payment ----------//         
     public static function createPayment($datePayment, $paymentMode, $amount, $description, $matricule, $idIncome)
     {
@@ -56,15 +64,41 @@ class Payment extends Model
             'description' => $description,
             'matricule' => $matricule,
             'idIncome' => $idIncome,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+    }
+
+    //------------- create student initial payments ----------//        
+    public static function initialPayment($amount, $note, $idStudent, $idIncome, $etat = null)
+    {
+        Payment::create([
+            'amount' => $amount,
+            'note' => $note,
+            'idStudent' => $idStudent,
+            'idIncome' => $idIncome,
+            'etat' => $etat,
             'CREATED_AT' => date('Y-m-d H:i:s'),
             'UPDATED_AT' => date('Y-m-d H:i:s')
         ]);
     }
+    
+    /* ---------------------------------------
+    / Payment of Student
+    / ---------------------------------------*/
+    public static function nbPayments($idStudent,$etat = 0){
+        return Payment::where('idStudent',$idStudent)->where('etat',$etat)->count();
+    }
+
+
+
+
     // --------- Delete Payment ----------------- //
     public static function deletePayment($idPayment)
     {
         Payment::find($idPayment)->delete();
     }
+
 
     // --------------- Archive Payment ------------------ //
 

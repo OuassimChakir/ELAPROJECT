@@ -12,8 +12,8 @@ class Roles extends Model
     protected $primaryKey = "idRole"; 
     public $timestamps = false;
     // Select all roles
-    public function getRoles(){
-        return $this::all();
+    public static function getRoles(){
+        return Roles::all();
     }
 
     public static function getRole($idRole){

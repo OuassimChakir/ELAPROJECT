@@ -80,7 +80,7 @@ class Group extends Model
 
     public static function selectGroupsBySubjectAndGrade($idSubject, $idGrade, $matricule)
     {
-        return Group::select('groups.*', 'classrooms.matricule', 'classrooms.id', 'staff.idStaff', 'staff.nom', 'staff.prenom')
+        return Group::select('groups.*', 'classrooms.idStudent', 'classrooms.id', 'staff.idStaff', 'staff.nom', 'staff.prenom')
             ->selectRaw('count(classrooms.idGroup) as nbElement')
             ->join('staff', 'groups.idStaff', '=', 'staff.idStaff')
             ->leftJoin('classrooms', 'groups.idGroup', '=', 'classrooms.idGroup')

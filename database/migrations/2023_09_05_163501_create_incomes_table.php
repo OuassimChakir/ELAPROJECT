@@ -15,8 +15,10 @@ class CreateIncomesTable extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->bigIncrements('idIncome');
+            $table->string('designation',50);
             $table->string('description',100);
-            $table->date('activationDate')->nullable();
+            $table->string('activationDate',11)->nullable();
+            $table->double('fixedAmount')->nullable();
         });
     }
 

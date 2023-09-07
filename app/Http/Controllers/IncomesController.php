@@ -19,13 +19,12 @@ class IncomesController extends Controller
         $Incomes = Income::allIncome();
         // add income
         if ($request->has('ajouterIncome')) {
-            $designation = $request->designation;
-            $code = $request->code;
-            $description = $request->description;
-            Income::addIncome($designation, $description, $code);
+            Income::addIncome($request->designation, $request->description, $request->activationDate, $request->fixedAmount);
+
+            // =========== Creation of the Activity ============== //
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-                $activityDescription = 'Le type de Revenue: ' . $designation;
+                $activityDescription = 'Le type de Revenue: ' . $request->designation;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
             }
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
@@ -33,10 +32,8 @@ class IncomesController extends Controller
         return view('pages.incomes.income')->with('Incomes', $Incomes);
     }
     // ---------------delete Income------//
-    public function deleteIncome(Request $request, $idIncome)
+    public function deleteIncome($idIncome)
     {
-        $Income = new Income();
-        Income::deleteIncome($idIncome);
         $Incomes = Income::allIncome();
         if (session()->get('user')) {
             $incomeInfo = Income::selectIncome($idIncome);
@@ -44,23 +41,30 @@ class IncomesController extends Controller
             $activityDescription = 'Le type de Revenue: ' . $incomeInfo->designation;
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
         }
+        Income::deleteIncome($idIncome);
         return Redirect::route('typeIncome')
             ->with('deleteMessage', "La suppression est faite avec succès")
             ->with('Incomes', $Incomes);
     }
+
     // ---------------Update Income-----//
     public function updateIncome(Request $request, $idIncome)
     {
-        $Income = new Income();
         $Incomes = Income::allIncome();
         $updatedIncome = Income::selectIncome($idIncome);
         if ($request->has('updateIncome')) {
+            if(isset($request->activationDate))
+                Income::updateIncome($idIncome, $request->designation, $request->description,$request->activationDate,$request->fixedAmount);
+            else
+                Income::updateIncome($idIncome, $request->designation, $request->description);
+
+            // creative activity
             if (session()->get('user')) {
                 $typeActivity = 2; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                 $activityDescription = 'Le type de Revenue: ' . $updatedIncome->designation . " => " . $request->designation;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
             }
-            Income::updateIncome($idIncome, $request->designation, $request->code, $request->description);
+            
             return Redirect::route('typeIncome')
                 ->with('updateMessage', "La Modification est faite avec succès")
                 ->with('Incomes', $Incomes);

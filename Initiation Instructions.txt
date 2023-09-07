@@ -1,4 +1,2 @@
 1. Migrate database: php artisan migrate
-2. Launch Seeders:
-    php artisan db:seed --class=RoleSeeder
-    php artisan db:seed --class=UserSeeder
+2. Launch Seeders: php artisan db:seed

@@ -59,7 +59,7 @@ class Attendance extends Model
     public static function selectListeAbsenceByDateIdgroup($dateAbsence, $idGroup)
     {
         return Attendance::select('*')
-            ->join('students', 'students.matricule', '=', 'attendance.matricule')
+            ->join('students', 'students.idStudent', '=', 'attendance.idStudent')
             ->where('dateAbsence', $dateAbsence)
             ->where('idGroup', $idGroup)
             ->get();

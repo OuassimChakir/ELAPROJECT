@@ -34,7 +34,7 @@ class Classrooms extends Model
         return Classrooms::select('classrooms.*', 'groups.*', 'staff.nom', 'staff.prenom')
             ->join('groups', 'groups.idGroup', '=', 'classrooms.idGroup')
             ->join('staff', 'staff.idStaff', '=', 'groups.idStaff')
-            ->where('classrooms.matricule', $matricule)
+            ->where('classrooms.idStudent', $matricule)
             ->get();
     }
 
@@ -42,7 +42,7 @@ class Classrooms extends Model
     public static function groupClassroom($idGroup)
     {
         return Classrooms::select('students.*', 'classrooms.*')
-            ->join('students', 'students.matricule', '=', 'classrooms.matricule')
+            ->join('students', 'students.idStudent', '=', 'classrooms.idStudent')
             ->where('classrooms.idGroup', $idGroup)
             ->get();
     }
@@ -73,7 +73,7 @@ class Classrooms extends Model
     {
         return Classrooms::select('*')
             ->join('groups', 'classrooms.idGroup', '=', 'groups.idGroup')
-            ->join('students', 'classrooms.matricule', '=', 'students.matricule')
+            ->join('students', 'classrooms.idStudent', '=', 'students.idStudent')
             ->where('id', $id)
             ->first();
     }

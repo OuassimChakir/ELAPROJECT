@@ -21,38 +21,42 @@ class StudentController extends Controller
 {
     // -------------- Students -------------- //
     public function student(Request $request){
-        $Group = new Group();
-        $groupSubjects = $Group->existedGroupSubjects();
-        $groupCourseTypes = $Group->existedGroupCourseTypes();
+        $groupSubjects = Group::existedGroupSubjects();
+        $groupCourseTypes = Group::existedGroupCourseTypes();
+
         // Restart from 0 EACH YEAR
         if(date('d-m') == "01-01")
             Storage::disk('local')->put('student.txt',0);
-        $Student = new Student();
-        $students = $Student->getStudents();
+        $students = Student::getStudents();
         // New Student
         if($request->has('addStudent')){
+
+            // =========== Count nb Student Stock it in student.txt file ============== //
             $studentsCounter = 1;
             if(!Storage::exists('student.txt'))
                 Storage::disk('local')->put('student.txt',0);
             $studentsCounter += Storage::get('student.txt');
             Storage::disk('local')->put('student.txt',$studentsCounter);
-            $matricule = "ELA".$studentsCounter."-".date('Y');
+
+            // ========== Create new Student ============= //
+            $matricule = "BMA".$studentsCounter."-".date('Y');
             $prenom_fr = $request->prenom_fr;
-            $prenom_ar = $request->prenom_ar;
             $nom_fr = $request->nom_fr;
-            $nom_ar = $request->nom_ar;
-            $email = $request->email;
-            $numTel = $request->numTel;
-            $dateNaissance = $request->dateNaissance;
-            $cnie = $request->cnie;
-            $sexe = $request->sexe;
-            $adresse = $request->adresse;
-            $Student->addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
+            $idStudent = Student::addStudent($matricule,$request->nom_fr,$request->nom_ar,$request->prenom_fr,$request->prenom_ar,$request->cnie,$request->numTel,$request->sexe,$request->adresse,$request->dateNaissance);
+            
+            // ========== Generation Initial Payment ============= //
+            $initialIncomes = Income::getInitialIncomes();
+            foreach($initialIncomes as $value){
+                Payment::initialPayment($value->fixedAmount,$value->description." - ".date('Y'), $idStudent,$value->idIncome,0);
+            }
+
+            // ========== Create new Activity ============= //
             if(session()->get('user')){
                 $typeActivity = 0; 
                 $activityDescription = 'Le étudiants'." "." ".$prenom_fr." ".$nom_fr;
                 Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
             }
+
             return Redirect::back()->with('successMessage',"L'ajout est fait avec succès")->with('students',$students);
         }
         return view('pages.students.student')->with('students',$students)
@@ -62,22 +66,16 @@ class StudentController extends Controller
 
 
     public function studentProfil(Request $request,$matricule){
-        $Student = new Student();
-        $Classroom = new Classrooms();
-        $Group = new Group();
-        $absences = new Attendance();
-        $income= new Income();
-        $Payment = new Payment();
-        $incomes=$income->allIncome();
-        $incomePayment = $Payment->selectPayment($matricule);
-        $allgroup =$Group->selectGroup();
-        $groupSubjects = $Group->existedGroupSubjects();
-        $groupCourseTypes = $Group->existedGroupCourseTypes();
-        $classrooms = $Classroom->studentClassrooms($matricule);
-        $studentInfo = $Student->getStudent($matricule);
-        $absence = $absences->selectAbsence();
+        $incomes=Income::allIncome();
+        $incomePayment = Payment::selectPayment($matricule);
+        $allgroup =Group::selectGroup();
+        $groupSubjects = Group::existedGroupSubjects();
+        $groupCourseTypes = Group::existedGroupCourseTypes();
+        $classrooms = Classrooms::studentClassrooms($matricule);
+        $studentInfo = Student::getStudent($matricule);
+        $absence = Attendance::selectAbsence();
         foreach($classrooms as $classroom){
-            $classroom->nbElement = $Classroom->classroomElements($classroom->idGroup);
+            $classroom->nbElement = Classrooms::classroomElements($classroom->idGroup);
         }
         return view('pages.students.studentprofil')
             ->with('groupes',$classrooms)
@@ -91,8 +89,7 @@ class StudentController extends Controller
     }
 
     public function updateStudent(Request $request,$matricule){
-        $Student = new Student();
-        $studentInfo = $Student->getStudent($matricule);
+        $studentInfo = Student::getStudent($matricule);
         if($request->has('updateStudent')){
             $prenom_fr = $request->prenom_fr;
             $prenom_ar = $request->prenom_ar;
@@ -104,7 +101,7 @@ class StudentController extends Controller
             $cnie = $request->cnie;
             $sexe = $request->sexe;
             $adresse = $request->adresse;
-            $Student->updateStudent($request->matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
+            Student::updateStudent($request->matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance);
             if(session()->get('user')){
                 $typeActivity = 2; 
                 $activityDescription = 'Le étudiants'." ".$prenom_fr." ".$nom_fr."(".$matricule.")";
@@ -117,16 +114,15 @@ class StudentController extends Controller
     }
 
     public function deleteMultipleStudents(Request $request){
-        $Student = new Student();
         if ($request->has('deleteAll')) {
             foreach($request->students as $matricule){
-                $stu=$Student->selectStudents($matricule);
+                $stu=Student::selectStudents($matricule);
                 if(session()->get('user')){
                     $typeActivity = 1; 
                     $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
-                $Student->deleteStudent($matricule);
+                Student::deleteStudent($matricule);
             }
             return Redirect::back()->with('deleteMessage',"Les étudiants séléctionés ont été supprimer");
         }else
@@ -134,15 +130,14 @@ class StudentController extends Controller
     }
 
     public function deleteStudent($matricule){
-        $Student = new Student();
-        $studentInfo = $Student->getStudents();
-        $stu=$Student->selectStudents($matricule);
+        $studentInfo = Student::getStudents();
+        $stu=Student::selectStudents($matricule);
         if(session()->get('user')){
             $typeActivity = 1; 
             $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
-        $Student->deleteStudent($matricule);
+        Student::deleteStudent($matricule);
         return Redirect::route('student.liste')
             ->with('deleteMessage',"La suppression est faite avec succès")
             ->with('students',$studentInfo);
@@ -178,21 +173,18 @@ class StudentController extends Controller
 
     // ----------- ARCHIVE ------------- //
     public function archive(){
-        $Student = new Student();
-        $students = $Student->softDeletedStudents(); 
+        $students = Student::softDeletedStudents(); 
         return view('pages.students.studentArchive')->with('students',$students);
     }
 
     public function archivedStudent($matricule){
-        $Student = new Student();
-        $studentInfo = $Student->getDeletedStudent($matricule);
+        $studentInfo = Student::getDeletedStudent($matricule);
         return view('pages.students.archivedStudentProfil')->with('student',$studentInfo);
     }
 
     public function restoreArchivedStudent($matricule){
-        $Student = new Student();
-        $Student->restoreStudent($matricule);
-        $stu=$Student->selectStudents($matricule);
+        Student::restoreStudent($matricule);
+        $stu=Student::selectStudents($matricule);
         if(session()->get('user')){
             $typeActivity = 3; 
             $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
@@ -202,24 +194,22 @@ class StudentController extends Controller
     }
 
     public function deleteArchivedStudent($matricule){
-        $Student = new Student();
-        $stu=$Student->getDeletedStudent($matricule);
+        $stu=Student::getDeletedStudent($matricule);
         if(session()->get('user')){
             $typeActivity = 10; 
             $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         Responsible::fordeleteResponsible($stu->cnieResponsible);
-        $Student->forceDeleteStudent($matricule);
+        Student::forceDeleteStudent($matricule);
         return Redirect::back()->with('deleteMessage',"L'étudiant a été supprimer Définitivement");
     }
 
     public function multipleArchivedStudents(Request $request){
-        $Student = new Student();
         if($request->has('restoreAll')){
             foreach($request->archivedStudents as $matricule){
-                $Student->restoreStudent($matricule);
-                $stu=$Student->selectStudents($matricule);
+                Student::restoreStudent($matricule);
+                $stu=Student::selectStudents($matricule);
                 if(session()->get('user')){
                     $typeActivity = 3; 
                     $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
@@ -230,18 +220,18 @@ class StudentController extends Controller
         }
         if($request->has('deleteAll')){
             foreach($request->archivedStudents as $matricule){
-                $studentInfo = $Student->getStudent($matricule); 
+                $studentInfo = Student::getStudent($matricule); 
                 $Responsible = new Responsible();
                 if($studentInfo->cnieResponsible != 'NULL')
                     $Responsible->deleteResponsible($studentInfo->cnieResponsible,$matricule);
                 
-                $stu=$Student->getDeletedStudent($matricule);
+                $stu=Student::getDeletedStudent($matricule);
                 if(session()->get('user')){
                     $typeActivity = 10; 
                     $activityDescription = 'Le étudiants'." ".$stu->prenom_fr." ".$stu->nom_fr."(".$stu->matricule.")";
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
-                $Student->forceDeleteStudent($matricule);
+                Student::forceDeleteStudent($matricule);
             }
             return Redirect::back()->with('deleteMessage',"Les étudiants séléctionés ont été supprimer Définitivement");
         }
@@ -250,21 +240,18 @@ class StudentController extends Controller
     // ------------ GROUPS AND CLASSROOMS -------------- //
         
     public function getGroupsByGrade($idSubject){
-        $Group = new Group();
-        $gradeData['data'] = $Group->existedGroupGradesBySubject($idSubject);
+        $gradeData['data'] = Group::existedGroupGradesBySubject($idSubject);
         return response()->json($gradeData);
     }
 
     public function getGroupsByGradeAndSubject($idSubject,$idGrade,$matricule){
-        $Group = new Group();
-        $groups['data'] = $Group->selectGroupsBySubjectAndGrade($idSubject,$idGrade,$matricule);
+        $groups['data'] = Group::selectGroupsBySubjectAndGrade($idSubject,$idGrade,$matricule);
         return response()->json($groups);
     }
 
 
     public function assignClassroom($idGroup,$matricule){
-        $Classroom = new Classrooms();
-        $Classroom->add2Class($idGroup,$matricule);
+        Classrooms::add2Class($idGroup,$matricule);
         $processResult = 'true';
         return response()->json($processResult); 
     }

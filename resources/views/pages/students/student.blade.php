@@ -45,19 +45,30 @@
                                 </th>
                             @endif
                             <th>#</th>
+                            <th>Matricule</th>
                             <th>Nom</th>
                             <th>Téléphone</th>
                             <th>Inscrie</th>
                             <th>Action</th>
                         </thead>
-
+                        @php
+                            $i = 0;
+                        @endphp
                         <tbody>
                             @foreach ($students as $student)
                                 <tr>
                                     <td>
                                         <input type="checkbox" name="students[]" value="{{$student->matricule}}" class="form-check-input archivedStudents">
                                     </td>
-                                    <td>{{$student->matricule}}</td>
+                                    <td>{{++$i}}</td>
+                                    <td>
+                                        {{$student->matricule}}
+                                        @if ($student->pendingPayment == 0)
+                                        <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
+                                        @else
+                                        <span class="badge badge-danger">{{$student->pendingPayment}} <i class="bi bi-hourglass"></i></span>
+                                        @endif
+                                    </td>
                                     <td>
                                         {{$student->prenom_fr}}
                                         {{$student->nom_fr}}
@@ -68,7 +79,7 @@
                                         @endif
                                     </td>
                                     <td>{{$student->numTel}}</td>
-                                    <td>{{$student->CREATED_AT}}</td>                        
+                                    <td>{{date_format($student->created_at, 'Y-m-d')}}</td>                        
                                     <td>
                                         <div class="btn-group-spaced">
                                             <button type="button" class="add2GroupBtn btn btn-outline-success" value="{{$student->matricule}}" data-bs-toggle="modal" data-bs-target="#add2Group" data-toggle="tooltip" data-placement="right" title="Ajouter au Groupe">

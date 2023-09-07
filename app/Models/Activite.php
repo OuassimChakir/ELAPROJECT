@@ -22,8 +22,7 @@ class Activite extends Model
             /* @typeActivity
             /   0 = Ajout | 1 = Suppression | 2 = Modification
             */
-            $date=date('d-m-Y');
-          
+                      
             switch ($typeActivity) {
                 case 0: $type = "a Ajouté"; break;
                 case 1: $type = "a Supprimé"; break;
@@ -35,7 +34,7 @@ class Activite extends Model
             $activity->typeActivity = $type;
             $activity->idUser = $idUser;
             $activity->description = $description;
-            $activity->dateActivite=$date;
+            $activity->dateActivite = date('Y-m-d');
             $activity->save();
         }
 
