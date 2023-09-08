@@ -3,7 +3,6 @@
    liste des Etudiants
 @endsection
 @section('content')
-
 <link rel="stylesheet" type="text/css" href="http://www.arabic-keyboard.org/keyboard/keyboard.css">
   <!--message success -->
   @if (session()->has('successMessage'))
@@ -55,49 +54,51 @@
                             $i = 0;
                         @endphp
                         <tbody>
-                            @foreach ($students as $student)
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" name="students[]" value="{{$student->matricule}}" class="form-check-input archivedStudents">
-                                    </td>
-                                    <td>{{++$i}}</td>
-                                    <td>
-                                        {{$student->matricule}}
-                                        @if ($student->pendingPayment == 0)
-                                        <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
-                                        @else
-                                        <span class="badge badge-danger">{{$student->pendingPayment}} <i class="bi bi-hourglass"></i></span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{$student->prenom_fr}}
-                                        {{$student->nom_fr}}
-                                        @if ($student->sexe == "Homme")
-                                            <span class="badge badge-pill badge-info">M</span>
-                                        @else
-                                            <span class="badge badge-pill badge-purple">F</span>
-                                        @endif
-                                    </td>
-                                    <td>{{$student->numTel}}</td>
-                                    <td>{{date_format($student->created_at, 'Y-m-d')}}</td>                        
-                                    <td>
-                                        <div class="btn-group-spaced">
-                                            <button type="button" class="add2GroupBtn btn btn-outline-success" value="{{$student->matricule}}" data-bs-toggle="modal" data-bs-target="#add2Group" data-toggle="tooltip" data-placement="right" title="Ajouter au Groupe">
-                                                <i class="bi bi-plus-lg"></i>
-                                            </button>
-
-                                            <a href="{{route('student.profil',['matricule' => $student->matricule])}}">
-                                                <button type="button" name="show" class="btn btn-outline-info" value="{{$student->matricule}}">
-                                                    <i class="bi bi-person-fill"></i>
+                            @if (!is_null($students[0]->idStudent))
+                                @foreach ($students as $student)
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="students[]" value="{{$student->matricule}}" class="form-check-input archivedStudents">
+                                        </td>
+                                        <td>{{++$i}}</td>
+                                        <td>
+                                            {{$student->matricule}}
+                                            @if ($student->pendingPayment == 0)
+                                            <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
+                                            @else
+                                            <span class="badge badge-danger">{{$student->pendingPayment}} <i class="bi bi-hourglass"></i></span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{$student->prenom_fr}}
+                                            {{$student->nom_fr}}
+                                            @if ($student->sexe == "Homme")
+                                                <span class="badge badge-pill badge-info">M</span>
+                                            @else
+                                                <span class="badge badge-pill badge-purple">F</span>
+                                            @endif
+                                        </td>
+                                        <td>{{$student->numTel}}</td>
+                                        <td>{{$student->created_at}}</td>                          
+                                        <td>
+                                            <div class="btn-group-spaced">
+                                                <button type="button" class="add2GroupBtn btn btn-outline-success" value="{{$student->idStudent}}" data-bs-toggle="modal" data-bs-target="#add2Group" data-toggle="tooltip" data-placement="right" title="Ajouter au Groupe">
+                                                    <i class="bi bi-plus-lg"></i>
                                                 </button>
-                                            </a>
-                                            <button type="button" name="delete" class="deleteButton btn btn-outline-danger" data-url="{{route('student.delete',['matricule'=>$student->matricule])}}" data-confirm="Veuillez confirmer votre opération" data-title="Êtes-vous sûr?" data-type="error">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+
+                                                <a href="{{route('student.profil',['idStudent' => $student->idStudent])}}">
+                                                    <button type="button" name="show" class="btn btn-outline-info" value="{{$student->idStudent}}">
+                                                        <i class="bi bi-person-fill"></i>
+                                                    </button>
+                                                </a>
+                                                <button type="button" name="delete" class="deleteButton btn btn-outline-danger" data-url="{{route('student.delete',['idStudent'=>$student->idStudent])}}" data-confirm="Veuillez confirmer votre opération" data-title="Êtes-vous sûr?" data-type="error">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                     <div class="row">

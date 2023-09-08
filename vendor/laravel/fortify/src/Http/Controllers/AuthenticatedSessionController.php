@@ -58,7 +58,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        Session::put('user',User::getUser($request->email));
+        Session::put('user',User::getUser($request->username));
         return $this->loginPipeline($request)->then(function ($request) {
             return app(LoginResponse::class);
         });

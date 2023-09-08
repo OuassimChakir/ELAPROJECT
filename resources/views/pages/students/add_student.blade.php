@@ -22,7 +22,7 @@
                             <div class="form-group">
                                 <label for="firstName_ar" lang="ar">الإسم الشخصي</label>
                                 <input type="text" class="form-control keyboardInput" lang="ar" name="prenom_ar"
-                                    id="firstName_ar" dir="rtl" required>
+                                    id="firstName_ar" dir="rtl">
                             </div>
                         </div>
                         <!-- les nom arabe et françe-->
@@ -37,7 +37,7 @@
                             <div class="form-group">
                                 <label for="lastName_ar" lang="ar">الإسم العائلي</label>
                                 <input type="text" class="form-control keyboardInput" lang="ar" name="nom_ar"
-                                    id="lastName_ar" dir="rtl" required>
+                                    id="lastName_ar" dir="rtl">
                             </div>
                         </div>
                         <!-- Numéro de Téléphone-->

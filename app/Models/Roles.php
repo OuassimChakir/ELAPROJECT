@@ -22,6 +22,10 @@ class Roles extends Model
     public function selectRoles($idRole){
         return $this::find($idRole);
     }
+
+    public static function getStudentRole(){
+        return Roles::where('codeRole','22')->first();
+    }
     // ------ Creation roles ----------- //
     public function addRoles($role,$codeRole,$color){
             $this->role = $role;

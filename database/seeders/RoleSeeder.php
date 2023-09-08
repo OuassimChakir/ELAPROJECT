@@ -24,5 +24,10 @@ class RoleSeeder extends Seeder
             'codeRole' => '11',
             'color' => '#0000ff'
         ]);
+        DB::table('roles')->insert([
+            'role' => 'Student',
+            'codeRole' => '22',
+            'color' => '#00ff00'
+        ]);
     }
 }

@@ -20,11 +20,11 @@
 								@csrf
 								<div class="row">
 									<div class="form-group col-md-12 mb-4">
-										<input type="email" name="email" class="form-control" id="email" placeholder="Email">
+										<input type="text" name="username" class="form-control" id="email" placeholder="Username" required>
 									</div>
 									
 									<div class="form-group col-md-12 ">
-										<input type="password" name="password" class="form-control" id="password" placeholder="Password">
+										<input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
 									</div>
 									
 									<div class="col-md-12">

@@ -6,9 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -25,9 +27,13 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        'username',
         'password',
         'idRole',
+        'idStudent',
+        'idProfesseur',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -60,14 +66,28 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function getUsers(){
-        return $this::select('*')
+    public static function getUsers(){
+        return User::select('*')
                 ->leftJoin('roles','users.idRole','=','roles.idRole')
                 ->get();
     }
 
-    public static function getUser($email){
+    public static function getUser($username){
         return User::select('*')
                     ->leftJoin('roles','users.idRole','=','roles.idRole')
-                    ->where('email',$email)->first();
-    }}
+                    ->where('username',$username)->first();
+    }
+
+    public static function createStudentAccount($idStudent, $name, $username){
+        $role = Roles::getStudentRole();
+        User::create([
+            'name' => $name,
+            'idStudent' => $idStudent,
+            'username' => $username,
+            'idRole' => $role->idRole,
+            'password' => Hash::make(Str::random(10)),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+    }
+}

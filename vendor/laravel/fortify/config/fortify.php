@@ -7,10 +7,10 @@ return [
     'middleware' => ['web'],
     'auth_middleware' => 'auth',
     'passwords' => 'users',
-    'username' => 'email',
+    'username' => 'username',
     'email' => 'email',
     'views' => true,
-    'home' => '/home',
+    'home' => '/',
     'prefix' => '',
     'domain' => null,
     'limiters' => [

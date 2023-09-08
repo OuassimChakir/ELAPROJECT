@@ -104,11 +104,11 @@ Route::middleware([
 
     // -------------- STUDENTS --------------------- //
     Route::get('/students', [StudentController::class, 'student'])->name('student.liste');
-    Route::get('/students/{matricule}', [StudentController::class, 'studentProfil'])->name('student.profil');
+    Route::get('/students/{idStudent}', [StudentController::class, 'studentProfil'])->name('student.profil');
     // Adding Student
     Route::post('/students/add', [StudentController::class, 'student'])->name('student.add');
     // Update Student
-    Route::put('/students/update/{matricule}',[StudentController::class, 'updateStudent'])->name('student.update');
+    Route::put('/students/update/{idStudent}',[StudentController::class, 'updateStudent'])->name('student.update');
 
     // -------------- Responsibles --------------------- //
     // Adding Responsible
@@ -116,8 +116,8 @@ Route::middleware([
     // Update Responsible
     Route::put('/responsible/update/{cnieResponsible}',[StudentController::class, 'updateResponsible'])->name('responsible.update');
     // Delete Responsible
-    Route::get('student/{matricule}/delete/{cnieResponsible}',[StudentController::class, 'deleteResponsible'] )->name('responsible.delete');
-
+    Route::get('student/{idStudent}/delete/{cnieResponsible}',[StudentController::class, 'deleteResponsible'] )->name('responsible.delete');
+    
 
     // --------------- Groupes ------------------ //
     Route::get('/groupes', [GroupController::class,'groups'])->name('groups');
@@ -139,7 +139,7 @@ Route::middleware([
 
     // ------------- Classroom ---------- // 
     // Add Student to Group
-    Route::get('/groupes/{idGroup}/classroom/{matricule}',[TeacherController::class, 'assignClassroom']);
+    Route::get('/groupes/{idGroup}/classroom/{idStudent}',[TeacherController::class, 'assignClassroom']);
 
     // Remove From Classroom
     Route::get('/classrooms/remove/{id}', [GroupController::class,'cancelAssignment'])->name('classroom.cancelAssignment');
@@ -149,7 +149,7 @@ Route::middleware([
 
     // JSON DATA
     Route::get('/students/get/{idSubject}',[StudentController::class, 'getGroupsByGrade']);
-    Route::get('/students/getGroups/{idSubject}-{idGrade}-{matricule}',[StudentController::class, 'getGroupsByGradeAndSubject']);
+    Route::get('/students/getGroups/{idSubject}-{idGrade}-{idStudent}',[StudentController::class, 'getGroupsByGradeAndSubject']);
 
 
     // --------------- Expenses ------------------ //
@@ -233,8 +233,8 @@ Route::middleware([
 
         // ARCHIVED STUDENTS
         Route::get('/archive/students',[StudentController::class, 'archive'])->name('student.archive');
-        Route::get('/archive/students/{matricule}',[StudentController::class, 'archivedStudent'])->name('student.archive.profil');
-        Route::get('/archive/students/restore/{matricule}',[StudentController::class, 'restoreArchivedStudent'])->name('student.archive.restore');
+        Route::get('/archive/students/{idStudent}',[StudentController::class, 'archivedStudent'])->name('student.archive.profil');
+        Route::get('/archive/students/restore/{idStudent}',[StudentController::class, 'restoreArchivedStudent'])->name('student.archive.restore');
 
         // ARCHIVED Incomes Payment 
         Route::get('/archive/incomePayment',[IncomesController::class, 'archive'])->name('incomePayment.archive');
@@ -312,7 +312,7 @@ Route::middleware([
 
         // Students Archive
         Route::post('/archive/students/action', [StudentController::class, 'multipleArchivedStudents'])->name('student.archive.multiple');
-        Route::get('/archive/students/delete/{matricule}',[StudentController::class, 'deleteArchivedStudent'])->name('student.archive.delete');
+        Route::get('/archive/students/delete/{idStudent}',[StudentController::class, 'deleteArchivedStudent'])->name('student.archive.delete');
 
         // Staff Archive
         Route::post('/archive/staff/action', [StaffController::class, 'multipleArchivedStaff'])->name('staff.archive.multiple');
@@ -322,7 +322,7 @@ Route::middleware([
         Route::get('/groupes/delete/{idGroup}', [GroupController::class,'deleteGroup'])->name('groups.delete');
 
         // Delete Student
-        Route::get('/students/delete/{matricule}', [StudentController::class, 'deleteStudent'])->name('student.delete');
+        Route::get('/students/delete/{idStudent}', [StudentController::class, 'deleteStudent'])->name('student.delete');
         Route::delete('/staff/delete', [StudentController::class, 'deleteMultipleStudents'])->name('student.delete.multiple');
 
         // Delete & Update Grade

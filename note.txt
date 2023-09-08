@@ -22,3 +22,9 @@ https://line-html.vercel.app/line-html/home-two.html
 Hostinger DB:
 Allokhadamate pass: !K;x0a6uA
 Ela pass: $kV1w5=~8U3
+
+
+ROLES:
+00 = Admin
+11 = Moderateur
+22 = Student

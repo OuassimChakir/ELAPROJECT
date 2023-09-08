@@ -93,6 +93,7 @@ class Payment extends Model
 
 
 
+
     // --------- Delete Payment ----------------- //
     public static function deletePayment($idPayment)
     {

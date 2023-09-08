@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             if($role->codeRole == '00')
                 DB::table('users')->insert([
                     'name' => 'admin',
-                    'email' => 'admin@gmail.com',
+                    'username' => 'admin',
                     'password' => Hash::make('123456789'),
                     'idRole' => $role->idRole,
                     'created_at' => date('Y-m-d H:i:s'),
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             elseif($role->codeRole == '11')
                 DB::table('users')->insert([
                     'name' => 'moderateur',
-                    'email' => 'moderateur@gmail.com',
+                    'username' => 'moderateur',
                     'password' => Hash::make('123456789'),
                     'idRole' => $role->idRole,
                     'created_at' => date('Y-m-d H:i:s'),
