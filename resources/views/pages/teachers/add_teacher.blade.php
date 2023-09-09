@@ -27,13 +27,6 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" required>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group mb-4">
                                 <label for="numTel">Numéro de Téléphone</label>
                                 <input type="tel" class="form-control" name="numTel" id="numTel" required>
                             </div>

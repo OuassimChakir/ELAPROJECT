@@ -21,12 +21,6 @@ class Staff extends Model
             ->join('staffType', 'staff.idStaffType', '=', 'staffType.idStaffType')
             ->get();
     }
-    public static function getProfesseurs()
-    {
-        return Staff::where('staff.idStaffType', NULL)
-            ->leftJoin('subjects', 'subjects.idSubject', '=', 'staff.idSubject')
-            ->get();
-    }
     // Select one Staff || One Teacher
     public static function getStaff($idStaff)
     {

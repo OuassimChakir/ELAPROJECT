@@ -5,20 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Activite;
 use Illuminate\Http\Request;
 use App\Models\Courses\CourseType;
-use App\Models\Responsible\Staff;
 use App\Models\Courses\Subjects;
+use App\Models\responsible\Professeurs;
 use Illuminate\Support\Facades\Redirect;
 
 class TeacherController extends Controller
 {
     public function teacher(Request $request){
-        $Subject = new Subjects();
-        $CourseType = new CourseType();
-        $subjects = $Subject->getSubjects();
-        $courseTypes = $CourseType->selectCourses();
-        $teachers = Staff::getProfesseurs();
+        $subjects = Subjects::getSubjects();
+        $courseTypes = CourseType::selectCourses();
+        $teachers = Professeurs::getProfesseurs();
         if($request->has('addTeacher')){
-            Staff::addProfesseur($request->cine,$request->prenom,$request->nom,$request->sexe,$request->email,$request->numTel,$request->idSubject);
+            Professeurs::addProfesseur($request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idSubject);
             if(session()->get('user')){
                 $typeActivity = 0; 
                 $activityDescription = 'Le profisseur'." ".$request->prenom .$request->nom .($request->cine); 
@@ -35,11 +33,9 @@ class TeacherController extends Controller
     }
 
     public function teacherProfil($idProfesseur){
-        $CourseType = new CourseType();
-        $Subject = new Subjects();
-        $subjects = $Subject->getSubjects();
-        $courseTypes = $CourseType->selectCourses();
-        $teacher = Staff::getProfesseur($idProfesseur);
+        $subjects = Subjects::getSubjects();
+        $courseTypes = CourseType::selectCourses();
+        $teacher = Professeurs::getProfesseur($idProfesseur);
         return view('pages.teachers.teacherprofil')
                 ->with('teacher',$teacher)
                 ->with('subjects',$subjects)
@@ -47,9 +43,9 @@ class TeacherController extends Controller
     }
 
     public function updateTeacher(Request $request,$idProfesseur){
-        $teacher = Staff::getProfesseur($idProfesseur);
+        $teacher = Professeurs::getProfesseur($idProfesseur);
         if($request->has('updateTeacher')){ 
-            Staff::updateProfesseur($idProfesseur,$request->cine,$request->prenom,$request->nom,$request->sexe,$request->email,$request->numTel,$request->idStaffType,$request->idSubject);
+            Professeurs::updateProfesseur($idProfesseur,$request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idProfesseurType,$request->idSubject);
             if(session()->get('user')){
                 $typeActivity = 2; 
                 $activityDescription = 'Le profisseur'." ".$request->prenom .$request->nom ." (" .$idProfesseur .")"; 
@@ -61,14 +57,14 @@ class TeacherController extends Controller
         }
     }
     public function deleteTeacher($idProfesseur){
-        $teachers = Staff::getProfesseurs();
-        $teach=Staff::getProfesseur($idProfesseur);
+        $teachers = Professeurs::getProfesseurs();
+        $teach=Professeurs::getProfesseur($idProfesseur);
         if(session()->get('user')){
             $typeActivity = 1; 
-            $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (". $teach->idStaff .")"; 
+            $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (". $teach->idProfesseur .")"; 
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
-        Staff::deleteProfesseur($idProfesseur);
+        Professeurs::deleteProfesseur($idProfesseur);
         return Redirect::route('teachers.liste')
             ->with('deleteMessage',"La suppression est faite avec succès")
             ->with('teachers',$teachers);;
@@ -76,14 +72,14 @@ class TeacherController extends Controller
 
     public function deleteMultipleTeachers(Request $request){
         if ($request->has('deleteAll')) {
-            foreach($request->teachers as $idStaff){
-                $teach=Staff::getProfesseur($idStaff);
+            foreach($request->teachers as $idProfesseur){
+                $teach=Professeurs::getProfesseur($idProfesseur);
                 if(session()->get('user')){
                     $typeActivity = 1; 
-                    $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idStaff.")"; 
+                    $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idProfesseur.")"; 
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
-                Staff::deleteProfesseur($idStaff);
+                Professeurs::deleteProfesseur($idProfesseur);
             }
             return Redirect::back()->with('deleteMessage',"Les Professeurs séléctionés ont été supprimer");
         }else
@@ -92,60 +88,60 @@ class TeacherController extends Controller
 
     // ----------- ARCHIVE ------------- //
     public function archive(){
-        $teachers = Staff::softDeletedTeachers();
+        $teachers = Professeurs::softDeletedTeachers();
         return view('pages.teachers.teacherArchive')->with('teachers',$teachers);
     }
 
-    public function archivedTeacher(Request $request,$idStaff){
-        $teacher = Staff::getDeletedTeacher($idStaff);
+    public function archivedTeacher(Request $request,$idProfesseur){
+        $teacher = Professeurs::getDeletedTeacher($idProfesseur);
         return view('pages.teachers.archivedTeacherProfil')->with('teacher',$teacher);
     }
 
-    public function restoreArchivedTeacher($idStaff){
-        Staff::restoreTeacher($idStaff);
-        $teachers = Staff::softDeletedTeachers();
-        $teach=Staff::getProfesseur($idStaff);
+    public function restoreArchivedTeacher($idProfesseur){
+        Professeurs::restoreTeacher($idProfesseur);
+        $teachers = Professeurs::softDeletedTeachers();
+        $teach=Professeurs::getProfesseur($idProfesseur);
         if(session()->get('user')){
             $typeActivity = 3; 
-            $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idStaff.")"; 
+            $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idProfesseur.")"; 
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
         return Redirect::route('teachers.archive')->with('restoreMessage',"Le Professeur a été restorer avec succès")->with('teachers',$teachers);
     }
 
-    public function deleteArchivedTeacher($idStaff){
-        $teach=Staff::getProfesseur($idStaff);
+    public function deleteArchivedTeacher($idProfesseur){
+        $teach=Professeurs::getProfesseur($idProfesseur);
         if(session()->get('user')){
             $typeActivity = 10; 
-            $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ."(".$teach->idStaff.")"; 
+            $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ."(".$teach->idProfesseur.")"; 
             Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
         }
-        Staff::forceDeleteTeacher($idStaff);
+        Professeurs::forceDeleteTeacher($idProfesseur);
         return Redirect::back()->with('deleteMessage',"Le Professeur a été supprimer Définitivement");
     }
 
     public function multipleArchivedTeachers(Request $request){
         if($request->has('restoreAll')){
-            foreach($request->archivedTeachers as $idStaff){
-                Staff::restoreTeacher($idStaff);
-                $teach=Staff::getProfesseur($idStaff);
+            foreach($request->archivedTeachers as $idProfesseur){
+                Professeurs::restoreTeacher($idProfesseur);
+                $teach=Professeurs::getProfesseur($idProfesseur);
                 if(session()->get('user')){
                     $typeActivity = 3; 
-                    $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idStaff.")"; 
+                    $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idProfesseur.")"; 
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
             }
             return Redirect::back()->with('restoreMessage',"Les Professeurs séléctionés ont été restorer avec succès");
         }
         if($request->has('deleteAll')){
-            foreach($request->archivedTeachers as $idStaff){
-                $teach=Staff::getDeletedTeacher($idStaff);
+            foreach($request->archivedTeachers as $idProfesseur){
+                $teach=Professeurs::getDeletedTeacher($idProfesseur);
                 if(session()->get('user')){
                     $typeActivity = 10; 
-                    $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idStaff.")"; 
+                    $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idProfesseur.")"; 
                     Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
                 }
-                Staff::forceDeleteTeacher($idStaff);
+                Professeurs::forceDeleteTeacher($idProfesseur);
             }
             return Redirect::back()->with('deleteMessage',"Les Professeurs séléctionés ont été supprimer Définitivement");
         }

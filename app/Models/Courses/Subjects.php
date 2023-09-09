@@ -12,7 +12,7 @@ class Subjects extends Model
     protected $table = "subjects";
     protected $primaryKey = "idSubject";
     public $timestamps = false;
-   protected $fillable = ['libelle','short','idCourseType'];
+    protected $fillable = ['libelle','short','idCourseType'];
       // Select of Subjects
        public static function selectSubjects(){
         return Subjects::all();

@@ -18,6 +18,7 @@ class CreateProfesseursTable extends Migration
             $table->string('cnie',50)->nullable();
             $table->string('nom',50);
             $table->string('prenom',50);
+            $table->string('sexe',50);
             $table->string('numTel',50);
             $table->bigInteger('idSubject',false,true);
             $table->timestamps();
