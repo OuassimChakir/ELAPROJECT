@@ -187,8 +187,7 @@ Route::middleware([
     Route::post('/incomePayment/add', [IncomesController::class,'allPayment'])->name('incomePayment.add');
     // Delete Incomes Payment 
     Route::get('/incomePayment/delete/{idPayment}', [IncomesController::class,'deletePayment'])->name('incomePayment.delete');
-
-
+    Route::get('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment');
 
     // ----- pdf de facture
     Route::get('/pdf/{idExpensePayment}',[PdfController::class, 'pdf'])->name('pdf.generate');

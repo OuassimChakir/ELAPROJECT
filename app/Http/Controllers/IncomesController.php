@@ -102,6 +102,14 @@ class IncomesController extends Controller
             ->with('incomePayment', $incomePayment)
             ->with('incomes', $Incomes);
     }
+
+    public function paimentPage(Request $request,$idPayment){
+        $paiment = Payment::getStudentPaiment($idPayment);
+        return view('pages.incomes.paimentPage')->with([
+            'paiment' => $paiment
+        ]);
+    }
+
     // ------------ Suppression du Payment --------- //
     public function deletePayment($idPayment)
     {

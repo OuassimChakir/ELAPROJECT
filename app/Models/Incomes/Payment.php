@@ -31,6 +31,14 @@ class Payment extends Model
             ->get();
     }
 
+    public static function getStudentPaiment($idPayment){
+        return Payment::select('*')
+            ->join('incomes','payment.idIncome','=','incomes.idIncome')
+            ->join('students','payment.idStudent','=','students.idStudent')
+            ->where('idPayment',$idPayment)
+            ->first();
+    }
+
     //------ total amount
     public static function totalAmount()
     {

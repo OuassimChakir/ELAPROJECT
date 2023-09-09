@@ -40,9 +40,25 @@
 
                     </div>
                     <div class="card-body compact-notifications" data-simplebar style="height: 434px;">
-                        @if (isset($))
-                            
+                        @if (isset($pendingPaiment))
+                            @foreach ($pendingPaiment as $item)
+                            <div class="media pb-3 align-items-center justify-content-between">
+                                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
+                                    <span class="mdi mdi-receipt"></span>
+                                </div>
+                                <div class="media-body pr-3 ">
+                                    <a class="mt-0 mb-1 font-size-15 text-dark" href="#">{{$item->note}}</a>
+                                    <p>{{$item->amount}} DH</p>
+                                </div>
+                                <span class=" font-size-12 d-inline-block">
+                                    <a href="#">
+                                        <button class="btn btn-outline-success"><span class="mdi mdi-check"></span></button>
+                                    </a>
+                                </span>
+                            </div> 
+                            @endforeach
                         @endif
+
 
 
 
