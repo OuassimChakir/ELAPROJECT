@@ -1698,14 +1698,17 @@ select {
 .p-6 {
   padding: 1.5rem;
 }
-.p-3 {
-  padding: 0.75rem;
-}
 .p-5 {
   padding: 1.25rem;
 }
+.p-3 {
+  padding: 0.75rem;
+}
 .p-20 {
   padding: 5rem;
+}
+.p-4 {
+  padding: 1rem;
 }
 .px-4 {
   padding-left: 1rem;
@@ -1808,6 +1811,9 @@ select {
 }
 .pt-0 {
   padding-top: 0px;
+}
+.pb-0 {
+  padding-bottom: 0px;
 }
 .pb-5 {
   padding-bottom: 1.25rem;
@@ -2459,5 +2465,3 @@ select {
   }
 }
 
-#addPayment {
-  width: 100%;}
