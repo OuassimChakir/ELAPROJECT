@@ -15,6 +15,7 @@ class CreatePaymentTable extends Migration
     {
         Schema::create('payment', function (Blueprint $table) {
             $table->bigIncrements('idPayment');
+            $table->string('numeroRecu',100)->nullable();
             $table->date('datePayment')->nullable();
             $table->string('paymentMode',50)->nullable();
             $table->double('amount')->nullable();

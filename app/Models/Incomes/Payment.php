@@ -23,6 +23,13 @@ class Payment extends Model
             ->get();
     }
 
+    public static function getStudentPendingPaiment($idStudent){
+        return Payment::select('*')
+            ->join('incomes','payment.idIncome','=','incomes.idIncome')
+            ->where('idStudent',$idStudent)
+            ->where('etat',0)
+            ->get();
+    }
 
     //------ total amount
     public static function totalAmount()

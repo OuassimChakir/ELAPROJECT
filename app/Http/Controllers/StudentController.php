@@ -78,8 +78,11 @@ class StudentController extends Controller
     public function studentProfil($idStudent)
     {
         $studentInfo = Student::getStudent($idStudent);
-        return view('pages.students.studentprofil')
-            ->with('student', $studentInfo);
+        $pendingPaiment = Payment::getStudentPendingPaiment($idStudent);
+        return view('pages.students.studentprofil')->with([
+            'student' => $studentInfo,
+            'pendingPaiment' => $pendingPaiment,
+        ]);
 
     }
 
