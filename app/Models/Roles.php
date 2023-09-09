@@ -22,7 +22,12 @@ class Roles extends Model
     public function selectRoles($idRole){
         return $this::find($idRole);
     }
-
+    public static function getProfRole(){
+        return Roles::where('codeRole','33')->first();
+    }
+    public static function getStaffRole(){
+        return Roles::where('codeRole','11')->first();
+    }
     public static function getStudentRole(){
         return Roles::where('codeRole','22')->first();
     }

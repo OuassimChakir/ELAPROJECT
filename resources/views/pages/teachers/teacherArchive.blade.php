@@ -4,24 +4,6 @@
 @endsection
 @section('content')
 <link rel="stylesheet" type="text/css" href="http://www.arabic-keyboard.org/keyboard/keyboard.css">
-  <!--message success -->
-  @if (session()->has('restoreMessage'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{session()->get('restoreMessage')}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @elseif(session()->has('deleteMessage'))
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      {{session()->get('deleteMessage')}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @elseif(session()->has('updateMessage'))
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      {{session()->get('updateMessage')}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @endif
-  <!-- end errour du validation -->
 <div class="breadcrumb-wrapper breadcrumb-contacts">
 <div>
 <h1>Archive des Professeurs</h1>

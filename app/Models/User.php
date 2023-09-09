@@ -80,14 +80,47 @@ class User extends Authenticatable
 
     public static function createStudentAccount($idStudent, $name, $username){
         $role = Roles::getStudentRole();
+        $password = Str::random(10);
         User::create([
             'name' => $name,
             'idStudent' => $idStudent,
             'username' => $username,
             'idRole' => $role->idRole,
-            'password' => Hash::make(Str::random(10)),
+            'password' => Hash::make($password),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
+        return $password;
+    }
+
+    public static function createProfAccount($idProfesseur, $name, $username){
+        $role = Roles::getProfRole();
+        $password = Str::random(10);
+        User::create([
+            'name' => $name,
+            'idProfesseur' => $idProfesseur,
+            'username' => $username,
+            'idRole' => $role->idRole,
+            'password' => Hash::make($password),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        return $password;
+
+    }
+
+    public static function createStaffAccount($idStaff, $name, $username){
+        $role = Roles::getStaffRole();
+        $password = Str::random(10);
+        User::create([
+            'name' => $name,
+            'idStaff' => $idStaff,
+            'username' => $username,
+            'idRole' => $role->idRole,
+            'password' => Hash::make($password),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        return $password;
     }
 }

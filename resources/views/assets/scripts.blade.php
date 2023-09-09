@@ -14,7 +14,7 @@
 <script src="{{asset('assets/js/chart.js')}}"></script>
 
 {{-- SweetAlert --}}
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Date Range Picker -->
 <script src="{{asset('assets/plugins/daterangepicker/moment.min.js')}}"></script>
@@ -34,28 +34,70 @@
 <script src='{{asset('assets/plugins/data-tables/datatables.responsive.min.js')}}'></script>
 
 
-{{-- SCRIPT --}}
+<!--------------------------------
+!! Message d'alert
+---------------------------------->
+
+@if (session()->has('successMessage'))
 <script>
-    // SWEET ALERT
-    $(document).ready(function(){
-        $( "#deleteButton" ).bind( "click", function() {
-            var idGroup = $(this).val();
-            var url = $(this).data('url');
-            var message = $(this).data('confirm');
-            var title = $(this).data('title');
-            var type = $(this).data('type');
-            swal({
-                title: title,
-                text: message,
-                icon: type,
-                buttons: ["Non","Oui"],
-                closeOnConfirm: true
-            })
-            .then((value) => {
-                if(value == true)
-                    return window.location.href = url;
-            });
-        });
-    });
-    
+	const Toast = Swal.mixin({
+		toast: true,
+		position: 'top-end',
+		showConfirmButton: false,
+		timer: 3000,
+		timerProgressBar: true,
+		didOpen: (toast) => {
+			toast.addEventListener('mouseenter', Swal.stopTimer)
+			toast.addEventListener('mouseleave', Swal.resumeTimer)
+		}
+	})
+	Toast.fire({
+		icon: 'success',
+		title: "{{session()->get('successMessage')}}"
+	})
 </script>
+@elseif(session()->has('deleteMessage'))
+<script>
+	const Toast = Swal.mixin({
+		toast: true,
+		position: 'top-end',
+		showConfirmButton: false,
+		timer: 3000,
+		timerProgressBar: true,
+		didOpen: (toast) => {
+			toast.addEventListener('mouseenter', Swal.stopTimer)
+			toast.addEventListener('mouseleave', Swal.resumeTimer)
+		}
+	})
+	Toast.fire({
+		icon: 'error',
+		title: "{{session()->get('deleteMessage')}}"
+	})
+</script>
+@elseif(session()->has('updateMessage'))
+	<script>
+		const Toast = Swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+			didOpen: (toast) => {
+				toast.addEventListener('mouseenter', Swal.stopTimer)
+				toast.addEventListener('mouseleave', Swal.resumeTimer)
+			}
+		})
+		Toast.fire({
+			icon: 'warning',
+			title: "{{session()->get('updateMessage')}}"
+		})
+	</script>
+@elseif(session()->has('accessDenied'))
+<script>
+	Swal.fire(
+		'Accès Interdit !',
+		"{{session()->get('accessDenied')}}",
+		'error'
+	)
+</script>
+@endif

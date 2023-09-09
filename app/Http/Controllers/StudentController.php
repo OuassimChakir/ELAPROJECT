@@ -16,6 +16,7 @@ use App\Models\responsible\Student;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -47,7 +48,9 @@ class StudentController extends Controller
             $prenom_fr = $request->prenom_fr;
             $nom_fr = $request->nom_fr;
             $idStudent = Student::addStudent($matricule, $request->nom_fr, $request->nom_ar, $request->prenom_fr, $request->prenom_ar, $request->cnie, $request->numTel, $request->sexe, $request->adresse, $request->dateNaissance);
-            User::createStudentAccount($idStudent,ucfirst($prenom_fr).' '.Str::upper($nom_fr),"BMA" . $studentsCounter);
+            $password = User::createStudentAccount($idStudent,ucfirst($prenom_fr).' '.Str::upper($nom_fr),"BMA" . $studentsCounter);
+
+            $newStudent = array(['nom' => $nom_fr, 'prenom' => $prenom_fr, 'matricule' => $matricule, 'password' => $password]);
             // ========== Generation Initial Payment ============= //
             $initialIncomes = Income::getInitialIncomes();
             foreach ($initialIncomes as $value) {
@@ -61,7 +64,10 @@ class StudentController extends Controller
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
             }
 
-            return Redirect::back()->with('successMessage', "L'ajout est fait avec succès")->with('students', $students);
+            return Redirect::back()->with('successMessage', "L'ajout est fait avec succès")->with([
+                'students' => $students,
+                'newStudent' => $newStudent,
+            ]);
         }
         return view('pages.students.students')->with('students', $students)
             ->with('subjects', $groupSubjects)
@@ -77,30 +83,18 @@ class StudentController extends Controller
 
     }
 
-    public function updateStudent(Request $request, $matricule)
+    public function updateStudent(Request $request, $idStudent)
     {
-        $studentInfo = Student::getStudent($matricule);
         if ($request->has('updateStudent')) {
-            $prenom_fr = $request->prenom_fr;
-            $prenom_ar = $request->prenom_ar;
-            $nom_fr = $request->nom_fr;
-            $nom_ar = $request->nom_ar;
-            $email = $request->email;
-            $numTel = $request->numTel;
-            $dateNaissance = $request->dateNaissance;
-            $cnie = $request->cnie;
-            $sexe = $request->sexe;
-            $adresse = $request->adresse;
-            Student::updateStudent($request->matricule, $nom_fr, $nom_ar, $prenom_fr, $prenom_ar, $cnie, $email, $numTel, $sexe, $adresse, $dateNaissance);
+            Student::updateStudent($idStudent, $request->nom_fr, $request->nom_ar, $request->prenom_fr, $request->prenom_ar, $request->cnie, $request->numTel, $request->sexe, $request->adresse, $request->dateNaissance);
+
             if (session()->get('user')) {
-                $typeActivity = 2;
-                $activityDescription = 'Le étudiants' . " " . $prenom_fr . " " . $nom_fr . "(" . $matricule . ")";
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                $activityDescription = 'Le étudiants' . " " . $request->prenom_fr . " " . $request->nom_fr . "(" . $request->matricule . ")";
+                Activite::addActivity(session()->get('user')->id, 2, $activityDescription);
             }
-            return Redirect::back()
-                ->with('updateStudent', "La Modification est faite avec succès")
-                ->with('student', $studentInfo);
+            return Redirect::back()->with('updateMessage', "La Modification est faite avec succès");
         }
+        return Redirect::back()->with('deteleMessage', "ERREUR");
     }
 
     public function deleteMultipleStudents(Request $request)
