@@ -164,14 +164,20 @@
                                         <div class="row">
                                             <div class="col-12 responsableButtons">
                                                 @if (!is_null($student->idResponsible))
-                                                    <a
-                                                        href="{{ route('responsible.delete', ['idStudent' => $student->idStudent, 'cnieResponsible' => $student->cnieResponsible]) }}">
-                                                        <button type="button" class="btn btn-outline-danger btn-pill"
-                                                            onclick="return confirm('Vous êtes sûr?');"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </a>
-                                                    <button type="button" class="btn btn-warning form-control"
-                                                        id="showFormButton"><i class="bi bi-pencil"></i></button>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <a href="javascript:void()">
+                                                            <button type="button" class="btn btn-warning form-control" id="showFormButton"><i class="bi bi-pencil"></i></button>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <a href="{{ route('responsible.delete', ['idStudent' => $student->idStudent, 'idResponsible' => $student->idResponsible]) }}">
+                                                            <button type="button" class="btn btn-outline-danger" onclick="return confirm('Vous êtes sûr?');"><i class="bi bi-trash"></i></button>
+                                                        </a>
+                                                    </div>
+                                                    
+                                                </div>
+                                                    
                                                 @endif
                                             </div>
                                         </div>
@@ -180,33 +186,28 @@
                                                 @csrf
                                                 @method('post')
                                                 <div class="modal-header px-4">
-                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter un
-                                                        Responsable</h5>
+                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter un Responsable</h5>
                                                 </div>
-                                                <input type="hidden" name="idStudent"
-                                                    value="{{ $student->idStudent }}">
+                                                <input type="hidden" name="idStudent" value="{{ $student->idStudent }}">
                                                 <div class="modal-body px-4">
                                                     <div class="row mb-2 g-3">
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="firstName">Prénom</label>
-                                                                <input type="text" class="form-control" name="prenom"
-                                                                    id="firstName" required>
+                                                                <input type="text" class="form-control" name="prenom" id="firstName" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="lastName">Nom</label>
-                                                                <input type="text" class="form-control" name="nom"
-                                                                    id="lastName" required>
+                                                                <input type="text" class="form-control" name="nom" id="lastName" required>
                                                             </div>
                                                         </div>
                                                         <!-- numéro de carte d'identifion-->
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
-                                                                <label for="CINE">CINE</label>
-                                                                <input type="text" class="form-control" name="cine"
-                                                                    id="CINE" required>
+                                                                <label for="cnie">CNIE</label>
+                                                                <input type="text" class="form-control" name="cnie" id="cnie" required>
                                                             </div>
                                                         </div>
                                                         <!-- sexe -->
@@ -216,15 +217,13 @@
                                                                 <div
                                                                     class="col-6 d-flex align-items-center justify-content-between">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" value="Homme"
-                                                                            type="radio" name="sexe" id="homme">
+                                                                        <input class="form-check-input" value="Homme" type="radio" name="sexe" id="homme">
                                                                         <label class="form-check-label" for="homme">
                                                                             Homme
                                                                         </label>
                                                                     </div>
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" value="Femme"
-                                                                            type="radio" name="sexe" id="femme">
+                                                                        <input class="form-check-input" value="Femme" type="radio" name="sexe" id="femme">
                                                                         <label class="form-check-label" for="femme">
                                                                             Femme
                                                                         </label>
@@ -236,25 +235,20 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="numTel">Numéro de Téléphone</label>
-                                                                <input type="tel" class="form-control" name="numTel"
-                                                                    id="numTel" required>
+                                                                <input type="tel" class="form-control" name="numTel" id="numTel" required>
                                                             </div>
                                                         </div>
 
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer px-4">
-                                                    <button type="submit" name="addReponsible"
-                                                        class="btn btn-primary btn-pill">Ajouter</button>
-                                                    <button type="reset" name="reset"
-                                                        class="btn btn-secondary btn-pill">Reset</button>
+                                                    <button type="submit" name="addReponsible" class="btn btn-primary btn-pill">Ajouter</button>
+                                                    <button type="reset" name="reset" class="btn btn-secondary btn-pill">Reset</button>
                                                 </div>
                                             </form>
                                         @else
                                             <div id="formSection">
-                                                <form
-                                                    action="{{ route('responsible.update', ['cnieResponsible' => $student->cnieResponsible]) }}"
-                                                    method="post">
+                                                <form action="{{ route('responsible.update', ['idResponsible' => $student->idResponsible]) }}" method="post">
                                                     @csrf
                                                     @method('put')
                                                     <div class="modal-header px-4">
@@ -268,7 +262,7 @@
                                                                     <label for="firstName">Prénom</label>
                                                                     <input type="text" class="form-control"
                                                                         name="prenom" id="firstName"
-                                                                        value="{{ $student->prenom }}" required>
+                                                                        value="{{ $student->responsiblePrenom }}" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-6">
@@ -276,16 +270,14 @@
                                                                     <label for="lastName">Nom</label>
                                                                     <input type="text" class="form-control"
                                                                         name="nom" id="lastName"
-                                                                        value="{{ $student->nom }}" required>
+                                                                        value="{{ $student->responsibleNom }}" required>
                                                                 </div>
                                                             </div>
                                                             <!-- numéro de carte d'identifion-->
                                                             <div class="col-lg-6">
                                                                 <div class="form-group">
-                                                                    <label for="CINE">CINE</label>
-                                                                    <input type="text" class="form-control"
-                                                                        name="cine" id="CINE"
-                                                                        value="{{ $student->cnieResponsible }}" required>
+                                                                    <label for="cnie">CINE</label>
+                                                                    <input type="text" class="form-control" name="cnie" id="cnie" value="{{ $student->responsibleCnie }}" required>
                                                                 </div>
                                                             </div>
                                                             <!-- sexe -->
@@ -294,7 +286,7 @@
                                                                     <label>Sexe</label>
                                                                     <div
                                                                         class="col-6 d-flex align-items-center justify-content-between">
-                                                                        @if ($student->rSexe == 'Homme')
+                                                                        @if ($student->responsibleSexe == 'Homme')
                                                                             <div class="form-check">
                                                                                 <input class="form-check-input"
                                                                                     value="Homme" type="radio"
@@ -334,7 +326,7 @@
                                                                     <label for="numTel">Numéro de Téléphone</label>
                                                                     <input type="tel" class="form-control"
                                                                         name="numTel" id="numTel"
-                                                                        value="{{ $student->rTel }}" required>
+                                                                        value="{{ $student->responsibleTel }}" required>
                                                                 </div>
                                                             </div>
 
@@ -357,18 +349,18 @@
                                                     <div class="contact-info pt-4">
                                                         <p class="text-dark font-weight-medium pt-24px mb-2">Nom Complet
                                                         </p>
-                                                        <p>{{ $student->prenom . ' ' . $student->nom }}</p>
+                                                        <p>{{ $student->responsiblePrenom . ' ' . $student->responsibleNom }}</p>
                                                         <p class="text-dark font-weight-medium pt-24px mb-2">CINE</p>
-                                                        <p>{{ $student->cnieResponsible }}</p>
+                                                        <p>{{ $student->responsibleCnie }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="contact-info pt-4">
                                                         <p class="text-dark font-weight-medium pt-24px mb-2">Numéro de
                                                             Téléphone</p>
-                                                        <p>{{ $student->rTel }}</p>
+                                                        <p>{{ $student->responsibleTel }}</p>
                                                         <p class="text-dark font-weight-medium pt-24px mb-2">Sexe</p>
-                                                        <p>{{ $student->rSexe }}</p>
+                                                        <p>{{ $student->responsibleSexe }}</p>
                                                     </div>
                                                 </div>
                                             </div>

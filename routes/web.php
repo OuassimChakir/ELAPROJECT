@@ -114,9 +114,9 @@ Route::middleware([
     // Adding Responsible
     Route::post('/responsible/add', [StudentController::class, 'addResponsible'])->name('responsible.add');
     // Update Responsible
-    Route::put('/responsible/update/{cnieResponsible}',[StudentController::class, 'updateResponsible'])->name('responsible.update');
+    Route::put('/responsible/update/{idResponsible}',[StudentController::class, 'updateResponsible'])->name('responsible.update');
     // Delete Responsible
-    Route::get('student/{idStudent}/delete/{cnieResponsible}',[StudentController::class, 'deleteResponsible'] )->name('responsible.delete');
+    Route::get('student/{idStudent}/delete/{idResponsible}',[StudentController::class, 'deleteResponsible'] )->name('responsible.delete');
     
 
     // --------------- Groupes ------------------ //
