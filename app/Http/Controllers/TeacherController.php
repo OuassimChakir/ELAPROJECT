@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Courses\CourseType;
 use App\Models\Courses\Subjects;
 use App\Models\responsible\Professeurs;
+use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TeacherController extends Controller
 {
@@ -16,7 +19,18 @@ class TeacherController extends Controller
         $courseTypes = CourseType::selectCourses();
         $teachers = Professeurs::getProfesseurs();
         if($request->has('addTeacher')){
-            Professeurs::addProfesseur($request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idSubject);
+
+            // =========== Count nb Student Stock it in professeurs.txt file ============== //
+            $professeursCounter = 1;
+            if (!Storage::exists('professeurs.txt'))
+                Storage::disk('local')->put('professeurs.txt', 0);
+            $professeursCounter += Storage::get('professeurs.txt');
+            Storage::disk('local')->put('student.txt', $professeursCounter);
+
+            $idProfesseurs=Professeurs::addProfesseur($request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idSubject);
+            $password = User::createStaffAccount($idProfesseurs,ucfirst($request->prenom).' '.Str::upper($request->nom),"BMA" . $professeursCounter);
+            $newStudent = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'password' => $password]);
+            
             if(session()->get('user')){
                 $typeActivity = 0; 
                 $activityDescription = 'Le profisseur'." ".$request->prenom .$request->nom .($request->cine); 
@@ -24,7 +38,8 @@ class TeacherController extends Controller
             } 
             return Redirect::back()
                             ->with('successMessage',"L'ajout est fait avec succès")
-                            ->with('teachers',$teachers);
+                            ->with('teachers',$teachers)
+                            ->with('newStudent',$newStudent);
         }
         return view('pages.teachers.teachers')
                 ->with('subjects',$subjects)

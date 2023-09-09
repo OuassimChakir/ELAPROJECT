@@ -134,7 +134,7 @@ class StudentController extends Controller
 
     // -------------- Responsible -------------- //
     public function addResponsible(Request $request)
-    {
+{
         if ($request->has('addReponsible')) {
             $idResponsible = Responsible::addResponsible($request->cnie, $request->nom, $request->prenom, $request->numTel, $request->sexe);
             // Relate Responsible to Student
