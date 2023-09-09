@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Psy\Readline\Hoa\Console;
 
 class Student extends Model
 {
@@ -71,19 +73,19 @@ class Student extends Model
 
 
     // Update Student
-    public static function updateStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance){
-        $student = Student::find($matricule);
-        $student->nom_fr = $nom_fr;
-        $student->nom_ar = $nom_ar;
-        $student->prenom_fr = $prenom_fr;
-        $student->prenom_ar = $prenom_ar;
-        $student->cnie = $cnie;
-        $student->email = $email;
-        $student->numTel = $numTel;
-        $student->sexe = $sexe;
-        $student->adresse = $adresse;
-        $student->dateNaissance = $dateNaissance;
-        $student->save();
+    public static function updateStudent($idStudent,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$numTel,$sexe,$adresse,$dateNaissance){
+        Student::where('idStudent',$idStudent)->update([
+            'nom_fr' => $nom_fr,
+            'nom_ar' => $nom_ar,
+            'prenom_fr' => $prenom_fr,
+            'prenom_ar' => $prenom_ar,
+            'cnie' => $cnie,
+            'numTel' => $numTel,
+            'sexe' => $sexe,
+            'adresse' => $adresse,
+            'dateNaissance' => $dateNaissance,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
 

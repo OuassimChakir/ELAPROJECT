@@ -19,22 +19,7 @@
         </div>
     @endif
 </div>
-@if (session()->has('successMessage'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{session()->get('successMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('deleteMessage'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{session()->get('deleteMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('updateMessage'))
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{session()->get('updateMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif
+
 
 {{-- UPDATING SECTION --}}
 @if (isset($updatedSubject))

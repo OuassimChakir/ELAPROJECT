@@ -6,22 +6,6 @@
 	<!--  WRAPPER  -->
     <div class="ec-content-wrapper">
         <div class="content">
-            @if (session()->has('successMessage'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{session()->get('successMessage')}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @elseif(session()->has('deleteMessage'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{session()->get('deleteMessage')}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @elseif(session()->has('updateMessage'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {{session()->get('updateMessage')}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
             <!-- Top Statistics -->
             <div class="row">
                 <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">

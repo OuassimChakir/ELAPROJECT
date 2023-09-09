@@ -3,12 +3,6 @@
     Niveaux Scolaires
 @endsection
 @section('content')
-  <!--message success -->
-  @if(session()->has('success'))
-  <div class="alert alert-success">
-      {{session()->get('success')}}
-  </div>
-@endif
   <!--errour du validation -->
                 @if ($errors->any())
         <div class="alert alert-danger">
@@ -39,12 +33,6 @@
                     <div class="card-header card-header-border-bottom">
                         <h2>Add Product</h2>
                     </div>
-                                    <!--message success -->
-    @if(session()->has('success'))
-      <div class="alert alert-success">
-          {{session()->get('success')}}
-      </div>
-    @endif
       <!--errour du validation -->
                     @if ($errors->any())
             <div class="alert alert-danger">

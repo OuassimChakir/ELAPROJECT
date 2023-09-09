@@ -1231,6 +1231,10 @@ select {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 .my-9 {
   margin-top: 2.25rem;
   margin-bottom: 2.25rem;
@@ -2388,6 +2392,11 @@ select {
     padding-right: 5rem;
   }
 
+  .sm\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
   .sm\:pt-0 {
     padding-top: 0px;
   }
@@ -2450,3 +2459,5 @@ select {
   }
 }
 
+#addPayment {
+  width: 100%;}

@@ -26,5 +26,6 @@ Ela pass: $kV1w5=~8U3
 
 ROLES:
 00 = Admin
-11 = Moderateur
+11 = Staff
 22 = Student
+33 = Professeur
