@@ -268,7 +268,7 @@
                     <div class="tab-pane fade" id="settings" role="tabpanel"
                         aria-labelledby="settings-tab">
                         <div class="tab-pane-content mt-5">
-                            <form action="{{route('teachers.update',['idProfesseur' => $teacher->idStaff])}}" method="post">
+                            <form action="{{route('teachers.update',['idProfesseur' => $teacher->idProfesseur])}}" method="post">
                                 @csrf
                                 @method('put')  
                                 <div class="modal-body px-4">
@@ -284,12 +284,6 @@
                                             <div class="form-group">
                                                 <label for="lastName">Nom</label>
                                                 <input type="text" class="form-control" name="nom" id="lastName" value="{{$teacher->nom}}" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group mb-4">
-                                                <label for="email">Email</label>
-                                                <input type="email" class="form-control" name="email" id="email" value="{{$teacher->email}}" required>
                                             </div>
                                         </div>
                 
@@ -367,7 +361,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer px-4">
-                                    <a href="{{route('teachers.delete',['idProfesseur' => $teacher->idStaff])}}">
+                                    <a href="{{route('teachers.delete',['idProfesseur' => $teacher->idProfesseur])}}">
                                         <button type="button" class="btn btn-outline-danger btn-pill"  onclick="return confirm('Vous êtes sûr?');">Supprimer le Compte</button>
                                     </a>
                                     <button type="submit" name="updateTeacher" class="btn btn-warning btn-pill">Mettre à jour</button>

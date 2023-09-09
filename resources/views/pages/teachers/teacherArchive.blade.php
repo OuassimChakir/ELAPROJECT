@@ -37,7 +37,7 @@
                         <tbody>
                             @foreach ($teachers as $teacher)
                                 <tr>
-                                    <td><input type="checkbox" name="archivedTeachers[]" value="{{$teacher->idStaff}}" class="form-check-input archivedStudents"></td>
+                                    <td><input type="checkbox" name="archivedTeachers[]" value="{{$teacher->idProfesseur}}" class="form-check-input archivedStudents"></td>
                                     <td>
                                         {{$teacher->prenom}}
                                         {{$teacher->nom}}
@@ -57,18 +57,18 @@
                                     <td>{{$teacher->deleted_at}}</td>
                                     <td>
                                         <div class="">
-                                            <a href="{{route('teachers.archive.profil',['idProfesseur' => $teacher->idStaff])}}">
-                                                <button type="button" name="show" class="btn btn-outline-info" value="{{$teacher->idStaff}}">
+                                            <a href="{{route('teachers.archive.profil',['idProfesseur' => $teacher->idProfesseur])}}">
+                                                <button type="button" name="show" class="btn btn-outline-info" value="{{$teacher->idProfesseur}}">
                                                     <i class="bi bi-person-fill"></i>
                                                 </button>
                                             </a>
-                                            <a href="{{route('teachers.archive.restore',['idProfesseur' => $teacher->idStaff])}}">
-                                                <button type="button" name="show" class="btn btn-outline-success" value="{{$teacher->idStaff}}" onclick="return confirm('Vous êtes sûr?');">
+                                            <a href="{{route('teachers.archive.restore',['idProfesseur' => $teacher->idProfesseur])}}">
+                                                <button type="button" name="show" class="btn btn-outline-success" value="{{$teacher->idProfesseur}}" onclick="return confirm('Vous êtes sûr?');">
                                                     <i class="bi bi-arrow-repeat"></i>
                                                 </button>
                                             </a>
-                                            <a href="{{route('teachers.archive.delete',['idProfesseur'=>$teacher->idStaff])}}">
-                                                <button type="button" class="btn btn-outline-danger" name="delete" value="{{$teacher->idStaff}}" onclick="return confirm('Voulez-vous supprimer définitivement ce Professeur?');">
+                                            <a href="{{route('teachers.archive.delete',['idProfesseur'=>$teacher->idProfesseur])}}">
+                                                <button type="button" class="btn btn-outline-danger" name="delete" value="{{$teacher->idProfesseur}}" onclick="return confirm('Voulez-vous supprimer définitivement ce Professeur?');">
                                                         <i class="bi bi-trash-fill"></i>
                                                 </button>
                                             </a>

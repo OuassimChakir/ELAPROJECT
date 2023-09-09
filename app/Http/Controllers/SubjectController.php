@@ -21,8 +21,6 @@ class SubjectController extends Controller
             CourseType::addType($course, $shortForm);
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
-
-
         return view('pages.courses.courseType')->with(['courses' => $courses]);
     }
 
@@ -53,13 +51,9 @@ class SubjectController extends Controller
     // Subjects Controller
     public function subjects(Request $request)
     {
-
-
         // Adding new Subject
         if ($request->has('ajouterSubject')) {
-            $libelle = $request->libelle;
-            $idCourseType = $request->courseType;
-            Subjects::addSubject($libelle, $request->short, $idCourseType);
+            Subjects::addSubject($request->libelle, $request->courseType);
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
         $subjects = Subjects::getSubjects();
@@ -81,7 +75,7 @@ class SubjectController extends Controller
 
         // Update of Subject (ACTION)
         if ($request->has('update')) {
-            Subjects::updateSubject($request->idSubject, $request->libelle, $request->short, $request->courseType);
+            Subjects::updateSubject($request->idSubject, $request->libelle, $request->courseType);
             return Redirect::route('subjects')->with('updateMessage', "La Modification est faite avec succès");
         }
         // Update of Subject (PAGE)
