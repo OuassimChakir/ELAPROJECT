@@ -18,7 +18,9 @@ class StaffController extends Controller
         $staffTypes =Stafftype::getStaffTypes();
         $staffs =staff::getStaffs();
         if($request->has('addStaff')){
-            staff::addStaff($request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idStaffType);
+            if(isset($request->cine)) $cine = $request->cine;
+            else $cine = NULL;
+            staff::addStaff($cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idStaffType);
             if(session()->get('user')){
                 $typeActivity = 0; 
                 $activityDescription = 'Le étudiants'." ".$request->prenom." ".$request->nom;
@@ -46,7 +48,7 @@ class StaffController extends Controller
     public function updateStaff(Request $request,$idStaff){
         $staffInfo =staff::getStaff($idStaff);
         if($request->has('updateStaff')){
-            staff::updateStaff($idStaff,$request->cine,$request->prenom,$request->nom,$request->sexe,$request->email,$request->numTel,$request->idStaffType);
+            staff::updateStaff($idStaff,$request->cine,$request->nom,$request->prenom,$request->sexe,$request->numTel,$request->idStaffType);
             if(session()->get('user')){
                 $typeActivity = 2; 
                 $activityDescription = 'Le étudiants'." ".$request->prenom." ".$request->nom."(".$idStaff.")";
@@ -69,7 +71,7 @@ class StaffController extends Controller
         }
         return Redirect::route('staff.liste')
             ->with('deleteMessage',"La suppression est faite avec succès")
-            ->with('staffs',$staffs);;
+            ->with('staffs',$staffs);
     }
 // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
     public function deleteMultipleStaff(Request $request){

@@ -31,6 +31,15 @@
                                 <input type="tel" class="form-control" name="numTel" id="numTel" value="0612345678" required>
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <label for="cine">CINE</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                  <input class="form-check-input mt-0" type="checkbox" id="Checkbox" value="true" aria-label="Checkbox for following text input">
+                                </div>
+                                <input type="text" class="form-control" id="cine" name="cine" aria-label="Text input with checkbox" disabled>
+                              </div>
+                        </div>
 
                         <!-- sexe -->
                         <div class="col-lg-6">
@@ -38,27 +47,19 @@
                                 <label>Sexe</label>
                                 <div class="col-6 d-flex align-items-center justify-content-between">
                                 <div class="form-check">
-                                    <input class="form-check-input" value="Homme" type="radio" name="sexe" id="sexe1" checked>
+                                    <input class="form-check-input" value="M" type="radio" name="sexe" id="sexe1" checked>
                                     <label class="form-check-label" for="sexe1">
                                     Homme
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" value="Femme" type="radio" name="sexe" id="sexe2" >
+                                    <input class="form-check-input" value="F" type="radio" name="sexe" id="sexe2" >
                                     <label class="form-check-label" for="sexe2">
                                     Femme
                                     </label>
                                 </div></div>
                             </div>
                         </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group mb-4">
-                                <label for="cine">CINE</label>
-                                <input type="text" class="form-control" name="cine" id="cine"value="U156" required>
-                            </div>
-                        </div>
-
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
                                 <label for="form-label">Spécialité</label>
@@ -87,3 +88,18 @@
         </div>
     </div>
 </div>
+<script src="{{asset('JS/jquery.min.js')}}"></script>
+<script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
+<script>
+        $(document).on('click','#Checkbox', function() {
+            var checkbox = $(this);
+            if(checkbox.is(':checked')){
+                $('#cine').prop('disabled',false);
+                $('#cine').prop('value','U');
+            }
+            if(checkbox.is(':checked') == false){
+                $('#cine').prop('disabled',true);
+                $('#cine').prop('value',"Nulle");
+            }
+        });
+</script>

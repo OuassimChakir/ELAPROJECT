@@ -59,16 +59,16 @@ class Staff extends Model
 
     // Select deleted Staff
     public static function softDeletedStaffs(){
-        return Staff::onlyTrashed()->where('staff.idSubject', NULL)
-            ->join('stafftype', 'staff.idStaffType', '=', 'stafftype.idStaffType')
+        return Staff::onlyTrashed()
+            ->select('*')
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
             ->get();
     }
 
     public static function getDeletedStaff($idStaff){
         return Staff::onlyTrashed()
-            ->join('stafftype', 'staff.idStaffType', '=', 'stafftype.idStaffType')
-            ->where('staff.idStaff', $idStaff)
-            ->where('staff.idSubject', NULL)
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
+            ->where('staffs.idStaff', $idStaff)
             ->first();
     }
 
