@@ -48,8 +48,6 @@
                     <h5 class="text-dark">Information</h5>
                     <p class="text-dark font-weight-medium pt-24px mb-2">Spécialité</p>
                     <p>{{$staff->designation}}</p>
-                    <p class="text-dark font-weight-medium pt-24px mb-2">Email</p>
-                    <p>{{$staff->email}}</p>
                     <p class="text-dark font-weight-medium pt-24px mb-2">Numéro de Téléphone</p>
                     <p>{{$staff->numTel}}</p>
                     <p class="text-dark font-weight-medium pt-24px mb-2">Inscrie le:</p>
@@ -282,12 +280,31 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            <div class="form-group mb-4">
-                                                <label for="email">Email</label>
-                                                <input type="email" class="form-control" name="email" id="email" value="{{$staff->email}}" required>
+                                            <div class="form-group mb-2">
+                                                <label>Sexe</label>
+                                                <div class="col-6 d-flex align-items-center justify-content-between">
+                                                    @if ($staff->sexe == "M")
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" value="M" type="radio" name="sexe" id="homme" checked>
+                                                            <label class="form-check-label" for="homme">Homme</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" value="F" type="radio" name="sexe" id="femme" >
+                                                            <label class="form-check-label" for="femme">Femme</label>
+                                                        </div>
+                                                    @else
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" value="M" type="radio" name="sexe" id="homme" >
+                                                            <label class="form-check-label" for="homme">Homme</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" value="F" type="radio" name="sexe" id="femme" checked>
+                                                            <label class="form-check-label" for="femme">Femme</label>
+                                                        </div>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
-                
                                         <div class="col-lg-6">
                                             <div class="form-group mb-4">
                                                 <label for="numTel">Numéro de Téléphone</label>

@@ -49,7 +49,7 @@ class Professeurs extends Model
     {
         $staff = Professeurs::find($idProfesseur);
         $staff->cnie = $cine;
-        $staff->nom = $nom;
+        $staff->nom = $nom; 
         $staff->prenom = $prenom;
         $staff->sexe = $sexe;
         $staff->numTel = $numTel;
@@ -68,8 +68,7 @@ class Professeurs extends Model
     }
 
     public static function getDeletedTeacher($idProfesseur){
-        return Professeurs::onlyTrashed()
-            ->select('*')
+        return Professeurs::onlyTrashed()->select('*')
             ->leftJoin('subjects', 'subjects.idSubject', '=', 'professeurs.idSubject')
             ->where('idProfesseur', $idProfesseur)
             ->first();

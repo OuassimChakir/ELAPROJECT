@@ -10,22 +10,20 @@ class Staff extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $table = "staff";
+    protected $table = "staffs";
     protected $primaryKey = "idStaff";
-    protected $fillable = ['cnie', 'nom', 'prenom', 'sexe', 'email', 'numTel', 'idStaffType', 'idSubject', 'dateEngagement', 'UPDATED_AT'];
+    protected $fillable = ['cnie', 'nom', 'prenom', 'sexe', 'numTel', 'idStaffType', 'idSubject', 'created_at', 'UPDATED_AT'];
 
     // Get All Staff 
-    public static function getStaffs()
-    {
-        return Staff::where('staff.idSubject', NULL)
-            ->join('staffType', 'staff.idStaffType', '=', 'staffType.idStaffType')
+    public static function getStaffs(){
+        return Staff::select('*')
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
             ->get();
     }
     // Select one Staff || 
-    public static function getStaff($idStaff)
-    {
-        return Staff::where('staff.idStaff', $idStaff)
-            ->join('staffType', 'staff.idStaffType', '=', 'staffType.idStaffType')
+    public static function getStaff($idStaff){
+        return Staff::where('staffs.idStaff', $idStaff)
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
             ->first();
     }
     // Adding a new staff ||
@@ -37,8 +35,8 @@ class Staff extends Model
             'sexe' => $sexe,
             'numTel' => $numTel,
             'idStaffType' => $idStaffType,
-            'dateEngagement' => date('Y-m-d H:i:s'),
-            'UPDATED_AT' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
         ]);
     }
 
@@ -61,16 +59,16 @@ class Staff extends Model
 
     // Select deleted Staff
     public static function softDeletedStaffs(){
-        return Staff::onlyTrashed()->where('staff.idSubject', NULL)
-            ->join('stafftype', 'staff.idStaffType', '=', 'stafftype.idStaffType')
+        return Staff::onlyTrashed()
+            ->select('*')
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
             ->get();
     }
 
     public static function getDeletedStaff($idStaff){
         return Staff::onlyTrashed()
-            ->join('stafftype', 'staff.idStaffType', '=', 'stafftype.idStaffType')
-            ->where('staff.idStaff', $idStaff)
-            ->where('staff.idSubject', NULL)
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
+            ->where('staffs.idStaff', $idStaff)
             ->first();
     }
 
