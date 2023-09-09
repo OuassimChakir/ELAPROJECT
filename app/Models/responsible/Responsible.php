@@ -13,8 +13,8 @@ class Responsible extends Model
     use HasFactory;
     protected $fillable = ['nom','prenom','cnie','numTel','sexe','created_at','updated_at'];
 
-    public static function addResponsible($cnie,$nom,$prenom,$numTel,$sexe,$matricule){
-        $responsible = Responsible::create([
+    public static function addResponsible($cnie,$nom,$prenom,$numTel,$sexe){
+        $idResponsible = Responsible::insertGetId([
             'nom' => $nom,
             'prenom' => $prenom,
             'numTel' => $numTel,
@@ -22,26 +22,22 @@ class Responsible extends Model
             'sexe' => $sexe,            
         ]);
 
-        return $responsible->idResponsible;
+        return $idResponsible;
     }
-    public static function getResponsible($cnieResponsible){
-        return Responsible::find($cnieResponsible);
-    }
-
-    public static function deleteResponsible($cnieResponsible,$matricule){
-        $student = new Student();
-        $updatedStudent = $student::find($matricule);
-        $updatedStudent -> cnieResponsible = NULL;
-        $updatedStudent -> save();
-        Responsible::find($cnieResponsible)->delete();
-    }
-    public static function fordeleteResponsible($cnieResponsible){
-          Responsible::find($cnieResponsible)->delete();
+    public static function getResponsible($idResponsible){
+        return Responsible::find($idResponsible);
     }
 
-    public static function updateResponsible($cnieResponsible,$nom,$prenom,$numTel,$sexe){
-        $responsible = Responsible::find($cnieResponsible);
-        $responsible->cnieResponsible = $cnieResponsible;
+    public static function deleteResponsible($idResponsible){
+        Responsible::find($idResponsible)->delete();
+    }
+    public static function fordeleteResponsible($idResponsible){
+          Responsible::find($idResponsible)->delete();
+    }
+
+    public static function updateResponsible($idResponsible,$cnie,$nom,$prenom,$numTel,$sexe){
+        $responsible = Responsible::find($idResponsible);
+        $responsible->cnie = $cnie;
         $responsible->nom = $nom;
         $responsible->prenom = $prenom;
         $responsible->numTel = $numTel;

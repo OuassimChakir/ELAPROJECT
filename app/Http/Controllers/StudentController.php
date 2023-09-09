@@ -139,27 +139,28 @@ class StudentController extends Controller
     public function addResponsible(Request $request)
     {
         if ($request->has('addReponsible')) {
-            $idResponsible = Responsible::addResponsible($request->cnie, $request->nom, $request->prenom, $request->numTel, $request->sexe, $request->idStudent);
+            $idResponsible = Responsible::addResponsible($request->cnie, $request->nom, $request->prenom, $request->numTel, $request->sexe);
             // Relate Responsible to Student
             Student::where('idStudent',$request->idStudent)->update(['idResponsible' => $idResponsible]);
-
+            dd($idResponsible);
             // Make A Reponsible Account
             return Redirect::back()->with('successMessage', "L'ajout du Responsable est faite avec succès");
         }
     }
 
-    public function updateResponsible(Request $request, $cnieResponsible)
+    public function updateResponsible(Request $request, $idResponsible)
     {
         $Responsible = new Responsible();
-        $Responsible->updateResponsible($request->cine, $request->nom, $request->prenom, $request->numTel, $request->sexe);
+        $Responsible->updateResponsible($idResponsible,$request->cnie, $request->nom, $request->prenom, $request->numTel, $request->sexe);
         return Redirect::back()->with('updateMessage', "La Modification du Responsable est faite avec succès");
     }
 
-    public function deleteResponsible(Request $request, $matricule, $cnieResponsible)
+    public function deleteResponsible(Request $request, $idStudent, $idResponsible)
     {
         $Responsible = new Responsible();
-        $Responsible->deleteResponsible($cnieResponsible, $matricule);
-        return Redirect::back()->with('deleteMessage', "La suppression du Responsable est faite avec succès")->with('matricule', $matricule);
+        Student::where('idStudent',$request->idStudent)->update(['idResponsible' => NULL]);
+        $Responsible->deleteResponsible($idResponsible);
+        return Redirect::back()->with('deleteMessage', "La suppression du Responsable est faite avec succès");
     }
 
 
