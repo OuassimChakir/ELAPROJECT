@@ -84,7 +84,7 @@ Route::middleware([
     // Add New Subject
     Route::post('/matiere/add', [SubjectController::class, 'subjects'])->name('subjects.add');
     // Delete & Update Subject
-    Route::delete('/matieres/delete/{idSubject}', [SubjectController::class, 'deleteSubject'])->name('subjects.delete');
+    Route::get('/matieres/delete/{idSubject}', [SubjectController::class, 'deleteSubject'])->name('subjects.delete');
     // Update a Subject Query
     Route::get('/matieres/update/{idSubject}', [SubjectController::class, 'updateSubject'])->name('subjects.update');
     Route::put('/matieres/update/{idSubject}', [SubjectController::class, 'updateSubject'])->name('subjects.update.query');
