@@ -44,12 +44,25 @@ class Professeurs extends Model
             'updated_at' => date('Y-m-d H:i:s')
         ]);
     }
+    
+    public static function updateProfesseur($idProfesseur, $cine, $prenom, $nom, $sexe, $numTel, $idSubject)
+    {
+        $staff = Professeurs::find($idProfesseur);
+        $staff->cnie = $cine;
+        $staff->nom = $nom;
+        $staff->prenom = $prenom;
+        $staff->sexe = $sexe;
+        $staff->numTel = $numTel;
+        $staff->idSubject = $idSubject;
+        $staff->save();
+    }
+
 
     // --------------- TEACHER ARCHIVE ------------------ //
     // Select deleted Professeur
     public static function softDeletedTeachers(){
         return Professeurs::onlyTrashed()
-            ->select('*','vehicules.created_at','vehicules.updated_at')
+            ->select('*','professeurs.created_at','professeurs.updated_at')
             ->leftJoin('subjects', 'subjects.idSubject', '=', 'professeurs.idSubject')
             ->get();
     }

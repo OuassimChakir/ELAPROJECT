@@ -13,7 +13,7 @@
         </p>
     </div>
     <div>
-        <a href="{{route('teachers.archive.restore',['idProfesseur' => $teacher->idStaff])}}">
+        <a href="{{route('teachers.archive.restore',['idProfesseur' => $teacher->idProfesseur])}}">
             <button type="button" class="btn btn-success" onclick="return confirm('Vous êtes sûr?');">
                 <i class="bi bi-arrow-repeat"></i> Réstaurer
             </button>

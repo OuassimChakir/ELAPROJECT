@@ -53,14 +53,6 @@
                                     <input id="libelle" name="libelle" class="form-control" type="text" value="{{$updatedSubject->libelle}}" required>
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <label for="text" class="col-12 col-form-label">Abréviation</label> 
-                                <div class="col-12">
-                                    <input id="short" name="short" class="form-control" type="text" value="{{$updatedSubject->short}}" required>
-                                </div>
-                            </div>
-
                             <div class="form-group row">
                                 <label for="parent-category" class="col-12 col-form-label">Type de Formation</label> 
                                 <div class="col-12">
@@ -111,13 +103,6 @@
                                 <label for="text" class="col-12 col-form-label">Libelle</label> 
                                 <div class="col-12">
                                     <input id="libelle" name="libelle" class="form-control" type="text" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="text" class="col-12 col-form-label">Abréviation</label> 
-                                <div class="col-12">
-                                    <input id="short" name="short" class="form-control" type="text" required>
                                 </div>
                             </div>
 

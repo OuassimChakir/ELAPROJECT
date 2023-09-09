@@ -45,7 +45,7 @@ class TeacherController extends Controller
     public function updateTeacher(Request $request,$idProfesseur){
         $teacher = Professeurs::getProfesseur($idProfesseur);
         if($request->has('updateTeacher')){ 
-            Professeurs::updateProfesseur($idProfesseur,$request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idProfesseurType,$request->idSubject);
+            Professeurs::updateProfesseur($idProfesseur,$request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idSubject);
             if(session()->get('user')){
                 $typeActivity = 2; 
                 $activityDescription = 'Le profisseur'." ".$request->prenom .$request->nom ." (" .$idProfesseur .")"; 

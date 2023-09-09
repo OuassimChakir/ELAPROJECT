@@ -71,7 +71,7 @@
                 @foreach ($teachers as $teacher)
                 <tr>
                     <td>
-                        <input type="checkbox" name="teachers[]" value="{{$teacher->idStaff}}" class="form-check-input archivedStudents">
+                        <input type="checkbox" name="teachers[]" value="{{$teacher->idProfesseur}}" class="form-check-input archivedStudents">
                     </td>
                     <td>
                         {{$teacher->prenom}}
@@ -85,15 +85,15 @@
                     <td>{{$teacher->cnie}}</td>
                     <td>{{$teacher->numTel}}</td>
                     <td><div class="badge bg-dark">{{$teacher->libelle}}</div></td>
-                    <td>{{$teacher->dateEngagement}}</td>
+                    <td>{{$teacher->created_at}}</td>
                     <td>                           
                             <div class="btn-group">
-                                <a href="{{route('teachers.profil',['idProfesseur' => $teacher->idStaff,'nom' => $teacher->nom])}}">
-                                    <button type="button" name="edit" class="btn btn-outline-info" value="{{$teacher->idStaff}}">
+                                <a href="{{route('teachers.profil',['idProfesseur' => $teacher->idProfesseur,'nom' => $teacher->nom])}}">
+                                    <button type="button" name="edit" class="btn btn-outline-info" value="{{$teacher->idProfesseur}}">
                                         <i class="bi bi-person-fill"></i>
                                     </button> 
                                 </a>
-                                <a href="{{route('teachers.delete',['idProfesseur' => $teacher->idStaff])}}">
+                                <a href="{{route('teachers.delete',['idProfesseur' => $teacher->idProfesseur])}}">
                                     <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Vous êtes sûr?');">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>

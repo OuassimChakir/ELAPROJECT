@@ -12,7 +12,7 @@ class Subjects extends Model
     protected $table = "subjects";
     protected $primaryKey = "idSubject";
     public $timestamps = false;
-    protected $fillable = ['libelle','short','idCourseType'];
+    protected $fillable = ['libelle','idCourseType'];
       // Select of Subjects
        public static function selectSubjects(){
         return Subjects::all();
@@ -30,24 +30,21 @@ class Subjects extends Model
        }
 
        // INSERT DATA (New Subject)
-       public static function addSubject($libelle,$short,$idCourseType){
+       public static function addSubject($libelle,$idCourseType){
         Subjects::create([
          'libelle' => $libelle,
-         'short' => $short,
          'idCourseType' => $idCourseType
         ]);
        }
-
-    //    Update Subject
-       public static function updateSubject($idSubject,$libelle,$short,$idCourseType){
+      //    Update Subject
+       public static function updateSubject($idSubject,$libelle,$idCourseType){
         $subject = Subjects::find($idSubject);
         $subject->libelle = $libelle;
-        $subject->short = $short;
         $subject->idCourseType = $idCourseType;
         $subject->save();
        }
     
-    //    Delete Subject
+       //    Delete Subject
        public static function deleteSubject($idSubject){
         Subjects::find($idSubject)->delete();
        }
