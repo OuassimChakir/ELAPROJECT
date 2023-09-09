@@ -39,124 +39,12 @@
                         </div>
 
                     </div>
-                    <div class="card-body compact-notifications" data-simplebar
-                        style="height: 434px;">
-                        <div
-                            class="media pb-3 align-items-center justify-content-between">
-                            <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                <i class="mdi mdi-receipt-text-remove font-size-20"></i>
-                            </div>
-                            <div class="media-body pr-3 ">
-                                <a class="mt-0 mb-1 font-size-15 text-dark" href="#">New Order</a>
-                                <p>Selena has placed an new order</p>
-                            </div>
-                            <span class=" font-size-12 d-inline-block">
-                                <i class="mdi mdi-clock-outline"></i> 10 AM
-                            </span>
-                        </div>
-
-                        <div
-                            class="media py-3 align-items-center justify-content-between">
-                            <div
-                                class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
-                                <i
-                                    class="mdi mdi-email-outline font-size-20"></i>
-                            </div>
-                            <div class="media-body pr-3">
-                                <a class="mt-0 mb-1 font-size-15 text-dark"
-                                    href="#">New Enquiry</a>
-                                <p>Phileine has placed an new order</p>
-                            </div>
-                            <span class=" font-size-12 d-inline-block"><i
-                                    class="mdi mdi-clock-outline"></i> 9
-                                AM</span>
-                        </div>
+                    <div class="card-body compact-notifications" data-simplebar style="height: 434px;">
+                        @if (isset($))
+                            
+                        @endif
 
 
-                        <div
-                            class="media py-3 align-items-center justify-content-between">
-                            <div
-                                class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
-                                <i
-                                    class="mdi mdi-stack-exchange font-size-20"></i>
-                            </div>
-                            <div class="media-body pr-3">
-                                <a class="mt-0 mb-1 font-size-15 text-dark"
-                                    href="#">Support Ticket</a>
-                                <p>Emma has placed an new order</p>
-                            </div>
-                            <span class=" font-size-12 d-inline-block"><i
-                                    class="mdi mdi-clock-outline"></i> 10
-                                AM</span>
-                        </div>
-
-                        <div
-                            class="media py-3 align-items-center justify-content-between">
-                            <div
-                                class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                <i
-                                    class="mdi mdi-cart-outline font-size-20"></i>
-                            </div>
-                            <div class="media-body pr-3">
-                                <a class="mt-0 mb-1 font-size-15 text-dark"
-                                    href="#">New order</a>
-                                <p>Ryan has placed an new order</p>
-                            </div>
-                            <span class=" font-size-12 d-inline-block"><i
-                                    class="mdi mdi-clock-outline"></i> 10
-                                AM</span>
-                        </div>
-
-                        <div
-                            class="media py-3 align-items-center justify-content-between">
-                            <div
-                                class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-info text-white">
-                                <i
-                                    class="mdi mdi-calendar-blank font-size-20"></i>
-                            </div>
-                            <div class="media-body pr-3">
-                                <a class="mt-0 mb-1 font-size-15 text-dark"
-                                    href="">Comapny Meetup</a>
-                                <p>Phileine has placed an new order</p>
-                            </div>
-                            <span class=" font-size-12 d-inline-block"><i
-                                    class="mdi mdi-clock-outline"></i> 10
-                                AM</span>
-                        </div>
-
-                        <div
-                            class="media py-3 align-items-center justify-content-between">
-                            <div
-                                class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
-                                <i
-                                    class="mdi mdi-stack-exchange font-size-20"></i>
-                            </div>
-                            <div class="media-body pr-3">
-                                <a class="mt-0 mb-1 font-size-15 text-dark"
-                                    href="#">Support Ticket</a>
-                                <p>Emma has placed an new order</p>
-                            </div>
-                            <span class=" font-size-12 d-inline-block"><i
-                                    class="mdi mdi-clock-outline"></i> 10
-                                AM</span>
-                        </div>
-
-                        <div
-                            class="media py-3 align-items-center justify-content-between">
-                            <div
-                                class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
-                                <i
-                                    class="mdi mdi-email-outline font-size-20"></i>
-                            </div>
-                            <div class="media-body pr-3">
-                                <a class="mt-0 mb-1 font-size-15 text-dark"
-                                    href="#">New Enquiry</a>
-                                <p>Phileine has placed an new order</p>
-                            </div>
-                            <span class=" font-size-12 d-inline-block"><i
-                                    class="mdi mdi-clock-outline"></i> 9
-                                AM</span>
-                        </div>
 
                     </div>
                     <div class="mt-3"></div>
