@@ -59,8 +59,6 @@ class GradesController extends Controller
         Grades::deleteGrade($idGrade);
         return Redirect::back()->with('deleteMessage', "La suppression est faite avec succès");
     }
-
-
     // ------------- Grade Category ----------------- //
     public function gradesCategory(Request $request){
         $courses =CourseType::selectCourses();
@@ -92,7 +90,7 @@ class GradesController extends Controller
             ->with('gCategories', $gCategories)
             ->with('updatedCategory', $updatedCategory);
     }
-    
+
     public function deleteGradeCategory($idGradeCategory){
         GradesCategory::deleteGradeCategory($idGradeCategory);
         return Redirect::back()->with('deleteMessage', "La suppression est faite avec succès");
