@@ -39,7 +39,7 @@ class GroupController extends Controller
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                 $activityDescription = "Le Groupe " . $designation;
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()
                 ->with('successMessage', "La Creation du Groupe est faite avec succès");
@@ -94,7 +94,7 @@ class GroupController extends Controller
             $groupInfo = Group::getGroup($idGroup);
             $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = "Le Groupe " . $groupInfo->designation . " (ID = " . $groupInfo->idGroup . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         Attendance::deleteGroupAbsence($idGroup);
         Classrooms::deleteGroupClassroom($idGroup);
@@ -117,7 +117,7 @@ class GroupController extends Controller
             if (session()->get('user')) {
                 $typeActivity = 2; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                 $activityDescription = "Le Groupe " . $designation . " (ID = " . $idGroup . ")";
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('updateMessage', 'La Modification du Groupe est faite avec Succès');
         }
@@ -129,7 +129,7 @@ class GroupController extends Controller
             $assignment = Classrooms::getAssignment($id);
             $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = "L'Etudiant " . $assignment->nom_fr . " " . $assignment->prenom_fr . " (" . $assignment->matricule . ') du Group ' . $assignment->designation . " (ID = " . $assignment->idGroup . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         Classrooms::cancelAssignment($id);
         return Redirect::back()->with('deleteMessage', "L'étudiant a été retiré du groupe avec succès");

@@ -11,14 +11,14 @@ class Activite extends Model
     if(session()->get('user')){
         $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
         $activityDescription = 'DESCRIPTION';
-        Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+        Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
     }
     */
     protected $table = "activities";
     protected $primaryKey = "idActivity";
     use HasFactory;
     
-        public static function addActivity($idUser,$typeActivity,$description){
+        public static function addActivity($idUser,$typeActivity,$description,$name){
             /* @typeActivity
             /   0 = Ajout | 1 = Suppression | 2 = Modification
             */
@@ -33,6 +33,7 @@ class Activite extends Model
             $activity = new Activite();
             $activity->typeActivity = $type;
             $activity->idUser = $idUser;
+            $activity->name = $name;
             $activity->description = $description;
             $activity->dateActivite = date('Y-m-d');
             $activity->save();

@@ -25,7 +25,7 @@ class ExpenseController extends Controller
             if (session()->get('user')) {
                 $typeActivity = 0;
                 $activityDescription = 'un Type de Dépenses ' . $designation;
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }

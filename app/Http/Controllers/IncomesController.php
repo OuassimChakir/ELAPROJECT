@@ -25,7 +25,7 @@ class IncomesController extends Controller
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                 $activityDescription = 'Le type de Revenue: ' . $request->designation;
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
@@ -39,7 +39,7 @@ class IncomesController extends Controller
             $incomeInfo = Income::selectIncome($idIncome);
             $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = 'Le type de Revenue: ' . $incomeInfo->designation;
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         Income::deleteIncome($idIncome);
         return Redirect::route('typeIncome')
@@ -62,7 +62,7 @@ class IncomesController extends Controller
             if (session()->get('user')) {
                 $typeActivity = 2; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                 $activityDescription = 'Le type de Revenue: ' . $updatedIncome->designation . " => " . $request->designation;
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             
             return Redirect::route('typeIncome')
@@ -94,7 +94,7 @@ class IncomesController extends Controller
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                 $activityDescription = 'Un Payment (Description: ' . $description . ")";
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
@@ -117,7 +117,7 @@ class IncomesController extends Controller
         if (session()->get('user')) {
             $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = "Un Payment (ID = " . $idPayment . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::back()->with('deleteMessage', "La Suppression du Reçus est faite avec succès");
     }
@@ -137,7 +137,7 @@ class IncomesController extends Controller
         if (session()->get('user')) {
             $typeActivity = 3; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = "Un Payment (ID = " . $idPayment . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::route('incomePayment.archive')->with('restoreMessage', "Le Reçus a été restorer avec succès")->with('incomePayment', $incomePayment);
     }
@@ -148,7 +148,7 @@ class IncomesController extends Controller
         if (session()->get('user')) {
             $typeActivity = 10; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = "Un Payment (ID = " . $idPayment . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::back()->with('deleteMessage', "Le Reçue a été supprimer Définitivement");
     }
@@ -161,7 +161,7 @@ class IncomesController extends Controller
                 if (session()->get('user')) {
                     $typeActivity = 3; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                     $activityDescription = "Un Payment (ID = " . $idPayment . ")";
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
             }
             return Redirect::back()->with('restoreMessage', "Les Reçues séléctionés ont été restorer avec succès");
@@ -172,7 +172,7 @@ class IncomesController extends Controller
                 if (session()->get('user')) {
                     $typeActivity = 10; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                     $activityDescription = "Un Payment (ID = " . $idPayment . ")";
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
             }
             return Redirect::back()->with('deleteMessage', "Les Reçues séléctionés ont été supprimer Définitivement");

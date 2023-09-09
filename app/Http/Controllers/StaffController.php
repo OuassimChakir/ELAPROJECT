@@ -24,7 +24,7 @@ class StaffController extends Controller
             if(session()->get('user')){
                 $typeActivity = 0; 
                 $activityDescription = 'Le étudiants'." ".$request->prenom." ".$request->nom;
-                Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()
                             ->with('successMessage',"L'ajout est fait avec succès")
@@ -52,7 +52,7 @@ class StaffController extends Controller
             if(session()->get('user')){
                 $typeActivity = 2; 
                 $activityDescription = 'Le étudiants'." ".$request->prenom." ".$request->nom."(".$idStaff.")";
-                Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()
                 ->with('updateMessage',"La Modification est faite avec succès")
@@ -67,7 +67,7 @@ class StaffController extends Controller
         if(session()->get('user')){
             $typeActivity = 1; 
             $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
-            Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::route('staff.liste')
             ->with('deleteMessage',"La suppression est faite avec succès")
@@ -82,7 +82,7 @@ class StaffController extends Controller
                 if(session()->get('user')){
                     $typeActivity = 1; 
                     $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
-                    Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
             }
             return Redirect::back()->with('deleteMessage',"Les Staffs séléctionés ont été supprimer");
@@ -108,7 +108,7 @@ class StaffController extends Controller
         if(session()->get('user')){
             $typeActivity = 3; 
             $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
-            Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::route('staff.archive')->with('restoreMessage',"Le Staff a été restorer avec succès")->with('staffs',$staffs);
     }
@@ -118,7 +118,7 @@ class StaffController extends Controller
         if(session()->get('user')){ 
             $typeActivity = 10; 
             $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
-            Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         staff::forceDeleteStaff($idStaff);
         return Redirect::route('staff.archive')->with('deleteMessage',"Le Staff a été supprimer Définitivement");
@@ -132,7 +132,7 @@ class StaffController extends Controller
                 if(session()->get('user')){
                     $typeActivity = 3; 
                     $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
-                    Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
             }
             return Redirect::route('staff.archive')->with('restoreMessage',"Les Staffs séléctionés ont été restorer avec succès");
@@ -143,7 +143,7 @@ class StaffController extends Controller
                 if(session()->get('user')){
                     $typeActivity = 10; 
                     $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
-                    Activite::addActivity(session()->get('user')->id,$typeActivity,$activityDescription);
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
                 staff::forceDeleteStaff($idStaff);
             }
