@@ -24,12 +24,6 @@
                                 <input type="text" class="form-control" name="nom" id="lastName" value="Deo" required>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group mb-4">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" value="johnexample@gmail.com" required>
-                            </div>
-                        </div>
 
                         <div class="col-lg-6">
                             <div class="form-group mb-4">

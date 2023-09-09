@@ -82,7 +82,7 @@ data-bs-target="#addUser"><i class="bi bi-plus-square"></i> Ajouter un Staff
                     <td>{{$staff->cnie}}</td>
                     <td>{{$staff->numTel}}</td>
                     <td><div class="badge bg-dark">{{$staff->designation}}</div></td>
-                    <td>{{$staff->dateEngagement}}</td>
+                    <td>{{$staff->created_at}}</td>
                     <td>                           
                             <div class="btn-group">
                                 <a href="{{route('staff.profil',['idStaff' => $staff->idStaff,'nom' => $staff->nom])}}">
