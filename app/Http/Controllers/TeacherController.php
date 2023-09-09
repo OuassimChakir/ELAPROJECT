@@ -110,7 +110,7 @@ class TeacherController extends Controller
     }
 
     public function deleteArchivedTeacher($idProfesseur){
-        $teach=Professeurs::getProfesseur($idProfesseur);
+        $teach=Professeurs::getDeletedTeacher($idProfesseur);
         if(session()->get('user')){
             $typeActivity = 10; 
             $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ."(".$teach->idProfesseur.")"; 
