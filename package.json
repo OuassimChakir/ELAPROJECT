@@ -30,6 +30,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@mdi/svg": "^7.2.96",
         "sweetalert2": "^11.7.27"
     }
 }

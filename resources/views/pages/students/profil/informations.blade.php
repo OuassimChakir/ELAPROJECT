@@ -44,7 +44,7 @@
                         <div
                             class="media pb-3 align-items-center justify-content-between">
                             <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                <i class="mdi mdi-receipt-text-remove font-size-20"></i>
+                                {{Mdi::mdi('receipt-text-remove')}}
                             </div>
                             <div class="media-body pr-3 ">
                                 <a class="mt-0 mb-1 font-size-15 text-dark" href="#">New Order</a>
