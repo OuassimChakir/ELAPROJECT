@@ -30,29 +30,6 @@
                                             value="{{ $updatedCategory->category }}" required>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-12 col-form-label">Description</label>
-                                    <div class="col-12">
-                                        <textarea id="sortdescription" name="description" cols="40" rows="2" class="form-control" required>{{ $updatedCategory->description }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="parent-category" class="col-12 col-form-label">Type de Formation</label>
-                                    <div class="col-12">
-                                        <select id="courseType" name="courseType" class="custom-select" required>
-                                            <option disabled>-- Choisir le Type de Formation du Matière --</option>
-                                            @foreach ($courses as $course)
-                                                @if ($course->idCourseType == $updatedCategory->idGradeCategory)
-                                                    <option value="{{ $course->idCourseType }}" selected>
-                                                        {{ $course->course }}</option>
-                                                @else
-                                                    <option value="{{ $course->idCourseType }}">{{ $course->course }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
                                 <input type="hidden" name="idGradeCategory"
                                     value="{{ $updatedCategory->idGradeCategory }}">
                                 <div class="row">
@@ -80,24 +57,6 @@
                                     <div class="col-12">
                                         <input id="category" name="category" class="form-control" type="text"
                                             placeholder="Communication, Scolaire..." required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-12 col-form-label">Description</label>
-                                    <div class="col-12">
-                                        <textarea id="sortdescription" name="description" cols="40" rows="2" class="form-control" required></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="parent-category" class="col-12 col-form-label">Type de Formation</label>
-                                    <div class="col-12">
-                                        <select id="courseType" name="courseType" class="custom-select" required>
-                                            <option disabled>-- Choisir le Type de Formation du Matière --</option>
-                                            @foreach ($courses as $course)
-                                                <option value="{{ $course->idCourseType }}">{{ $course->course }}</option>
-                                            @endforeach
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="row">

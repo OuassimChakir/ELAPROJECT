@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 class SubjectController extends Controller
 {
     //----------------- Course Type ---------------- //
-    public function courseType(Request $request)
-    {
+    public function courseType(Request $request){
         // List of Courses
         $courses = CourseType::selectCourses();
         // Creating new Type
@@ -25,8 +24,7 @@ class SubjectController extends Controller
     }
 
     // Course Type Deletion or Update
-    public function updateCourseType(Request $request, $idCourseType)
-    {
+    public function updateCourseType(Request $request, $idCourseType){
         // List of Courses
         $courses = CourseType::selectCourses();
         // Update of Course Type (ACTION)
@@ -41,16 +39,14 @@ class SubjectController extends Controller
             ->with('courseInfo', $updatedCourse);
     }
 
-    public function deleteCourseType($idCourseType)
-    {
+    public function deleteCourseType($idCourseType){
         CourseType::deleteCourse($idCourseType);
         return Redirect::back()->with('deleteMessage', "La suppression est faite avec succès");
     }
 
     //----------------- Subjects ---------------- //
     // Subjects Controller
-    public function subjects(Request $request)
-    {
+    public function subjects(Request $request){
         // Adding new Subject
         if ($request->has('ajouterSubject')) {
             Subjects::addSubject($request->libelle, $request->courseType);
@@ -64,8 +60,7 @@ class SubjectController extends Controller
     }
 
     // Subjects Deletion or Update
-    public function updateSubject(Request $request, $idSubject)
-    {
+    public function updateSubject(Request $request, $idSubject){
 
         // List of Courses
         $courses = CourseType::selectCourses();
@@ -85,14 +80,9 @@ class SubjectController extends Controller
             ->with('updatedSubject', $updatedSubject)
             ->with('courses', $courses);
     }
-
-    public function deleteSubject(Request $request, $idSubject)
-    {
-
-        // Deletion of Subject
-        if ($request->action == 'delete') {
+    public function deleteSubject($idSubject){
             Subjects::deleteSubject($idSubject);
             return Redirect::back()->with('deleteMessage', "La suppression est faite avec succès");
-        }
+        
     }
 }
