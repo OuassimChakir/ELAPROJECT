@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expenses\Facture;
-use Illuminate\Http\Request;
 use LaravelDaily\Invoices\Invoice;
 use LaravelDaily\Invoices\Classes\Buyer;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
-use LaravelDaily\Invoices\Classes\Seller;
+
 
 class PdfController extends Controller
 {
     public function pdf($idExpensePayment){
-        $Facture = new Facture();
-        $data = $Facture->getFacturePdf($idExpensePayment);
+        $data =Facture::getFacturePdf($idExpensePayment);
         if(!is_null($data->idStaff)){
             $customer = new Buyer([
                 'name'          => $data->prenom.' '.$data->nom,

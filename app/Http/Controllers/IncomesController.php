@@ -77,8 +77,7 @@ class IncomesController extends Controller
     //-------------- List of Payment  ---------------- //
     public function allPayment(Request $request)
     {
-        $Student = new Student();
-        $students = $Student->getStudents();
+        $students =Student::getStudents();
         // List of Payment
         $Incomes = Income::allIncome();
         // list of Payment

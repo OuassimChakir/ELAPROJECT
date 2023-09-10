@@ -40,14 +40,14 @@ class Activite extends Model
         }
 
         //------------- select all activites----------//
-        public function selectaActivite(){
-            return $this::select('*')
+        public static function selectaActivite(){
+            return Activite::select('*')
             ->leftJoin('users','users.id','=','activities.idUser')
             ->get();
         }
         //------------------ select activite by date 
-        public function selectListeActiviteByDate($dateActivite){
-            return $this::select('*')
+        public static function selectListeActiviteByDate($dateActivite){
+            return Activite::select('*')
             ->leftJoin('users','users.id','=','activities.idUser')
             ->where('dateActivite',$dateActivite)
             ->get();
