@@ -32,13 +32,23 @@
                             @csrf
                             @method('post')
                             <div class="row">
-                            <div class="col-lg-">
+                            <div class="col-lg-6">
                             <div class="form-group ">
                                 <label for="parent-category" class="form-label">Description</label> 
-                                    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="1"></textarea>
+                            </div>
+                        </div>
+                            <div class="col-lg-6">
+                                <label for="code">code</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-text">
+                                      <input class="form-check-input mt-0" type="checkbox" id="Checkbox" value="true" aria-label="Checkbox for following text input">
+                                    </div>
+                                    <input type="text" class="form-control" id="code" name="code" aria-label="Text input with checkbox" disabled>
+                                  </div>
+                                  <small><b>0</b>: Staff <b>1</b>: Professeur</small>
                             </div>
                             </div>
-                           </div>
                             <div class="row">
                                 <div class="col-12">
                                     <button name="ajouterexpense" type="submit" class="btn btn-primary">Ajouter</button>
@@ -101,5 +111,18 @@
                 $("#formSection").slideToggle();
             });
         });
+
+        $(document).on('click','#Checkbox', function() {
+                var checkbox = $(this);
+                if(checkbox.is(':checked')){
+                    $('#code').prop('disabled',false);
+                    $('#code').prop('value','0');
+                }
+                if(checkbox.is(':checked') == false){
+                    $('#code').prop('disabled',true);
+                    $('#code').prop('value',"Nulle");
+                }
+            });
     </script>
+    
 @endsection

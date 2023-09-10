@@ -11,11 +11,14 @@ class CreateExpensesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up() 
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('idExpense');
             $table->string('description',100);
+            $table->tinyInteger('code')->nullable()->comment('NULL (expenses)
+            0 (staff)
+            1 (professur)');
         });
     }
 
@@ -29,3 +32,5 @@ class CreateExpensesTable extends Migration
         Schema::dropIfExists('expenses');
     }
 }
+
+//php artisan migrate:refresh --path="database\migrations\2023_09_05_163553_create_expenses_table.php"

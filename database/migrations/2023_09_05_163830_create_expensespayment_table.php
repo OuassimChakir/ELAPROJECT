@@ -25,11 +25,13 @@ class CreateExpensespaymentTable extends Migration
             $table->bigInteger('idStaff',false,true)->nullable();
             $table->bigInteger('idProfesseur',false,true)->nullable();
             $table->bigInteger('idExpense',false,true);
+            $table->bigInteger('id',false,true);
         });
         Schema::table('expensespayment', function (Blueprint $table){
             $table->foreign('idStaff')->references('idStaff')->on('staffs');
             $table->foreign('idProfesseur')->references('idProfesseur')->on('professeurs');
             $table->foreign('idExpense')->references('idExpense')->on('expenses');
+            $table->foreign('id')->references('id')->on('users');
         });
     }
 
@@ -43,3 +45,5 @@ class CreateExpensespaymentTable extends Migration
         Schema::dropIfExists('expensespayment');
     }
 }
+
+// php artisan migrate:refresh --path="database\migrations\2023_09_05_163830_create_expensespayment_table.php"

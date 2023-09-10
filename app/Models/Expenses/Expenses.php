@@ -11,7 +11,7 @@ class Expenses extends Model
         protected $table = "expenses";
         protected $primaryKey = "idExpense";
         public $timestamps = false;
-        protected $fillable = ['description'];
+        protected $fillable = ['description','code'];
 
 
         //------------- select Expenses----------//
@@ -23,9 +23,10 @@ class Expenses extends Model
                 return Expenses::find($idExpense);
         }
         // ------ Creation Expenses ----------- //
-        public static function createExpense($description){
+        public static function createExpense($description,$code){
                 Expenses::create([
-                        'description' => $description
+                        'description' => $description,
+                        'code' => $code,
                 ]);
         }
         //------ Update Expense Type-----//
