@@ -29,3 +29,55 @@ ROLES:
 11 = Staff
 22 = Student
 33 = Professeur
+
+
+
+SELECT INVOICES:
+
+<div class="card p-2 mt-2">
+<div class="card-title pl-3 pt-3">
+    <h5>Factures à produire</h5>
+</div>
+<div class="card-body">
+    <form action="">
+        <table class="table table-bordered" id="invoicesGenerationTable">
+            <tbody>
+                <tr>
+                    <div>
+                        <td class="align-middle .checkCol">
+                            <input type="checkbox" class="form-check-input form-control" name="invoices[]" value="10">
+                        </td>
+                        <td class="infoCol">Octobre 2023</td>
+                    </div>
+                    <div>
+                        <td class="align-middle .checkCol">
+                            <input type="checkbox" class="form-check-input form-control" name="invoices[]" value="20">
+                        </td>
+                        <td class="infoCol">Octobre 2023</td>
+                    </div>
+                    <div>
+                        <td class="align-middle .checkCol">
+                            <input type="checkbox" class="form-check-input form-control" name="invoices[]" value="30">
+                        </td>
+                        <td class="infoCol">Octobre 2023</td>
+                    </div>
+                </tr>
+                
+            </tbody>
+        </table>
+    </form>
+</div>
+</div>
+
+<script src="{{ asset('JS/jquery.min.js') }}"></script>
+<script>
+    $(document).ready(function(){
+        $(".infoCol").click(function(){
+            var closestCheck = $(this).closest('td').prev().find('input[type=checkbox]');
+            if(closestCheck.prop('checked') == true)
+                closestCheck.prop('checked',false);
+            else
+                closestCheck.prop('checked',true);
+        });
+    });
+</script>

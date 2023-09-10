@@ -13,7 +13,7 @@ class Payment extends Model
     use SoftDeletes;
     protected $table = "payment";
     protected $primaryKey = "idPayment";
-    protected $fillable = ['datePayment', 'paymentMode', 'amount', 'note', 'etat','idElement','idStudent', 'idIncome', 'created_at', 'updated_at'];
+    protected $fillable = ['datePayment', 'paymentMode', 'amount','amountPaid', 'note', 'etat','idElement','idStudent', 'idIncome', 'created_at', 'updated_at'];
 
     //------------- all Payment de incomes----------//
     public static function allPayment()
@@ -105,7 +105,16 @@ class Payment extends Model
         return Payment::where('idStudent',$idStudent)->where('etat',$etat)->count();
     }
 
-
+    public static function validateStudentPaiment($idPayment,$numeroRecu,$datePayment,$amountPaid,$paymentMode){
+        $paiment = Payment::find($idPayment);
+        $paiment->numeroRecu = $numeroRecu;
+        $paiment->datePayment = $datePayment;
+        $paiment->amountPaid = $amountPaid;
+        if($paiment->amount == $amountPaid)
+            $paiment->etat = 1;
+        $paiment->paymentMode = $paymentMode;
+        $paiment->save();
+    }
 
 
 
