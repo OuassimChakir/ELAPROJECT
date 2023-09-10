@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Activite;
 use App\Models\Courses\CourseType;
 use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
@@ -54,8 +53,7 @@ class GradesController extends Controller
             ->with('updatedGrade', $updatedGrade);
     }
 
-    public function deleteGrade($idGrade)
-    {
+    public function deleteGrade($idGrade){
         Grades::deleteGrade($idGrade);
         return Redirect::back()->with('deleteMessage', "La suppression est faite avec succès");
     }

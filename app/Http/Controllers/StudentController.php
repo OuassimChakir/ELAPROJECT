@@ -3,20 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activite;
-use App\Models\Attendance;
 use App\Models\Classrooms;
-use App\Models\Grades\Grades;
-use App\Models\Grades\GradesCategory;
 use App\Models\Group;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
 use App\Models\Responsible\Responsible;
-use App\Models\responsible\Staff;
 use App\Models\responsible\Student;
 use App\Models\User;
-use Illuminate\Console\Command;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;

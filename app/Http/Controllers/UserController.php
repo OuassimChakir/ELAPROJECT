@@ -6,8 +6,7 @@ use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
-use Laravel\Jetstream\Rules\Role;
+
 
 class UserController extends Controller
 {
