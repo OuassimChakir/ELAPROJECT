@@ -22,9 +22,11 @@ class GradesCategory extends Model
    }
 
    // INSERT DATA (New Subject)
-   public static function addGradeCategory($category){
+   public static function addGradeCategory($category,$description,$idCourseType){
       GradesCategory::create([
          'category' => $category,
+         'description' => $description,
+         'idCourseType' => $idCourseType,
       ]);
    }
 

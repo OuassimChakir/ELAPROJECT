@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('title')
     Catégories des Niveaux
-@endsection 
+@endsection
 @section('content')
     <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
         <h1>Catégories des Niveaux</h1>
@@ -59,41 +59,35 @@
                                             placeholder="Communication, Scolaire..." required>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="parent-category" class="form-label">Description</label> 
-                                            <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="2"></textarea>
-                                    </div>
-                                    </div>
-                                    <div class="form-group ">
-                                        <label for="form-label">Matières</label>
-                                        <select name="idSubject" id="id-Subject" class="form-select" required>
-                                            <option disabled selected>-- Choisir une Matière</option>
-                                            @foreach ($courses as $courseType)  
-                                                <optgroup label="{{$courseType->course}}">
-                                                    @foreach ($subjects as $subject)
-                                                        @if ($courseType->idCourseType == $subject->idCourseType)
-                                                            <option value="{{ $subject->idSubject }}">
-                                                                {{ $subject->libelle  }}
-                                                            </option>
-                                                        @endif
-                                                    @endforeach
-                                                </optgroup>
-                                            @endforeach
-                                        </select>
+                                        <label for="parent-category" class="form-label">Description</label>
+                                        <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="2"></textarea>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <button name="addGrade" type="submit" class="btn btn-primary">Ajouter</button>
-                                        <button name="Reset" type="reset" class="btn btn-secondary">Reset</button>
-                                    </div>
+                                <div class="form-group ">
+                                    <label for="form-label">Matières</label>
+                                    <select name="idCourseType" id="id-Subject" class="form-select" required>
+                                        <option disabled selected>-- Choisir une Matière</option>
+                                        @foreach ($courses as $courseType)
+                                            <option value="{{ $courseType->idCourseType }}">
+                                                {{ $courseType->course }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            </form>
-                        @endif
-
                     </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button name="addGrade" type="submit" class="btn btn-primary">Ajouter</button>
+                            <button name="Reset" type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
+                    </div>
+                    </form>
+                    @endif
+
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12">
@@ -124,7 +118,7 @@
                                             <td>
                                                 <div class="btn-group">
                                                     <a
-                                                        href="{{ route('gradesCategory.update',['idGradeCategory' => $categorie->idGradeCategory])}}">
+                                                        href="{{ route('gradesCategory.update', ['idGradeCategory' => $categorie->idGradeCategory]) }}">
                                                         <button type="submit" name="edit"
                                                             class="btn btn-outline-warning"
                                                             value="{{ $categorie->idGradeCategory }}">
@@ -133,9 +127,9 @@
                                                         </button>
                                                     </a>
                                                     <a
-                                                        href="{{ route('gradesCategory.delete',['idGradeCategory' => $categorie->idGradeCategory])}}">
-                                                        <button type="submit" class="btn btn-outline-danger"
-                                                            name="delete" value="{{ $categorie->idGradeCategory }}"
+                                                        href="{{ route('gradesCategory.delete', ['idGradeCategory' => $categorie->idGradeCategory]) }}">
+                                                        <button type="submit" class="btn btn-outline-danger" name="delete"
+                                                            value="{{ $categorie->idGradeCategory }}"
                                                             onclick="return confirm('Vous êtes sûr?');">
                                                             <i class="bi bi-trash-fill"></i>
                                                         </button>

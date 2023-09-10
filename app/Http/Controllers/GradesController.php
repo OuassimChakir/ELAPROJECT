@@ -65,7 +65,7 @@ class GradesController extends Controller
         $gCategories = GradesCategory::getGradeCategories();
         // Add new Grade
         if ($request->has('addGrade')) {
-            GradesCategory::addGradeCategory($request->category);
+            GradesCategory::addGradeCategory($request->category,$request->description,$request->idCourseType);
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
         return view('pages.grades.gradesCategory')
@@ -74,14 +74,14 @@ class GradesController extends Controller
             ->with('subjects', $subjects);
     }
     // Grade Category Deletion or Update
-    public function updateGradeCategory(Request $request, $idGradeCategory){
+    public function updateGradeCategory(Request $request, $idGradeCategory,$description,$idCourseType){
         // List of Course Types
         $courses = CourseType::selectCourses();
         // List of Grade Categories
         $gCategories = GradesCategory::getGradeCategories();
         // Update GradeCategory (ACTION)
         if ($request->has('update')) {
-            GradesCategory::updateGradeCategory($request->idGradeCategory, $request->category);
+            GradesCategory::updateGradeCategory($request->idGradeCategory, $request->category,$request->description,$request->idCourseType);
             return Redirect::route('gradesCategory')->with('updateCategory', "La Modification est faite avec succès");
         }
         // Update GradeCategory (PAGE)
