@@ -16,7 +16,7 @@ class CreateGradescategoriesTable extends Migration
         Schema::create('gradescategories', function (Blueprint $table) {
             $table->bigIncrements('idGradeCategory');
             $table->string('category',50);
-            $table->string('description',200);
+            $table->string('description',200)->nullable();
             $table->bigInteger('idCourseType',false,true);
         });
         Schema::table('gradescategories', function (Blueprint $table){
