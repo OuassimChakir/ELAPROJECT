@@ -106,7 +106,6 @@ class User extends Authenticatable
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
         return $password;
-
     }
 
     public static function createStaffAccount($idStaff, $name, $username){
