@@ -28,7 +28,7 @@ class Staff extends Model
     }
     // Adding a new staff ||
     public static function addStaff($cine, $prenom, $nom, $sexe, $numTel, $idStaffType){
-        Staff::Create([
+        $idStaff=  Staff::Create([
             'cine' => $cine,
             'prenom' => $prenom,
             'nom' => $nom,
@@ -38,6 +38,7 @@ class Staff extends Model
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
+        return $idStaff;
     }
 
     // Update Staff || 

@@ -33,7 +33,7 @@ class Professeurs extends Model
     }
     public static function addProfesseur($cine, $prenom, $nom, $sexe, $numTel, $idSubject)
     {
-        $professeurs = Professeurs::Create([
+        $professeur = Professeurs::Create([
             'cine' => $cine,
             'prenom' => $prenom,
             'nom' => $nom,
@@ -43,7 +43,7 @@ class Professeurs extends Model
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
-        return $professeurs;
+        return $professeur;
     }
     
     public static function updateProfesseur($idProfesseur, $cine, $prenom, $nom, $sexe, $numTel, $idSubject)
