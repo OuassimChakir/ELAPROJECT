@@ -21,11 +21,11 @@ class Group extends Model
     // ***** Select Groupes ******* //
     public static function getGroups()
     {
-        return Group::select('groups.*', 'subjects.*', 'grades.*', 'coursetype.*', 'staff.idStaff', 'staff.nom', 'staff.prenom')
+        return Group::select('groups.*', 'subjects.*', 'grades.*', 'professeurs.*','courseType.*')
+            ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
-            ->Join('coursetype', 'subjects.idCourseType', '=', 'coursetype.idCourseType')
+            ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
             ->leftJoin('grades', 'groups.idGrade', '=', 'grades.idGrade')
-            ->join('staff', 'groups.idStaff', '=', 'staff.idStaff')
             ->get();
     }
 

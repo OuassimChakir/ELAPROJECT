@@ -10,6 +10,7 @@ use App\Models\Courses\Subjects;
 use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
 use App\Models\Group;
+use App\Models\responsible\Professeurs;
 use App\Models\Responsible\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -23,7 +24,7 @@ class GroupController extends Controller
         $gradesCategories = GradesCategory::getGradeCategories();
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
-        $teachers = Staff::getProfesseurs();
+        $teachers = Professeurs::getProfesseurs();
         $groups = Group::getGroups();
         foreach ($groups as $group) {
             $group->nbElement = Classrooms::classroomElements($group->idGroup);

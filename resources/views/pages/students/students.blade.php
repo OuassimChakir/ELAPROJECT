@@ -12,9 +12,11 @@
             </p>
         </div>
         <div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser"> <i
-                    class="bi bi-plus-square"></i> Ajouter un Etudiant
-            </button>
+            <a href="{{route('student.add.page')}}">
+                <button type="button" class="btn btn-primary">
+                    <i class="bi bi-plus-square"></i> Ajouter un Etudiant
+                </button>
+            </a>
         </div>
     </div>
     <div class="row">
@@ -113,8 +115,6 @@
             </div>
         </div>
     </div>
-    <!-- Ajouter un student -->
-    @include('pages.students.add_student')
     {{-- Ajouter au Groupe --}}
     @include('pages.students.add2Group')
     <script src="{{ asset('JS/jquery.min.js') }}"></script>

@@ -19,6 +19,7 @@ class CreatePaymentTable extends Migration
             $table->date('datePayment')->nullable();
             $table->string('paymentMode',50)->nullable();
             $table->double('amount')->nullable();
+            $table->double('amountPaid')->nullable();
             $table->text('note')->nullable();
             $table->tinyInteger('etat')->nullable()->comment('NULL (Disactivated)
             0 (Activated)

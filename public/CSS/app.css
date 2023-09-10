@@ -2465,3 +2465,18 @@ select {
   }
 }
 
+#invoicesGenerationTable .form-check-input[type=checkbox]{
+  width: 100%;
+  height: 30px !important;
+  margin: 0; padding: 0;
+}
+#invoicesGenerationTable .checkCol {
+  width: 5%;
+  padding: 0;
+  margin: 0;
+}
+#invoicesGenerationTable .infoCol {
+  font-weight: bold;
+}
+
+

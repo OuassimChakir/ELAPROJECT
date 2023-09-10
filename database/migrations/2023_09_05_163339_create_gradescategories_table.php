@@ -16,6 +16,11 @@ class CreateGradescategoriesTable extends Migration
         Schema::create('gradescategories', function (Blueprint $table) {
             $table->bigIncrements('idGradeCategory');
             $table->string('category',50);
+            $table->string('description',200);
+            $table->bigInteger('idCourseType',false,true);
+        });
+        Schema::table('gradescategories', function (Blueprint $table){
+            $table->foreign('idCourseType')->references('idCourseType')->on('coursetype');
         });
     }
 

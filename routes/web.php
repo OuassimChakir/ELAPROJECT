@@ -102,10 +102,11 @@ Route::middleware([
 
 
     // -------------- STUDENTS --------------------- //
-    Route::get('/students', [StudentController::class, 'student'])->name('student.liste');
-    Route::get('/students/{idStudent}', [StudentController::class, 'studentProfil'])->name('student.profil');
+    Route::get('/students', [StudentController::class, 'students'])->name('student.liste');
+    Route::get('/student/{idStudent}', [StudentController::class, 'studentProfil'])->name('student.profil');
     // Adding Student
-    Route::post('/students/add', [StudentController::class, 'student'])->name('student.add');
+    Route::get('/students/add', [StudentController::class, 'addStudent'])->name('student.add.page');
+    Route::post('/students/add', [StudentController::class, 'addStudent'])->name('student.add');
     // Update Student
     Route::put('/students/update/{idStudent}',[StudentController::class, 'updateStudent'])->name('student.update');
 
@@ -187,6 +188,7 @@ Route::middleware([
     // Delete Incomes Payment 
     Route::get('/incomePayment/delete/{idPayment}', [IncomesController::class,'deletePayment'])->name('incomePayment.delete');
     Route::get('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment');
+    Route::post('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment.validate');
 
     // ----- pdf de facture
     Route::get('/pdf/{idExpensePayment}',[PdfController::class, 'pdf'])->name('pdf.generate');

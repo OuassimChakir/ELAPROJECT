@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
 class StudentController extends Controller
 {
     // -------------- Students -------------- //
-    public function student(Request $request)
+    public function students(Request $request)
     {
         $groupSubjects = Group::existedGroupSubjects();
         $groupCourseTypes = Group::existedGroupCourseTypes();
@@ -26,6 +26,13 @@ class StudentController extends Controller
         // Restart from 0 EACH YEAR
         if (date('d-m') == "01-01")
             Storage::disk('local')->put('student.txt', 0);
+        $students = Student::getStudents();
+        return view('pages.students.students')->with('students', $students)
+            ->with('subjects', $groupSubjects)
+            ->with('courseTypes', $groupCourseTypes);
+    }
+
+    public function addStudent(Request $request){
         $students = Student::getStudents();
         // New Student
         if ($request->has('addStudent')) {
@@ -63,11 +70,8 @@ class StudentController extends Controller
                 'newStudent' => $newStudent,
             ]);
         }
-        return view('pages.students.students')->with('students', $students)
-            ->with('subjects', $groupSubjects)
-            ->with('courseTypes', $groupCourseTypes);
+        return view('pages.students.add_student');
     }
-
 
     public function studentProfil($idStudent)
     {

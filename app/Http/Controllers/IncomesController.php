@@ -104,8 +104,12 @@ class IncomesController extends Controller
 
     public function paimentPage(Request $request,$idPayment){
         $paiment = Payment::getStudentPaiment($idPayment);
+        if($request->has('validatePaiment')){
+            Payment::validateStudentPaiment($idPayment,$request->numeroRecu,$request->datePayment, $request->amountPaid, $request->paymentMode);
+            return Redirect::route('student.profil',['idStudent' => $paiment->idStudent])->with('successMessage','Paiement Validé avec succès');
+        }
         return view('pages.incomes.paimentPage')->with([
-            'paiment' => $paiment
+            'paiment' => $paiment,
         ]);
     }
 
