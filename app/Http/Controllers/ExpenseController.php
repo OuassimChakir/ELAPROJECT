@@ -25,7 +25,7 @@ class ExpenseController extends Controller
             if (session()->get('user')) {
                 $typeActivity = 0;
                 $activityDescription = 'un Type de Dépenses ' . $designation;
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
@@ -39,8 +39,8 @@ class ExpenseController extends Controller
         // Add to Activity Supp
         if (session()->get('user')) {
             $typeActivity = 1;
-            $description = 'un Type de Dépenses';
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $description);
+            $activityDescription = 'un Type de Dépenses';
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::route('typeDepenses')
             ->with('deleteMessage', "La suppression est faite avec succès")
@@ -56,8 +56,8 @@ class ExpenseController extends Controller
             // Add to Activity Modification
             if (session()->get('user')) {
                 $typeActivity = 2;
-                $description = 'un Type de Dépenses';
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $description);
+                $activityDescription = 'un Type de Dépenses';
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::route('typeDepenses')
                 ->with('updateMessage', "La Modification est faite avec succès")
@@ -83,8 +83,8 @@ class ExpenseController extends Controller
             $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idExpense);
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification
-                $description = 'La Facture ' . $idFacture;
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $description);
+                $activityDescription = 'La Facture ' . $idFacture;
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
@@ -99,8 +99,8 @@ class ExpenseController extends Controller
         Facture::deleteFacture($idExpensePayment);
         if (session()->get('user')) {
             $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification
-            $description = 'La Facture ' . $idExpensePayment;
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $description);
+            $activityDescription = 'La Facture ' . $idExpensePayment;
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::back()->with('deleteMessage', "La Suppression du Facture est faite avec succès");
     }
@@ -129,8 +129,8 @@ class ExpenseController extends Controller
         $factures = Facture::softDeletedFactures();
         if (session()->get('user')) {
             $typeActivity = 3; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-            $description = 'La Facture ' . $idExpensePayment;
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $description);
+            $activityDescription = 'La Facture ' . $idExpensePayment;
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::route('factures.archive')->with('restoreMessage', "La facture a été restorer avec succès")->with('factures', $factures);
     }
@@ -140,8 +140,8 @@ class ExpenseController extends Controller
         Facture::forceDeleteFacture($idExpensePayment);
         if (session()->get('user')) {
             $typeActivity = 10; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-            $description = 'La Facture ' . $idExpensePayment;
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $description);
+            $activityDescription = 'La Facture ' . $idExpensePayment;
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         return Redirect::back()->with('deleteMessage', "La facture a été supprimer Définitivement");
     }
@@ -153,8 +153,8 @@ class ExpenseController extends Controller
                 Facture::restoreFacture($idExpensePayment);
                 if (session()->get('user')) {
                     $typeActivity = 3; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-                    $description = 'La Facture ' . $idExpensePayment;
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $description);
+                    $activityDescription = 'La Facture ' . $idExpensePayment;
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
             }
             return Redirect::back()->with('restoreMessage', "Les factures séléctionés ont été restorer avec succès");
@@ -164,8 +164,8 @@ class ExpenseController extends Controller
                 Facture::forceDeleteFacture($idExpensePayment);
                 if (session()->get('user')) {
                     $typeActivity = 10; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-                    $description = 'La Facture ' . $idExpensePayment;
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $description);
+                    $activityDescription = 'La Facture ' . $idExpensePayment;
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
             }
             return Redirect::back()->with('deleteMessage', "Les factures séléctionés ont été supprimer Définitivement");

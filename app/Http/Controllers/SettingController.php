@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Incomes\Income;
-use App\Models\Incomes\Payment;
-use App\Models\responsible\Student;
 use Illuminate\Support\Facades\Redirect;
 
 class SettingController extends Controller

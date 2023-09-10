@@ -3,7 +3,6 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StaffController;
-use App\Http\Controllers\TypestaffController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomesController;
@@ -167,7 +166,7 @@ Route::middleware([
     // Add New Facture
     Route::post('/factureDepenses/add', [ExpenseController::class,'allFacture'])->name('factureDepenses.add');
     // Delete Facture
-    Route::get('/factureDepenses/delete/{idExpensePayment}', [ExpenseController::class,'deleteFacture'])->name('factureDepenses.delete');
+    Route::get('/factureDepenses/delete/{idExpense}', [ExpenseController::class,'deleteFacture'])->name('factureDepenses.delete');
 
 
     // --------------- typeIncomes ------------------ //

@@ -61,13 +61,10 @@ class SubjectController extends Controller
 
     // Subjects Deletion or Update
     public function updateSubject(Request $request, $idSubject){
-
         // List of Courses
         $courses = CourseType::selectCourses();
-
         // List of Subjects
         $subjects = Subjects::getSubjects();
-
         // Update of Subject (ACTION)
         if ($request->has('update')) {
             Subjects::updateSubject($request->idSubject, $request->libelle, $request->courseType);
