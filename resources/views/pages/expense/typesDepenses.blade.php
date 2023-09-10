@@ -37,7 +37,7 @@
                                 <label for="parent-category" class="form-label">Description</label> 
                                     <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="1"></textarea>
                             </div>
-                        </div>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="code">code</label>
                                 <div class="input-group mb-3">

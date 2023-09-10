@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('title')
     Catégories des Niveaux
-@endsection
+@endsection 
 @section('content')
     <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
         <h1>Catégories des Niveaux</h1>
@@ -57,6 +57,28 @@
                                     <div class="col-12">
                                         <input id="category" name="category" class="form-control" type="text"
                                             placeholder="Communication, Scolaire..." required>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="parent-category" class="form-label">Description</label> 
+                                            <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="2"></textarea>
+                                    </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="form-label">Matières</label>
+                                        <select name="idSubject" id="id-Subject" class="form-select" required>
+                                            <option disabled selected>-- Choisir une Matière</option>
+                                            @foreach ($courses as $courseType)  
+                                                <optgroup label="{{$courseType->course}}">
+                                                    @foreach ($subjects as $subject)
+                                                        @if ($courseType->idCourseType == $subject->idCourseType)
+                                                            <option value="{{ $subject->idSubject }}">
+                                                                {{ $subject->libelle  }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </optgroup>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Courses\CourseType;
+use App\Models\Courses\Subjects;
 use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
 use Illuminate\Http\Request;
@@ -60,6 +61,7 @@ class GradesController extends Controller
     // ------------- Grade Category ----------------- //
     public function gradesCategory(Request $request){
         $courses =CourseType::selectCourses();
+        $subjects = Subjects::getSubjects();
         $gCategories = GradesCategory::getGradeCategories();
         // Add new Grade
         if ($request->has('addGrade')) {
@@ -68,7 +70,8 @@ class GradesController extends Controller
         }
         return view('pages.grades.gradesCategory')
             ->with('courses', $courses)
-            ->with('gCategories', $gCategories);
+            ->with('gCategories', $gCategories)
+            ->with('subjects', $subjects);
     }
     // Grade Category Deletion or Update
     public function updateGradeCategory(Request $request, $idGradeCategory){
