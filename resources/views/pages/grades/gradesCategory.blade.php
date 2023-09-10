@@ -52,28 +52,35 @@
 
                             <form action="{{ route('gradesCategory.add') }}" method="post">
                                 @csrf
-                                <div class="form-group row">
+                                <div class="row">
+                                    <div class="col-lg-6">
                                     <label for="text" class="col-12 col-form-label">Categorie</label>
                                     <div class="col-12">
                                         <input id="category" name="category" class="form-control" type="text"
                                             placeholder="Communication, Scolaire..." required>
                                     </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                     <div class="form-group ">
                                         <label for="parent-category" class="form-label">Description</label>
                                         <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="2"></textarea>
                                     </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                    <div class="form-group ">
+                                        <label for="form-label">Matières</label>
+                                        <select name="idCourseType" id="id-Subject" class="form-select" required>
+                                            <option disabled selected>-- Choisir une Matière</option>
+                                            @foreach ($courses as $courseType)
+                                                <option value="{{ $courseType->idCourseType }}">
+                                                    {{ $courseType->course }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    </div>
                                 </div>
-                                <div class="form-group ">
-                                    <label for="form-label">Matières</label>
-                                    <select name="idCourseType" id="id-Subject" class="form-select" required>
-                                        <option disabled selected>-- Choisir une Matière</option>
-                                        @foreach ($courses as $courseType)
-                                            <option value="{{ $courseType->idCourseType }}">
-                                                {{ $courseType->course }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+
                     </div>
                     <div class="row">
                         <div class="col-12">
