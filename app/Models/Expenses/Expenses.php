@@ -11,41 +11,32 @@ class Expenses extends Model
         protected $table = "expenses";
         protected $primaryKey = "idExpense";
         public $timestamps = false;
-        protected $fillable = ['designation', 'code', 'description'];
+        protected $fillable = ['description'];
 
 
         //------------- select Expenses----------//
-        public static function selectExpenses()
-        {
+        public static function selectExpenses(){
                 return Expenses::all();
         }
 
-        public static function selectExpense($idExpense)
-        {
+        public static function selectExpense($idExpense){
                 return Expenses::find($idExpense);
         }
         // ------ Creation Expenses ----------- //
-        public static function createExpense($designation, $code, $description)
-        {
+        public static function createExpense($description){
                 Expenses::create([
-                        'designation' => $designation,
-                        'code' => $code,
                         'description' => $description
                 ]);
         }
         //------ Update Expense Type-----//
-        public static function updateExpense($idExpense, $designation, $code, $description)
-        {
+        public static function updateExpense($idExpense, $description){
                 $expenses = Expenses::find($idExpense);
-                $expenses->designation = $designation;
-                $expenses->code = $code;
                 $expenses->description = $description;
                 $expenses->save();
         }
 
         //------ Delete Expense Type-----//
-        public static function deleteExpense($idExpense)
-        {
+        public static function deleteExpense($idExpense){
                 Expenses::find($idExpense)->delete();
         }
 }

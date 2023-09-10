@@ -17,14 +17,12 @@ class ExpenseController extends Controller
         // List of Expenses
         $expenses = Expenses::selectExpenses();
         if ($request->has('ajouterexpense')) {
-            $designation = $request->designation;
-            $code = $request->code;
             $description = $request->description;
-            Expenses::createExpense($designation, $code, $description);
+            Expenses::createExpense($description);
             // Add to Activity Ajout
             if (session()->get('user')) {
                 $typeActivity = 0;
-                $activityDescription = 'un Type de Dépenses ' . $designation;
+                $activityDescription = 'un Type de Dépenses ' . $description;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
@@ -32,7 +30,7 @@ class ExpenseController extends Controller
         return view('pages.expense.typesDepenses')->with('expenses', $expenses);
     }
     // ---------------delete Expense------//
-    public function deleteExpense(Request $request, $idExpense)
+    public function deleteExpense($idExpense)
     {
         Expenses::deleteExpense($idExpense);
         $expenses = Expenses::selectExpenses();
@@ -52,7 +50,7 @@ class ExpenseController extends Controller
         $expenses = Expenses::selectExpenses();
         $updatedExpense = Expenses::selectExpense($idExpense);
         if ($request->has('updateExpense')) {
-            Expenses::updateExpense($idExpense, $request->designation, $request->code, $request->description);
+            Expenses::updateExpense($idExpense,$request->description);
             // Add to Activity Modification
             if (session()->get('user')) {
                 $typeActivity = 2;
@@ -79,8 +77,9 @@ class ExpenseController extends Controller
             $amount = $request->amount;
             $description = $request->description;
             $idStaff = $request->idStaff;
+            $idProfesseur = $request->idProfesseur;
             $idExpense = $request->idExpense;
-            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idExpense);
+            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense);
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification
                 $activityDescription = 'La Facture ' . $idFacture;
