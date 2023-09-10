@@ -14,14 +14,6 @@ class GradeCategorySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('gradescategories')->insert([
-            'category' => 'Scolaire'
-        ]);
-        DB::table('gradescategories')->insert([
-            'category' => 'Communication'
-        ]);
-        DB::table('gradescategories')->insert([
-            'category' => 'Formation'
-        ]);
+
     }
 }
