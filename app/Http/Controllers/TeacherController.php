@@ -18,8 +18,11 @@ class TeacherController extends Controller
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
         $teachers = Professeurs::getProfesseurs();
-        if($request->has('addTeacher')){
 
+        // Restart from 0 EACH YEAR
+        if (date('d-m') == "01-01")
+        Storage::disk('local')->put('professeurs.txt', 0);
+        if($request->has('addTeacher')){
             // =========== Count nb Student Stock it in professeurs.txt file ============== //
             $professeursCounter = 1;
             if (!Storage::exists('professeurs.txt'))
@@ -30,7 +33,7 @@ class TeacherController extends Controller
             $idProfesseurs=Professeurs::addProfesseur($request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idSubject);
             $password = User::createStaffAccount($idProfesseurs,ucfirst($request->prenom).' '.Str::upper($request->nom),"BMA" . $professeursCounter);
             $newStudent = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'password' => $password]);
-            
+
             if(session()->get('user')){
                 $typeActivity = 0; 
                 $activityDescription = 'Le profisseur'." ".$request->prenom .$request->nom .($request->cine); 

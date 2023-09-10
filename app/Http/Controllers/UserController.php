@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Laravel\Jetstream\Rules\Role;
 
 class UserController extends Controller
 {
@@ -14,24 +15,18 @@ class UserController extends Controller
     / User Page 
     / --------------------------*/
     public function users(Request $request){
-        // Declarations
-        $RolesObject = new Roles();
-        $UsersObject = new User();
-
-        $roles = $RolesObject -> getRoles();
-        $users = $UsersObject ->getUsers();
+        $roles =Roles::getRoles();
+        $users =User::getUsers();
         if($request->has('addUser')){
-            $UsersObject->addUser($request->name,$request->email,$request->password,$request->role);
+            User::addUser($request->name,$request->username,$request->password,$request->idRole);
             return Redirect::back()->with('SuccessMessage','Le compte a été créé avec Succès');
         }
         return view('pages.users.users')
                         ->with('roles',$roles)
                         ->with('users',$users);
     }
-    public function login(Request $request){
-        // Declarations
-        $Roles = new Roles();
-
+    public function login(){
+        User::getUsers();
         return view('pages.users.login');
     }
 }
