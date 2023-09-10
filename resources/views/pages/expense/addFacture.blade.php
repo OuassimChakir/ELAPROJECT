@@ -16,8 +16,8 @@
                                     <select name="idExpense" id="typeExpensesSelect" class="form-select" required>
                                         <option disabled selected>-- Choisir type de dépenses --</option>
                                             @foreach ($expenses as $expense)
-                                                <option value="{{ $expense->idExpense.'|'.$expense->code }}">
-                                                    {{ $expense->designation  }}
+                                                <option value="{{ $expense->idExpense}}">
+                                                    {{ $expense->description}}
                                                 </option>
                                             @endforeach
                                     </select>
@@ -41,8 +41,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
-                                    <label for="form-label">Montant</label>
-                                    <input type="number" name="amount" class="form-control" id="amount"> DH
+                                    <label for="form-label">Montant en DH</label>
+                                    <input type="number" name="amount" class="form-control" id="amount"> 
                                 </div>
                             </div>
                         </div>

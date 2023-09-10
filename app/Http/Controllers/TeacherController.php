@@ -23,16 +23,16 @@ class TeacherController extends Controller
         if (date('d-m') == "01-01")
         Storage::disk('local')->put('professeurs.txt', 0);
         if($request->has('addTeacher')){
-            // =========== Count nb Student Stock it in professeurs.txt file ============== //
+            // =========== Count nb Professeurs Stock it in professeurs.txt file ============== //
             $professeursCounter = 1;
             if (!Storage::exists('professeurs.txt'))
                 Storage::disk('local')->put('professeurs.txt', 0);
             $professeursCounter += Storage::get('professeurs.txt');
-            Storage::disk('local')->put('student.txt', $professeursCounter);
+            Storage::disk('local')->put('professeurs.txt', $professeursCounter);
 
-            $idProfesseurs=Professeurs::addProfesseur($request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idSubject);
-            $password = User::createStaffAccount($idProfesseurs,ucfirst($request->prenom).' '.Str::upper($request->nom),"BMA" . $professeursCounter);
-            $newStudent = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'password' => $password]);
+            $idProfesseur=Professeurs::addProfesseur($request->cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idSubject);
+            $password = User::createProfAccount($idProfesseur->idProfesseur,ucfirst($request->prenom).' '.Str::upper($request->nom),"BMA-P" . $professeursCounter);
+            $newProfesseur = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'password' => $password]);
 
             if(session()->get('user')){
                 $typeActivity = 0; 
@@ -42,7 +42,7 @@ class TeacherController extends Controller
             return Redirect::back()
                             ->with('successMessage',"L'ajout est fait avec succès")
                             ->with('teachers',$teachers)
-                            ->with('newStudent',$newStudent);
+                            ->with('newProfesseur',$newProfesseur);
         }
         return view('pages.teachers.teachers')
                 ->with('subjects',$subjects)

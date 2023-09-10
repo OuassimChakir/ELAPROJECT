@@ -7,8 +7,11 @@ use App\Models\Courses\CourseType;
 use App\Models\Responsible\Staff;
 use App\Models\Responsible\Stafftype;
 use App\Models\Courses\Subjects;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class StaffController extends Controller
 {    // Staff Controller
@@ -17,10 +20,26 @@ class StaffController extends Controller
         $courseTypes =CourseType::selectCourses();
         $staffTypes =Stafftype::getStaffTypes();
         $staffs =staff::getStaffs();
+
+        // Restart from 0 EACH YEAR
+        if (date('d-m') == "01-01")
+        Storage::disk('local')->put('staff.txt', 0);
         if($request->has('addStaff')){
+            // =========== Count nb staff Stock it in staff.txt file ============== //
+            $staffCounter = 1;
+            if (!Storage::exists('staff.txt'))
+            Storage::disk('local')->put('staff.txt', 0);
+            $staffCounter += Storage::get('staff.txt');
+            Storage::disk('local')->put('staff.txt', $staffCounter);
+            // check cine if vide
             if(isset($request->cine)) $cine = $request->cine;
             else $cine = NULL;
-            staff::addStaff($cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idStaffType);
+
+            $idStaff=staff::addStaff($cine,$request->prenom,$request->nom,$request->sexe,$request->numTel,$request->idStaffType);
+           //DD($idStaff->idStaff);
+            $password = User::createStaffAccount($idStaff->idStaff,ucfirst($request->prenom).' '.Str::upper($request->nom),"BMA-S" . $staffCounter);
+            $newStaff = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'password' => $password]);
+
             if(session()->get('user')){
                 $typeActivity = 0; 
                 $activityDescription = 'Le étudiants'." ".$request->prenom." ".$request->nom;
@@ -28,7 +47,8 @@ class StaffController extends Controller
             }
             return Redirect::back()
                             ->with('successMessage',"L'ajout est fait avec succès")
-                            ->with('staffs',$staffs);
+                            ->with('staffs',$staffs)
+                            ->with('newStaff',$newStaff);
         }
         return view('pages.staff.staff')
                 ->with('subjects',$subjects)

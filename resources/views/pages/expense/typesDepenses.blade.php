@@ -32,26 +32,7 @@
                             @csrf
                             @method('post')
                             <div class="row">
-                            <div class="col-lg-6">
-                            <div class="form-group ">
-                                <label for="text" class="form-label">Designation</label> 
-                                <div class="col">
-                                    <input id="libelle" name="designation" class="form-control" type="text" required>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                            <div class="form-group ">
-                                <label for="text" class="form-label">Code</label> 
-                                <div class="col">
-                                    <input id="short" name="code" class="form-control" type="text">
-                                    <small class="text-muted">Professeurs: <b>000</b> -- Staff: <b>111</b> </small>
-                                </div>
-                               
-                            </div>
-                            </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-">
                             <div class="form-group ">
                                 <label for="parent-category" class="form-label">Description</label> 
                                     <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -76,7 +57,7 @@
                         <table id="responsive-data-table"  class="table">
                             <thead>
                                 <tr>
-                                    <th>Designation</th>
+                                    <th>#</th>
                                     <th>Description</th>
                                     <th>Action</th>
                                 </tr>
@@ -87,7 +68,7 @@
 
                                     @foreach ($expenses as $expense)
                                         <tr>
-                                            <td>{{$expense->designation}} </td>
+                                            <td>{{$expense->idExpense}}</td>
                                             <td>{{$expense->description}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
