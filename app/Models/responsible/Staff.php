@@ -56,6 +56,11 @@ class Staff extends Model
     public static function deleteStaff($idStaff){
         Staff::find($idStaff)->delete();
     }
+    public static function getStaffsQuery(){
+        return Staff::select('*')
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
+            ->withQueryString();
+    }
     // --------------- Staff ARCHIVE ------------------ //
 
     // Select deleted Staff

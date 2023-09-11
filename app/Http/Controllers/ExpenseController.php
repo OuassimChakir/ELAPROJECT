@@ -6,6 +6,7 @@ use App\Models\Activite;
 use Illuminate\Http\Request;
 use App\Models\Expenses\Expenses;
 use App\Models\Expenses\Facture;
+use App\Models\responsible\Professeurs;
 use App\Models\Responsible\Staff;
 use Illuminate\Support\Facades\Redirect;
 
@@ -72,6 +73,8 @@ class ExpenseController extends Controller
     {
         // List of Expenses
         $expenses = Expenses::selectExpenses();
+        $Professeurs= Professeurs::getProfesseurs();
+        $staffs= Staff::getStaffs();
         // list of facture
         $factureDepenses = Facture::allFacture();
         if ($request->has('addFacture')) {
@@ -91,7 +94,9 @@ class ExpenseController extends Controller
         }
         return view('pages.expense.factures')
             ->with('factureDepenses', $factureDepenses)
-            ->with('expenses', $expenses);
+            ->with('expenses', $expenses)
+            ->with('Professeurs',$Professeurs)
+            ->with('staffs',$staffs);
     }
 
     // ------------ Suppression du Facture --------- //

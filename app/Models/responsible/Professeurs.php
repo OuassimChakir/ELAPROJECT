@@ -57,8 +57,6 @@ class Professeurs extends Model
         $staff->idSubject = $idSubject;
         $staff->save();
     }
-
-
     // --------------- TEACHER ARCHIVE ------------------ //
     // Select deleted Professeur
     public static function softDeletedTeachers(){
