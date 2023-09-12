@@ -82,9 +82,9 @@ class ExpenseController extends Controller
             $amount = $request->amount;
             $description = $request->description;
             $idStaff = $request->idStaff;
-            $idProfesseur = $request->idProfesseur;
-            $idExpense = $request->idExpense;
-            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense);
+            $idProfesseur = $request->idProfesseur;  
+            $idExpense = explode('|',$request->idExpense);
+            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense[0],session()->get('user')->id);
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification
                 $activityDescription = 'La Facture ' . $idFacture;
@@ -111,8 +111,7 @@ class ExpenseController extends Controller
         return Redirect::back()->with('deleteMessage', "La Suppression du Facture est faite avec succès");
     }
 
-    public function getStaffData($idExpense)
-    {
+    public function getStaffData($idExpense){
         $expense = Expenses::selectExpense($idExpense);
         $data = '';
         if ($expense->code == '1')
@@ -122,15 +121,14 @@ class ExpenseController extends Controller
         $selectData['data'] = $data;
         return response()->json($selectData);
     }
+
     // ----------- ARCHIVE ------------- //
-    public function archive()
-    {
+    public function archive(){
         $factures = Facture::softDeletedFactures();
         return view('pages.expense.FactureArchive')->with('factureDepenses', $factures);
     }
 
-    public function restoreArchivedFacture($idExpensePayment)
-    {
+    public function restoreArchivedFacture($idExpensePayment){
         Facture::restoreFacture($idExpensePayment);
         $factures = Facture::softDeletedFactures();
         if (session()->get('user')) {
@@ -138,7 +136,7 @@ class ExpenseController extends Controller
             $activityDescription = 'La Facture ' . $idExpensePayment;
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
-        return Redirect::route('factures.archive')->with('restoreMessage', "La facture a été restorer avec succès")->with('factures', $factures);
+        return Redirect::route('factureDepenses.archive')->with('restoreMessage', "La facture a été restorer avec succès")->with('factures', $factures);
     }
 
     public function deleteArchivedFacture($idExpensePayment)

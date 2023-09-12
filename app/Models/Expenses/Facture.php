@@ -34,7 +34,7 @@ class Facture extends Model
     }
 
     //------------- create facture ----------//         
-    public static function createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense){
+    public static function createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense,$id){
         $facture = Facture::create([
             'datePayment' => $datePayment,
             'amount' => $amount,
@@ -42,6 +42,7 @@ class Facture extends Model
             'idStaff' => $idStaff,
             'idProfesseur' => $idProfesseur,
             'idExpense' => $idExpense,
+            'id' => $id,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
