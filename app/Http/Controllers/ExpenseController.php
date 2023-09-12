@@ -115,9 +115,9 @@ class ExpenseController extends Controller
     {
         $expense = Expenses::selectExpense($idExpense);
         $data = '';
-        if ($expense->code == '000')
-            $data = Staff::getProfesseurs();
-        elseif ($expense->code == '111')
+        if ($expense->code == '1')
+            $data = Professeurs::getProfesseurs();
+        elseif ($expense->code == '0')
             $data = Staff::getStaffs();
         $selectData['data'] = $data;
         return response()->json($selectData);

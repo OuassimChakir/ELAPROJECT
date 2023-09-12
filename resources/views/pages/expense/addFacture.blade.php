@@ -35,8 +35,6 @@
                                     @endforeach
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
                                 <div class="ProfSelect form-group mb-4">
                                     <label for="form-label" id="ProfLabel">Professeurs</label>
                                     <select name="idProfesseur" id="ProfSelect" class="form-select" required>
