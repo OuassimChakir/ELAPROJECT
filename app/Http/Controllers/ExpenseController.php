@@ -84,7 +84,8 @@ class ExpenseController extends Controller
             $idStaff = $request->idStaff;
             $idProfesseur = $request->idProfesseur;  
             $idExpense = explode('|',$request->idExpense);
-            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense[0],session()->get('user')->id);
+            $id=session()->get('user')->id;
+            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense[0],$id);
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification
                 $activityDescription = 'La Facture ' . $idFacture;

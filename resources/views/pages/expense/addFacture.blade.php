@@ -40,7 +40,7 @@
                                     <select name="idProfesseur" id="ProfSelect" class="form-select" required>
                                         <option disabled selected>-- Choisir un Professeurs--</option>
                                         @foreach ($Professeurs as $Professeur)
-                                        <option value="{{ $Professeur->idProfesseur}}">
+                                        <option value="{{$Professeur->idProfesseur}}">
                                             {{ $Professeur->nom.' '. $Professeur->prenom }}
                                         </option>
                                     @endforeach
@@ -94,14 +94,18 @@
             var code = array[1];
             var idExpense = array[0];
             if (code == '0' || code == '1') {
-                $('#staffSelect').prop('disabled',false);
-                $('#ProfSelect').prop('disabled',false);
                 if(code === '0'){
                     $('.staffSelect').show();
-                    $('.ProfSelect').hide();    
+                    $('.ProfSelect').hide();
+                    $('#staffSelect').prop('disabled',false);
+                    $('#ProfSelect').prop('disabled',true);
+
                 }else{
                     $('.ProfSelect').show();
-                    $('.staffSelect').hide();}         
+                    $('.staffSelect').hide();
+                    $('#ProfSelect').prop('disabled',false);
+                    $('#staffSelect').prop('disabled',true);
+                }         
                        
             } else{
                 $('.staffSelect').hide();
