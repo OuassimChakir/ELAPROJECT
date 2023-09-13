@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activite;
-use App\Models\Classrooms;
 use App\Models\Attendance;
 use App\Models\Courses\CourseType;
 use App\Models\Courses\Subjects;
 use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
 use App\Models\Group;
+use App\Models\GroupElements;
+use App\Models\GroupGrades;
+use App\Models\Incomes\Income;
+use App\Models\Incomes\Payment;
 use App\Models\responsible\Professeurs;
-use App\Models\Responsible\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -21,22 +23,24 @@ class GroupController extends Controller
     // Groups List
     public function groups(Request $request)
     {
+
+
         $gradesCategories = GradesCategory::getGradeCategories();
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
         $teachers = Professeurs::getProfesseurs();
         $groups = Group::getGroups();
-        foreach ($groups as $group) {
-            $group->nbElement = Classrooms::classroomElements($group->idGroup);
-        }
         if ($request->has('CreateGroup')) {
-            $numGroups = Group::getNumGroups($request->idSubject, $request->idGrade) + 1;
+            $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur) + 1;
             $matiere = Subjects::getSubject($request->idSubject);
-            $designation = "G" . $numGroups . "-" . $matiere->short;
+            $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
+            $designation = $gradeCategory->category.'-'.$matiere->short.'-G'.$numGroups;
+            $newGroup = Group::createGroup($designation, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
 
-            if (!is_null($request->description))
-                $designation = "G" . $numGroups . "-" . $matiere->short . "-" . $request->description;
-            Group::createGroup($designation, $request->capacity, $request->idSubject, $request->idGrade, $request->idStaff);
+            foreach ($request->grades as $idGrade)
+                GroupGrades::newGroupGrade($idGrade,$newGroup);
+            
+
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                 $activityDescription = "Le Groupe " . $designation;
@@ -55,24 +59,24 @@ class GroupController extends Controller
 
     public function groupPage($idGroup)
     {
-        $students = Classrooms::groupClassroom($idGroup);
+        $students = GroupElements::groupElements($idGroup);
         $absen = Attendance::selectAbsence();
         // Queries
         $gradesCategories = GradesCategory::getGradeCategories();
 
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
-        $teachers = Staff::getProfesseurs();
+        $teachers = Professeurs::getProfesseurs();
         $groupInfo = Group::getGroup($idGroup);
-
+        $groupGrades = GroupGrades::getGroupGrades($idGroup);
         // Logic
-        $groupInfo->nbElements = Classrooms::classroomElements($idGroup);
+        $groupInfo->nbElements = GroupElements::countGroupElements($idGroup);
         $description = explode('-', $groupInfo->designation);
         $groupInfo->description = $description[2];
-        $groupInfo->idGradeCategory = Grades::getGrade($groupInfo->idGrade)->idGradeCategory;
         $grades = Grades::selectGradesByCategory($groupInfo->idGradeCategory);
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
+            ->with('groupGrades',$groupGrades)
             ->with('gradesCategories', $gradesCategories)
             ->with('professeurs', $teachers)
             ->with('subjects', $subjects)
@@ -98,7 +102,7 @@ class GroupController extends Controller
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         Attendance::deleteGroupAbsence($idGroup);
-        Classrooms::deleteGroupClassroom($idGroup);
+        GroupElements::deleteGroupClassroom($idGroup);
         Group::deleteGroup($idGroup);
 
         return Redirect::back()->with('deleteMessage', "La Suppression du Groupe est faite avec succès");
@@ -124,15 +128,49 @@ class GroupController extends Controller
         }
     }
 
-    public function cancelAssignment($id)
+
+    /* --------------------------------------
+    / Assignements (Ajout au Groupe)
+    / ---------------------------------------*/
+    
+    public function assignElement($idGroup, $idStudent)
+    {
+        GroupElements::addElement($idGroup, $idStudent);
+        $group = Group::getGroup($idGroup);
+        $debut = (int)explode('-',$group->debutFormation)[1];
+        $year = (int)explode('-',$group->debutFormation)[0];
+        if(date('Y-m-d') > $group->debutFormation){
+            $debut = (int)date('m');
+            $year = (int)date('Y');
+        }
+        $fin = (int)explode('-',$group->finFormation)[1];
+        $breakpoint = $fin + 13;
+        
+        for ($i = $debut; $i <= $breakpoint; $i++){
+            $income = Income::getIncomeByDate($i);
+            Payment::initialPayment($group->amount,$income->description.' - '.$year,$idStudent,$income->idIncome);
+            if($i == 12){
+                $i = 0;
+                $breakpoint = $fin;
+                $year++;
+            }
+        }
+
+        // Update Group Capacity
+        Group::updateElements($idGroup);
+
+        return response()->json('true');
+    }
+
+    public function cancelAssignment($idElement)
     {
         if (session()->get('user')) {
-            $assignment = Classrooms::getAssignment($id);
+            $assignment = GroupElements::getAssignment($idElement);
             $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = "L'Etudiant " . $assignment->nom_fr . " " . $assignment->prenom_fr . " (" . $assignment->matricule . ') du Group ' . $assignment->designation . " (ID = " . $assignment->idGroup . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
-        Classrooms::cancelAssignment($id);
+        GroupElements::cancelAssignment($idElement);
         return Redirect::back()->with('deleteMessage', "L'étudiant a été retiré du groupe avec succès");
     }
 
@@ -140,7 +178,7 @@ class GroupController extends Controller
     {
         foreach ($request->students as $student) {
         }
-        Classrooms::cancelAssignment($student);
+        GroupElements::cancelAssignment($student);
         return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
     }
 

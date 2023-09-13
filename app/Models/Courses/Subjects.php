@@ -19,7 +19,10 @@ class Subjects extends Model
        }
 
        public static function getSubject($idSubject){
-        return Subjects::find($idSubject);
+        return Subjects::select('*')
+            ->join('coursetype','subjects.idCourseType','=','coursetype.idCourseType')
+            ->where('idSubject',$idSubject)
+            ->first();
        }
 
        public static function getSubjects(){

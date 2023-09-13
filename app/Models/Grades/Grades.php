@@ -37,6 +37,8 @@ class Grades extends Model
             ->join('gradescategories', 'grades.idGradeCategory', '=', 'gradescategories.idGradeCategory')
             ->paginate(20)->withQueryString();
     }
+
+
     // INSERT DATA (New Subject)
     public static function addGrade($grade, $idGradeCategory){
         Grades::create([

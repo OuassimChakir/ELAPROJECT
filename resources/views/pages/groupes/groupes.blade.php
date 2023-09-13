@@ -1,9 +1,8 @@
 @extends('layouts.layout')
 @section('title')
-    liste des Groupes
+    Liste des Groupes
 @endsection
 @section('content')
-
   <!--errour du validation -->
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -45,9 +44,9 @@
                         </th>
                     @endif
                     <th>Designation</th>
-                    <th>Niveau</th>
                     <th>Matière</th>
-                    <th>Encadrant</th>
+                    <th>Professeur</th>
+                    <th>Prix/Etudiant</th>
                     <th>Date du Creation</th>
                     <th>Action</th>
                 </tr>
@@ -57,21 +56,21 @@
                     @foreach ($groupes as $groupe)
                     <tr>
                         <td>
-                            <input type="checkbox" name="groupes[]" value="{{$groupe->idStaff}}" class="form-check-input archivedStudents">
+                            <input type="checkbox" name="groupes[]" value="{{$groupe->idGroup}}" class="form-check-input archivedStudents">
                         </td>
                         <td>
                             <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">{{$groupe->designation}}</a>
-                            @if ($groupe->nbElement == $groupe->capacity)
-                                <div class="badge badge-pill badge-dark">{{$groupe->nbElement}}/{{$groupe->capacity}}</div><br>
+                            @if ($groupe->nbElements == $groupe->capacity)
+                                <div class="badge badge-pill badge-warning">{{$groupe->nbElements}}/{{$groupe->capacity}}</div><br>
                             @else
-                                <div class="badge badge-pill badge-info">{{$groupe->nbElement}}/{{$groupe->capacity}}</div><br>
+                                <div class="badge badge-pill badge-success">{{$groupe->nbElements}}/{{$groupe->capacity}}</div><br>
                             @endif
                             <small>{{$groupe->course}}</small>
                         </td>
-                        <td><div class="badge badge-pill badge-purple">{{$groupe->grade}}</div></td>
                         <td><div class="badge bg-dark">{{$groupe->libelle}}</div></td>
-                        <td><a href="{{route('teachers.profil',['idProfesseur' => $groupe->idStaff,'nom'=> $groupe->nom])}}">{{$groupe->prenom.' '.$groupe->nom}}</a></td>
-                        <td>{{$groupe->CREATED_AT}}</td>
+                        <td><a href="{{route('teachers.profil',['idProfesseur' => $groupe->idProfesseur])}}">{{$groupe->prenom.' '.$groupe->nom}}</a></td>
+                        <td><div class="badge bg-primary">{{$groupe->amount}} DH</div></td>
+                        <td>{{$groupe->created_at}}</td>
                         <td>                           
                                 <div class="btn-group">
                                     <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">

@@ -16,6 +16,7 @@ class CreateSubjectsTable extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->bigIncrements('idSubject');
             $table->string('libelle',50);
+            $table->string('short',10);
             $table->bigInteger('idCourseType',false,true);
         });
         Schema::table('subjects', function (Blueprint $table) {

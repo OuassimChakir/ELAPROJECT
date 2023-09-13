@@ -98,7 +98,7 @@ Route::middleware([
     Route::get('/teacher/delete/{idProfesseur}',[TeacherController::class, 'deleteTeacher'])->name('teachers.delete');
     Route::delete('/teacher/delete',[TeacherController::class, 'deleteMultipleTeachers'])->name('teachers.delete.multiple');
     // Staff Profil
-    Route::get('/teacher/{idProfesseur}-{nom}', [TeacherController::class, 'teacherProfil'])->name('teachers.profil');
+    Route::get('/teacher/{idProfesseur}', [TeacherController::class, 'teacherProfil'])->name('teachers.profil');
 
 
     // -------------- STUDENTS --------------------- //
@@ -139,17 +139,17 @@ Route::middleware([
 
     // ------------- Classroom ---------- // 
     // Add Student to Group
-    Route::get('/groupes/{idGroup}/classroom/{idStudent}',[TeacherController::class, 'assignClassroom']);
+    Route::get('/groupes/{idGroup}/classroom/{idStudent}',[GroupController::class, 'assignElement']);
 
     // Remove From Classroom
-    Route::get('/classrooms/remove/{id}', [GroupController::class,'cancelAssignment'])->name('classroom.cancelAssignment');
+    Route::get('/classrooms/remove/{idElement}', [GroupController::class,'cancelAssignment'])->name('classroom.cancelAssignment');
 
     // multiple remove from classroom
     Route::delete('/classroom/multipleRemove', [GroupController::class,'multipleCancelAssignment'])->name('classroom.multipleCancel');
 
     // JSON DATA
     Route::get('/students/get/{idSubject}',[StudentController::class, 'getGroupsByGrade']);
-    Route::get('/students/getGroups/{idSubject}-{idGrade}-{idStudent}',[StudentController::class, 'getGroupsByGradeAndSubject']);
+    Route::get('/students/getGroups/{idSubject}/{idStudent}',[StudentController::class, 'getGroupsBySubject']);
 
 
     // --------------- Expenses ------------------ //

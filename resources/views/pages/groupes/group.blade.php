@@ -73,7 +73,7 @@
 
                                             <div class="media-body align-self-center">
                                                 <h4 class="text-primary mb-2">
-                                                    <a href="{{route('teachers.profil',['idProfesseur'=>$group->idStaff, 'nom'=>$group->nom])}}">
+                                                    <a href="{{route('teachers.profil',['idProfesseur'=>$group->idProfesseur])}}">
                                                         {{$group->prenom.' '.$group->nom}}
                                                     </a>
                                                 </h4>
@@ -84,7 +84,7 @@
 
                                     <div class="col-xl-4">
                                         <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle mr-3 bg-info">
+                                            <div class="icon rounded-circle mr-3 bg-success">
                                                 <i class="bi bi-people-fill text-white"></i>
                                             </div>
 
@@ -97,7 +97,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-xl-4">
+                                    <div class="col-xl-6">
                                         <div class="media widget-media p-3 bg-white border">
                                             <div class="icon rounded-circle mr-3 text-white bg-dark">
                                                 <i class="bi bi-book-fill text-white"></i>
@@ -110,29 +110,34 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-xl-4">
-                                        <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle bg-purple mr-3">
-                                                <i class="bi bi-list-ol text-white"></i>
-                                            </div>
 
-                                            <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">{{$group->grade}}</h4>
-                                                <p>Niveau</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-4">
+                                    <div class="col-xl-6">
                                         <div class="media widget-media p-3 bg-white border">
                                             <div class="icon rounded-circle mr-3 bg-success">
                                                 <i class="bi bi-calendar-date text-white"></i>
                                             </div>
 
                                             <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">{{$group->CREATED_AT}}</h4>
+                                                <h4 class="text-primary mb-2">{{$group->created_at}}</h4>
                                                 <p>Année de Creation</p>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-12">
+                                    <div class="media widget-media p-3 bg-white border">
+                                        <div class="icon rounded-circle bg-purple mr-3">
+                                            <i class="bi bi-list-ol text-white"></i>
+                                        </div>
+
+                                        <div class="media-body align-self-center">
+                                            <h4 class="text-primary mb-2">Niveaux</h4>
+                                            <p>
+                                                @foreach ($groupGrades as $grade)
+                                                    <span class="badge badge-primary">{{$grade->grade}}</span>
+                                                @endforeach
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +174,7 @@
                                                                     {{$student->matricule}}
                                                                 </td>
                                                                 <td>
-                                                                    <a href="{{route('student.profil',['matricule'=>$student->matricule])}}">
+                                                                    <a href="{{route('student.profil',['idStudent'=>$student->idStudent])}}">
                                                                         {{$student->prenom_fr}}
                                                                         {{$student->nom_fr}}
                                                                     </a>
@@ -180,10 +185,10 @@
                                                                     @endif
                                                                 </td>
                                                                 <td>{{$student->numTel}}</td>
-                                                                <td>{{$student->CREATED_AT}}</td>                        
+                                                                <td>{{$student->dateAjout}}</td>                        
                                                                 <td>
                                                                     <div class="btn-group-spaced">
-                                                                        <a href="{{route('classroom.cancelAssignment',['id'=>$student->id])}}">
+                                                                        <a href="{{route('classroom.cancelAssignment',['idElement'=>$student->idElement])}}">
                                                                             <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Confirmer votre opération');">
                                                                                     <i class="bi bi-trash-fill"></i>
                                                                             </button>
@@ -205,166 +210,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- <div class="row">
-                                    <div class="col-xl-12">
-
-                                        <!-- Notification Table -->
-                                        <div class="card card-default">
-                                            <div class="card-header justify-content-between mb-1">
-                                                <h2>Latest Notifications</h2>
-                                                <div>
-                                                    <button class="text-black-50 mr-2 font-size-20"><i
-                                                            class="mdi mdi-cached"></i></button>
-                                                    <div
-                                                        class="dropdown show d-inline-block widget-dropdown">
-                                                        <a class="dropdown-toggle icon-burger-mini"
-                                                            href="#" role="button"
-                                                            id="dropdown-notification"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false"
-                                                            data-display="static"></a>
-                                                        <ul class="dropdown-menu dropdown-menu-right"
-                                                            aria-labelledby="dropdown-notification">
-                                                            <li class="dropdown-item"><a
-                                                                    href="#">Action</a></li>
-                                                            <li class="dropdown-item"><a
-                                                                    href="#">Another action</a></li>
-                                                            <li class="dropdown-item"><a
-                                                                    href="#">Something else here</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="card-body compact-notifications" data-simplebar
-                                                style="height: 434px;">
-                                                <div
-                                                    class="media pb-3 align-items-center justify-content-between">
-                                                    <div
-                                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                                        <i
-                                                            class="mdi mdi-cart-outline font-size-20"></i>
-                                                    </div>
-                                                    <div class="media-body pr-3 ">
-                                                        <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                            href="#">New Order</a>
-                                                        <p>Selena has placed an new order</p>
-                                                    </div>
-                                                    <span class=" font-size-12 d-inline-block"><i
-                                                            class="mdi mdi-clock-outline"></i> 10
-                                                        AM</span>
-                                                </div>
-
-                                                <div
-                                                    class="media py-3 align-items-center justify-content-between">
-                                                    <div
-                                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
-                                                        <i
-                                                            class="mdi mdi-email-outline font-size-20"></i>
-                                                    </div>
-                                                    <div class="media-body pr-3">
-                                                        <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                            href="#">New Enquiry</a>
-                                                        <p>Phileine has placed an new order</p>
-                                                    </div>
-                                                    <span class=" font-size-12 d-inline-block"><i
-                                                            class="mdi mdi-clock-outline"></i> 9
-                                                        AM</span>
-                                                </div>
-
-
-                                                <div
-                                                    class="media py-3 align-items-center justify-content-between">
-                                                    <div
-                                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
-                                                        <i
-                                                            class="mdi mdi-stack-exchange font-size-20"></i>
-                                                    </div>
-                                                    <div class="media-body pr-3">
-                                                        <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                            href="#">Support Ticket</a>
-                                                        <p>Emma has placed an new order</p>
-                                                    </div>
-                                                    <span class=" font-size-12 d-inline-block"><i
-                                                            class="mdi mdi-clock-outline"></i> 10
-                                                        AM</span>
-                                                </div>
-
-                                                <div
-                                                    class="media py-3 align-items-center justify-content-between">
-                                                    <div
-                                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                                        <i
-                                                            class="mdi mdi-cart-outline font-size-20"></i>
-                                                    </div>
-                                                    <div class="media-body pr-3">
-                                                        <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                            href="#">New order</a>
-                                                        <p>Ryan has placed an new order</p>
-                                                    </div>
-                                                    <span class=" font-size-12 d-inline-block"><i
-                                                            class="mdi mdi-clock-outline"></i> 10
-                                                        AM</span>
-                                                </div>
-
-                                                <div
-                                                    class="media py-3 align-items-center justify-content-between">
-                                                    <div
-                                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-info text-white">
-                                                        <i
-                                                            class="mdi mdi-calendar-blank font-size-20"></i>
-                                                    </div>
-                                                    <div class="media-body pr-3">
-                                                        <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                            href="">Comapny Meetup</a>
-                                                        <p>Phileine has placed an new order</p>
-                                                    </div>
-                                                    <span class=" font-size-12 d-inline-block"><i
-                                                            class="mdi mdi-clock-outline"></i> 10
-                                                        AM</span>
-                                                </div>
-
-                                                <div
-                                                    class="media py-3 align-items-center justify-content-between">
-                                                    <div
-                                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
-                                                        <i
-                                                            class="mdi mdi-stack-exchange font-size-20"></i>
-                                                    </div>
-                                                    <div class="media-body pr-3">
-                                                        <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                            href="#">Support Ticket</a>
-                                                        <p>Emma has placed an new order</p>
-                                                    </div>
-                                                    <span class=" font-size-12 d-inline-block"><i
-                                                            class="mdi mdi-clock-outline"></i> 10
-                                                        AM</span>
-                                                </div>
-
-                                                <div
-                                                    class="media py-3 align-items-center justify-content-between">
-                                                    <div
-                                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white">
-                                                        <i
-                                                            class="mdi mdi-email-outline font-size-20"></i>
-                                                    </div>
-                                                    <div class="media-body pr-3">
-                                                        <a class="mt-0 mb-1 font-size-15 text-dark"
-                                                            href="#">New Enquiry</a>
-                                                        <p>Phileine has placed an new order</p>
-                                                    </div>
-                                                    <span class=" font-size-12 d-inline-block"><i
-                                                            class="mdi mdi-clock-outline"></i> 9
-                                                        AM</span>
-                                                </div>
-
-                                            </div>
-                                            <div class="mt-3"></div>
-                                        </div>
-
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
 
@@ -520,7 +365,7 @@
                                                     <input type="hidden" name="matricule[]" class="form-control" value="{{$student->matricule}}">  
                                                 </td>
                                                 <td>
-                                                    <a href="{{route('student.profil',['matricule'=>$student->matricule])}}">
+                                                    <a href="{{route('student.profil',['idStudent'=>$student->idStudent])}}">
                                                         {{$student->prenom_fr}}
                                                         {{$student->nom_fr}}
                                                     </a>

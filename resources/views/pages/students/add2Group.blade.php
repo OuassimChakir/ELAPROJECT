@@ -9,7 +9,7 @@
                 <div class="modal-body px-4">
                     <div class="row mb-2 g-3">  
                         {{-- Matières --}}
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group mb-4">
                                 <label for="form-label">Matières</label>
                                 <select name="idSubject" id="subjectSelect" class="form-select" required>
@@ -28,16 +28,6 @@
                                 </select>
                             </div>
                         </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group mb-4" id="selectSection">
-                                <label for="form-label">Niveau</label>
-                                <select name="idGrade" id="gradesSelect" class="form-select" required>
-                                    
-                                    
-                                </select>
-                            </div>
-                        </div>
                         <div id="groupsResult">
                             
                         </div>
@@ -45,7 +35,7 @@
                 </div>
                 <input type="hidden" name="matricule" id="idStudent" value="hello">
                 <div class="modal-footer px-4">
-                    <button type="button" id="reloardBtn" class="btn btn-primary btn-pill" data-bs-dismiss="modal">Ajouter</button>
+                    <button type="button" id="reloardBtn" class="btn btn-primary btn-pill" data-bs-dismiss="modal">Terminer</button>
                     <button type="button" class="btn btn-secondary btn-pill" data-bs-dismiss="modal">Annuler</button>
                 </div>
         </div>
@@ -53,77 +43,31 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-{{-- GETTING GRADES QUERY --}}
-<script type='text/javascript'>
-    $("#selectSection").hide();
-    $(document).ready(function(){
- 
-       // Department Change
-       $('#subjectSelect').change(function(){
- 
-          // Department id
-          var id = $(this).val();
- 
-          // Empty the dropdown
-          $('#gradesSelect').find('option').remove();
-          $('#groupsResult').find('div').remove();
-          var option = "<option disabled selected>-- Choisir le Niveau --</option>";
-            $("#gradesSelect").append(option);
-          // AJAX request 
-          $.ajax({
-            url: '/students/get/'+id,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
- 
-              var len = 0;
-              if(response['data'] != null){
-                 len = response['data'].length;
-              }
-              
-              if(len > 0){
-                 // Read data and create <option >
-                 for(var i=0; i<len; i++){
-                    var id = response['data'][i].idGrade;
-                    var name = response['data'][i].grade;
-                    var gradeCategory = response['data'][i].category;
- 
-                    option = "<option value='"+id+"'>"+name+" | "+gradeCategory+"</option>";
-                    $("#gradesSelect").append(option); 
-                 }
-              }
-              $("#selectSection").show();
-              
-            }
-          });
-       });
-    });
-</script>
-
 
 {{-- GETTING GROUPS QUERY --}}
 <script>
+    
+
     $("#groupsResult").hide();
     $(document).ready(function(){
- 
+        $(".add2GroupBtn").on('click',function(){
+            $('#idStudent').val() = $(this).val();
+        });
        // Department Change
-       $('#gradesSelect').change(function(){
- 
+       $('#subjectSelect').change(function(){
           // Department id
-          var idGrade = $(this).val();
-          var matricule = $('#idStudent').val();
+          var idStudent = $('#idStudent').val();
           var idSubject = $('#subjectSelect').val();
- 
+
           // Empty the dropdown
           $('#groupsResult').find('.card').remove();
- 
+
           // AJAX request 
           $.ajax({
-            url: '/students/getGroups/'+idSubject+'-'+idGrade+'-'+matricule,
+            url: '/students/getGroups/'+idSubject+'/'+idStudent,
             type: 'get',
             dataType: 'json',
             success: function(response){
- 
               var len = 0;
               if(response['data'] != null){
                  len = response['data'].length;
@@ -132,6 +76,7 @@
               if(len > 0){
                  for(var i=0; i<len; i++){
                     var idGroup = response['data'][i].idGroup;
+                    console.log(response['data'][i]);
                     var designation = response['data'][i].designation;
                     var capacity = response['data'][i].capacity;
                     var nbElement = response['data'][i].nbElement;
@@ -176,11 +121,10 @@
             {
                 var currentBtn = $(this);
                 var idGroup = $(this).val();
-                var matricule = $('#idStudent').val();
-
+                var idStudent = $('#idStudent').val();
                 // AJAX request 
                 $.ajax({
-                    url: '/groupes/'+idGroup+'/classroom/'+matricule,
+                    url: '/groupes/'+idGroup+'/classroom/'+idStudent,
                     type: 'get',
                     dataType: 'json',
                     success: function(response){
@@ -193,13 +137,10 @@
                             currentBtn.prop('disabled',true);
                         }
                         
-
-                        // var len = 0;
-                        // if(response['data'] != null){
-                        //     len = response['data'].length;
-                        // }
-                        // $("#groupsResult").show();
                     },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
                 });
             }
        });

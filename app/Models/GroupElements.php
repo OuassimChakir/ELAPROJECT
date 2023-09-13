@@ -5,33 +5,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Classrooms extends Model
+class GroupElements extends Model
 {
     use HasFactory;
-    protected $table = "classrooms";
-    protected $fillable = ['CREATED_AT', 'UPDATED_AT', 'matricule', 'idGroup'];
-
-    public static function add2Class($idGroup, $matricule)
+    protected $table = "groupelements";
+    protected $fillable = ['created_at', 'updated_at', 'idStudent', 'idGroup'];
+    public static function addElement($idGroup, $idStudent)
     {
-        Classrooms::create([
-            'CREATED_AT' => date('Y-m-d h:i:s'),
-            'UPDATED_AT' => date('Y-m-d h:i:s'),
-            'matricule' => $matricule,
+        GroupElements::create([
+            'updated_at' => date('Y-m-d h:i:s'),
+            'updated_at' => date('Y-m-d h:i:s'),
+            'idStudent' => $idStudent,
             'idGroup' => $idGroup
         ]);
     }
 
-    public static function checkClassroom($idGroup, $matricule)
+    public static function checkElement($idGroup, $idStudent)
     {
-        return Classrooms::where('idGroup', $idGroup)
-            ->where('matricule', $matricule)
+        return GroupElements::where('idGroup', $idGroup)
+            ->where('idStudent', $idStudent)
             ->count();
     }
 
     // SELECT GROUPS OF A STUDENT
     public static function studentClassrooms($matricule)
     {
-        return Classrooms::select('classrooms.*', 'groups.*', 'staff.nom', 'staff.prenom')
+        return GroupElements::select('classrooms.*', 'groups.*', 'staff.nom', 'staff.prenom')
             ->join('groups', 'groups.idGroup', '=', 'classrooms.idGroup')
             ->join('staff', 'staff.idStaff', '=', 'groups.idStaff')
             ->where('classrooms.idStudent', $matricule)
@@ -39,17 +38,17 @@ class Classrooms extends Model
     }
 
     // Select ALL STUDENTS OF A SPECIFIC GROUP
-    public static function groupClassroom($idGroup)
+    public static function groupElements($idGroup)
     {
-        return Classrooms::select('students.*', 'classrooms.*')
-            ->join('students', 'students.idStudent', '=', 'classrooms.idStudent')
-            ->where('classrooms.idGroup', $idGroup)
+        return GroupElements::select('students.*', 'groupelements.idElement','groupelements.created_at as dateAjout')
+            ->join('students', 'students.idStudent', '=', 'groupelements.idStudent')
+            ->where('idGroup', $idGroup)
             ->get();
     }
 
-    public static function classroomElements($idGroup)
+    public static function countGroupElements($idGroup)
     {
-        return Classrooms::select('*')
+        return GroupElements::select('*')
             ->where('idGroup', $idGroup)
             ->count();
     }
@@ -57,7 +56,7 @@ class Classrooms extends Model
     // Remove Student from Group
     public static function cancelAssignment($id)
     {
-        return Classrooms::find($id)->delete();
+        return GroupElements::find($id)->delete();
     }
 
     /* ---------------------------------
@@ -65,13 +64,13 @@ class Classrooms extends Model
     /----------------------------------*/
     public static function deleteGroupClassroom($idGroup)
     {
-        Classrooms::where('idGroup', $idGroup)->delete();
+        GroupElements::where('idGroup', $idGroup)->delete();
     }
 
     // Get Assignment
     public static function getAssignment($id)
     {
-        return Classrooms::select('*')
+        return GroupElements::select('*')
             ->join('groups', 'classrooms.idGroup', '=', 'groups.idGroup')
             ->join('students', 'classrooms.idStudent', '=', 'students.idStudent')
             ->where('id', $id)

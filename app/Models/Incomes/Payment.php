@@ -70,14 +70,14 @@ class Payment extends Model
 
 
     //------------- create Payment ----------//         
-    public static function createPayment($datePayment, $paymentMode, $amount, $description, $matricule, $idIncome)
+    public static function createPayment($datePayment, $paymentMode, $amount, $description, $idStudent, $idIncome)
     {
         Payment::create([
             'datePayment' => $datePayment,
             'paymentMode' => $paymentMode,
             'amount' => $amount,
             'description' => $description,
-            'matricule' => $matricule,
+            'idStudent' => $idStudent,
             'idIncome' => $idIncome,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')

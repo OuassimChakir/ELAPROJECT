@@ -21,32 +21,30 @@ class Group extends Model
     // ***** Select Groupes ******* //
     public static function getGroups()
     {
-        return Group::select('groups.*', 'subjects.*', 'grades.*', 'professeurs.*','courseType.*')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
-            ->leftJoin('grades', 'groups.idGrade', '=', 'grades.idGrade')
             ->get();
     }
 
     // ***** Select a Specific Group ******* //
     public static function getGroup($idGroup)
     {
-        return Group::select('groups.*', 'subjects.*', 'grades.*', 'staff.idStaff', 'staff.nom', 'staff.prenom')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->Join('coursetype', 'subjects.idCourseType', '=', 'coursetype.idCourseType')
-            ->leftJoin('grades', 'groups.idGrade', '=', 'grades.idGrade')
-            ->join('staff', 'groups.idStaff', '=', 'staff.idStaff')
+            ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->where('idGroup', $idGroup)
             ->first();
     }
 
     // ***** CHECK HOW MANY GROUPES OF A SPECIFIC SAME SUBJECT AND GRADE
-    public static function getNumGroups($idSubject, $idGrade)
+    public static function getNumGroups($idSubject,$idProfesseur)
     {
         return Group::select('*')
             ->where('idSubject', $idSubject)
-            ->where('idGrade', $idGrade)
+            ->where('idProfesseur', $idProfesseur)
             ->count();
     }
 
@@ -78,28 +76,27 @@ class Group extends Model
             ->get();
     }
 
-    public static function selectGroupsBySubjectAndGrade($idSubject, $idGrade, $matricule)
+    public static function selectGroupsBySubject($idSubject, $idStudent)
     {
-        return Group::select('groups.*', 'classrooms.idStudent', 'classrooms.id', 'staff.idStaff', 'staff.nom', 'staff.prenom')
-            ->selectRaw('count(classrooms.idGroup) as nbElement')
-            ->join('staff', 'groups.idStaff', '=', 'staff.idStaff')
-            ->leftJoin('classrooms', 'groups.idGroup', '=', 'classrooms.idGroup')
+        return Group::select('groups.*', 'groupelements.created_at','groupelements.idStudent', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
+            ->selectRaw('count(groupelements.idGroup) as nbElement')
+            ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
+            ->leftJoin('groupelements', 'groups.idGroup', '=', 'groupelements.idGroup')
             ->where('groups.idSubject', $idSubject)
-            ->where('groups.idGrade', $idGrade)
             ->groupBy('groups.idGroup')
-            ->having('matricule', '!=', $matricule)
-            ->orHavingRaw('id IS NULL')
+            ->having('idStudent', '!=', $idStudent)
+            ->orHavingRaw('idStudent IS NULL')
             ->get();
     }
     // ------ Creation ----------- //
-    public static function createGroup($designation, $capacity, $idSubject, $idGrade, $idStaff)
+    public static function createGroup($designation, $capacity, $amount, $idSubject, $idProfesseur)
     {
-        Group::create([
+        return Group::insertGetId([
             'designation' => $designation,
             'capacity' => $capacity,
+            'amount' => $amount,
             'idSubject' => $idSubject,
-            'idGrade' => $idGrade,
-            'idStaff' => $idStaff,
+            'idProfesseur' => $idProfesseur,
             'CREATED_AT' => date('Y-m-d H:i:s'),
             'UPDATED_AT' => date('Y-m-d H:i:s')
         ]);
@@ -114,6 +111,13 @@ class Group extends Model
         $group->idSubject = $idSubject;
         $group->idGrade = $idGrade;
         $group->idStaff = $idStaff;
+        $group->save();
+    }
+
+    public static function updateElements($idGroup){
+        $nbElements = GroupElements::countGroupElements($idGroup);
+        $group = Group::find($idGroup);
+        $group->nbElements = $nbElements;
         $group->save();
     }
 

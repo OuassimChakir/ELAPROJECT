@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Activite;
 use App\Models\Classrooms;
 use App\Models\Group;
+use App\Models\GroupElements;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
 use App\Models\Responsible\Responsible;
@@ -238,19 +239,12 @@ class StudentController extends Controller
         return response()->json($gradeData);
     }
 
-    public function getGroupsByGradeAndSubject($idSubject, $idGrade, $matricule)
+    public function getGroupsBySubject($idSubject, $idStudent)
     {
-        $groups['data'] = Group::selectGroupsBySubjectAndGrade($idSubject, $idGrade, $matricule);
+        $groups['data'] = Group::selectGroupsBySubject($idSubject, $idStudent);
         return response()->json($groups);
     }
 
-
-    public function assignClassroom($idGroup, $matricule)
-    {
-        Classrooms::add2Class($idGroup, $matricule);
-        $processResult = 'true';
-        return response()->json($processResult);
-    }
 
     //--------- Reçue de pyment------------//
 

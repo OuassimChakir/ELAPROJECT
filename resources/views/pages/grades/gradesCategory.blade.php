@@ -47,8 +47,7 @@
                         @else
                             {{-- Add Form --}}
                             <h4>Ajouter une Categorie de Niveau</h4>
-                            <small>le type de niveaux par exemple, <b>Niveaux de communication</b> ou <b>Niveaux
-                                    scolaires</b>..</small>
+                            <small>le type de niveaux par exemple, <b>Communication</b> ou <b>Primaire</b>..</small>
 
                             <form action="{{ route('gradesCategory.add') }}" method="post">
                                 @csrf
@@ -56,14 +55,13 @@
                                     <div class="col-lg-6">
                                     <label for="text" class="col-12 col-form-label">Categorie</label>
                                     <div class="col-12">
-                                        <input id="category" name="category" class="form-control" type="text"
-                                            placeholder="Communication, Scolaire..." required>
+                                        <input id="category" name="category" class="form-control" type="text" placeholder="Communication, Scolaire..." required>
                                     </div>
                                     </div>
                                     <div class="col-lg-6">
                                     <div class="form-group ">
-                                        <label for="parent-category" class="form-label">Description</label>
-                                        <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="2"></textarea>
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea class="form-control" name="description" id="description" rows="2"></textarea>
                                     </div>
                                     </div>
                                     <div class="col-lg-6">

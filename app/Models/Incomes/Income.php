@@ -18,6 +18,9 @@ class Income extends Model
         {
                 return Income::all();
         }
+        public static function getIncomeByDate($activationDate){
+                return Income::select('*')->where('activationDate',$activationDate)->first();
+        }
         public static function selectIncome($idIncome)
         {
                 return Income::find($idIncome);
