@@ -131,4 +131,37 @@
             }
         });
     </script>
+    @if (isset($newStaff))
+    <template id="student-password">
+        <swal-title>
+            L'étudiant a été ajouté avec succès
+        </swal-title>
+        <swal-html>
+            <table class="table">
+                <tr>
+                    <th>Nom d'étudiant</th>
+                    <td>{{ucfirst($newStaff['prenom'])}} {{ucfirst($newStaff['nom'])}}</td>
+                </tr>
+                <tr>
+                    <th>Mot de Passe</th>
+                    <td>{{$newStaff['password']}}</td>
+                </tr>
+            </table>
+        </swal-html>
+        <swal-icon type="success"></swal-icon>
+        <swal-button type="confirm">
+            Terminer
+        </swal-button>
+        <swal-param name="allowEscapeKey" value="false" />
+        <swal-param name="customClass" value='{ "popup": "my-popup" }' />
+        <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+    </template>
+    
+    <script>
+        Swal.fire({
+            template: '#Staff-password',
+        });
+        
+    </script>
+    @endif
 @endsection
