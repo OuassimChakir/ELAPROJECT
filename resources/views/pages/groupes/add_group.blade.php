@@ -122,7 +122,7 @@
 
             // AJAX request 
             $.ajax({
-                url: 'groupes/get/' + id,
+                url: '/groupes/get/' + id,
                 type: 'get',
                 dataType: 'json',
                 success: function(response) {

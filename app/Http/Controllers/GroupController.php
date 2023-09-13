@@ -71,14 +71,14 @@ class GroupController extends Controller
         $groupInfo->nbElements = GroupElements::countGroupElements($idGroup);
         $description = explode('-', $groupInfo->designation);
         $groupInfo->description = $description[2];
-        $grades = Grades::selectGradesByCategory($groupInfo->idGradeCategory);
+        $grades = Grades::selectGradesByCategory($groupGrades[0]->idGradeCategory);
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
             ->with('groupGrades',$groupGrades)
             ->with('gradesCategories', $gradesCategories)
             ->with('professeurs', $teachers)
             ->with('subjects', $subjects)
-            ->with('niveaux', $grades)
+            ->with('grades', $grades)
             ->with('students', $students)
             ->with('courseTypes', $courseTypes)
             ->with('absen', $absen);
@@ -110,16 +110,16 @@ class GroupController extends Controller
     public function updateGroup(Request $request, $idGroup)
     {
         if ($request->has('updateGroup') && isset($idGroup)) {
+            $group = Group::getGroup($idGroup);
+            Group::updateGroup($idGroup, $request->capacity,$request->amount, $request->idSubject, $request->idProfesseur);
+            GroupGrades::deleteGroupGrades($idGroup);
 
-            $groupName = explode('-', Group::getGroup($idGroup)->designation)[0];
-            $matiere = Subjects::getSubject($request->idSubject);
-            $designation = $groupName . "-" . $matiere->short;
-            if (!is_null($request->description))
-                $designation .= "-" . $request->description;
-            Group::updateGroup($idGroup, $designation, $request->capacity, $request->idSubject, $request->idGrade, $request->idStaff);
+            foreach ($request->grades as $idGrade)
+                GroupGrades::newGroupGrade($idGrade,$idGroup);
+
             if (session()->get('user')) {
                 $typeActivity = 2; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-                $activityDescription = "Le Groupe " . $designation . " (ID = " . $idGroup . ")";
+                $activityDescription = "Le Groupe " . $group->designation . " (ID = " . $idGroup . ")";
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('updateMessage', 'La Modification du Groupe est faite avec Succès');

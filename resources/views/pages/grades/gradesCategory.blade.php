@@ -123,11 +123,8 @@
                                                 <div class="btn-group">
                                                     <a
                                                         href="{{ route('gradesCategory.update', ['idGradeCategory' => $categorie->idGradeCategory]) }}">
-                                                        <button type="submit" name="edit"
-                                                            class="btn btn-outline-warning"
-                                                            value="{{ $categorie->idGradeCategory }}">
+                                                        <button type="submit" name="edit" class="btn btn-outline-warning" value="{{ $categorie->idGradeCategory }}">
                                                             <i class="bi bi-pencil-square"></i>
-
                                                         </button>
                                                     </a>
                                                     <a
