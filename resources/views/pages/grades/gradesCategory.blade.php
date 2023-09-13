@@ -65,17 +65,17 @@
                                     </div>
                                     </div>
                                     <div class="col-lg-6">
-                                    <div class="form-group ">
-                                        <label for="form-label">Matières</label>
-                                        <select name="idCourseType" id="id-Subject" class="form-select" required>
-                                            <option disabled selected>-- Choisir une Matière</option>
-                                            @foreach ($courses as $courseType)
-                                                <option value="{{ $courseType->idCourseType }}">
-                                                    {{ $courseType->course }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                        <div class="form-group ">
+                                            <label for="form-label">Matières</label>
+                                            <select name="idCourseType" id="id-Subject" class="form-select" required>
+                                                <option disabled selected>-- Choisir une Matière</option>
+                                                @foreach ($courses as $courseType)
+                                                    <option value="{{ $courseType->idCourseType }}">
+                                                        {{ $courseType->course }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -92,7 +92,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12">

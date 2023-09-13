@@ -16,8 +16,8 @@
                                     <select name="idExpense" id="typeExpensesSelect" class="form-select" required>
                                         <option disabled selected>-- Choisir type de dépenses --</option>
                                             @foreach ($expenses as $expense)
-                                                <option value="{{ $expense->idExpense}}">
-                                                    {{ $expense->description}}
+                                                <option value="{{ $expense->idExpense.'|'.$expense->code}}">
+                                                    {{ $expense->designation }}
                                                 </option>
                                             @endforeach
                                     </select>
@@ -27,7 +27,23 @@
                                 <div class="staffSelect form-group mb-4">
                                     <label for="form-label" id="staffLabel">Staff</label>
                                     <select name="idStaff" id="staffSelect" class="form-select" required>
-                                        
+                                        <option disabled selected>-- Choisir un Staff --</option>
+                                        @foreach ($staffs as $staff)
+                                        <option value="{{ $staff->idStaff}}">
+                                            {{ $staff->nom.' '. $staff->prenom}}
+                                        </option>
+                                    @endforeach
+                                    </select>
+                                </div>
+                                <div class="ProfSelect form-group mb-4">
+                                    <label for="form-label" id="ProfLabel">Professeurs</label>
+                                    <select name="idProfesseur" id="ProfSelect" class="form-select" required>
+                                        <option disabled selected>-- Choisir un Professeurs--</option>
+                                        @foreach ($Professeurs as $Professeur)
+                                        <option value="{{$Professeur->idProfesseur}}">
+                                            {{ $Professeur->nom.' '. $Professeur->prenom }}
+                                        </option>
+                                    @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -41,7 +57,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
-                                    <label for="form-label">Montant en DH</label>
+                                    <label for="form-label">Montant en Dh</label>
                                     <input type="number" name="amount" class="form-control" id="amount"> 
                                 </div>
                             </div>
@@ -69,49 +85,35 @@
 <script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
 
 <script>
+    
     $('.staffSelect').hide();
+    $('.ProfSelect').hide();
     $(document).ready(function(){
         $('#typeExpensesSelect').change(function(){
-            $('#staffLabel').empty();
-            $('#staffSelect').find('option').remove();
             var array = $(this).val().split('|');
             var code = array[1];
             var idExpense = array[0];
-            if (code == '000' || code == '111') {
-                $('#staffSelect').prop('disabled',false);
-                if(code === '000')
-                    $('#staffLabel').append('Professeurs');
-                else
-                    $('#staffLabel').append('Staffs');
-                // AJAX request 
-                $.ajax({
-                    url: '/factureDepenses/'+idExpense,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(response){
-                        var len = 0;
-                        if(response['data'] != null){
-                            len = response['data'].length;
-                        }   
-                        if(len > 0){
-                            // Read data and create <option >
-                            for(var i=0; i<len; i++){
-                                var id = response['data'][i].idStaff;
-                                var name = response['data'][i].prenom+" "+response['data'][i].nom;
-            
-                                var option = "<option value='"+id+"'>"+name+"</option>";
-            
-                                $("#staffSelect").append(option); 
-                            }
-                        }
-                        $('.staffSelect').show();          
-                    },
-                });
-            } else {
+            if (code == '0' || code == '1') {
+                if(code === '0'){
+                    $('.staffSelect').show();
+                    $('.ProfSelect').hide();
+                    $('#staffSelect').prop('disabled',false);
+                    $('#ProfSelect').prop('disabled',true);
+
+                }else{
+                    $('.ProfSelect').show();
+                    $('.staffSelect').hide();
+                    $('#ProfSelect').prop('disabled',false);
+                    $('#staffSelect').prop('disabled',true);
+                }         
+                       
+            } else{
                 $('.staffSelect').hide();
+                $('.ProfSelect').hide();
                 $('#staffSelect').prop('disabled',true);
+                $('#ProfSelect').prop('disabled',true);
             }
-            
-        });
+            }); 
+        
     });
 </script>

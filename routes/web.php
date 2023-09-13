@@ -167,7 +167,7 @@ Route::middleware([
     // Add New Facture
     Route::post('/factureDepenses/add', [ExpenseController::class,'allFacture'])->name('factureDepenses.add');
     // Delete Facture
-    Route::get('/factureDepenses/delete/{idExpense}', [ExpenseController::class,'deleteFacture'])->name('factureDepenses.delete');
+    Route::get('/factureDepenses/delete/{idExpensePayment}', [ExpenseController::class,'deleteFacture'])->name('factureDepenses.delete');
 
 
     // --------------- typeIncomes ------------------ //

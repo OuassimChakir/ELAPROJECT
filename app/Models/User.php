@@ -32,6 +32,7 @@ class User extends Authenticatable
         'idRole',
         'idStudent',
         'idProfesseur',
+        'idStaff',
         'created_at',
         'updated_at',
     ];

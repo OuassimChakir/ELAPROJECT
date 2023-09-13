@@ -49,7 +49,7 @@ class SubjectController extends Controller
     public function subjects(Request $request){
         // Adding new Subject
         if ($request->has('ajouterSubject')) {
-            Subjects::addSubject($request->libelle, $request->courseType);
+            Subjects::addSubject($request->libelle,$request->short,$request->idCourseType);
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
         $subjects = Subjects::getSubjects();
@@ -67,7 +67,7 @@ class SubjectController extends Controller
         $subjects = Subjects::getSubjects();
         // Update of Subject (ACTION)
         if ($request->has('update')) {
-            Subjects::updateSubject($request->idSubject, $request->libelle, $request->courseType);
+            Subjects::updateSubject($request->idSubject, $request->libelle,$request->short, $request->idCourseType);
             return Redirect::route('subjects')->with('updateMessage', "La Modification est faite avec succès");
         }
         // Update of Subject (PAGE)

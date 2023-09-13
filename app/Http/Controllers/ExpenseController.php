@@ -6,6 +6,7 @@ use App\Models\Activite;
 use Illuminate\Http\Request;
 use App\Models\Expenses\Expenses;
 use App\Models\Expenses\Facture;
+use App\Models\responsible\Professeurs;
 use App\Models\Responsible\Staff;
 use Illuminate\Support\Facades\Redirect;
 
@@ -19,12 +20,12 @@ class ExpenseController extends Controller
         if ($request->has('ajouterexpense')) {
             if(isset($request->code)) $code = $request->code;
             else $code = NULL;
-            $description = $request->description;
-            Expenses::createExpense($description,$code);
+            $designation = $request->designation;
+            Expenses::createExpense($designation,$code);
             // Add to Activity Ajout
             if (session()->get('user')) {
                 $typeActivity = 0;
-                $activityDescription = 'un Type de Dépenses ' . $description;
+                $activityDescription = 'un Type de Dépenses ' . $designation;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
@@ -72,6 +73,8 @@ class ExpenseController extends Controller
     {
         // List of Expenses
         $expenses = Expenses::selectExpenses();
+        $Professeurs= Professeurs::getProfesseurs();
+        $staffs= Staff::getStaffs();
         // list of facture
         $factureDepenses = Facture::allFacture();
         if ($request->has('addFacture')) {
@@ -79,9 +82,10 @@ class ExpenseController extends Controller
             $amount = $request->amount;
             $description = $request->description;
             $idStaff = $request->idStaff;
-            $idProfesseur = $request->idProfesseur;
-            $idExpense = $request->idExpense;
-            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense);
+            $idProfesseur = $request->idProfesseur;  
+            $idExpense = explode('|',$request->idExpense);
+            $id=session()->get('user')->id;
+            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense[0],$id);
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification
                 $activityDescription = 'La Facture ' . $idFacture;
@@ -91,7 +95,9 @@ class ExpenseController extends Controller
         }
         return view('pages.expense.factures')
             ->with('factureDepenses', $factureDepenses)
-            ->with('expenses', $expenses);
+            ->with('expenses', $expenses)
+            ->with('Professeurs',$Professeurs)
+            ->with('staffs',$staffs);
     }
 
     // ------------ Suppression du Facture --------- //
@@ -106,26 +112,24 @@ class ExpenseController extends Controller
         return Redirect::back()->with('deleteMessage', "La Suppression du Facture est faite avec succès");
     }
 
-    public function getStaffData($idExpense)
-    {
+    public function getStaffData($idExpense){
         $expense = Expenses::selectExpense($idExpense);
         $data = '';
-        if ($expense->code == '000')
-            $data = Staff::getProfesseurs();
-        elseif ($expense->code == '111')
+        if ($expense->code == '1')
+            $data = Professeurs::getProfesseurs();
+        elseif ($expense->code == '0')
             $data = Staff::getStaffs();
         $selectData['data'] = $data;
         return response()->json($selectData);
     }
+
     // ----------- ARCHIVE ------------- //
-    public function archive()
-    {
+    public function archive(){
         $factures = Facture::softDeletedFactures();
         return view('pages.expense.FactureArchive')->with('factureDepenses', $factures);
     }
 
-    public function restoreArchivedFacture($idExpensePayment)
-    {
+    public function restoreArchivedFacture($idExpensePayment){
         Facture::restoreFacture($idExpensePayment);
         $factures = Facture::softDeletedFactures();
         if (session()->get('user')) {
@@ -133,7 +137,7 @@ class ExpenseController extends Controller
             $activityDescription = 'La Facture ' . $idExpensePayment;
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
-        return Redirect::route('factures.archive')->with('restoreMessage', "La facture a été restorer avec succès")->with('factures', $factures);
+        return Redirect::route('factureDepenses.archive')->with('restoreMessage', "La facture a été restorer avec succès")->with('factures', $factures);
     }
 
     public function deleteArchivedFacture($idExpensePayment)

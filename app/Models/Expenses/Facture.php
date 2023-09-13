@@ -13,7 +13,7 @@ class Facture extends Model
     use SoftDeletes;
     protected $table = "expensespayment";
     protected $primaryKey = "idExpensePayment";
-    protected $fillable = ['datePayment', 'amount', 'description', 'idStaff', 'idExpense', 'created_at', 'updated_at'];
+    protected $fillable = ['datePayment', 'amount', 'description', 'idStaff', 'idExpense','idProfesseur', 'created_at', 'updated_at','id'];
 
     //------------- all facture de dépenses----------//
     public static function allFacture(){
@@ -34,7 +34,7 @@ class Facture extends Model
     }
 
     //------------- create facture ----------//         
-    public static function createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense){
+    public static function createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense,$id){
         $facture = Facture::create([
             'datePayment' => $datePayment,
             'amount' => $amount,
@@ -42,6 +42,7 @@ class Facture extends Model
             'idStaff' => $idStaff,
             'idProfesseur' => $idProfesseur,
             'idExpense' => $idExpense,
+            'id' => $id,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
@@ -61,9 +62,10 @@ class Facture extends Model
     // ---------- Select Facture for PDF Print ----------- //
 
     public static function getFacturePdf($idExpensePayment){
-        return Facture::select('expensespayment.*', 'expenses.designation', 'expenses.code', 'staff.cnie', 'staff.nom', 'staff.prenom', 'staff.numTel')
+        return Facture::select('expensespayment.*', 'expenses.designation', 'expenses.code')
             ->join('expenses', 'expensespayment.idExpense', '=', 'expenses.idExpense')
-            ->leftJoin('staff', 'expensespayment.idStaff', '=', 'staff.idStaff')
+            ->leftJoin('staffs', 'expensespayment.idStaff', '=', 'staffs.idStaff')
+            ->leftJoin('professeurs', 'expensespayment.idProfesseur', '=', 'professeurs.idProfesseur')
             ->where('idExpensePayment', $idExpensePayment)
             ->first();
     }
