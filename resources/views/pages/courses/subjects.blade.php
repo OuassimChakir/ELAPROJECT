@@ -33,11 +33,22 @@
                                 method="put">
                                 @method('put')
                                 @csrf
-                                <div class="form-group row">
+                                <div class="row">
+                                <div class="col-lg-6">
                                     <label for="text" class="col-12 col-form-label">Libelle</label>
-                                    <div class="col-12">
+                                    <div class="form-group">
                                         <input id="libelle" name="libelle" class="form-control" type="text"
                                             value="{{ $updatedSubject->libelle }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="slug" class="col-12 col-form-label">Abbréviation</label>
+                                        <div class="col-12">
+                                            <input id="slug" name="short" class="form-control here set-slug"
+                                                type="text"  value="{{ $updatedSubject->short }}" >
+                                            <small>L'abbreviation du type par exemple "M" pour "Mathématique"</small>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -60,8 +71,8 @@
                                 @if (isset($updatedSubject))
                                     <input type="hidden" name="idSubject" value="{{ $updatedSubject->idSubject }}">
                                 @endif
-                                <div class="row">
-                                    <div class="col-12">
+                               
+                                    <div class="col-lg-6">
                                         <button name="update" type="submit" class="btn btn-warning">Modifier</button>
                                         <button name="reset" type="reset" class="btn btn-secondary">Reset</button>
                                         <a href="{{ route('subjects') }}">
