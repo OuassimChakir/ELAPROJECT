@@ -23,12 +23,10 @@ class GroupController extends Controller
     // Groups List
     public function groups(Request $request)
     {
-
-
         $gradesCategories = GradesCategory::getGradeCategories();
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
-        $teachers = Professeurs::getProfesseurs();
+        $Groups = Professeurs::getProfesseurs();
         $groups = Group::getGroups();
         if ($request->has('CreateGroup')) {
             $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur) + 1;
@@ -52,7 +50,7 @@ class GroupController extends Controller
         return view('pages.groupes.groupes')
             ->with('groupes', $groups)
             ->with('gradesCategories', $gradesCategories)
-            ->with('professeurs', $teachers)
+            ->with('professeurs', $Groups)
             ->with('subjects', $subjects)
             ->with('courseTypes', $courseTypes);
     }
@@ -221,4 +219,40 @@ class GroupController extends Controller
         $absenceData['data'] = Attendance::getOneAbsence($idAttendance);
         return response()->json($absenceData);
     }
+
+        // ----------- ARCHIVE ------------- //
+        public function archive(){
+            $group = Group::softDeletedGroups();
+            return view('pages.groupes.groupArchive')->with('group',$group);
+        }
+    
+        public function archivedGroup($idGroup){
+            $Group = Group::softDeletedGroups($idGroup);
+            return view('pages.Groups.archivedGroupProfil')->with('Group',$Group);
+        }
+    
+        public function restoreArchivedGroup($idGroup){
+            Group::restoreGroup($idGroup);
+            $Groups = Group::softDeletedGroups();
+            $group=Group::getGroup($idGroup);
+            if(session()->get('user')){
+                $typeActivity = 3; 
+                $activityDescription = 'Le profisseur'." ".$group->nom." ".$group->prenom ." (".$group->idGroup.")"; 
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            }
+            return Redirect::route('Groups.archive')->with('restoreMessage',"Le Professeur a été restorer avec succès")->with('Groups',$Groups);
+        }
+    
+        public function deleteArchivedGroup($idGroup){
+            $group=Group::softDeletedGroups($idGroup);
+            if(session()->get('user')){
+                $typeActivity = 10; 
+                $activityDescription = 'Le profisseur'." ".$group->nom." ".$group->prenom ."(".$group->idGroup.")"; 
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            }
+            GroupElements::deleteGroupClassroom($idGroup);
+            Group::forceDeleteGroup($idGroup);
+            
+            return Redirect::back()->with('deleteMessage',"Le Professeur a été supprimer Définitivement");
+        }
 }

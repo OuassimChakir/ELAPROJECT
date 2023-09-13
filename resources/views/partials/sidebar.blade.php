@@ -211,6 +211,11 @@
 													<span class="nav-text">Archive des Reçus de Paiement</span>
 												</a>
 											</li>
+											<li class="{{Route::is('group.archive') ? 'active' : ''}}">
+												<a class="sidenav-item-link" href="{{route('group.archive')}}">
+													<span class="nav-text">Archive des Groupes</span>
+												</a>
+											</li>
 										</ul>
 									</div>
 									<hr>
