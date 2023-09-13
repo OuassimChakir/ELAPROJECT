@@ -103,14 +103,13 @@ class Group extends Model
     }
 
     // --------- Update ------------- //
-    public static function updateGroup($idGroup, $designation, $capacity, $idSubject, $idGrade, $idStaff)
+    public static function updateGroup($idGroup, $capacity, $amount, $idSubject, $idProfesseur)
     {
         $group = Group::find($idGroup);
-        $group->designation = $designation;
+        $group->amount = $amount;
         $group->capacity = $capacity;
         $group->idSubject = $idSubject;
-        $group->idGrade = $idGrade;
-        $group->idStaff = $idStaff;
+        $group->idProfesseur = $idProfesseur;
         $group->save();
     }
 

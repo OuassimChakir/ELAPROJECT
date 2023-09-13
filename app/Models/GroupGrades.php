@@ -24,4 +24,8 @@ class GroupGrades extends Model
                 ->where('idGroup',$idGroup)
                 ->get();
     }
+
+    public static function deleteGroupGrades($idGroup){
+        GroupGrades::where('idGroup',$idGroup)->delete();
+    }
 }
