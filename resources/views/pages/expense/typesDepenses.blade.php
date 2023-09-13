@@ -34,8 +34,8 @@
                             <div class="row">
                             <div class="col-lg-6">
                             <div class="form-group ">
-                                <label for="parent-category" class="form-label">Description</label> 
-                                    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="1"></textarea>
+                                <label for="parent-category" class="form-label">Designation</label> 
+                                    <textarea class="form-control" name="designation" id="exampleFormControlTextarea1" rows="1"></textarea>
                             </div>
                             </div>
                             <div class="col-lg-6">
@@ -68,7 +68,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Description</th>
+                                    <th>Designation</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -79,7 +79,7 @@
                                     @foreach ($expenses as $expense)
                                         <tr>
                                             <td>{{$expense->idExpense}}</td>
-                                            <td>{{$expense->description}}</td>
+                                            <td>{{$expense->designation}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
                                                     <a href="{{route('typeDepenses.update.page',['idExpense'=>$expense->idExpense])}}">

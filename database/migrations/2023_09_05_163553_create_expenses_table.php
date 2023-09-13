@@ -15,7 +15,7 @@ class CreateExpensesTable extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('idExpense');
-            $table->string('description',100);
+            $table->string('designation',100);
             $table->tinyInteger('code')->nullable()->comment('NULL (expenses)
             0 (staff)
             1 (professur)');

@@ -17,7 +17,7 @@
                                         <option disabled selected>-- Choisir type de dépenses --</option>
                                             @foreach ($expenses as $expense)
                                                 <option value="{{ $expense->idExpense.'|'.$expense->code}}">
-                                                    {{ $expense->description }}
+                                                    {{ $expense->designation }}
                                                 </option>
                                             @endforeach
                                     </select>
