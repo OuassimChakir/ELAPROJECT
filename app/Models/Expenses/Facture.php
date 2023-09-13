@@ -13,7 +13,7 @@ class Facture extends Model
     use SoftDeletes;
     protected $table = "expensespayment";
     protected $primaryKey = "idExpensePayment";
-    protected $fillable = ['datePayment', 'amount', 'description', 'idStaff', 'idExpense', 'created_at', 'updated_at'];
+    protected $fillable = ['datePayment', 'amount', 'description', 'idStaff', 'idExpense','idProfesseur', 'created_at', 'updated_at','id'];
 
     //------------- all facture de dépenses----------//
     public static function allFacture(){
