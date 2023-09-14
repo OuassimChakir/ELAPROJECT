@@ -7,7 +7,7 @@
     <title>Document</title>
     <style>
         body{
-            background:#eee;
+            background:#ffffff;
             margin-top:20px;
         }
         .text-danger strong {
@@ -126,7 +126,7 @@
         vertical-align: bottom;
         }
         .table > :not(:last-child) > :last-child > * {
-        border-bottom-color: gray;
+        border-bottom-color: rgb(255, 255, 255);
         }
         .text-left {
             text-align: left;
@@ -208,22 +208,23 @@
                            <thead>
                                <tr>
                                     <th>Type de Dépense</th>
-                                    <th>Montant</th>
+                                    <th style="text-align: right;">Montant</th>
                                </tr>
                            </thead>
                            <tbody>
                                @foreach ($invoice->items as $item)
                                 <tr>
                                     <td class="col-md-4">{{$item->title}}</td>
-                                    <td class="col-md-3"> 
+                                    <td class="col-md-3" style="text-align: right;" colspan="2"> 
                                         {{ $invoice->formatCurrency($item->price_per_unit) }}
                                     </td>
+                                    
                                 </tr>
                                @endforeach
-                               <tr>
+                               
+                               <tr style="text-align: right;">
                                     <td></td>
-                                    <td style="text-align: right;"><h2><strong>Total: </strong></h2></td>
-                                    <td><h2><strong> {{ $invoice->formatCurrency($invoice->total_amount) }}</strong></h2></td>
+                                    <td><h3><strong>Total :   {{ $invoice->formatCurrency($invoice->total_amount) }}</strong></h3></td>
                                </tr>
                            </tbody>
                        </table>
