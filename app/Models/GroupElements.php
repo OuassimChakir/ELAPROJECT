@@ -19,6 +19,10 @@ class GroupElements extends Model
             'idGroup' => $idGroup
         ]);
     }
+    
+    public static function getElement($idGroup, $idStudent){
+        return GroupElements::select('*')->where('idGroup',$idGroup)->where('idStudent',$idStudent)->first();
+    }
 
     public static function checkElement($idGroup, $idStudent)
     {

@@ -27,8 +27,9 @@ class Grades extends Model
             ->paginate(20)->withQueryString();
     }
     public static function selectGradesByCategory($idGradeCategory){
-        return Grades::where('grades.idGradeCategory', $idGradeCategory)
+        return Grades::select('*')
             ->join('gradescategories', 'grades.idGradeCategory', '=', 'gradescategories.idGradeCategory')
+            ->where('grades.idGradeCategory', $idGradeCategory)
             ->orderBy('grade', 'ASC')
             ->get();
     }
