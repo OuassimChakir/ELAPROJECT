@@ -79,8 +79,7 @@
                             var designation = response['data'][i].designation;
                             var capacity = response['data'][i].capacity;
                             var nbElement = response['data'][i].nbElements;
-                            var name = response['data'][i].prenom + " " + response['data'][
-                                i].nom;
+                            var name = response['data'][i].prenom + " " + response['data'][i].nom;
                             var htmlOut = "<div class='card'><div class='card-body'>";
                             htmlOut += "<div class='row'><div class='col-11'>";
                             htmlOut += '<h5 class="card-title">' + designation;
