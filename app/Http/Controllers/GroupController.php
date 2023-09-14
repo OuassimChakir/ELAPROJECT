@@ -26,7 +26,7 @@ class GroupController extends Controller
         $gradesCategories = GradesCategory::getGradeCategories();
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
-        $Groups = Professeurs::getProfesseurs();
+        $professeurs = Professeurs::getProfesseurs();
         $groups = Group::getGroups();
         if ($request->has('CreateGroup')) {
             $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur) + 1;
@@ -50,7 +50,7 @@ class GroupController extends Controller
         return view('pages.groupes.groupes')
             ->with('groupes', $groups)
             ->with('gradesCategories', $gradesCategories)
-            ->with('professeurs', $Groups)
+            ->with('professeurs', $professeurs)
             ->with('subjects', $subjects)
             ->with('courseTypes', $courseTypes);
     }
@@ -71,14 +71,17 @@ class GroupController extends Controller
         $groupInfo->nbElements = GroupElements::countGroupElements($idGroup);
         $description = explode('-', $groupInfo->designation);
         $groupInfo->description = $description[2];
-        $grades = Grades::selectGradesByCategory($groupInfo->idGradeCategory);
+        if(isset($groupGrades[0]))
+            $grades = Grades::selectGradesByCategory($groupGrades[0]->idGradeCategory);
+        else
+            $grades = Grades::selectGradesByCategory(null);
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
             ->with('groupGrades',$groupGrades)
             ->with('gradesCategories', $gradesCategories)
             ->with('professeurs', $teachers)
             ->with('subjects', $subjects)
-            ->with('niveaux', $grades)
+            ->with('grades', $grades)
             ->with('students', $students)
             ->with('courseTypes', $courseTypes)
             ->with('absen', $absen);
@@ -131,7 +134,7 @@ class GroupController extends Controller
     
     public function assignElement($idGroup, $idStudent)
     {
-        GroupElements::addElement($idGroup, $idStudent);
+        $idElement = GroupElements::addElement($idGroup, $idStudent);
         $group = Group::getGroup($idGroup);
         $debut = (int)explode('-',$group->debutFormation)[1];
         $year = (int)explode('-',$group->debutFormation)[0];
@@ -144,7 +147,7 @@ class GroupController extends Controller
         
         for ($i = $debut; $i <= $breakpoint; $i++){
             $income = Income::getIncomeByDate($i);
-            Payment::initialPayment($group->amount,$income->description.' - '.$year,$idStudent,$income->idIncome);
+            Payment::initialGroupPayment($group->amount,$income->description.' - '.$year,$idElement,$income->idIncome);
             if($i == 12){
                 $i = 0;
                 $breakpoint = $fin;
@@ -177,46 +180,7 @@ class GroupController extends Controller
         GroupElements::cancelAssignment($student);
         return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
     }
-
-    //----------------add absence---------------// 
-    public function addAbsence(Request $request)
-    {
-        if ($request->has('addabssence')) {
-            $absence = $request->absence;
-            $dateAbsence = $request->dateAbsence;
-            $matricule = $request->matricule;
-            $idGroup = $request->idGroup;
-            $result = Attendance::insertAbsence($absence, $matricule, $dateAbsence, $idGroup);
-            if ($result == 'true')
-                return Redirect::back()->with('successMessage', "L'ajout du Abssence est faite avec succès");
-            else
-                return Redirect::back()->with('updateMessage', "L'absence de ce groupe était déjà marquée.");
-        }
-    }
-    public function allAbsences(Request $request)
-    {
-        $allGroups = Group::selectGroup();
-        if ($request->has('getAbsence')) {
-            $dateAbsence = $request->dateAbsence;
-            $idGroup = $request->idGroup;
-            $etudiants = Attendance::selectListeAbsenceByDateIdgroup($dateAbsence, $idGroup);
-            return view('pages.groupes.presence')->with('allGroups', $allGroups)->with('etudiants', $etudiants);
-        }
-        return view('pages.groupes.presence')->with('allGroups', $allGroups);
-    }
-    //-------- liste absence by date and idGroup
-    public function getListeAbsence($dateAbsence, $idGroup)
-    {
-        $gradeData['data'] = Attendance::selectListeAbsenceByDateIdgroup($dateAbsence, $idGroup);
-        return response()->json($gradeData);
-    }
-    // ---------------- Update Absence -------------- //
-    public function updateAbsence($idAttendance, $absence)
-    {
-        Attendance::updateAbsence($idAttendance, $absence);
-        $absenceData['data'] = Attendance::getOneAbsence($idAttendance);
-        return response()->json($absenceData);
-    }
+    
 
         // ----------- ARCHIVE ------------- //
         public function archive(){

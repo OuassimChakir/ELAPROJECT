@@ -93,8 +93,21 @@ class Payment extends Model
             'idStudent' => $idStudent,
             'idIncome' => $idIncome,
             'etat' => $etat,
-            'CREATED_AT' => date('Y-m-d H:i:s'),
-            'UPDATED_AT' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+    }
+
+    public static function initialGroupPayment($amount, $note, $idElement, $idIncome, $etat = null)
+    {
+        Payment::create([
+            'amount' => $amount,
+            'note' => $note,
+            'idElement' => $idElement,
+            'idIncome' => $idIncome,
+            'etat' => $etat,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s')
         ]);
     }
     

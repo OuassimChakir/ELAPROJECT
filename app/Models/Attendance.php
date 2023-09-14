@@ -18,10 +18,10 @@ class Attendance extends Model
         return Attendance::all();
     }
 
-    public static function checkAbsence($dateAbsence, $idGroup)
+    public static function checkAbsence($dateAbsence, $idElement)
     {
         return Attendance::where('dateAbsence', $dateAbsence)
-            ->where('idGroup', $idGroup)
+            ->where('idElement', $idElement)
             ->count();
     }
 
@@ -31,21 +31,15 @@ class Attendance extends Model
         return Attendance::find($idAttendance);
     }
     // ------------ add Absence ------------//     
-    public static function insertAbsence(array $absence, array $matricule, $dateAbsence, $idGroup)
+    public static function markAttendance($absence, $dateAbsence, $idElement)
     {
-        if (Attendance::checkAbsence($dateAbsence, $idGroup) == 0) {
-            for ($i = 0; $i < count($matricule); $i++) {
-                $datesave = [
-                    'absence' => $absence[$i],
-                    'dateAbsence' => $dateAbsence,
-                    'matricule' => $matricule[$i],
-                    'idGroup' => $idGroup,
-                ];
-                DB::table('Attendance')->insert($datesave);
-            }
-            return 'true';
-        } else
-            return 'false';
+        Attendance::insert([
+            'absence' => $absence,
+            'dateAbsence' => $dateAbsence,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+            'idElement' => $idElement,
+        ]);
     }
 
     // ---------- Update absence ---------- //
@@ -56,12 +50,12 @@ class Attendance extends Model
         $updatedAbsence->save();
     }
 
-    public static function selectListeAbsenceByDateIdgroup($dateAbsence, $idGroup)
+    public static function getGroupAttendaceByDate($dateAbsence, $idElement)
     {
-        return Attendance::select('*')
-            ->join('students', 'students.idStudent', '=', 'attendance.idStudent')
-            ->where('dateAbsence', $dateAbsence)
-            ->where('idGroup', $idGroup)
+        $date = explode('-',$dateAbsence);
+        return Attendance::selectRaw('*, DAY(dateAbsence) as day')
+            ->where('idElement', $idElement)
+            ->whereRaw('MONTH(dateAbsence) = '.$date[1].' AND YEAR(dateAbsence) = '.$date[0])
             ->get();
     }
 

@@ -17,7 +17,6 @@ class CreateAttendanceTable extends Migration
             $table->bigIncrements('idAttendance');
             $table->tinyInteger('absence')->nullable();
             $table->date('dateAbsence');
-            $table->text('note')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('idElement',false,true);
         });

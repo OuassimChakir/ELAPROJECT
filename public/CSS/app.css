@@ -2494,4 +2494,16 @@ select {
   vertical-align: middle;
   cursor: pointer;
 }
+#attendanceCalendier table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
 
+#attendanceCalendier table tbody {
+  display: table;
+  width: 100%;
+}
+#attendanceCalendier .studentName {
+  width: 200px!important;
+}

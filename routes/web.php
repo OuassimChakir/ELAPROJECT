@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomesController;
 use App\Http\Controllers\ActiviteController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\GradesController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PdfController;
@@ -130,11 +131,12 @@ Route::middleware([
     Route::put('/groupe/update/{idGroup}', [GroupController::class,'updateGroup'])->name('groups.update');
 
     //-----------------absence-------------------//    
-    Route::get('/absence', [GroupController::class,'allAbsences'])->name('absence');
+    Route::get('/attendance', [AttendanceController::class,'allAbsences'])->name('absence');
+    Route::post('/attendance', [AttendanceController::class,'allAbsences'])->name('getAttendance');
     // add absence
-    Route::post('/absence', [GroupController::class,'allAbsences'])->name('absence.add');
+    Route::post('/groupe/{idGroup}/markAttendance', [AttendanceController::class,'addAbsence'])->name('absence.add');
     // Update Student
-    Route::get('/absence/update/{idAttendance}-{absence}', [GroupController::class,'updateAbsence']);
+    Route::get('/attendance/update/{idAttendance}-{absence}', [AttendanceController::class,'updateAbsence']);
 
 
     // ------------- Classroom ---------- // 
