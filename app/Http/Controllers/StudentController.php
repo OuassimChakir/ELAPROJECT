@@ -20,7 +20,7 @@ class StudentController extends Controller
 {
     // -------------- Students -------------- //
     public function students(Request $request)
-    {
+    {   
         $groupSubjects = Group::existedGroupSubjects();
         $groupCourseTypes = Group::existedGroupCourseTypes();
 

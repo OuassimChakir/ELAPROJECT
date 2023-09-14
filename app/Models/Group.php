@@ -79,13 +79,12 @@ class Group extends Model
     public static function selectGroupsBySubject($idSubject, $idStudent)
     {
         return Group::select('groups.*', 'groupelements.created_at','groupelements.idStudent', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
-            ->selectRaw('count(groupelements.idGroup) as nbElement')
+            ->selectRaw('sum(CASE WHEN (idStudent = '.$idStudent.') THEN 1 ELSE 0 END) as response')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->leftJoin('groupelements', 'groups.idGroup', '=', 'groupelements.idGroup')
             ->where('groups.idSubject', $idSubject)
             ->groupBy('groups.idGroup')
-            ->having('idStudent', '!=', $idStudent)
-            ->orHavingRaw('idStudent IS NULL')
+            ->having('response', '=', 0)
             ->get();
     }
     // ------ Creation ----------- //
