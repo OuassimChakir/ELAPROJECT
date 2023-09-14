@@ -140,6 +140,7 @@ class StaffController extends Controller
             $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
+        User::deleteStaffAccount($idStaff);
         staff::forceDeleteStaff($idStaff);
         return Redirect::route('staff.archive')->with('deleteMessage',"Le Staff a été supprimer Définitivement");
     }
@@ -165,6 +166,7 @@ class StaffController extends Controller
                     $activityDescription = 'Le staff'." ".$st->prenom." ".$st->nom."(".$idStaff.")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
+                User::deleteStaffAccount($idStaff);
                 staff::forceDeleteStaff($idStaff);
             }
             return Redirect::route('staff.archive')->with('deleteMessage',"Les Staffs séléctionés ont été supprimer Définitivement");

@@ -248,7 +248,10 @@ Route::middleware([
         Route::get('/archive/teachers',[TeacherController::class, 'archive'])->name('teachers.archive');
         Route::get('/archive/teacher/{idProfesseur}',[TeacherController::class, 'archivedTeacher'])->name('teachers.archive.profil');
         Route::get('/archive/teachers/restore/{idProfesseur}', [TeacherController::class, 'restoreArchivedTeacher'])->name('teachers.archive.restore');
-
+        // ARCHIVED group
+        Route::get('/archive/groups',[GroupController::class, 'archive'])->name('groups.archive');
+        Route::get('/archive/groups/{idGroup}',[GroupController::class, 'archivedGroup'])->name('groups.archive.profil');
+        Route::get('/archive/groups/restore/{idGroup}', [GroupController::class, 'restoreArchivedGroup'])->name('groups.archive.restore');
 
 
         // ----------------- STAFF TYPE ------------------ //
@@ -320,6 +323,7 @@ Route::middleware([
 
         // Delete Group
         Route::get('/groupes/delete/{idGroup}', [GroupController::class,'deleteGroup'])->name('groups.delete');
+        Route::get('/archive/groups/delete/{idGroup}', [GroupController::class,'deleteArchivedGroup'])->name('groups.archive.delete');
 
         // Delete Student
         Route::get('/students/delete/{idStudent}', [StudentController::class, 'deleteStudent'])->name('student.delete');

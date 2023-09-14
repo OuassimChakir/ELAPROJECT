@@ -23,12 +23,10 @@ class GroupController extends Controller
     // Groups List
     public function groups(Request $request)
     {
-
-
         $gradesCategories = GradesCategory::getGradeCategories();
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
-        $teachers = Professeurs::getProfesseurs();
+        $Groups = Professeurs::getProfesseurs();
         $groups = Group::getGroups();
         if ($request->has('CreateGroup')) {
             $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur) + 1;
@@ -52,7 +50,7 @@ class GroupController extends Controller
         return view('pages.groupes.groupes')
             ->with('groupes', $groups)
             ->with('gradesCategories', $gradesCategories)
-            ->with('professeurs', $teachers)
+            ->with('professeurs', $Groups)
             ->with('subjects', $subjects)
             ->with('courseTypes', $courseTypes);
     }
@@ -73,14 +71,14 @@ class GroupController extends Controller
         $groupInfo->nbElements = GroupElements::countGroupElements($idGroup);
         $description = explode('-', $groupInfo->designation);
         $groupInfo->description = $description[2];
-        $grades = Grades::selectGradesByCategory($groupGrades[0]->idGradeCategory);
+        $grades = Grades::selectGradesByCategory($groupInfo->idGradeCategory);
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
             ->with('groupGrades',$groupGrades)
             ->with('gradesCategories', $gradesCategories)
             ->with('professeurs', $teachers)
             ->with('subjects', $subjects)
-            ->with('grades', $grades)
+            ->with('niveaux', $grades)
             ->with('students', $students)
             ->with('courseTypes', $courseTypes)
             ->with('absen', $absen);
@@ -101,8 +99,6 @@ class GroupController extends Controller
             $activityDescription = "Le Groupe " . $groupInfo->designation . " (ID = " . $groupInfo->idGroup . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
-        Attendance::deleteGroupAbsence($idGroup);
-        GroupElements::deleteGroupClassroom($idGroup);
         Group::deleteGroup($idGroup);
 
         return Redirect::back()->with('deleteMessage', "La Suppression du Groupe est faite avec succès");
@@ -112,16 +108,16 @@ class GroupController extends Controller
     public function updateGroup(Request $request, $idGroup)
     {
         if ($request->has('updateGroup') && isset($idGroup)) {
-            $group = Group::getGroup($idGroup);
-            Group::updateGroup($idGroup, $request->capacity,$request->amount, $request->idSubject, $request->idProfesseur);
-            GroupGrades::deleteGroupGrades($idGroup);
 
-            foreach ($request->grades as $idGrade)
-                GroupGrades::newGroupGrade($idGrade,$idGroup);
-
+            $groupName = explode('-', Group::getGroup($idGroup)->designation)[0];
+            $matiere = Subjects::getSubject($request->idSubject);
+            $designation = $groupName . "-" . $matiere->short;
+            if (!is_null($request->description))
+                $designation .= "-" . $request->description;
+            Group::updateGroup($idGroup, $designation, $request->capacity, $request->idSubject, $request->idGrade, $request->idStaff);
             if (session()->get('user')) {
                 $typeActivity = 2; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-                $activityDescription = "Le Groupe " . $group->designation . " (ID = " . $idGroup . ")";
+                $activityDescription = "Le Groupe " . $designation . " (ID = " . $idGroup . ")";
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
             return Redirect::back()->with('updateMessage', 'La Modification du Groupe est faite avec Succès');
@@ -221,4 +217,40 @@ class GroupController extends Controller
         $absenceData['data'] = Attendance::getOneAbsence($idAttendance);
         return response()->json($absenceData);
     }
+
+        // ----------- ARCHIVE ------------- //
+        public function archive(){
+            $groupes = Group::softDeletedGroups();
+            return view('pages.groupes.groupArchive')->with('groupes',$groupes);
+        }
+    
+        public function archivedGroup($idGroup){
+            $Group = Group::softDeletedGroups($idGroup);
+            return view('pages.Groups.archivedGroupProfil')->with('Group',$Group);
+        }
+    
+        public function restoreArchivedGroup($idGroup){
+            Group::restoreGroup($idGroup);
+            $groupes = Group::softDeletedGroups();
+            $group=Group::getGroup($idGroup);
+            if(session()->get('user')){
+                $typeActivity = 3; 
+                $activityDescription = 'Le profisseur'." ".$group->nom." ".$group->prenom ." (".$group->idGroup.")"; 
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            }
+            return Redirect::route('groups.archive')->with('restoreMessage',"Le Professeur a été restorer avec succès")->with('groupes',$groupes);
+        }
+    
+        public function deleteArchivedGroup($idGroup){
+            $group=Group::getDeletedGroups($idGroup);
+            if(session()->get('user')){
+                $typeActivity = 10; 
+                $activityDescription = 'Le profisseur'." ".$group->nom." ".$group->prenom ."(".$group->idGroup.")"; 
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            }
+            GroupElements::deleteGroupClassroom($idGroup);
+            Group::forceDeleteGroup($idGroup);
+            
+            return Redirect::back()->with('deleteMessage',"Le Professeur a été supprimer Définitivement");
+        }
 }

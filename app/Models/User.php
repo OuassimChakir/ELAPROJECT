@@ -123,4 +123,13 @@ class User extends Authenticatable
         ]);
         return $password;
     }
+
+    public static function deleteStaffAccount($idStaff){
+        User::where('idStaff',$idStaff)
+        ->delete();
+    }
+    public static function deleteProfAccount($idProfesseur){
+        User::where('idProfesseur',$idProfesseur)->delete();
+    }
+
 }

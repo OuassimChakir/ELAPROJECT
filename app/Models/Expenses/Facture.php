@@ -83,7 +83,6 @@ class Facture extends Model
             ->get();
     }
 
-
     public static function getDeletedFacture($idExpensePayment){
         return Facture::onlyTrashed()
             ->where('expensespayment.idExpensePayment', $idExpensePayment)

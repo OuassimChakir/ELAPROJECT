@@ -3,18 +3,6 @@
     liste des Professeurs
 @endsection
 @section('content')
-
-  <!--errour du validation -->
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-  <!-- end errour du validation -->
 <div class="breadcrumb-wrapper breadcrumb-contacts">
     <div>
         <h1>Liste des Professeurs</h1>
@@ -130,4 +118,37 @@
         }
     });
 </script>
+@if (isset($newProfesseur))
+<template id="Professeur-password">
+    <swal-title>
+        L'étudiant a été ajouté avec succès
+    </swal-title>
+    <swal-html>
+        <table class="table">
+            <tr>
+                <th>Nom d'étudiant</th>
+                <td>{{ucfirst($newProfesseur['prenom'])}} {{ucfirst($newProfesseur['nom'])}}</td>
+            </tr>
+            <tr>
+                <th>Mot de Passe</th>
+                <td>{{$newProfesseur['password']}}</td>
+            </tr>
+        </table>
+    </swal-html>
+    <swal-icon type="success"></swal-icon>
+    <swal-button type="confirm">
+        Terminer
+    </swal-button>
+    <swal-param name="allowEscapeKey" value="false" />
+    <swal-param name="customClass" value='{ "popup": "my-popup" }' />
+    <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+</template>
+
+<script>
+    Swal.fire({
+        template: '#Professeur-password',
+    });
+    
+</script>
+@endif
 @endsection

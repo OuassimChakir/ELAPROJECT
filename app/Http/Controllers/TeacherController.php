@@ -134,7 +134,9 @@ class TeacherController extends Controller
             $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ."(".$teach->idProfesseur.")"; 
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
+        User::deleteProfAccount($idProfesseur);
         Professeurs::forceDeleteTeacher($idProfesseur);
+
         return Redirect::back()->with('deleteMessage',"Le Professeur a été supprimer Définitivement");
     }
 
@@ -159,6 +161,7 @@ class TeacherController extends Controller
                     $activityDescription = 'Le profisseur'." ".$teach->nom." ".$teach->prenom ." (".$teach->idProfesseur.")"; 
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
+                User::deleteProfAccount($idProfesseur);
                 Professeurs::forceDeleteTeacher($idProfesseur);
             }
             return Redirect::back()->with('deleteMessage',"Les Professeurs séléctionés ont été supprimer Définitivement");
