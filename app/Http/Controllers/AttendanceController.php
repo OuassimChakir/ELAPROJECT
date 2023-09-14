@@ -26,6 +26,9 @@ class AttendanceController extends Controller
                 }
                 Attendance::markAttendance($request->absence[$i],$request->dateAbsence,$element->idElement);
             }
+
+            // Reset Paiments
+
             if($flag == 1)
                 return Redirect::back()->with('updateMessage', "L'absence de ce groupe était déjà marquée.");
             return Redirect::back()->with('successMessage', "L'ajout du Abssence est faite avec succès.");

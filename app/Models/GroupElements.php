@@ -12,8 +12,8 @@ class GroupElements extends Model
     protected $fillable = ['created_at', 'updated_at', 'idStudent', 'idGroup'];
     public static function addElement($idGroup, $idStudent)
     {
-        GroupElements::create([
-            'updated_at' => date('Y-m-d h:i:s'),
+        return GroupElements::insertGetId([
+            'create_at' => date('Y-m-d h:i:s'),
             'updated_at' => date('Y-m-d h:i:s'),
             'idStudent' => $idStudent,
             'idGroup' => $idGroup

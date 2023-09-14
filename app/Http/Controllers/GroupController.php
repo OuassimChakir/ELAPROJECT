@@ -134,7 +134,7 @@ class GroupController extends Controller
     
     public function assignElement($idGroup, $idStudent)
     {
-        GroupElements::addElement($idGroup, $idStudent);
+        $idElement = GroupElements::addElement($idGroup, $idStudent);
         $group = Group::getGroup($idGroup);
         $debut = (int)explode('-',$group->debutFormation)[1];
         $year = (int)explode('-',$group->debutFormation)[0];
@@ -147,7 +147,7 @@ class GroupController extends Controller
         
         for ($i = $debut; $i <= $breakpoint; $i++){
             $income = Income::getIncomeByDate($i);
-            Payment::initialPayment($group->amount,$income->description.' - '.$year,$idStudent,$income->idIncome);
+            Payment::initialGroupPayment($group->amount,$income->description.' - '.$year,$idElement,$income->idIncome);
             if($i == 12){
                 $i = 0;
                 $breakpoint = $fin;

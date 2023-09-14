@@ -481,7 +481,7 @@
                         <div class="tab-pane fade" id="attendance" role="tabpanel" aria-labelledby="attendance-tab">
                             <div class="tab-pane-content mt-5">
                                 <div class="mb-3">
-                                    <form method="POST" action="{{ route('getAttendance') }}">
+                                    <form method="POST" action="{{ route('getAttendance') }}" target="_blank">
                                         @csrf
                                         @method('post')
                                         <div class="row">
