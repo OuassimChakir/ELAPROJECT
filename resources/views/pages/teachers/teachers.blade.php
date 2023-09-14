@@ -3,18 +3,6 @@
     liste des Professeurs
 @endsection
 @section('content')
-
-  <!--errour du validation -->
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-  <!-- end errour du validation -->
 <div class="breadcrumb-wrapper breadcrumb-contacts">
     <div>
         <h1>Liste des Professeurs</h1>
@@ -131,7 +119,7 @@
     });
 </script>
 @if (isset($newProfesseur))
-<template id="student-password">
+<template id="Professeur-password">
     <swal-title>
         L'étudiant a été ajouté avec succès
     </swal-title>
