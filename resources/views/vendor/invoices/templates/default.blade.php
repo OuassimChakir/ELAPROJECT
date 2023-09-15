@@ -10,7 +10,7 @@
             background:#ffffff;
             margin-top:20px;
         }
-        .text-danger strong {
+        strong {
             color: #0f8daa;
         }
         .receipt-main {
@@ -55,6 +55,9 @@
             font-size: 16px;
             font-weight: bold;
             margin: 0 0 7px 0;
+        }
+        .serial-right{
+            float: right;
         }
         .receipt-right p {
             font-size: 12px;
@@ -146,11 +149,14 @@
                        <div class="receipt-header">
                            <div class="col">
                                <div class="receipt-left">
+                                
+                                <div class="serial-right">
+                                    <h3>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></h3>
+                                </div>
                                     {{-- Header --}}
                                     @if($invoice->logo)
                                         <img class="img-responsive" alt="iamgurdeeposahan" src="{{ $invoice->getLogo() }}" style="width: 71px;">
                                     @endif
-                                   
                                </div>
                            </div>
                            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
@@ -183,7 +189,7 @@
                    <div class="row">
                        <div class="receipt-header receipt-header-mid">
                            <div class="col-xs-8 col-sm-8 col-md-8 text-left">
-                               <div class="receipt-right">
+                               <div class="inf-right">
                                     <h5>{{ $invoice->buyer->name }} </h5>
                                     @if (isset($invoice->buyer->phone))
                                         <p><b>Mobile :</b>{{ $invoice->buyer->phone }}</p>
@@ -193,11 +199,6 @@
                                             <b>{{ ucfirst($key) }}</b>: {{ $value }}
                                         </p>
                                     @endforeach
-                               </div>
-                           </div>
-                           <div class="col-xs-4 col-sm-4 col-md-4">
-                               <div class="receipt-left">
-                                   <h3>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></h3>
                                </div>
                            </div>
                        </div>
@@ -224,7 +225,7 @@
                                
                                <tr style="text-align: right;">
                                     <td></td>
-                                    <td><h3><strong>Total :   {{ $invoice->formatCurrency($invoice->total_amount) }}</strong></h3></td>
+                                    <td><h2><strong>Total :   {{ $invoice->formatCurrency($invoice->total_amount) }}</strong></h2></td>
                                </tr>
                            </tbody>
                        </table>
