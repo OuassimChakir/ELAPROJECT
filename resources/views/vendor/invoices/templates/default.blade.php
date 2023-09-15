@@ -189,7 +189,7 @@
                    <div class="row">
                        <div class="receipt-header receipt-header-mid">
                            <div class="col-xs-8 col-sm-8 col-md-8 text-left">
-                               <div class="inf-right">
+                               <div class="receipt-right">
                                     <h5>{{ $invoice->buyer->name }} </h5>
                                     @if (isset($invoice->buyer->phone))
                                         <p><b>Mobile :</b>{{ $invoice->buyer->phone }}</p>
