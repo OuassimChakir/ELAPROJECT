@@ -64,7 +64,7 @@ class Facture extends Model
     // ---------- Select Facture for PDF Print ----------- //
 
     public static function getFacturePdf($idExpensePayment){
-        return Facture::select('*', 'expenses.designation', 'expenses.code')
+        return Facture::select('*')
             ->join('expenses', 'expensespayment.idExpense', '=', 'expenses.idExpense')
             ->where('idExpensePayment', $idExpensePayment)
             ->first();
