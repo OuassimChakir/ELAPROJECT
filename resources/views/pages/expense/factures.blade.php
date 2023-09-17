@@ -11,16 +11,13 @@ Facture de Dépenses
             <span><i class="mdi mdi-chevron-right"></i></span>Facture de Dépenses
         </p>
     </div>
-
         <div>
             <button type="button" class="btn btn-info" id="showFormButton" data-bs-toggle="modal"
             data-bs-target="#addFacture">
                 <i class="bi bi-plus-square"></i> Ajouter une Facture 
             </button>
         </div>
-
 </div>
-
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default">

@@ -23,13 +23,14 @@
                                     </select>
                                 </div>
                             </div>
+                            
                             <div class="col-lg-6">
                                 <div class="staffSelect form-group mb-4">
                                     <label for="form-label" id="staffLabel">Staff</label>
                                     <select name="idStaff" id="staffSelect" class="form-select" required>
                                         <option disabled selected>-- Choisir un Staff --</option>
                                         @foreach ($staffs as $staff)
-                                        <option value="{{ $staff->idStaff}}">
+                                        <option value="{{ $staff->idStaff.'|'.$staff->nom.'|'.$staff->prenom}}">
                                             {{ $staff->nom.' '. $staff->prenom}}
                                         </option>
                                     @endforeach
@@ -40,7 +41,7 @@
                                     <select name="idProfesseur" id="ProfSelect" class="form-select" required>
                                         <option disabled selected>-- Choisir un Professeurs--</option>
                                         @foreach ($Professeurs as $Professeur)
-                                        <option value="{{$Professeur->idProfesseur}}">
+                                        <option value="{{$Professeur->idProfesseur.'|'.$Professeur->nom.'|'.$Professeur->prenom}}">
                                             {{ $Professeur->nom.' '. $Professeur->prenom }}
                                         </option>
                                     @endforeach

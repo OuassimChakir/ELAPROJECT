@@ -76,16 +76,28 @@ class ExpenseController extends Controller
         $Professeurs= Professeurs::getProfesseurs();
         $staffs= Staff::getStaffs();
         // list of facture
-        $factureDepenses = Facture::allFacture();
+        $factureDepenses = Facture::allFacture();            
+        $idProfesseur=null;$prenom=null;$idStaff=null;$nom=null;
         if ($request->has('addFacture')) {
+           if(isset($request->idStaff)){
+             $row=explode('|',$request->idStaff);
+             $idStaff=$row[0];
+             $nom=strtoupper($row[1]);
+             $prenom=strtoupper($row[2]);
+             $idProfesseur =null;
+           }elseif(isset($request->idProfesseur)){
+            $row=explode('|',$request->idProfesseur);
+            $idProfesseur=$row[0];
+            $nom=strtoupper($row[1]);
+            $prenom=strtoupper($row[2]);
+            $idStaff = null;
+           }
             $datePayment = $request->datePayment;
             $amount = $request->amount;
-            $description = $request->description;
-            $idStaff = $request->idStaff;
-            $idProfesseur = $request->idProfesseur;  
+            $description = $request->description;  
             $idExpense = explode('|',$request->idExpense);
             $id=session()->get('user')->id;
-            $idFacture = Facture::createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense[0],$id);
+            $idFacture = Facture::createFacture($datePayment,$nom,$prenom, $amount, $description, $idStaff, $idProfesseur, $idExpense[0],$id);
             if (session()->get('user')) {
                 $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification
                 $activityDescription = 'La Facture ' . $idFacture;

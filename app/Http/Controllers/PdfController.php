@@ -11,15 +11,17 @@ use LaravelDaily\Invoices\Classes\InvoiceItem;
 class PdfController extends Controller
 {
     public function pdf($idExpensePayment){
+        
         $data =Facture::getFacturePdf($idExpensePayment);
-        if(!is_null($data->idStaff)){
+        if(!is_null($data->idStaff ||$data->idProfesseur )){
             $customer = new Buyer([
                 'name'          => $data->prenom.' '.$data->nom,
-                'phone'         => $data->numTel,
                 'custom_fields' => [
-                    'CNIE' => $data->cnie,
+                    'Payement' => $data->designation,
+                    'description' => $data->description,
                 ],
             ]);
+            
         }else{
             $customer = new Buyer([
                 'custom_fields' => [

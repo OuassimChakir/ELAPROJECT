@@ -15,8 +15,8 @@ class CreateExpensespaymentTable extends Migration
     {
         Schema::create('expensespayment', function (Blueprint $table) {
             $table->bigIncrements('idExpensePayment');
-            $table->string('InvoiceNumber',50);
-            $table->string('name',50);
+            $table->string('prenom',50);
+            $table->string('nom',50);
             $table->date('datePayment',50);
             $table->double('amount');
             $table->text('description');
