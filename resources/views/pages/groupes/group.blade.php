@@ -199,15 +199,9 @@
                                                                 <td>{{ $student->dateAjout }}</td>
                                                                 <td>
                                                                     <div class="btn-group-spaced">
-                                                                        <a
-                                                                            href="{{ route('classroom.cancelAssignment', ['idElement' => $student->idElement]) }}">
-                                                                            <button type="button"
-                                                                                class="btn btn-outline-danger"
-                                                                                name="delete"
-                                                                                onclick="return confirm('Confirmer votre opération');">
-                                                                                <i class="bi bi-trash-fill"></i>
-                                                                            </button>
-                                                                        </a>
+                                                                        <button type="button" class="btn btn-outline-danger" onclick="cancelAssignment({{$student->idElement}});">
+                                                                            <i class="bi bi-trash-fill"></i>
+                                                                        </button>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -682,6 +676,21 @@
                     $(".btns").hide();
                 }
             });
+        </script>
+        <script>
+            function cancelAssignment(idElement){
+                var id = idElement;
+                Swal.fire({
+                    title: "Voulez-vous retirer cet étudiant de ce groupe ?",
+                    showCancelButton: true,
+                    confirmButtonText: 'Oui',
+                    cancelButtonText: `Annuler`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/classrooms/remove/"+id;
+                    }
+                })
+            }
         </script>
 
 

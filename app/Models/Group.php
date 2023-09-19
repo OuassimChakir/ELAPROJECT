@@ -50,6 +50,17 @@ class Group extends Model
             ->count();
     }
 
+    // Only groups where a student have invoices
+    public static function getGroupWithStudentInvoices($idStudent){
+        return Group::select('groups.*')
+            ->join('payment','payment.idGroup','=','groups.idGroup')
+            ->whereNotNull('etat')
+            ->where('idStudent',$idStudent)
+            ->groupBy('groups.idGroup')
+            ->get();
+    }
+
+
     // ****** GET SUBJECTS OF EXISTED GROUPS ************ // 
     public static function existedGroupSubjects()
     {

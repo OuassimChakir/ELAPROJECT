@@ -116,12 +116,12 @@ class IncomesController extends Controller
     // ------------ Suppression du Payment --------- //
     public function deletePayment($idPayment)
     {
-        Payment::deletePayment($idPayment);
         if (session()->get('user')) {
             $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = "Un Payment (ID = " . $idPayment . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
+        Payment::deletePayment($idPayment);
         return Redirect::back()->with('deleteMessage', "La Suppression du Reçus est faite avec succès");
     }
 

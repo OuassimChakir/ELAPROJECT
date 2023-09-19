@@ -188,17 +188,17 @@ Route::middleware([
     // Add New Incomes Payment 
     Route::post('/incomePayment/add', [IncomesController::class,'allPayment'])->name('incomePayment.add');
     // Delete Incomes Payment 
-    Route::get('/incomePayment/delete/{idPayment}', [IncomesController::class,'deletePayment'])->name('incomePayment.delete');
+    Route::get('/bmapaiment/delete/{idPayment}', [IncomesController::class,'deletePayment'])->name('incomePayment.delete');
     Route::get('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment');
     Route::post('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment.validate');
-
+    
     // ----- pdf de facture
     Route::get('/pdf/{idExpensePayment}',[PdfController::class, 'pdf'])->name('pdf.generate');
 
     // Facture Staff Data Ajax
     Route::get('/factureDepenses/{idExpense}', [ExpenseController::class,'getStaffData']);
 
-
+    Route::get('/student/{idStudent}/groupPaiment/{idGroup}',[StudentController::class,'getInvoicesByGroupAndStudent']);
 
 
     Route::get('/dashboard', function () {
