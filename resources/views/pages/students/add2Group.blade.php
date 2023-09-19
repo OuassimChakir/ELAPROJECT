@@ -117,6 +117,18 @@
     });
 </script>
 
+<template id="fail-assign">
+    <swal-title>
+        Veuillez régler les paiements des groupes précédents de cet étudiant
+    </swal-title>
+    <swal-icon type="warning" color="red"></swal-icon>
+    <swal-button type="confirm">
+        Okay
+    </swal-button>
+    <swal-param name="allowEscapeKey" value="true" />
+    <swal-param name="customClass" value='{ "popup": "my-popup" }' />
+    <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+</template>
 {{-- ASSIGNING A STUDENT INTO A GROUP --}}
 <script>
     $(document).ready(function() {
@@ -141,6 +153,10 @@
                             var newIcon = '<i class="bi bi-check-lg"></i>';
                             currentBtn.append(newIcon);
                             currentBtn.prop('disabled', true);
+                        }else{
+                            Swal.fire({
+                                template: '#fail-assign'
+                            })
                         }
 
                     },

@@ -30,30 +30,29 @@
                                             <label for="form-label">Groupes</label>
                                             <select name="idGroup" id="id-Group" class="form-select" required>
                                                 <option disabled selected>-- Choisir un Groupe --</option>
-                                                @foreach ($allGroups as $allGroup)
-                                                    @if (isset($etudiants))
-                                                        @if ($etudiants[0]->idGroup == $allGroup->idGroup)
-                                                            <option value="{{ $allGroup->idGroup }}" selected>
-                                                                {{ $allGroup->designation }}
-                                                            </option>
+                                                @foreach ($groups as $group)
+                                                    @if (isset($idGroup))
+                                                        @if ($group->idGroup == $idGroup)
+                                                        <option value="{{ $group->idGroup }}" selected>{{ $group->designation }}</option>
                                                         @else
-                                                            <option value="{{ $allGroup->idGroup }}">
-                                                                {{ $allGroup->designation }}
-                                                            </option>
+                                                        <option value="{{ $group->idGroup }}">{{ $group->designation }}</option>
                                                         @endif
                                                     @else
-                                                        <option value="{{ $allGroup->idGroup }}" selected>
-                                                            {{ $allGroup->designation }}
-                                                        </option>
+                                                    <option value="{{ $group->idGroup }}">{{ $group->designation }}</option>
                                                     @endif
                                                 @endforeach
+                                                
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
                                         <div class="form-group">
                                             <label for="form-label">Date</label>
+                                            @if (isset($dateAbsence))
+                                            <input type="month" name="dateAbsence" class="form-control" value="{{$dateAbsence[0]}}-{{$dateAbsence[1]}}">
+                                            @else
                                             <input type="month" name="dateAbsence" class="form-control" value="{{ date('Y-m') }}">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-lg-2 mt-5">

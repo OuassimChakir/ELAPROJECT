@@ -26,12 +26,12 @@ class CreatePaymentTable extends Migration
             1 (Payed)');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
-            $table->bigInteger('idElement',false,true)->nullable();
+            $table->bigInteger('idGroup',false,true)->nullable();
             $table->bigInteger('idStudent',false,true)->nullable();
             $table->bigInteger('idIncome',false,true);
         });
         Schema::table('payment', function (Blueprint $table){
-            $table->foreign('idElement')->references('idElement')->on('groupelements');
+            $table->foreign('idGroup')->references('idGroup')->on('groups');
             $table->foreign('idStudent')->references('idStudent')->on('students');
             $table->foreign('idIncome')->references('idIncome')->on('incomes');
         });

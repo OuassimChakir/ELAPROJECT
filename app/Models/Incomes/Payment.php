@@ -13,7 +13,7 @@ class Payment extends Model
     use SoftDeletes;
     protected $table = "payment";
     protected $primaryKey = "idPayment";
-    protected $fillable = ['datePayment', 'paymentMode', 'amount','amountPaid', 'note', 'etat','idElement','idStudent', 'idIncome', 'created_at', 'updated_at'];
+        protected $fillable = ['datePayment', 'paymentMode', 'amount','amountPaid', 'note', 'etat','idGroup','idStudent', 'idIncome', 'created_at', 'updated_at'];
 
     //------------- all Payment de incomes----------//
     public static function allPayment()
@@ -26,6 +26,7 @@ class Payment extends Model
     public static function getStudentPendingPaiment($idStudent){
         return Payment::select('*')
             ->join('incomes','payment.idIncome','=','incomes.idIncome')
+            ->join('groups','payment.idGroup','=','groups.idGroup')
             ->where('idStudent',$idStudent)
             ->where('etat',0)
             ->get();
@@ -37,6 +38,37 @@ class Payment extends Model
             ->join('students','payment.idStudent','=','students.idStudent')
             ->where('idPayment',$idPayment)
             ->first();
+    }
+        //------------ find reçue by idStudent & idGroup-------- //
+        public static function selectPayment($idGroup, $idStudent, $idIncome)
+        {
+            return Payment::select('*')
+                ->join('incomes','payment.idIncome','=','incomes.idIncome')
+                ->join('students','payment.idStudent','=','students.idStudent')
+                ->join('groups','payment.idGroup','=','groups.idGroup')
+                ->where('payment.idStudent', $idStudent)
+                ->where('payment.idGroup', $idGroup)
+                ->where('payment.idIncome', $idIncome)
+                ->first();
+        }
+
+    public static function checkElementPaiment($idGroup, $idStudent, $idIncome){
+        return Payment::select('*')
+            ->where('idGroup',$idGroup)
+            ->where('idStudent',$idStudent)
+            ->where('idIncome',$idIncome)
+            ->count();
+    }
+
+    public static function activatePaiment($idGroup, $idStudent, $month){
+        $paiment = Payment::select('*')
+            ->join('incomes','payment.idIncome','=','incomes.idIncome')
+            ->where('idGroup',$idGroup)
+            ->where('idStudent',$idStudent)
+            ->where('activationDate',$month)
+            ->first();
+        $paiment->etat = 0;
+        $paiment->save();
     }
 
     //------ total amount
@@ -59,14 +91,7 @@ class Payment extends Model
     }
 
 
-    //------------ find reçue by matricule-------- //
-    public static function selectPayment($matricule)
-    {
-        return Payment::select('*')
-            ->join('students', 'students.idStudent', '=', 'payment.idStudent')
-            ->where('payment.idStudent', $matricule)
-            ->get();
-    }
+
 
 
     //------------- create Payment ----------//         
@@ -98,17 +123,28 @@ class Payment extends Model
         ]);
     }
 
-    public static function initialGroupPayment($amount, $note, $idElement, $idIncome, $etat = null)
+    public static function initialGroupPayment($amount, $note, $idGroup, $idStudent, $idIncome, $etat = null)
     {
         Payment::create([
             'amount' => $amount,
             'note' => $note,
-            'idElement' => $idElement,
+            'idGroup' => $idGroup,
+            'idStudent' => $idStudent,
             'idIncome' => $idIncome,
             'etat' => $etat,
             'created_at' => date('Y-m-d H:i:s'),
             'created_at' => date('Y-m-d H:i:s')
         ]);
+    }
+
+    public static function pendingGroupPaiments($idGroup,$idStudent){
+        return Payment::select('*')
+                ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                ->where('idStudent',$idStudent)
+                ->where('idGroup',$idGroup)
+                ->where('activationDate','!=','00')
+                ->whereNotNull('activationDate')
+                ->get();
     }
     
     /* ---------------------------------------
@@ -117,6 +153,7 @@ class Payment extends Model
     public static function nbPayments($idStudent,$etat = 0){
         return Payment::where('idStudent',$idStudent)->where('etat',$etat)->count();
     }
+
 
     public static function validateStudentPaiment($idPayment,$numeroRecu,$datePayment,$amountPaid,$paymentMode){
         $paiment = Payment::find($idPayment);
@@ -137,6 +174,9 @@ class Payment extends Model
         Payment::find($idPayment)->delete();
     }
 
+    public static function deleteDisactivatedPaiments($idGroup,$idStudent){
+        Payment::where('idGroup',$idGroup)->where('idStudent',$idStudent)->whereNull('etat')->forceDelete();
+    }
 
     // --------------- Archive Payment ------------------ //
 

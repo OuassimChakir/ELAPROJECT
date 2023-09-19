@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Group;
 use App\Models\GroupElements;
+use App\Models\Incomes\Income;
+use App\Models\Incomes\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -18,6 +20,8 @@ class AttendanceController extends Controller
     {
         if ($request->has('markAttendance')) {
             $flag = 0;
+            $date = explode('-',$request->dateAbsence);
+            $income = Income::getIncomeByDate($date[1]);
             for ($i=0; $i < count($request->students); $i++) { 
                 $element = GroupElements::getElement($idGroup,$request->students[$i]);
                 if(Attendance::checkAbsence($request->dateAbsence, $element->idElement) != 0){
@@ -25,9 +29,15 @@ class AttendanceController extends Controller
                     break;
                 }
                 Attendance::markAttendance($request->absence[$i],$request->dateAbsence,$element->idElement);
+                if(Attendance::countAttendances($element->idElement, $date[1]) >= 2){
+                    $paiment = Payment::selectPayment($idGroup, $element->idStudent,$income->idIncome);
+                    if(is_null($paiment->etat))
+                        Payment::activatePaiment($element->idGroup,$element->idStudent, $date[1]);  
+                }
             }
 
             // Reset Paiments
+
 
             if($flag == 1)
                 return Redirect::back()->with('updateMessage', "L'absence de ce groupe était déjà marquée.");
@@ -45,12 +55,13 @@ class AttendanceController extends Controller
                 if($students[$i]->attendance->count() == 0) $students[$i]->attendance = null;
             }
             return view('pages.groupes.presence')->with([
-                'allGroups' => $allGroups,
+                'groups' => $allGroups,
+                'idGroup' => $request->idGroup,
                 'studentsAttendance' => $students,
                 'dateAbsence' => explode('-',$request->dateAbsence),
             ]);
         }
-        return view('pages.groupes.presence')->with('allGroups', $allGroups);
+        return view('pages.groupes.presence')->with('groups', $allGroups);
     }
 
 

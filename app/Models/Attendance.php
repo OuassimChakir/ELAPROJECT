@@ -58,6 +58,14 @@ class Attendance extends Model
             ->whereRaw('MONTH(dateAbsence) = '.$date[1].' AND YEAR(dateAbsence) = '.$date[0])
             ->get();
     }
+    // ---------- Total attendances in a month ---------- //
+    public static function countAttendances($idElement, $month){
+        return Attendance::select('*')
+                ->where('idElement',$idElement)
+                ->where('absence',0)
+                ->whereRaw('MONTH(dateAbsence) = '.$month)
+                ->count();
+    }
 
     // ---------- Total absence for Each Month in the Scolare Year ---------- //
     public static function totalAbsenceMonth($firstYear, $secondYear)
@@ -88,8 +96,8 @@ class Attendance extends Model
     /* ---------------------------------
     /  Delete Attendance by Group
     /----------------------------------*/
-    public static function deleteGroupAbsence($idGroup)
+    public static function deleteGroupAttendance($idElement)
     {
-        Attendance::where('idGroup', $idGroup)->delete();
+        Attendance::where('idElement', $idElement)->delete();
     }
 }

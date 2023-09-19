@@ -9,11 +9,12 @@ class GroupElements extends Model
 {
     use HasFactory;
     protected $table = "groupelements";
+    protected $primaryKey = "idElement";
     protected $fillable = ['created_at', 'updated_at', 'idStudent', 'idGroup'];
     public static function addElement($idGroup, $idStudent)
     {
-        return GroupElements::insertGetId([
-            'create_at' => date('Y-m-d h:i:s'),
+        GroupElements::create([
+            'created_at' => date('Y-m-d h:i:s'),
             'updated_at' => date('Y-m-d h:i:s'),
             'idStudent' => $idStudent,
             'idGroup' => $idGroup
@@ -58,9 +59,9 @@ class GroupElements extends Model
     }
 
     // Remove Student from Group
-    public static function cancelAssignment($id)
+    public static function cancelAssignment($idElement)
     {
-        return GroupElements::find($id)->delete();
+        return GroupElements::find($idElement)->delete();
     }
 
     /* ---------------------------------
@@ -72,12 +73,12 @@ class GroupElements extends Model
     }
 
     // Get Assignment
-    public static function getAssignment($id)
+    public static function getAssignment($idElement)
     {
         return GroupElements::select('*')
-            ->join('groups', 'classrooms.idGroup', '=', 'groups.idGroup')
-            ->join('students', 'classrooms.idStudent', '=', 'students.idStudent')
-            ->where('id', $id)
+            ->join('groups', 'groupelements.idGroup', '=', 'groups.idGroup')
+            ->join('students', 'groupelements.idStudent', '=', 'students.idStudent')
+            ->where('idElement', $idElement)
             ->first();
     }
 }

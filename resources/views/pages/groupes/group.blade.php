@@ -177,9 +177,7 @@
                                                         @foreach ($students as $student)
                                                             <tr>
                                                                 <td>
-                                                                    <input type="checkbox" name="students[]"
-                                                                        value="{{ $student->id }}"
-                                                                        class="form-check-input archivedStudents">
+                                                                    <input type="checkbox" name="students[]" value="{{ $student->idElement }}" class="form-check-input archivedStudents">
                                                                 </td>
                                                                 <td>
                                                                     {{ $student->matricule }}

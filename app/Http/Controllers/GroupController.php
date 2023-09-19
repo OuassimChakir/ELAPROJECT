@@ -15,6 +15,7 @@ use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
 use App\Models\responsible\Professeurs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 
@@ -134,7 +135,7 @@ class GroupController extends Controller
     
     public function assignElement($idGroup, $idStudent)
     {
-        $idElement = GroupElements::addElement($idGroup, $idStudent);
+        GroupElements::addElement($idGroup, $idStudent);
         $group = Group::getGroup($idGroup);
         $debut = (int)explode('-',$group->debutFormation)[1];
         $year = (int)explode('-',$group->debutFormation)[0];
@@ -147,11 +148,16 @@ class GroupController extends Controller
         
         for ($i = $debut; $i <= $breakpoint; $i++){
             $income = Income::getIncomeByDate($i);
-            Payment::initialGroupPayment($group->amount,$income->description.' - '.$year,$idElement,$income->idIncome);
-            if($i == 12){
-                $i = 0;
-                $breakpoint = $fin;
-                $year++;
+            // Log::info("Iterations ".$i." - idIncome ".$income->idIncome." - Result: ".Payment::checkElementPaiment($idGroup,$idStudent, $income->idIncome)." - idStudent: ".$idStudent." & idGroup ".$idGroup);
+            if(Payment::checkElementPaiment($idGroup,$idStudent, $income->idIncome) != 0)
+                continue;
+            else{
+                Payment::initialGroupPayment($group->amount,$income->description.' - '.$year,$idGroup,$idStudent,$income->idIncome);
+                if($i == 12){
+                    $i = 0;
+                    $breakpoint = $fin;
+                    $year++;
+                }
             }
         }
 
@@ -163,12 +169,15 @@ class GroupController extends Controller
 
     public function cancelAssignment($idElement)
     {
+        $assignment = GroupElements::getAssignment($idElement);
         if (session()->get('user')) {
-            $assignment = GroupElements::getAssignment($idElement);
             $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
             $activityDescription = "L'Etudiant " . $assignment->nom_fr . " " . $assignment->prenom_fr . " (" . $assignment->matricule . ') du Group ' . $assignment->designation . " (ID = " . $assignment->idGroup . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
+
+        Payment::deleteDisactivatedPaiments($assignment->idGroup,$assignment->idStudent);
+        Attendance::deleteGroupAttendance($idElement);
         GroupElements::cancelAssignment($idElement);
         return Redirect::back()->with('deleteMessage', "L'étudiant a été retiré du groupe avec succès");
     }
