@@ -13,7 +13,7 @@ class Facture extends Model
     use SoftDeletes;
     protected $table = "expensespayment";
     protected $primaryKey = "idExpensePayment";
-    protected $fillable = ['datePayment', 'amount', 'description', 'idStaff', 'idExpense','idProfesseur', 'created_at', 'updated_at','id'];
+    protected $fillable = ['datePayment','nom','prenom', 'amount', 'description', 'idStaff', 'idExpense','idProfesseur', 'created_at', 'updated_at','id'];
 
     //------------- all facture de dépenses----------//
     public static function allFacture(){
@@ -34,10 +34,12 @@ class Facture extends Model
     }
 
     //------------- create facture ----------//         
-    public static function createFacture($datePayment, $amount, $description, $idStaff, $idProfesseur, $idExpense,$id){
+    public static function createFacture($datePayment,$nom,$prenom, $amount, $description, $idStaff, $idProfesseur, $idExpense,$id){
         $facture = Facture::create([
             'datePayment' => $datePayment,
             'amount' => $amount,
+            'nom' => $nom,
+            'prenom' => $prenom,
             'description' => $description,
             'idStaff' => $idStaff,
             'idProfesseur' => $idProfesseur,
@@ -62,10 +64,8 @@ class Facture extends Model
     // ---------- Select Facture for PDF Print ----------- //
 
     public static function getFacturePdf($idExpensePayment){
-        return Facture::select('expensespayment.*', 'expenses.designation', 'expenses.code')
+        return Facture::select('*')
             ->join('expenses', 'expensespayment.idExpense', '=', 'expenses.idExpense')
-            ->leftJoin('staffs', 'expensespayment.idStaff', '=', 'staffs.idStaff')
-            ->leftJoin('professeurs', 'expensespayment.idProfesseur', '=', 'professeurs.idProfesseur')
             ->where('idExpensePayment', $idExpensePayment)
             ->first();
     }

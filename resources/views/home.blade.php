@@ -249,7 +249,7 @@
                     },
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 100,
+                        stepSize: {{ $max/10 }},
                         max: {{ $max }},
                     }
                     }
