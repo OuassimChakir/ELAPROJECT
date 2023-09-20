@@ -6,6 +6,8 @@ use App\Models\Activite;
 use Illuminate\Http\Request;
 use App\Models\Courses\CourseType;
 use App\Models\Courses\Subjects;
+use App\Models\Expenses\Facture;
+use App\Models\Group;
 use App\Models\responsible\Professeurs;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
@@ -45,7 +47,7 @@ class TeacherController extends Controller
                             ->with('newProfesseur',$newProfesseur);
         }
         return view('pages.teachers.teachers')
-                ->with('subjects',$subjects)
+                ->with('subjects',$subjects) 
                 ->with('courseTypes',$courseTypes)
                 ->with('teachers',$teachers);
     }
@@ -53,11 +55,15 @@ class TeacherController extends Controller
     public function teacherProfil($idProfesseur){
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
+        $groups=Group::getGroupsByProf($idProfesseur);
+        $factures=Facture::getFacturesByProf($idProfesseur);
         $teacher = Professeurs::getProfesseur($idProfesseur);
         return view('pages.teachers.teacherprofil')
                 ->with('teacher',$teacher)
                 ->with('subjects',$subjects)
-                ->with('courseTypes',$courseTypes);
+                ->with('courseTypes',$courseTypes)
+                ->with('groups',$groups)
+                ->with('factures',$factures);
     }
 
     public function updateTeacher(Request $request,$idProfesseur){

@@ -7,6 +7,7 @@ use App\Models\Courses\CourseType;
 use App\Models\Responsible\Staff;
 use App\Models\Responsible\Stafftype;
 use App\Models\Courses\Subjects;
+use App\Models\Expenses\Facture;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -60,8 +61,10 @@ class StaffController extends Controller
     public function staffProfil($idStaff){
         $staffInfo =staff::getStaff($idStaff);
         $staffTypes =Stafftype::getStaffTypes();
+        $factures=Facture::getFacturesByStaff($idStaff);
         return view('pages.staff.staffProfil')
                 ->with('staff',$staffInfo)
+                ->with('factures',$factures)
                 ->with('staffTypes',$staffTypes);
     }
 

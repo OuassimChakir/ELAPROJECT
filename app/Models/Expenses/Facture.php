@@ -33,6 +33,22 @@ class Facture extends Model
         return Facture::select()->get()->sum('amount');
     }
 
+    public static function getFacturesByProf($idProfesseur){
+        return Facture::select('*')
+        ->join('expenses', 'expenses.idExpense', '=', 'expensespayment.idExpense')
+        ->where('idProfesseur', $idProfesseur)
+        ->orderBy('created_at','asc')
+        ->get();
+    }
+    public static function getFacturesByStaff($idStaff){
+        return Facture::select('*')
+        ->join('expenses', 'expenses.idExpense', '=', 'expensespayment.idExpense')
+        ->where('idStaff', $idStaff)
+        ->orderBy('created_at','asc')
+        ->get();
+    }
+
+
     //------------- create facture ----------//         
     public static function createFacture($datePayment,$nom,$prenom, $amount, $description, $idStaff, $idProfesseur, $idExpense,$id){
         $facture = Facture::create([

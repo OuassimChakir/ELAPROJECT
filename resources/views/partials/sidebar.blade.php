@@ -178,13 +178,15 @@
 							@if (!is_null(session()->get('user')->idRole))
 								<!-- ARCHIVE -->
 								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive')
-								|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive') ? 'active' : ''}}">
+								|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
+								||Route::is('groups.archive') ? 'active' : ''}}">
 									<a class="sidenav-item-link" href="javascript:void(0)">
 										<i class="bi bi-archive-fill"></i>
 										<span class="nav-text">Archive</span> <b class="caret"></b>
 									</a>
 									<div class="collapse {{ Route::is('student.archive') || Route::is('teachers.archive')
-									|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive') ? 'show' : 'collapsed'}}">
+									|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
+									||Route::is('groups.archive') ? 'show' : 'collapsed'}}">
 										<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 											<li class="{{Route::is('student.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('student.archive')}}">
