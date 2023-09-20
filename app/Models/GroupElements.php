@@ -48,8 +48,12 @@ class GroupElements extends Model
     public static function groupElements($idGroup)
     {
         return GroupElements::select('students.*', 'groupelements.idElement','groupelements.created_at as dateAjout')
+            ->selectRaw('count(idPayment) - sum(etat) as pendingPaiment')
             ->join('students', 'students.idStudent', '=', 'groupelements.idStudent')
-            ->where('idGroup', $idGroup)
+            ->leftjoin('payment','payment.idStudent','=','students.idStudent')
+            ->where('groupelements.idGroup', $idGroup)
+            ->whereNotNull('etat')
+            ->groupBy('students.idStudent')
             ->get();
     }
 

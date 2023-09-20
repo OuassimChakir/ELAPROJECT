@@ -305,4 +305,33 @@
             })
         }
     </script>
+
+    {{-- Paiment Modal --}}
+    <script>
+        $(document).on('click','.payInvoiceBtn', function(){
+            var idPaiment = $(this).val();
+            
+            // AJAX request 
+            $.ajax({
+                url: '/getbmapaiment/'+idPaiment,
+                type: 'get',
+                dataType: 'json',
+                success: function(response) {
+                    $('#invoicePaimentForm').attr('action','/bmapaiment/'+response.idPayment);
+                    $('#paimentNote').empty();
+                    $("#paimentNote").append(response.note);
+                    if(response.idGroup == null)
+                        $('#paimentDesignation').val(response.incomeDesignation);
+                    else
+                        $('#paimentDesignation').val(response.groupDesignation);
+                    $('#paimentIdStudent').val(response.matricule);
+                    $('#paimentAmount').val(response.amount);
+                    $('#paimentAmountPaid').attr('max',response.amount);
+                },
+                error: function(request, status, error) {
+                    alert(request.responseText);
+                }
+            });
+        });
+    </script>
 @endsection

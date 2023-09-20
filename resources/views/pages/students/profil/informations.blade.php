@@ -25,9 +25,8 @@
                                             <p>{{ $item->note }}</p>
                                         </div>
                                         <span class=" font-size-12 d-inline-block">
-                                            <a href="{{route('paiment', ['idPayment' => $item->idPayment])}}">
-                                                <button class="btn btn-outline-success"><span class="mdi mdi-check"></span></button>
-                                            </a>
+                                            <button class="btn btn-outline-success payInvoiceBtn" data-bs-toggle="modal"
+                                            data-bs-target="#invoicePaiment" value="{{$item->idPayment}}"><span class="mdi mdi-check"></span></button>
                                         </span>
                                     </div>
                                     @else
@@ -41,13 +40,11 @@
                                             <p>{{ $item->note }}</p>
                                         </div>
                                         <span class=" font-size-12 d-inline-block">
-                                            <a href="{{route('paiment', ['idPayment' => $item->idPayment])}}">
-                                                <button class="btn btn-outline-success"><span class="mdi mdi-check"></span></button>
-                                            </a>
+                                                <button class="btn btn-outline-success payInvoiceBtn" data-bs-toggle="modal"
+                                                data-bs-target="#invoicePaiment" value="{{$item->idPayment}}"><span class="mdi mdi-check"></span></button>
                                         </span>
                                     </div>
-                                    @endif
-                                    
+                                    @endif 
                                 @endforeach
                             @endif
 
@@ -59,3 +56,4 @@
         </div>
     </div>
 </div>
+@include('pages.incomes.paimentModal')

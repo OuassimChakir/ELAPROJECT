@@ -181,6 +181,11 @@
                                                                 </td>
                                                                 <td>
                                                                     {{ $student->matricule }}
+                                                                    @if ($student->pendingPaiment == 0)
+                                                                        <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
+                                                                    @else
+                                                                        <span class="badge badge-danger">{{ $student->pendingPaiment }} <i class="bi bi-hourglass"></i></span>
+                                                                    @endif
                                                                 </td>
                                                                 <td>
                                                                     <a

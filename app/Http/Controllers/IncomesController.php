@@ -113,6 +113,11 @@ class IncomesController extends Controller
         ]);
     }
 
+    public function ajaxPaimentModal($idPayment){
+        $paiment = Payment::getStudentPaiment($idPayment);
+        return response()->json($paiment);
+    }
+
     // ------------ Suppression du Payment --------- //
     public function deletePayment($idPayment)
     {

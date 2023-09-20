@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activite;
-use App\Models\Classrooms;
 use App\Models\Group;
 use App\Models\GroupElements;
 use App\Models\Incomes\Income;
@@ -83,6 +82,7 @@ class StudentController extends Controller
         $studentGroups = GroupElements::studentGroups($idStudent);
         $lastPaiments = Payment::getStudentLastestPaiments($idStudent);
         $invoiceGroups = Group::getGroupWithStudentInvoices($idStudent);
+        $paiment = Payment::getStudentPaiment(101);
         return view('pages.students.studentprofil')->with([
             'student' => $studentInfo,
             'pendingPaiment' => $pendingPaiment,
@@ -90,7 +90,8 @@ class StudentController extends Controller
             'courseTypes' => $courseTypes,
             'studentGroups' => $studentGroups,
             'lastPaiments' => $lastPaiments,
-            'invoiceGroups' => $invoiceGroups
+            'invoiceGroups' => $invoiceGroups,
+            'paiment' => $paiment
         ]);
 
     }

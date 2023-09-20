@@ -33,9 +33,10 @@ class Payment extends Model
     }
 
     public static function getStudentPaiment($idPayment){
-        return Payment::select('*')
+        return Payment::select('payment.*','students.*','incomes.*','groups.designation as groupDesignation','incomes.designation as incomeDesignation')
             ->join('incomes','payment.idIncome','=','incomes.idIncome')
             ->join('students','payment.idStudent','=','students.idStudent')
+            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
             ->where('idPayment',$idPayment)
             ->first();
     }

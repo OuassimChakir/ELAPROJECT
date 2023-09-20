@@ -195,6 +195,7 @@ Route::middleware([
     // Delete Incomes Payment 
     Route::get('/bmapaiment/delete/{idPayment}', [IncomesController::class,'deletePayment'])->name('incomePayment.delete');
     Route::get('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment');
+    Route::get('/getbmapaiment/{idPayment}',[IncomesController::class,'ajaxPaimentModal']);
     Route::post('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment.validate');
     
     // ----- pdf de facture

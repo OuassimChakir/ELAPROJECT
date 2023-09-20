@@ -43,6 +43,7 @@
                             <input type="checkbox" class="form-check-input" id="selectAllArchived">
                         </th>
                     @endif
+                    <td></td>
                     <th>Designation</th>
                     <th>Matière</th>
                     <th>Professeur</th>
@@ -57,6 +58,13 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="groupes[]" value="{{$groupe->idGroup}}" class="form-check-input archivedStudents">
+                        </td>
+                        <td>
+                            @if ($groupe->pendingPaiment == 0)
+                                <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
+                            @else
+                                <span class="badge badge-danger">{{ $groupe->pendingPaiment }} <i class="bi bi-hourglass"></i></span>
+                            @endif
                         </td>
                         <td>
                             <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">{{$groupe->designation}}</a>
