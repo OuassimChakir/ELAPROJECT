@@ -50,7 +50,7 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="attendance-tab" data-bs-toggle="tab" data-bs-target="#attendance"
                                 type="button" role="tab" aria-controls="attendance"
-                                aria-selected="false">Absence</button>
+                                aria-selected="false">Paramètres d'Absence</button>
                         </li>
                     </ul>
                     <div class="tab-content px-3 px-xl-5" id="myTabContent">
@@ -403,159 +403,154 @@
                         </div>
 
                         {{-- Absence --}}
-                        <div class="tab-pane fade" id="markAttendance" role="tabpanel"
-                            aria-labelledby="markAttendance-tab">
-                            <div class="tab-pane-content mt-5">
-                                <form method="POST" action="{{ route('absence.add', ['idGroup' => $group->idGroup]) }}">
-                                    <table id="responsive-data-table" class="table">
-                                        <div class="col-3 input-group-date">
-                                        @csrf
-                                        @method('post')
-                                        <input type="date" name="dateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
+                        <div class="tab-pane fade" id="markAttendance" role="tabpanel" aria-labelledby="markAttendance-tab">
+                            <div class="tab-pane-content">
+                                <div class="card p-4 mb-4">
+                                    <h3 class="card-title">Afficher d'absences</h3>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <form method="POST" action="{{ route('getAttendance') }}" target="_blank">
+                                                @csrf
+                                                @method('post')
+                                                <div class="row">
+                                                    <div class="col-sm-10">
+                                                        <input type="month" name="dateAbsence" class="form-control" value="{{ date('Y-m') }}">
+                                                        <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <button type="submit" name="getAttendance" class="btn btn-primary btn-pill form-control">Recherche</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <thead>
-                                            <tr>
-                                                @if ($students->count() != 0)
-                                                    <th>
-                                                        <input type="checkbox" class="form-check-input" id="selectAll">
-                                                    </th>
-                                                @endif
-                                                <th>#</th>
-                                                <th>Nom</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($students as $student)
-                                                <tr>
-                                                    <td>
-                                                        <input type="checkbox" class="form-check-input students">
-                                                    </td>
-                                                    <td>
-                                                        {{ $student->matricule }}
-                                                        <input type="hidden" name="students[]" class="form-control"
-                                                            value="{{ $student->idStudent }}">
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
-                                                            {{ $student->prenom_fr }}
-                                                            {{ $student->nom_fr }}
-                                                        </a>
-                                                        @if ($student->sexe == 'Homme')
-                                                            <span class="badge badge-pill badge-info">M</span>
-                                                        @else
-                                                            <span class="badge badge-pill badge-purple">F</span>
+                                    </div>
+                                </div>
+
+                                <div class="card p-4">
+                                    <h3 class="card-title">Marquer l'Absence</h3>
+                                    <div class="card-body">
+                                        <form method="POST" action="{{ route('absence.add', ['idGroup' => $group->idGroup]) }}">
+                                            <table id="responsive-data-table" class="table">
+                                                <div class="col-3 input-group-date">
+                                                @csrf
+                                                @method('post')
+                                                <input type="date" name="dateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
+                                                </div>
+                                                <thead>
+                                                    <tr>
+                                                        @if ($students->count() != 0)
+                                                            <th>
+                                                                <input type="checkbox" class="form-check-input" id="selectAll">
+                                                            </th>
                                                         @endif
-                                                    </td>
-                                                    <td>
-                                                        <select name="absence[]" id="id-Subject"
-                                                            class="absenceState form-select form-control" required>
-                                                            <option value="0">
-                                                                Présent
-                                                            </option>
-                                                            <option value="1">
-                                                                Absent
-                                                            </option>
-                                                            <option value="2">
-                                                                Justifié
-                                                            </option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <button type="submit" name="markAttendance" class="btn btn-primary btn-pill">Marquée L'absence</button>
-                                </form>
+                                                        <th>#</th>
+                                                        <th>Nom</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($students as $student)
+                                                        <tr>
+                                                            <td>
+                                                                <input type="checkbox" class="form-check-input students">
+                                                            </td>
+                                                            <td>
+                                                                {{ $student->matricule }}
+                                                                <input type="hidden" name="students[]" class="form-control"
+                                                                    value="{{ $student->idStudent }}">
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                                                    {{ $student->prenom_fr }}
+                                                                    {{ $student->nom_fr }}
+                                                                </a>
+                                                                @if ($student->sexe == 'Homme')
+                                                                    <span class="badge badge-pill badge-info">M</span>
+                                                                @else
+                                                                    <span class="badge badge-pill badge-purple">F</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <select name="absence[]" id="id-Subject"
+                                                                    class="absenceState form-select form-control" required>
+                                                                    <option value="0">
+                                                                        Présent
+                                                                    </option>
+                                                                    <option value="1">
+                                                                        Absent
+                                                                    </option>
+                                                                    <option value="2">
+                                                                        Justifié
+                                                                    </option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <button type="submit" name="markAttendance" class="btn btn-primary btn-pill">Marquée L'absence</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="tab-pane fade" id="attendance" role="tabpanel" aria-labelledby="attendance-tab">
                             <div class="tab-pane-content mt-5">
-                                <div class="mb-3">
-                                    <form method="POST" action="{{ route('getAttendance') }}" target="_blank">
-                                        @csrf
-                                        @method('post')
-                                        <div class="row">
-                                            <div class="col-sm-8">
-                                                <input type="month" name="dateAbsence" class="form-control" value="{{ date('Y-m') }}">
-                                                <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <button type="submit" name="getAttendance" class="btn btn-primary btn-pill">Recherche</button>
-                                            </div>
+                                <div class="card p-4 mb-2">
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                                <div class="row">
+                                                    <div class="col-sm-5">
+                                                        <input type="month" name="dateAbsence" id="absenceDateInput" class="form-control" value="{{ date('Y-m') }}" required>
+                                                        <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                        <select name="idAttendance" class="form-control" id="attendanceSelect" required disabled>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <button id="getAttendanceButton" class="btn btn-primary btn-pill form-control" disabled>Recherche</button>
+                                                    </div>
+                                                </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-                                
 
-                                @if (isset($studentsAttendance))
-                                <div id="attendanceCalendier" class="m-1" style="overflow-x:auto;">
-                                    <table class="table table-bordered table-hover">
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); $i++)
-                                                    <td>{{$i}}</td>
-                                                @endfor
-                                            </tr>
-                                            @foreach ($studentsAttendance as $student)
-                                            <tr>
-                                                <th>{{ucfirst($student->prenom)}} {{ucfirst($student->nom)}}</th>
-                                                @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, $dateAbsence[1], $dateAbsence[0]); $i++)
-                                                    @if (is_null($student->attendance))
-                                                    <td></td>
-                                                    @else
-                                                        @php $flag = 0; @endphp
-                                                        @foreach ($student->attendance as $item)
-                                                            @if ($item->day == $i)
-                                                                @if ($item->absence == 0)
-                                                                    <td class="bg-success"></td>
-                                                                @elseif($item->absence == 1)
-                                                                    <td class="bg-danger"></td>
-                                                                @else
-                                                                    <td class="bg-warning"></td>
-                                                                @endif
-                                                                @php $flag = 1; @endphp
-                                                                @break;
-                                                            @endif
-                                                        @endforeach
-                                                        @if ($flag == 0)
-                                                            <td></td>
+
+                                <div class="card p-4" id="updateAttendanceSection">
+                                    <h3 class="card-title">Gérer l'Absence</h3>
+                                    <div class="card-body">
+                                        <form method="POST" action="{{ route('attendance.update') }}">
+                                            <table id="responsive-data-table" class="table">
+                                                <div class="col-3 input-group-date">
+                                                @csrf
+                                                @method('post')
+                                                <input type="date" name="dateAbsence" id="updatedDateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
+                                                <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
+                                                <input type="hidden" name="deletionDateAbsence" id="deletionDateAbsence">
+                                                </div>
+                                                <thead>
+                                                    <tr>
+                                                        @if ($students->count() != 0)
+                                                            <th>
+                                                                <input type="checkbox" class="form-check-input" id="selectAllUpdated">
+                                                            </th>
                                                         @endif
-                                                    @endif
-                                                @endfor
-                                            </tr>
-                                            @endforeach
-                                            
-                                            <tr>
-                                                <th>Student Name</th>
-                                                @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); $i++)
-                                                    @if ($i%7 == 0)
-                                                    <td class="bg-success"></td>
-                                                    @elseif ($i%8 == 0)
-                                                    <td class="bg-danger"></td>
-                                                    @else
-                                                    <td></td>
-                                                    @endif
-                                                @endfor
-                                            </tr>
-                                            <tr>
-                                                <th>Student Name</th>
-                                                @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); $i++)
-                                                    @if ($i%7 == 0)
-                                                    <td class="bg-success"></td>
-                                                    @elseif ($i%8 == 0)
-                                                    <td class="bg-danger"></td>
-                                                    @else
-                                                    <td></td>
-                                                    @endif
-                                                @endfor
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                        <th>#</th>
+                                                        <th>Nom</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="updateAttendanceStudents">
+                                                    
+                                                </tbody>
+                                            </table>
+                                            <button type="submit" name="updateAttendance" id="updateAttendanceBtn" class="btn btn-warning btn-pill" disabled>Modifier L'absence</button>
+                                            <button type="submit" name="deleteAttendance" id="deleteAttendanceBtn" class="btn btn-outline-danger btn-pill" formaction="{{route('attendance.delete')}}" onclick="return confirm('ATTENTION: Vous êtes sur le point de supprimer cette présence!!');" disabled>Supprimer L'absence</button>
+                                        </form>
+                                    </div>
                                 </div>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -624,11 +619,11 @@
         </script>
         <script type='text/javascript'>
             $(document).ready(function() {
-                $('#cancelBtn').click(function() {
+                $('#cancelBtn').on('click',function() {
                     location.reload(true);
                 });
             });
-            $('#selectAllArchived').click(function(event) {
+            $('#selectAllArchived').on('click',function(event) {
                 if (this.checked) {
                     // Iterate each checkbox
                     $(':checkbox').each(function() {
@@ -640,7 +635,7 @@
                     });
                 }
             });
-            $('#selectAll').click(function(event) {
+            $('#selectAll').on('click',function(event) {
                 if (this.checked) {
                     // Iterate each checkbox
                     $('.students').each(function() {
@@ -657,7 +652,7 @@
                 }
             });
             $(document).ready(function() {
-                $('.students').click(function(event) {
+                $('.students').on('click',function(event) {
                     if (this.checked) {
                         // Iterate each checkbox
                         $(this).closest('tr').find('.absenceState option:first-child').prop('selected', false);
@@ -691,7 +686,119 @@
                     }
                 })
             }
+
         </script>
 
+        {{-- Script: Generation of Select with available date of attendance --}}
+        <script>
+            $(document).ready(function(){
+                $('#absenceDateInput').on('change',function(){
+                    var dateAbsence = $(this).val();
+                    var idGroup = '{{$group->idGroup}}';
+                    $('#attendanceSelect').empty();
+                    $('#attendanceSelect').prop('disabled',false);
+                     // AJAX request 
+                    $.ajax({
+                        url: '/attendance/' + idGroup + '/' + dateAbsence,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function(response) {
+                            var len = response.length;
+                            if (len > 0) {
+                                // Read data and create  html
+                                var html = '';
+                                for (var i = 0; i < len; i++) {
+                                    html = '<option value=' + response[i].dateAbsence + '>' + response[i].dateAbsence + '</option>';
+                                    $("#attendanceSelect").append(html);
+                                }
+                                $('#getAttendanceButton').prop('disabled',false);
+                            }else{
+                                $('#attendanceSelect').prop('disabled',true);
+                                $('#getAttendanceButton').prop('disabled',true);
+                            }
+                        },
+                        error: function(request, status, error) {
+                            console.log(request.responseText);
+                        }
+                    });
+                });
+            });
+        </script>
 
+        {{-- Script: Getting Attendance Data --}}
+        <script>
+            $(document).ready(function(){
+                $('#getAttendanceButton').on('click',function(){
+                    var dateAbsence = $('#attendanceSelect').val();
+                    var idGroup = '{{$group->idGroup}}';
+                    $('#updateAttendanceStudents').empty();
+                     // AJAX request 
+                    $.ajax({
+                        url: '/attendance/update/' + idGroup + '-' + dateAbsence,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function(response) {
+                            var len = response.length;
+                            if (len > 0) {
+                                $('#updatedDateAbsence').val(dateAbsence);
+                                $('#deletionDateAbsence').val(dateAbsence);
+                                // Read data and create  html
+                                var html = '';
+                                for (var i = 0; i < len; i++) {
+                                    html = '<tr>';
+                                    html += '<td> <input type="checkbox" class="form-check-input updatedAttendanceStudents" '+((response[i].absence == 1) ? 'checked' : '') + '/> </td>'
+                                    html += '<td> ' + response[i].matricule + '<input type="hidden" name="attendances[]" class="form-control" value="' + response[i].idAttendance + '" /> </td>';
+
+                                    html += '<td> <a href="/student/'+response[i].idStudent+'" > '+response[i].prenom_fr+' '+response[i].nom_fr+'</a> '+((response[i].sexe == 'Homme') ? '<span class="badge badge-pill badge-info">M</span>' : '<span class="badge badge-pill badge-purple">F</span>')+' </td>';
+                                    html += '<td> <select name="absence[]" id="id-Subject" class="updatedAbsenceState form-select form-control" required >';
+                                    html += '<option value="0" '+((response[i].absence == 0) ? 'selected' : '')+'>Présent</option>';
+                                    html += '<option value="1" '+((response[i].absence == 1) ? 'selected' : '')+'>Absent</option>';
+                                    html += '<option value="2" '+((response[i].absence == 2) ? 'selected' : '')+'>Justifié</option></select></td></tr>';
+                                    $("#updateAttendanceStudents").append(html);
+                                }
+                                $('#updateAttendanceBtn').prop('disabled',false);
+                                $('#deleteAttendanceBtn').prop('disabled',false);
+                                $('html, body').animate({
+                                    scrollTop: $("#updateAttendanceSection").offset().top
+                                }, 0);
+                            }else{
+                                $('#updateAttendanceBtn').prop('disabled',true);
+                                $('#deleteAttendanceBtn').prop('disabled',true);
+                            }
+                        },
+                        error: function(request, status, error) {
+                            console.log(request.responseText);
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+            $(document).on('click','#selectAllUpdated',function() {
+                if (this.checked) {
+                    // Iterate each checkbox
+                    $('.updatedAttendanceStudents').each(function() {
+                        this.checked = true;
+                        $(this).closest('tr').find('.updatedAbsenceState option:first-child').prop('selected', false);
+                        $(this).closest('tr').find('.updatedAbsenceState option:nth-child(2)').prop('selected', true);
+                    });
+                } else {
+                    $('.updatedAttendanceStudents').each(function() {
+                        this.checked = false;
+                        $(this).closest('tr').find('.updatedAbsenceState option:nth-child(2)').prop('selected', false);
+                        $(this).closest('tr').find('.updatedAbsenceState option:first-child').prop('selected', true);
+                    });
+                }
+            });
+            $(document).on('click','.updatedAttendanceStudents',function() {
+                if (this.checked) {
+                    // Iterate each checkbox
+                    $(this).closest('tr').find('.updatedAbsenceState option:first-child').prop('selected', false);
+                    $(this).closest('tr').find('.updatedAbsenceState option:nth-child(2)').prop('selected', true);
+                } else {
+                    $(this).closest('tr').find('.updatedAbsenceState option:nth-child(2)').prop('selected', false);
+                    $(this).closest('tr').find('.updatedAbsenceState option:first-child').prop('selected', true);
+                }
+            });
+        </script>
     @endsection

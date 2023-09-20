@@ -75,8 +75,6 @@ class Payment extends Model
                 ->whereNotNull('etat')
                 ->whereNull('payment.idGroup')
                 ->orderBy('datePayment')
-                ->skip(0)
-                ->take(10)
                 ->get();
         }else{
             // 10 last paiment, only group paiments
@@ -87,8 +85,6 @@ class Payment extends Model
             ->where('payment.idGroup',$idGroup)
             ->whereNotNull('etat')
             ->orderBy('datePayment')
-            ->skip(0)
-            ->take(10)
             ->get();
         }
     }
@@ -100,6 +96,15 @@ class Payment extends Model
             ->count();
     }
 
+    public static function getElementActivatedPaiment($idGroup, $idStudent, $idIncome){
+        return Payment::select('*')
+            ->where('idGroup',$idGroup)
+            ->where('idStudent',$idStudent)
+            ->where('idIncome',$idIncome)
+            ->where('etat',0)
+            ->first();
+    }
+
     public static function activatePaiment($idGroup, $idStudent, $month){
         $paiment = Payment::select('*')
             ->join('incomes','payment.idIncome','=','incomes.idIncome')
@@ -108,6 +113,12 @@ class Payment extends Model
             ->where('activationDate',$month)
             ->first();
         $paiment->etat = 0;
+        $paiment->save();
+    }
+
+    public static function disactivatePaiment($idPayment){
+        $paiment = Payment::find($idPayment);
+        $paiment->etat = null;
         $paiment->save();
     }
 

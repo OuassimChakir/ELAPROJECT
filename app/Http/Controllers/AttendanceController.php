@@ -71,11 +71,68 @@ class AttendanceController extends Controller
         $gradeData['data'] = Attendance::selectListeAbsenceByDateIdgroup($dateAbsence, $idGroup);
         return response()->json($gradeData);
     }
+
+    public function getAttendanceMonthDates($idGroup,$dateAbsence){
+        $date = explode('-',$dateAbsence);
+        $response = Attendance::select('dateAbsence')
+                            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+                            ->where('idGroup',$idGroup)
+                            ->whereRaw('MONTH(dateAbsence) = '.$date[1].' AND YEAR(dateAbsence) = '.$date[0])
+                            ->groupBy('dateAbsence')
+                            ->orderBy('dateAbsence')
+                            ->get();
+        return response()->json($response);
+    }
     // ---------------- Update Absence -------------- //
-    public function updateAbsence($idAttendance, $absence)
+    public function updateAttendanceAjax($idGroup, $dateAbsence)
     {
-        Attendance::updateAbsence($idAttendance, $absence);
-        $absenceData['data'] = Attendance::getOneAbsence($idAttendance);
-        return response()->json($absenceData);
+        $response = Attendance::select('*')
+                    ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+                    ->join('students','students.idStudent','=','groupelements.idStudent')
+                    ->where('idGroup',$idGroup)
+                    ->where('dateAbsence',$dateAbsence)
+                    ->get();
+        return response()->json($response);
+    }
+
+    public function updateAttendance(Request $request){
+        if($request->has('updateAttendance')){
+            $income = Income::getIncomeByDate(explode('-',$request->deletionDateAbsence)[1]);
+            for ($i=0; $i < count($request->attendances); $i++) {
+                Attendance::updateAbsence($request->attendances[$i], $request->absence[$i],$request->dateAbsence);
+
+                // Disactivated Payment if the absence was deleted
+                $student = Attendance::getAttendance($request->attendances[$i]);
+                $paiment = Payment::getElementActivatedPaiment($request->idGroup,$student->idStudent,$income->idIncome);
+                if(is_null($paiment) && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) >= 2)
+                    Payment::activatePaiment($request->idGroup,$student->idStudent,explode('-',$request->dateAbsence)[1]);
+                elseif($paiment->count() > 0 && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) < 2)
+                    Payment::disactivatePaiment($paiment->idPayment);
+            }
+            return Redirect::back()->with('successMessage', "Mise à jour des présences réussie !");
+
+        }
+        return Redirect::back()->with('deleteMessage', "Une erreur s'est produite");
+    }
+    // Delete Attendance
+    public function deleteAttendance(Request $request){
+        if($request->has('deleteAttendance')){
+            $income = Income::getIncomeByDate(explode('-',$request->deletionDateAbsence)[1]);
+
+            for ($i=0; $i < count($request->attendances); $i++) {
+                // Delete Attendance
+                $student = Attendance::getAttendance($request->attendances[$i]);
+                Attendance::deleteGroupAttendance($request->attendances[$i]);
+
+                // Disactivated Payment if the absence was deleted
+                $paiment = Payment::getElementActivatedPaiment($request->idGroup,$student->idStudent,$income->idIncome);
+                if(!is_null($paiment))
+                    if($paiment->count() > 0 && Attendance::countAttendances($student->idElement,explode('-',$request->deletionDateAbsence)[1]) < 2)
+                        Payment::disactivatePaiment($paiment->idPayment);
+                
+            }
+            return Redirect::back()->with('successMessage', "Présences supprimées avec succès");
+        }
+        return Redirect::back()->with('deleteMessage', "Une erreur s'est produite");
     }
 }

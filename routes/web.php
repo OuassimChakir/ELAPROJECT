@@ -136,7 +136,12 @@ Route::middleware([
     // add absence
     Route::post('/groupe/{idGroup}/markAttendance', [AttendanceController::class,'addAbsence'])->name('absence.add');
     // Update Student
-    Route::get('/attendance/update/{idAttendance}-{absence}', [AttendanceController::class,'updateAbsence']);
+    Route::get('/attendance/update/{idGroup}-{dateAbsence}', [AttendanceController::class,'updateAttendanceAjax']);
+    Route::post('/attendance/update', [AttendanceController::class,'updateAttendance'])->name('attendance.update');
+    Route::post('/attendance/delete', [AttendanceController::class,'deleteAttendance'])->name('attendance.delete');
+
+    // Attendance AJAX
+    Route::get('/attendance/{idGroup}/{dateAbsence}', [AttendanceController::class,'getAttendanceMonthDates']);
 
 
     // ------------- Classroom ---------- // 
