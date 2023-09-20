@@ -48,8 +48,7 @@
                                     @foreach ($students as $student)
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="students[]" value="{{ $student->matricule }}"
-                                                    class="form-check-input archivedStudents">
+                                                <input type="checkbox" name="students[]" value="{{ $student->matricule }}"class="form-check-input archivedStudents">
                                             </td>
                                             <td>{{ ++$i }}</td>
                                             <td>
@@ -81,8 +80,7 @@
                                                         <i class="bi bi-plus-lg"></i>
                                                     </button>
 
-                                                    <a
-                                                        href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                                    <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
                                                         <button type="button" name="show" class="btn btn-outline-info"
                                                             value="{{ $student->idStudent }}">
                                                             <i class="bi bi-person-fill"></i>

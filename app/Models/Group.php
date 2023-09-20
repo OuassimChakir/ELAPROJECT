@@ -22,6 +22,9 @@ class Group extends Model
     // ***** Select Groupes ******* //
     public static function getGroups(){
         return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
+            ->selectRaw('(SELECT count(idStudent) FROM `groups` as g
+            INNER JOIN payment ON payment.idGroup = g.idGroup
+            WHERE etat = 0 AND g.idGroup = groups.idGroup) as pendingPaiment')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
@@ -44,6 +47,16 @@ class Group extends Model
             ->where('idSubject', $idSubject)
             ->where('idProfesseur', $idProfesseur)
             ->count();
+    }
+
+    // Only groups where a student have invoices
+    public static function getGroupWithStudentInvoices($idStudent){
+        return Group::select('groups.*')
+            ->join('payment','payment.idGroup','=','groups.idGroup')
+            ->whereNotNull('etat')
+            ->where('idStudent',$idStudent)
+            ->groupBy('groups.idGroup')
+            ->get();
     }
 
     // ****** GET SUBJECTS OF EXISTED GROUPS ************ // 

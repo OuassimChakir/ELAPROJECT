@@ -33,12 +33,14 @@ class GroupElements extends Model
     }
 
     // SELECT GROUPS OF A STUDENT
-    public static function studentClassrooms($matricule)
+    public static function studentGroups($idStudent)
     {
-        return GroupElements::select('classrooms.*', 'groups.*', 'staff.nom', 'staff.prenom')
-            ->join('groups', 'groups.idGroup', '=', 'classrooms.idGroup')
-            ->join('staff', 'staff.idStaff', '=', 'groups.idStaff')
-            ->where('classrooms.idStudent', $matricule)
+        return GroupElements::select('*','groupelements.created_at','groupelements.updated_at')
+            ->join('groups', 'groups.idGroup', '=', 'groupelements.idGroup')
+            ->join('professeurs', 'professeurs.idProfesseur', '=', 'groups.idProfesseur')
+            ->join('subjects', 'subjects.idSubject', '=', 'groups.idSubject')
+            ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
+            ->where('groupelements.idStudent', $idStudent)
             ->get();
     }
 
@@ -46,8 +48,12 @@ class GroupElements extends Model
     public static function groupElements($idGroup)
     {
         return GroupElements::select('students.*', 'groupelements.idElement','groupelements.created_at as dateAjout')
+            ->selectRaw('count(idPayment) - sum(etat) as pendingPaiment')
             ->join('students', 'students.idStudent', '=', 'groupelements.idStudent')
-            ->where('idGroup', $idGroup)
+            ->leftjoin('payment','payment.idStudent','=','students.idStudent')
+            ->where('groupelements.idGroup', $idGroup)
+            ->whereNotNull('etat')
+            ->groupBy('students.idStudent')
             ->get();
     }
 

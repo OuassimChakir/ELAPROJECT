@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activite;
-use App\Models\Classrooms;
 use App\Models\Group;
 use App\Models\GroupElements;
 use App\Models\Incomes\Income;
@@ -77,10 +76,22 @@ class StudentController extends Controller
     public function studentProfil($idStudent)
     {
         $studentInfo = Student::getStudent($idStudent);
+        $subjects = Group::existedGroupSubjects();
+        $courseTypes = Group::existedGroupCourseTypes();
         $pendingPaiment = Payment::getStudentPendingPaiment($idStudent);
+        $studentGroups = GroupElements::studentGroups($idStudent);
+        $lastPaiments = Payment::getStudentLastestPaiments($idStudent);
+        $invoiceGroups = Group::getGroupWithStudentInvoices($idStudent);
+        $paiment = Payment::getStudentPaiment(101);
         return view('pages.students.studentprofil')->with([
             'student' => $studentInfo,
             'pendingPaiment' => $pendingPaiment,
+            'subjects' => $subjects,
+            'courseTypes' => $courseTypes,
+            'studentGroups' => $studentGroups,
+            'lastPaiments' => $lastPaiments,
+            'invoiceGroups' => $invoiceGroups,
+            'paiment' => $paiment
         ]);
 
     }
@@ -246,6 +257,13 @@ class StudentController extends Controller
     }
 
 
-    //--------- Reçue de pyment------------//
+    //--------- Student ------------//
+    public function getInvoicesByGroupAndStudent($idStudent,$idGroup){
+        if($idGroup == 'null')
+            $invoices = Payment::getStudentLastestPaiments($idStudent);
+        else
+            $invoices = Payment::getStudentLastestPaiments($idStudent,$idGroup);
+        return response()->json($invoices);
+    }
 
 }

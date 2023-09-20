@@ -24,21 +24,6 @@
                             <p>{{ $student->matricule }}</p>
                         </div>
                     </div>
-
-                    <div class="d-flex justify-content-between ">
-                        <div class="text-center pb-4">
-                            <h6 class="text-dark pb-2">10</h6>
-                            <p>Absences</p>
-                        </div>
-
-                        <div class="text-center pb-4">
-                            <h6 class="text-dark pb-2">1150</h6>
-                            <p>Following</p>
-                        </div>
-                    </div>
-
-                    <hr class="w-100">
-
                     <div class="contact-info pt-4">
                         <h5 class="text-dark">Information</h5>
                         <p class="text-dark font-weight-medium pt-24px mb-2">Né(e) le:</p>
@@ -98,9 +83,160 @@
         </div>
     </div>
 
-    {{-- @include('pages.students.add2Group') --}}
+    {{-- FACTURES --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="ec-vendor-list card card-default p-4">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h3 class="card-title">Factures</h3>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <select name="idGroup" class="form-control" id="groupPaiments">
+                                <option value="null" selected>Tous</option>
+                                @foreach ($invoiceGroups as $item)
+                                    <option value="{{$item->idGroup}}">{{$item->designation}}</option>
+                                @endforeach
+                                <option value="0">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('student.delete.multiple') }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <table class="table tabled-boredered">
+                            <thead>
+                                @if (true)
+                                    <th>
+                                        <input type="checkbox" class="form-check-input" id="selectAllArchived">
+                                    </th>
+                                @endif
+                                <th></th>
+                                <th>N° Reçu</th>
+                                <th>Designation</th>
+                                <th>Montant</th>
+                                <th>Etat</th>
+                                <th></th>
+                                <th>Action</th>
+                            </thead>
+                            @php
+                                $i = 0;
+                            @endphp
+                            <tbody id="paimentSection">
+                                @if (isset($lastPaiments))
+                                    @foreach ($lastPaiments as $paiment)
+                                        <tr>
+                                            <td class="align-middle">
+                                                <input type="checkbox" name="paiments[]" value="{{ $paiment->idPayment }}"class="form-check-input archivedStudents">
+                                            </td>
+                                            <td class="align-middle">{{++$i}}</td>
+                                            <td class="align-middle">
+                                                @if (is_null($paiment->numeroRecu))
+                                                    -
+                                                @else
+                                                    BMA-N° {{$paiment->numeroRecu}}
+                                                @endif
+                                            </td>
+                                            <td class="align-middle">
+                                                @if (is_null($paiment->idPaiment))
+                                                    {{$paiment->designation}}
+                                                @else
+                                                    {{$paiment->groupsDesignation}}
+                                                @endif
+                                                <p>{{$paiment->note}}</p>
+                                            </td>
+                                            <td class="align-middle">
+                                                @if ($paiment->etat == 0)
+                                                {{$paiment->amount-$paiment->amountPaid}} DH
+                                                @else
+                                                {{$paiment->amount}} DH
+                                                @endif
+                                            
+                                            </td>
+                                            <td class="align-middle">
+                                                @if ($paiment->etat == 0)
+                                                    <span class="badge badge-warning">Non Payé</span>
+                                                @elseif ($paiment->etat == 1)
+                                                    <span class="badge badge-success">Réglé</span>
+                                                @endif
+                                            </td>
+                                            <td class="align-middle">
+                                                @if (is_null($paiment->datePayment))
+                                                    -
+                                                @else
+                                                    {{$paiment->datePayment}}
+                                                @endif
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="btn-group-spaced">
+                                                    <button type="button" class="btn btn-outline-info payInvoiceBtn" data-bs-toggle="modal" data-bs-target="#invoicePaiment" value="{{$paiment->idPayment}}">
+                                                        <span class="mdi mdi-check-bold"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice({{$paiment->idPayment}})">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach    
+                                @endif
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col btns">
+                                <button type="submit" name="deleteAll" class="btn btn-outline-danger"
+                                    onclick="return confirm('Voulez-vous supprimer définitivement ces Etudiants?');">
+                                    <i class="bi bi-trash-fill"></i> Supprimer Tous
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @include('pages.students.add2Group')
     <script src="{{ asset('JS/jquery.min.js') }}"></script>
     <script src="{{ asset('Bootstrap/js/bootstrap.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('#groupPaiments').on('change',function(){
+                $('#paimentSection').empty();
+                var idGroup = $('#groupPaiments').val();
+                var idStudent = "{{$student->idStudent}}";
+                
+                // AJAX request 
+                $.ajax({
+                    url: '/student/' + idStudent + '/groupPaiment/' + idGroup,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+                        if(response.length > 0){
+                            var html = '';
+                            for (let i = 0; i < response.length; i++) {
+                                html = '<tr>';
+                                html += '<td class="align-middle"><input type="checkbox" name="paiments[]" value="'+response[i].idPayment+'"class="form-check-input archivedStudents"></td><td class="align-middle">'+(i+1)+'</td>';
+                                html += '<td class="align-middle">'+((response[i].numeroRecu == null) ? '-' :'BMA-N°'+response[i].numeroRecu)+'</td>';
+                                html += '<td class="align-middle">'+((response[i].idPaiment == null) ? response[i].designation : response[i].groupsDesignation)+' <p>'+response[i].note+'</p></td>';
+                                html += '<td class="align-middle">'+((response[i].etat == 0) ? (response[i].amount - response[i].amountPaid) : response[i].amount)+' DH</td>';
+                                html += '<td class="align-middle">'+((response[i].etat == 0) ? '<span class="badge badge-warning">Non Payé</span>' : '<span class="badge badge-success">Réglé</span> ')+'</td>';
+                                html += '<td class="align-middle">'+((response[i].datePayment == null) ? '-' : response[i].datePayment)+'</td>';
+                                html += '<td class="align-middle"> <div class="btn-group-spaced"><button type="button" class="btn btn-outline-info payInvoiceBtn" data-bs-toggle="modal" data-bs-target="#invoicePaiment" value="'+response[i].idPayment+'"> <span class="mdi mdi-check-bold"></span> </button> <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice('+response[i].idPayment+')"> <i class="bi bi-trash-fill"></i> </button> </div> </td><tr>';
+                                $('#paimentSection').append(html);
+                            }
+                        }
+                    },
+                    error: function(request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             $("#showFormButton").click(function() {
@@ -120,6 +256,78 @@
             $('#gradesSelect').find('option').remove();
             $('#groupsResult').find('div').remove();
             $("#subjectSelect").prop('selectedIndex', 0);
+        });
+    </script>
+
+    <script>
+        // Listen for click on toggle checkbox
+        $('#selectAllArchived').click(function(event) {
+            if (this.checked) {
+                // Iterate each checkbox
+                $(':checkbox').each(function() {
+                    this.checked = true;
+                });
+            } else {
+                $(':checkbox').each(function() {
+                    this.checked = false;
+                });
+            }
+        });
+
+        $(".btns").hide();
+        $(":checkbox").click(function() {
+            if ($(this).is(":checked")) {
+                $(".btns").show();
+            } else {
+                $(".btns").hide();
+            }
+        });
+    </script>
+
+    <script>
+        function deleteInvoice(id){
+            console.log($(this));
+            Swal.fire({
+                title: "Vous êtes sur le point de supprimer cette facture",
+                icon: "warning",
+                iconColor: "red",
+                showCancelButton: true,
+                confirmButtonText: 'Oui',
+                cancelButtonText: `Annuler`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/bmapaiment/delete/"+id;
+                }
+            })
+        }
+    </script>
+
+    {{-- Paiment Modal --}}
+    <script>
+        $(document).on('click','.payInvoiceBtn', function(){
+            var idPaiment = $(this).val();
+            
+            // AJAX request 
+            $.ajax({
+                url: '/getbmapaiment/'+idPaiment,
+                type: 'get',
+                dataType: 'json',
+                success: function(response) {
+                    $('#invoicePaimentForm').attr('action','/bmapaiment/'+response.idPayment);
+                    $('#paimentNote').empty();
+                    $("#paimentNote").append(response.note);
+                    if(response.idGroup == null)
+                        $('#paimentDesignation').val(response.incomeDesignation);
+                    else
+                        $('#paimentDesignation').val(response.groupDesignation);
+                    $('#paimentIdStudent').val(response.matricule);
+                    $('#paimentAmount').val(response.amount);
+                    $('#paimentAmountPaid').attr('max',response.amount);
+                },
+                error: function(request, status, error) {
+                    alert(request.responseText);
+                }
+            });
         });
     </script>
 @endsection

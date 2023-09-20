@@ -24,18 +24,19 @@ class Payment extends Model
     }
 
     public static function getStudentPendingPaiment($idStudent){
-        return Payment::select('*')
+        return Payment::selectRaw('payment.*, groups.idGroup, groups.designation, groups.debutFormation, groups.finFormation, incomes.designation as incomesDesignation, incomes.description, incomes.activationDate')
             ->join('incomes','payment.idIncome','=','incomes.idIncome')
-            ->join('groups','payment.idGroup','=','groups.idGroup')
+            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
             ->where('idStudent',$idStudent)
             ->where('etat',0)
             ->get();
     }
 
     public static function getStudentPaiment($idPayment){
-        return Payment::select('*')
+        return Payment::select('payment.*','students.*','incomes.*','groups.designation as groupDesignation','incomes.designation as incomeDesignation')
             ->join('incomes','payment.idIncome','=','incomes.idIncome')
             ->join('students','payment.idStudent','=','students.idStudent')
+            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
             ->where('idPayment',$idPayment)
             ->first();
     }
@@ -52,12 +53,57 @@ class Payment extends Model
                 ->first();
         }
 
+
+    // Select Last 10 Paiements of a Students
+    public static function getStudentLastestPaiments($idStudent, $idGroup = null){
+        // null (Random) | 0 (Other Paiments) | >=1 Group Paiments
+        if(is_null($idGroup)){
+            // Random Last 10 Groups
+            return Payment::select('*','groups.designation as groupsDesignation','payment.amount')
+                ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
+                ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                ->where('idStudent',$idStudent)
+                ->whereNotNull('etat')
+                ->orderBy('datePayment')
+                ->skip(0)
+                ->take(10)
+                ->get();
+        }elseif($idGroup == 0){
+            // 10 last Paiment, groups not included
+            return Payment::select('*','incomes.designation as incomeDesignation','payment.amount')
+                ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                ->where('idStudent',$idStudent)
+                ->whereNotNull('etat')
+                ->whereNull('payment.idGroup')
+                ->orderBy('datePayment')
+                ->get();
+        }else{
+            // 10 last paiment, only group paiments
+            return Payment::select('*','incomes.designation as incomeDesignation','payment.amount')
+            ->join('groups','payment.idGroup','=','groups.idGroup')
+            ->join('incomes','incomes.idIncome','=','payment.idIncome')
+            ->where('idStudent',$idStudent)
+            ->where('payment.idGroup',$idGroup)
+            ->whereNotNull('etat')
+            ->orderBy('datePayment')
+            ->get();
+        }
+    }
     public static function checkElementPaiment($idGroup, $idStudent, $idIncome){
         return Payment::select('*')
             ->where('idGroup',$idGroup)
             ->where('idStudent',$idStudent)
             ->where('idIncome',$idIncome)
             ->count();
+    }
+
+    public static function getElementActivatedPaiment($idGroup, $idStudent, $idIncome){
+        return Payment::select('*')
+            ->where('idGroup',$idGroup)
+            ->where('idStudent',$idStudent)
+            ->where('idIncome',$idIncome)
+            ->where('etat',0)
+            ->first();
     }
 
     public static function activatePaiment($idGroup, $idStudent, $month){
@@ -68,6 +114,12 @@ class Payment extends Model
             ->where('activationDate',$month)
             ->first();
         $paiment->etat = 0;
+        $paiment->save();
+    }
+
+    public static function disactivatePaiment($idPayment){
+        $paiment = Payment::find($idPayment);
+        $paiment->etat = null;
         $paiment->save();
     }
 
@@ -165,7 +217,6 @@ class Payment extends Model
         $paiment->paymentMode = $paymentMode;
         $paiment->save();
     }
-
 
 
     // --------- Delete Payment ----------------- //

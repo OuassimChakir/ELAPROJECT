@@ -136,7 +136,12 @@ Route::middleware([
     // add absence
     Route::post('/groupe/{idGroup}/markAttendance', [AttendanceController::class,'addAbsence'])->name('absence.add');
     // Update Student
-    Route::get('/attendance/update/{idAttendance}-{absence}', [AttendanceController::class,'updateAbsence']);
+    Route::get('/attendance/update/{idGroup}-{dateAbsence}', [AttendanceController::class,'updateAttendanceAjax']);
+    Route::post('/attendance/update', [AttendanceController::class,'updateAttendance'])->name('attendance.update');
+    Route::post('/attendance/delete', [AttendanceController::class,'deleteAttendance'])->name('attendance.delete');
+
+    // Attendance AJAX
+    Route::get('/attendance/{idGroup}/{dateAbsence}', [AttendanceController::class,'getAttendanceMonthDates']);
 
 
     // ------------- Classroom ---------- // 
@@ -188,17 +193,18 @@ Route::middleware([
     // Add New Incomes Payment 
     Route::post('/incomePayment/add', [IncomesController::class,'allPayment'])->name('incomePayment.add');
     // Delete Incomes Payment 
-    Route::get('/incomePayment/delete/{idPayment}', [IncomesController::class,'deletePayment'])->name('incomePayment.delete');
+    Route::get('/bmapaiment/delete/{idPayment}', [IncomesController::class,'deletePayment'])->name('incomePayment.delete');
     Route::get('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment');
+    Route::get('/getbmapaiment/{idPayment}',[IncomesController::class,'ajaxPaimentModal']);
     Route::post('/bmapaiment/{idPayment}',[IncomesController::class,'paimentPage'])->name('paiment.validate');
-
+    
     // ----- pdf de facture
     Route::get('/pdf/{idExpensePayment}',[PdfController::class, 'pdf'])->name('pdf.generate');
 
     // Facture Staff Data Ajax
     Route::get('/factureDepenses/{idExpense}', [ExpenseController::class,'getStaffData']);
 
-
+    Route::get('/student/{idStudent}/groupPaiment/{idGroup}',[StudentController::class,'getInvoicesByGroupAndStudent']);
 
 
     Route::get('/dashboard', function () {
