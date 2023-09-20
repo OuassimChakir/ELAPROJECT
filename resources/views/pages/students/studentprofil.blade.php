@@ -172,12 +172,9 @@
                                             </td>
                                             <td class="align-middle">
                                                 <div class="btn-group-spaced">
-                                                    <a href="{{route('paiment', ['idPayment' => $paiment->idPayment])}}" target="_blank">
-                                                        <button type="button" class="btn btn-outline-info">
-                                                            <span class="mdi mdi-check-bold"></span>
-                                                        </button>
-                                                    </a>
-
+                                                    <button type="button" class="btn btn-outline-info payInvoiceBtn" data-bs-toggle="modal" data-bs-target="#invoicePaiment" value="{{$paiment->idPayment}}">
+                                                        <span class="mdi mdi-check-bold"></span>
+                                                    </button>
                                                     <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice({{$paiment->idPayment}})">
                                                         <i class="bi bi-trash-fill"></i>
                                                     </button>
@@ -227,8 +224,7 @@
                                 html += '<td class="align-middle">'+((response[i].etat == 0) ? (response[i].amount - response[i].amountPaid) : response[i].amount)+' DH</td>';
                                 html += '<td class="align-middle">'+((response[i].etat == 0) ? '<span class="badge badge-warning">Non Payé</span>' : '<span class="badge badge-success">Réglé</span> ')+'</td>';
                                 html += '<td class="align-middle">'+((response[i].datePayment == null) ? '-' : response[i].datePayment)+'</td>';
-                                html += '<td class="align-middle"> <div class="btn-group-spaced"> <a href="/bmapaiment/'+response[i].idPayment+'" target="_blank"> <button type="button" class="btn btn-outline-info"> <span class="mdi mdi-check-bold"></span> </button> </a> <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice('+response[i].idPayment+')"> <i class="bi bi-trash-fill"></i> </button> </div> </td><tr>';
-                                console.log(html);
+                                html += '<td class="align-middle"> <div class="btn-group-spaced"><button type="button" class="btn btn-outline-info payInvoiceBtn" data-bs-toggle="modal" data-bs-target="#invoicePaiment" value="'+response[i].idPayment+'"> <span class="mdi mdi-check-bold"></span> </button> <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice('+response[i].idPayment+')"> <i class="bi bi-trash-fill"></i> </button> </div> </td><tr>';
                                 $('#paimentSection').append(html);
                             }
                         }
