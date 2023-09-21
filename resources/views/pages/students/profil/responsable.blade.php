@@ -134,7 +134,7 @@
                                             <label for="cnie">CNIE</label>
                                             <input type="text" class="form-control"
                                                 name="cnie" id="cnie"
-                                                alue="{{ $student->responsibleCnie }}" required>
+                                                value="{{ $student->responsibleCnie }}" required>
                                         </div>
                                     </div>
                                     <!-- sexe -->

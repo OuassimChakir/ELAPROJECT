@@ -29,6 +29,7 @@ class User extends Authenticatable
         'name',
         'username',
         'password',
+        'email',
         'idRole',
         'idStudent',
         'idProfesseur',
@@ -70,6 +71,7 @@ class User extends Authenticatable
     public static function getUsers(){
         return User::select('*')
                 ->leftJoin('roles','users.idRole','=','roles.idRole')
+                ->orderBy('codeRole')
                 ->get();
     }
 
@@ -124,6 +126,28 @@ class User extends Authenticatable
         return $password;
     }
 
+    public static function checkUsername($username){
+        return User::select('*')
+                ->where('username',$username)
+                ->count();
+    }
+
+    
+    public static function checkEmail($email){
+        return User::select('*')
+                ->where('email',$email)
+                ->count();
+    }
+
+    /* -------------------------------
+    / Reset Password
+    / -------------------------------*/
+    public static function resetPassword($id,$password){
+        $user = User::find($id);
+        $user->password = Hash::make($password);
+        $user->save();
+    }
+    
     public static function deleteStaffAccount($idStaff){
         User::where('idStaff',$idStaff)
         ->delete();
