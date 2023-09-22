@@ -183,6 +183,8 @@ Route::middleware([
     Route::post('/typeIncome/add', [IncomesController::class,'allIncomes'])->name('typeIncome.add');
     // Serach etudiant
     Route::get('/typeIncome/Serach', [IncomesController::class,'searchEtudiant'])->name('search.etudiant');
+    Route::get('/typeIncome/Serach/group', [IncomesController::class,'searchGroup'])->name('search.group');
+    Route::get('/typeIncome/Serach/Recu', [IncomesController::class,'searchRecu'])->name('search.numRecu');
     // Delete typeIncomes
     Route::get('/typeIncome/delete/{idIncome}', [IncomesController::class,'deleteIncome'])->name('typeIncome.delete');
     // Update a typeIncomes

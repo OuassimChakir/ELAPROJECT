@@ -33,4 +33,4 @@ class CreateExpensesTable extends Migration
     }
 }
 
-//php artisan migrate:refresh --path="database\migrations\2023_09_05_163553_create_expenses_table.php"
+//php artisan migrate:refresh --path=database\migrations\2023_09_05_163553_create_expenses_table.php

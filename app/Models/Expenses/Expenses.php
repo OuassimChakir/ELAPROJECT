@@ -23,16 +23,16 @@ class Expenses extends Model
                 return Expenses::find($idExpense);
         }
         // ------ Creation Expenses ----------- //
-        public static function createExpense($description,$code){
+        public static function createExpense($designation,$code){
                 Expenses::create([
-                        'description' => $description,
+                        'designation' => $designation,
                         'code' => $code,
                 ]);
         }
         //------ Update Expense Type-----//
-        public static function updateExpense($idExpense, $description){
+        public static function updateExpense($idExpense, $designation){
                 $expenses = Expenses::find($idExpense);
-                $expenses->description = $description;
+                $expenses->designation = $designation;
                 $expenses->save();
         }
 

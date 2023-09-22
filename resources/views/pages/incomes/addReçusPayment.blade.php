@@ -5,7 +5,7 @@
             <div class="modal-header px-4">
                 <h5 class="modal-title" id="exampleModalCenterTitle">Ajoute Reçus de Payment</h5>
             </div>
-            <form action="{{ route('incomePayment.add') }}" method="post" id="invoicePaimentForm" class="was-validated">
+            <form action="{{ route('incomePayment.add') }}" method="post" id="invoicePaimentForm" class="">
                 @csrf
                 @method('post')
                 <div class="modal-body px-4">
@@ -19,7 +19,7 @@
                                         <optgroup label="les mois">
                                             @foreach ($incomes as $income)
                                                 @if ($income->activationDate != 00 && $income->activationDate != null)
-                                                    <option value="{{ $income->idIncome }}">
+                                                    <option value="{{ $income->idIncome.'|'.$income->activationDate.'|'.$income->designation}}">
                                                         {{ $income->designation }}
                                                     </option>
                                                 @endif
@@ -28,7 +28,7 @@
                                         <optgroup label="les Frais">
                                             @foreach ($incomes as $income)
                                                 @if ($income->activationDate == 00 && $income->activationDate != null )
-                                                    <option value="{{ $income->idIncome }}">
+                                                    <option value="{{ $income->idIncome.'|'.$income->activationDate.'|'.$income->designation}}">
                                                         {{ $income->designation }}
                                                     </option>
                                                 @endif
@@ -37,7 +37,7 @@
                                         @foreach ($incomes as $income)
                                             @if ($income->activationDate == null)
                                                 <optgroup label="Les événements">
-                                                    <option value="{{ $income->idIncome }}">
+                                                    <option value="{{ $income->idIncome.'|'.$income->activationDate.'|'.$income->designation}}">
                                                         {{ $income->designation }}
                                                     </option>
                                             @endif
@@ -48,13 +48,23 @@
                             </div>
                             <div class="col-lg-6">
                                 <label for="search" id="EtudiantLabel">Etudiant</label>
-                                <div class="form-group mb-4 d-flex justify-content-center " id="search-autocomplete">
+                                <div class="form-group mb-4 d-flex justify-content-center" id="search-autocomplete">
                                     <input type="text" name="search" id="search"  placeholder="Search Etudiant Data"
                                      class="form-control" value="" required>
                                     
-                                     <button class="btn btn-outline-secondary" id="idSearch" type="button"><i class="bi bi-search"></i></button>
                                 </div> 
                                 <div id="userList" style="display: block;"></div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 g-3">
+                            <div class="">
+                                <div class="groupe form-group mb-4">
+                                    <label for="idgroup" id="groupLabel">les group</label>
+                                    <select name="idgroup" id="idGroup" class="form-select " required>
+                                        <option disabled selected>-- Choisir un groupe --</option>
+                                        
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-2 g-3">
@@ -73,6 +83,8 @@
                                         value="{{ date('Y-m-d') }}" required>
                                 </div>
                             </div>
+                        </div>
+                        <div class="hidden">
                         </div>
                         <div class="row mb-2 g-3">
                             <div class="col-lg-6">
@@ -129,7 +141,13 @@
 <script src="{{ asset('JS/jquery.min.js') }}"></script>
 <script src="{{ asset('Bootstrap/js/bootstrap.min.js') }}"></script>
 <script>
-
+    $('.groupe').hide();
+    $('.hidden').hide();
+    $(document).ready(function(){
+    $('#idIncome').change(function(){
+            var array = $(this).val().split('|');
+            var activationDate = array[1];
+            var idincome = array[0];
     $('#search').on('keyup',function() {
         var query = $(this).val(); 
         $.ajax({
@@ -139,17 +157,58 @@
             success:function (data) {
                 $('#userList').html(data);
             }
-        })  
-    });
+        })
+
+        // Make the second AJAX request
+        var studentIdQuery = $('#idStudent').val();
+        $.ajax({
+            url: "{{ route('search.group') }}",
+            type: "GET",
+            data: { 'studentIdQuery': studentIdQuery },
+            success: function(data) {
+                if (!$.isEmptyObject(data) && activationDate != '00' && activationDate != null) {
+                    $('#idGroup').html(data);
+                    $('.groupe').show();
+                } else {
+                    $('.groupe').hide();
+                }
+            }
+        });
+
+
+    }); 
     $('body').on('click', 'idSearch', function(){
         var value = $(this).text();
         //do what ever you want
     });
-    validationStatus = true; 
-    if ($('#idIncome').val().length == 0) {
-        if (validationStatus) { $('#idIncome').focus() };
-        validationStatus = false;       
-    }
+}); 
+        
+    });
+    $('#numeroRecu').on('keyup',function() {
+    var numRecuQuery = $('#numeroRecu').val();
+    
+        $.ajax({
+            url: "{{ route('search.numRecu') }}",
+            type: "GET",
+            data: { 'numRecuQuery': numRecuQuery },
+            success: function(data) {
+                if (data == 0) {
+                    $('#numeroRecu').removeClass("is-invalid");
+                    $('#numeroRecu').addClass("is-valid");
+                }else {
+                    $('#numeroRecu').removeClass("is-valid");
+                    $('#numeroRecu').addClass("is-invalid");
+                }
+            }
+        }); 
+    });
+  $(document).ready(function(){
+  $("select").click(function(){
+    $("select").addClass("is-valid");
+
+
+  });
+});
 
     </script>
     <style>

@@ -13,7 +13,7 @@ class Payment extends Model
     use SoftDeletes;
     protected $table = "payment";
     protected $primaryKey = "idPayment";
-        protected $fillable = ['datePayment', 'paymentMode', 'amount','amountPaid', 'note', 'etat','idGroup','idStudent', 'idIncome', 'created_at', 'updated_at'];
+        protected $fillable = ['numeroRecu','datePayment', 'paymentMode', 'amount','amountPaid', 'note', 'etat','idGroup','idStudent', 'idIncome', 'created_at', 'updated_at'];
 
     //------------- all Payment de incomes----------//
     public static function allPayment()
@@ -147,13 +147,17 @@ class Payment extends Model
 
 
     //------------- create Payment ----------//         
-    public static function createPayment($datePayment, $paymentMode, $amount, $description, $idStudent, $idIncome)
+    public static function createPayment($numeroRecu, $datePayment, $paymentMode, $amount, $amountPaid, $note, $etat, $idGroup, $idStudent, $idIncome)
     {
         Payment::create([
+            'numeroRecu' => $numeroRecu,
             'datePayment' => $datePayment,
             'paymentMode' => $paymentMode,
             'amount' => $amount,
-            'description' => $description,
+            'amountPaid' => $amountPaid,
+            'note' => $note,
+            'etat' => $etat,
+            'idGroup' => $idGroup,
             'idStudent' => $idStudent,
             'idIncome' => $idIncome,
             'created_at' => date('Y-m-d H:i:s'),
