@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
 use App\Models\responsible\Student;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class IncomesController extends Controller
@@ -186,4 +187,31 @@ class IncomesController extends Controller
             return Redirect::back()->with('deleteMessage', "Les Reçues séléctionés ont été supprimer Définitivement");
         }
     }
+    //------------------seach etudiant ---------------------- //
+    public function searchEtudiant(Request $request)
+    {
+        $query = $request->get('query');
+        Student::where('matricule', 'like', '%'.$query.'%')
+        ->orderBy('idStudent', 'desc')
+        ->get();
+        if(!empty($query)){
+        if ($request->ajax()) {
+            $data =  DB::table('students')->
+            where('matricule', 'like', '%'.$query.'%')
+            ->orderBy('idStudent', 'desc')->get();
+            $output = '';
+            if (count($data) > 0) {
+                $output = '<ul class="list-group">';
+                foreach ($data as $row) {
+                    $output .= '<li class="list-group-item">' . $row->matricule . '</li>';
+                }
+                $output .= '</ul>';
+            } else {
+                $output .= '<li class="list-group-item">' . 'No results' . '</li>';
+            }
+            return $output;
+        }}
+    }
+
+    
 }

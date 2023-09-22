@@ -18,6 +18,7 @@ class CreateGradescategoriesTable extends Migration
             $table->string('category',50);
             $table->string('description',200)->nullable();
             $table->bigInteger('idCourseType',false,true);
+            
         });
         Schema::table('gradescategories', function (Blueprint $table){
             $table->foreign('idCourseType')->references('idCourseType')->on('coursetype');
