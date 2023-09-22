@@ -7,7 +7,10 @@ use App\Models\Group;
 use App\Models\GroupElements;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
+use App\Models\Responsible\Student;
+use App\Models\Roles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class AttendanceController extends Controller
@@ -47,19 +50,40 @@ class AttendanceController extends Controller
 
     public function allAbsences(Request $request)
     {
-        $allGroups = Group::selectGroup();
+        $role = Roles::getRole(Auth::user()->idRole);
+        if($role->codeRole == '22')
+            $allGroups = Group::getStudentGroups(Auth::user()->idStudent);
+        elseif($role->codeRole == '33')
+            $allGroups = Group::getProfGroups(Auth::user()->idProfesseur);
+        else
+            $allGroups = Group::selectGroup();
         if ($request->has('getAttendance')) {
-            $students = GroupElements::groupElements($request->idGroup);
-            for ($i=0; $i < count($students); $i++){
-                $students[$i]->attendance = Attendance::getGroupAttendaceByDate($request->dateAbsence, $students[$i]->idElement);
-                if($students[$i]->attendance->count() == 0) $students[$i]->attendance = null;
+            if($role->codeRole != '22'){
+                $students = GroupElements::groupElements($request->idGroup);
+                for ($i=0; $i < count($students); $i++){
+                    $students[$i]->attendance = Attendance::getGroupAttendaceByDate($request->dateAbsence, $students[$i]->idElement);
+                    if($students[$i]->attendance->count() == 0) $students[$i]->attendance = null;
+                }
+                return view('pages.groupes.presence')->with([
+                    'groups' => $allGroups,
+                    'idGroup' => $request->idGroup,
+                    'studentsAttendance' => $students,
+                    'dateAbsence' => explode('-',$request->dateAbsence),
+                ]);
+            }else{
+                $student = Student::getStudent(Auth::user()->idStudent);
+                $element = GroupElements::getElement($request->idGroup,$student->idStudent);
+                $student->attendance =  Attendance::getGroupAttendaceByDate($request->dateAbsence, $element->idElement);
+                if($student->attendance->count() == 0) $student->attendance = null;
+                return view('pages.groupes.presence')->with([
+                    'groups' => $allGroups,
+                    'idGroup' => $request->idGroup,
+                    'student' => $student,
+                    'dateAbsence' => explode('-',$request->dateAbsence),
+                ]);
             }
-            return view('pages.groupes.presence')->with([
-                'groups' => $allGroups,
-                'idGroup' => $request->idGroup,
-                'studentsAttendance' => $students,
-                'dateAbsence' => explode('-',$request->dateAbsence),
-            ]);
+
+
         }
         return view('pages.groupes.presence')->with('groups', $allGroups);
     }

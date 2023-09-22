@@ -92,6 +92,46 @@
                                                             <td class="bg-warning"></td>
                                                         @endif
                                                         @php $flag = 1; @endphp
+                                                        @break;
+                                                    @endif
+                                                @endforeach
+                                                @if ($flag == 0)
+                                                    <td></td>
+                                                @endif
+                                            @endif
+                                        @endfor
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @elseif(isset($student))
+                <div id="attendanceCalendier" style="overflow-x:auto;">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); $i++)
+                                    <td>{{ $i }}</td>
+                                @endfor
+                            </tr>
+                                <tr>
+                                    <th>{{ ucfirst($student->prenom_fr) }} {{ ucfirst($student->nom_fr) }}</th>
+                                    @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, $dateAbsence[1], $dateAbsence[0]); $i++)
+                                        @if (is_null($student->attendance))
+                                            <td></td>
+                                        @else
+                                            @php $flag = 0; @endphp
+                                            @foreach ($student->attendance as $item)
+                                                @if ($item->day == $i)
+                                                    @if ($item->absence == 0)
+                                                        <td class="bg-success"></td>
+                                                    @elseif($item->absence == 1)
+                                                        <td class="bg-danger"></td>
+                                                    @else
+                                                        <td class="bg-warning"></td>
+                                                    @endif
+                                                    @php $flag = 1; @endphp
                                                     @break;
                                                 @endif
                                             @endforeach
@@ -101,11 +141,10 @@
                                         @endif
                                     @endfor
                                 </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
-            @endif
+                @endif
         </div>
     </div>
 </div>

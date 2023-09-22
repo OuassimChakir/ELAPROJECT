@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-class IsModerator
+class IsStudent
 {
     /**
      * Handle an incoming request.
@@ -17,8 +17,8 @@ class IsModerator
      */
     public function handle(Request $request, Closure $next)
     {
-        // is not Moderator
-        if(is_null(session()->get('user')->codeRole) || (session()->get('user')->codeRole != '00' && session()->get('user')->codeRole != '11')){
+        // is not Student
+        if(is_null(session()->get('user')->codeRole) || (session()->get('user')->codeRole != '00' && session()->get('user')->codeRole != '11' && session()->get('user')->codeRole != '22')){
             return Redirect::back()->with('deleteMessage','Accès refusé!');
         }
         return $next($request);

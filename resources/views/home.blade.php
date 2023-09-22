@@ -7,6 +7,28 @@
     <div class="ec-content-wrapper">
         <div class="content">
             <!-- Top Statistics -->
+            @if (session()->get('user')->codeRole == '11')
+            <div class="row">
+                <div class="col-xl-6 col-sm-6 p-b-15 lbl-card">
+                    <div class="card card-mini dash-card card-1">
+                        <div class="card-body">
+                            <h2 class="mb-1">{{$students}}</h2>
+                            <p>Les étudiants</p>
+                            <span class="mdi mdi-account-arrow-left"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-sm-6 p-b-15 lbl-card">
+                    <div class="card card-mini dash-card card-2">
+                        <div class="card-body">
+                            <h2 class="mb-1">{{$NumGroups}}</h2>
+                            <p>Les groups</p>
+                            <span class="mdi mdi-content-paste"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @elseif(session()->get('user')->codeRole == '00')
             <div class="row">
                 <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
                     <div class="card card-mini dash-card card-1">
@@ -45,6 +67,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <div class="row">
                 <div class="col-xl-8 col-md-12 p-b-15">

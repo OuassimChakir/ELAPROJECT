@@ -54,7 +54,7 @@ class TeacherController extends Controller
     {
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
-        $groups = Group::getGroupsByProf($idProfesseur);
+        $groups = Group::getProfGroups($idProfesseur);
         $factures = Facture::getFacturesByProf($idProfesseur);
         $teacher = Professeurs::getProfesseur($idProfesseur);
         return view('pages.teachers.teacherprofil')

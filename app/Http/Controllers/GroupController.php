@@ -14,7 +14,9 @@ use App\Models\GroupGrades;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
 use App\Models\responsible\Professeurs;
+use App\Models\Roles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -28,7 +30,13 @@ class GroupController extends Controller
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
         $professeurs = Professeurs::getProfesseurs();
-        $groups = Group::getGroups();
+        $role = Roles::getRole(Auth::user()->idRole);
+        if($role->codeRole == '22')
+            $groups = Group::getStudentGroups(Auth::user()->idStudent);
+        elseif($role->codeRole == '33')
+            $groups = Group::getProfGroups(Auth::user()->idProfesseur);
+        else
+            $groups = Group::getGroups();
         if ($request->has('CreateGroup')) {
             $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur) + 1;
             $matiere = Subjects::getSubject($request->idSubject);

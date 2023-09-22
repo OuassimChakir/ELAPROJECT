@@ -31,6 +31,27 @@ class Group extends Model
             ->get();
     }
 
+    public static function getStudentGroups($idStudent){
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
+            ->selectRaw('(SELECT count(idPayment) FROM  payment
+            WHERE etat = 0 AND idStudent = '.$idStudent.') as pendingPaiment')
+            ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
+            ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
+            ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
+            ->join('groupelements','groupelements.idGroup','=','groups.idGroup')
+            ->where('groupelements.idStudent',$idStudent)
+            ->get();
+    }
+
+    public static function getProfGroups($idProfesseur){
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
+            ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
+            ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
+            ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
+            ->where('groups.idProfesseur',$idProfesseur)
+            ->get();
+    }
+
     // ***** Select a Specific Group ******* //
     public static function getGroup($idGroup){
         return Group::select('groups.*', 'subjects.*', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
@@ -59,6 +80,8 @@ class Group extends Model
             ->get();
     }
 
+    // Student Groups
+
     // ****** GET SUBJECTS OF EXISTED GROUPS ************ // 
     public static function existedGroupSubjects(){
         return Group::select('subjects.*')
@@ -75,9 +98,7 @@ class Group extends Model
             ->get();
     }
 
-    public static function getGroupsByProf($idProfesseur){
-        return Group::select('*')->where('idProfesseur', $idProfesseur)->get();
-    }
+
     
     public static function existedGroupGradesBySubject($idSubject)
     {
@@ -153,7 +174,7 @@ class Group extends Model
     // Select deleted Group
     public static function softDeletedGroups(){
         return Group::onlyTrashed()
-         ->select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
+        ->select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
         ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
         ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
         ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
