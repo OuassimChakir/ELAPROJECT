@@ -86,6 +86,7 @@ class IncomesController extends Controller
         // list of Payment
         $incomePayment = Payment::allPayment();
         if ($request->has('validatePaiment')) {
+
             $select = explode('|', $request->idIncome);
             $datePayment = $request->datePayment;
             $paymentMode = $request->paymentMode;
@@ -94,18 +95,21 @@ class IncomesController extends Controller
             $note = $income->description . ' - ' . date('Y');
             $amountPaid = $request->amountPaid;
             $idGroup = $request->idGroup;
-            
+            $idIncome = $income->idIncome;
             $idStudent = Student::selectStudent($request->search);
             dd($idStudent->idStudent);
             $etat = null;
             $numeroRecu = $request->numeroRecu;
-            Payment::createPayment($numeroRecu, $datePayment, $paymentMode, $amount, $amountPaid, $note, $etat, $idGroup, $idStudent, $income->idIncome);
-            if (session()->get('user')) {
-                $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-                $activityDescription = 'Un Payment (Description: ' . $note . ")";
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
-            }
-            return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
+            $count = Payment::checkElementPaiment($idGroup, $idStudent, $idIncome);
+            if ($count == 0) {
+                Payment::createPayment($numeroRecu, $datePayment, $paymentMode, $amount, $amountPaid, $note, $etat, $idGroup, $idStudent, $idIncome);
+                if (session()->get('user')) {
+                    $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
+                    $activityDescription = 'Un Payment (Description: ' . $note . ")";
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+                }
+                return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
+            } else return Redirect::back()->with('deleteMessage', "Ce facture est déja existé !!!");
         }
         return view('pages.incomes.incomePayment')
             ->with('incomePayment', $incomePayment)
@@ -269,7 +273,7 @@ class IncomesController extends Controller
                     ->join('groups', 'groups.idGroup', '=', 'groupelements.idGroup')
                     ->join('subjects', 'subjects.idSubject', '=', 'groups.idSubject')
                     ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
-                    ->join('students','students.idStudent','=','groupelements.idStudent')
+                    ->join('students', 'students.idStudent', '=', 'groupelements.idStudent')
                     ->where('students.matricule', $query)
                     ->get();
                 return response()->json($data);
