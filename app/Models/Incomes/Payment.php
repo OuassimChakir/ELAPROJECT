@@ -260,4 +260,47 @@ class Payment extends Model
             ->where('idPayment', $idPayment)
             ->forceDelete();
     }
+
+
+    
+    /*----------------------------------
+    / Stats Page 
+    /----------------------------------*/
+
+    public static function stats_inscriptionPaimentsByDay($datePayment){
+        return Payment::selectRaw('count(idStudent) as nbStudents, sum(amountPaid) as total')
+                ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                ->where('etat',1)
+                ->where('activationDate','00')
+                ->where('datePayment',$datePayment)
+                ->first();
+    }
+
+    public static function stats_inscriptionPaimentsByMonth($datePayment){
+        $date = explode('-',$datePayment);
+        return Payment::selectRaw('count(idStudent) as nbStudents, sum(amountPaid) as total')
+                ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                ->where('etat',1)
+                ->where('activationDate','00')
+                ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
+                ->first();
+    }
+
+    public static function stats_groupPaimentsByDay($datePayment,$idGroup){
+        return Payment::selectRaw('sum(amountPaid) as totalGroup, count(idPayment) as nbElements')
+                ->where('etat',1)
+                ->where('idGroup',$idGroup)
+                ->where('datePayment',$datePayment)
+                ->first();
+    }
+
+    public static function stats_groupsPaimentsByMonth($datePayment,$idGroup){
+        $date = explode('-',$datePayment);
+        return Payment::selectRaw('sum(amountPaid) as totalGroup, count(idPayment) as nbElements')
+                ->where('etat',1)
+                ->where('idGroup',$idGroup)
+                ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
+                ->first();
+    }
 }
+

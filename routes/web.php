@@ -279,6 +279,11 @@ Route::middleware([
 
     // Admin Permission View
     Route::middleware(['is_admin'])->group(function () {
+        /* --------------------------------------
+        / Incomes Statistics 
+        / --------------------------------------- */
+        Route::get('stats',[IncomesController::class,'incomeStats'])->name('incomes.stats');
+        Route::post('stats',[IncomesController::class,'incomeStats'])->name('incomes.stats.query');
 
         /* --------------------------------------
         / activites 
