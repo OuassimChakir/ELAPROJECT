@@ -96,8 +96,8 @@ class IncomesController extends Controller
             $amountPaid = $request->amountPaid;
             $idGroup = $request->idGroup;
             $idIncome = $income->idIncome;
-            $idStudent = Student::selectStudent($request->search);
-            dd($idStudent->idStudent);
+            $dataidstudent = Student::selectStudent($request->search);
+            $idStudent=$dataidstudent->idStudent;
             $etat = null;
             $numeroRecu = $request->numeroRecu;
             $count = Payment::checkElementPaiment($idGroup, $idStudent, $idIncome);
