@@ -120,20 +120,25 @@
             }
         });
     </script>
-    @if (isset($newStaff))
-    <template id="Staff-password">
+
+@if (session()->has('newStaff'))
+    <template id="staff-password">
         <swal-title>
-            L'étudiant a été ajouté avec succès
+            Staff a été ajouté avec succès
         </swal-title>
         <swal-html>
             <table class="table">
                 <tr>
-                    <th>Nom d'étudiant</th>
-                    <td>{{ucfirst($newStaff['prenom'])}} {{ucfirst($newStaff['nom'])}}</td>
+                    <th>Nom du Staff</th>
+                    <td>{{ucfirst(session()->get('newStaff')[0]['prenom'])}} {{ucfirst(session()->get('newStaff')[0]['nom'])}}</td>
+                </tr>
+                <tr>
+                    <th>Username</th>
+                    <td>{{session()->get('newStaff')[0]['username']}}</td>
                 </tr>
                 <tr>
                     <th>Mot de Passe</th>
-                    <td>{{$newStaff['password']}}</td>
+                    <td>{{session()->get('newStaff')[0]['password']}}</td>
                 </tr>
             </table>
         </swal-html>
@@ -145,12 +150,11 @@
         <swal-param name="customClass" value='{ "popup": "my-popup" }' />
         <swal-function-param name="didOpen" value="popup => console.log(popup)" />
     </template>
-    
+
     <script>
         Swal.fire({
-            template: '#Staff-password',
+            template: '#staff-password',
         });
-        
     </script>
     @endif
 @endsection

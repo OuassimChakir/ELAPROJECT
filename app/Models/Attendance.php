@@ -91,13 +91,11 @@ class Attendance extends Model
     }
 
 
-    public static function totalAbsenceDay($firstYear, $secondYear, $month)
+    public static function totalAbsenceDay($currentYear, $month)
     {
-        return DB::table('attendance')
-            ->selectRaw('count(idAttendance) AS absence, DAY(dateAbsence) AS day ,absence AS etatabsence')
+        return Attendance::selectRaw('count(idAttendance) AS absence, DAY(dateAbsence) AS day ,absence AS etatabsence')
             ->whereMonth("dateAbsence", $month)
-            ->whereYear("dateAbsence", $firstYear)
-            ->orWhereYear("dateAbsence", $secondYear)
+            ->whereYear("dateAbsence", $currentYear)
             ->groupByRaw("DAY(dateAbsence),etatabsence")
             ->get();
     }
