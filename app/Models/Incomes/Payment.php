@@ -126,7 +126,7 @@ class Payment extends Model
     //------ total amount
     public static function totalAmount()
     {
-        return Payment::select()->get()->sum('amount');
+        return Payment::select()->where('etat',1)->get()->sum('amountPaid');
     }
 
 

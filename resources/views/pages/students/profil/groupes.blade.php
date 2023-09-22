@@ -1,6 +1,7 @@
 <div class="tab-pane fade" id="groups" role="tabpanel" aria-labelledby="groups-tab">
     <div class="tab-widget mt-5">
         <div class="row mb-2">
+            @staff
             <div class="col-xl-10">
                 <div class="media widget-media p-3 bg-white border">
                     <div class="icon rounded-circle mr-3 bg-primary">
@@ -22,6 +23,22 @@
                     <i class="bi bi-plus-lg"></i>
                 </button>
             </div>
+            @else
+            <div class="col-xl-12">
+                <div class="media widget-media p-3 bg-white border">
+                    <div class="icon rounded-circle mr-3 bg-primary">
+                        <i class="mdi mdi-account-outline text-white "></i>
+                    </div>
+
+                    <div class="media-body align-self-center">
+                        <h4 class="text-primary mb-2">
+                            {{ $studentGroups->count() }}
+                        </h4>
+                        <p>Groupes Assigné</p>
+                    </div>
+                </div>
+            </div>
+            @endstaff
         </div>
 
         {{-- Groups --}}
@@ -42,9 +59,11 @@
 
                         <p>{{$group->prenom}} {{$group->nom}}</p>
                     </div>
+                    @staff
                     <span class=" font-size-12 d-inline-block">
                         <button class="btn btn-outline-danger" onclick="cancelAssignment({{$group->idElement}});"><span class="mdi mdi-delete"></span></button>
                     </span>
+                    @endstaff
                 </div>
                 @endforeach
     

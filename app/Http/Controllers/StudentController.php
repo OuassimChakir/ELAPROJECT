@@ -49,7 +49,7 @@ class StudentController extends Controller
             $prenom_fr = $request->prenom_fr;
             $nom_fr = $request->nom_fr;
             $idStudent = Student::addStudent($matricule, $request->nom_fr, $request->nom_ar, $request->prenom_fr, $request->prenom_ar, $request->cnie, $request->numTel, $request->sexe, $request->adresse, $request->dateNaissance);
-            $password = User::createStudentAccount($idStudent,ucfirst($prenom_fr).' '.Str::upper($nom_fr),"BMA" . $studentsCounter);
+            $password = User::createStudentAccount($idStudent,ucfirst($prenom_fr).' '.Str::upper($nom_fr),$matricule);
 
             $newStudent = array(['nom' => $nom_fr, 'prenom' => $prenom_fr, 'matricule' => $matricule, 'password' => $password]);
             // ========== Generation Initial Payment ============= //
@@ -65,8 +65,7 @@ class StudentController extends Controller
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
 
-            return Redirect::back()->with('successMessage', "L'ajout est fait avec succès")->with([
-                'students' => $students,
+            return Redirect::back()->with([
                 'newStudent' => $newStudent,
             ]);
         }

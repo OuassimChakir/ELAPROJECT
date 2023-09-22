@@ -151,7 +151,7 @@
     </script>
 
 
-    @if (isset($newStudent))
+    @if (session()->has('newStudent'))
     <template id="student-password">
         <swal-title>
             L'étudiant a été ajouté avec succès
@@ -160,15 +160,15 @@
             <table class="table">
                 <tr>
                     <th>Nom d'étudiant</th>
-                    <td>{{ucfirst($newStudent['prenom'])}} {{ucfirst($newStudent['nom'])}}</td>
+                    <td>{{ucfirst(session()->get('newStudent')[0]['prenom'])}} {{ucfirst(session()->get('newStudent')[0]['nom'])}}</td>
                 </tr>
                 <tr>
                     <th>Matricule</th>
-                    <td>{{$newStudent['matricule']}}</td>
+                    <td>{{session()->get('newStudent')[0]['matricule']}}</td>
                 </tr>
                 <tr>
                     <th>Mot de Passe</th>
-                    <td>{{$newStudent['password']}}</td>
+                    <td>{{session()->get('newStudent')[0]['password']}}</td>
                 </tr>
             </table>
         </swal-html>

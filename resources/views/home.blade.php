@@ -7,6 +7,28 @@
     <div class="ec-content-wrapper">
         <div class="content">
             <!-- Top Statistics -->
+            @if (session()->get('user')->codeRole == '11')
+            <div class="row">
+                <div class="col-xl-6 col-sm-6 p-b-15 lbl-card">
+                    <div class="card card-mini dash-card card-1">
+                        <div class="card-body">
+                            <h2 class="mb-1">{{$students}}</h2>
+                            <p>Les étudiants</p>
+                            <span class="mdi mdi-account-arrow-left"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-sm-6 p-b-15 lbl-card">
+                    <div class="card card-mini dash-card card-2">
+                        <div class="card-body">
+                            <h2 class="mb-1">{{$NumGroups}}</h2>
+                            <p>Les groups</p>
+                            <span class="mdi mdi-content-paste"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @elseif(session()->get('user')->codeRole == '00')
             <div class="row">
                 <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
                     <div class="card card-mini dash-card card-1">
@@ -45,6 +67,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <div class="row">
                 <div class="col-xl-8 col-md-12 p-b-15">
@@ -111,51 +134,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 p-b-15">
-                    <!-- les facture  -->
-                    <div class="card card-table-border-none card-default recent-orders" id="recent-orders">
-                        <div class="card-header justify-content-between">
-                            <h2>Les Factures</h2>
-                        </div>
-                        <div class="card-body pt-0 pb-5">
-                            <table class="table card-table table-responsive table-responsive-large"
-                                style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Numéro</th>
-                                        <th>Type de Dépense</th>
-                                        <th class="d-none d-lg-table-cell">Description</th>
-                                        <th class="d-none d-lg-table-cell">Date de Facture</th>
-                                        <th class="d-none d-lg-table-cell">Prix</th>
-                                        <th>PDF</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($allfacture as $facture)
-                                    <tr>
-                                        <td>ELA-F.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
-                                        <td><span class="badge badge-primary">{{$facture->designation}}</span></td>   
-                                        <td class="d-none d-lg-table-cell">{{$facture->description}}</td>
-                                        <td class="d-none d-lg-table-cell">{{$facture->datePayment}}</td>
-                                        <td class="d-none d-lg-table-cell"><span class="badge badge-dark">{{$facture->amount}} DH</td>
-                                            <td class="text-right">
-                                                <div class="btn-group-spaced">
-                                                    <a href="{{route('pdf.generate',['idExpensePayment'=>$facture->idExpensePayment])}}" target="_blank">
-                                                        <button type="submit" class="btn btn-outline-success" name="print">
-                                                            <i class="bi bi-file-earmark-pdf"></i></i>
-                                                        </button>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                    </tr> 
-                                    @endforeach
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -295,8 +273,8 @@
     if (activity !== null) {
         var activityData = [
         {
-            first: [{{implode(',',$Absences)}}],
-            second: [{{implode(',',$present)}}]
+            first: [{{implode(',',$present)}}],
+            second: [{{implode(',',$Absences)}}]
         },
 
         ];
@@ -371,7 +349,7 @@
                     // }
                     stepSize: 10,
                     fontColor: "#8a909d",
-                    fontFamily: "Rraleway, sans-serif",
+                    fontFamily: "Raleway, sans-serif",
                     max: {{ $maxAP }},
                 }
                 }

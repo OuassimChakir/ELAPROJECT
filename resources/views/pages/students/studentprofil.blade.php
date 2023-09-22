@@ -109,18 +109,22 @@
                         @method('delete')
                         <table class="table tabled-boredered">
                             <thead>
+                                @staff
                                 @if (true)
                                     <th>
                                         <input type="checkbox" class="form-check-input" id="selectAllArchived">
                                     </th>
                                 @endif
+                                @endstaff
                                 <th></th>
                                 <th>N° Reçu</th>
                                 <th>Designation</th>
                                 <th>Montant</th>
                                 <th>Etat</th>
-                                <th></th>
+                                <th>Date du Paiment</th>
+                                @staff
                                 <th>Action</th>
+                                @endstaff
                             </thead>
                             @php
                                 $i = 0;
@@ -129,9 +133,11 @@
                                 @if (isset($lastPaiments))
                                     @foreach ($lastPaiments as $paiment)
                                         <tr>
+                                            @staff
                                             <td class="align-middle">
                                                 <input type="checkbox" name="paiments[]" value="{{ $paiment->idPayment }}"class="form-check-input archivedStudents">
                                             </td>
+                                            @endstaff
                                             <td class="align-middle">{{++$i}}</td>
                                             <td class="align-middle">
                                                 @if (is_null($paiment->numeroRecu))
@@ -170,16 +176,20 @@
                                                     {{$paiment->datePayment}}
                                                 @endif
                                             </td>
+                                            @staff
                                             <td class="align-middle">
                                                 <div class="btn-group-spaced">
+                                                    @if ($paiment->etat != 1)
                                                     <button type="button" class="btn btn-outline-info payInvoiceBtn" data-bs-toggle="modal" data-bs-target="#invoicePaiment" value="{{$paiment->idPayment}}">
                                                         <span class="mdi mdi-check-bold"></span>
                                                     </button>
+                                                    @endif
                                                     <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice({{$paiment->idPayment}})">
                                                         <i class="bi bi-trash-fill"></i>
                                                     </button>
                                                 </div>
                                             </td>
+                                            @endstaff
                                         </tr>
                                     @endforeach    
                                 @endif

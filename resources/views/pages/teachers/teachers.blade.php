@@ -118,20 +118,24 @@
         }
     });
 </script>
-@if (isset($newProfesseur))
-<template id="Professeur-password">
+@if (session()->has('newProfesseur'))
+<template id="professeur-password">
     <swal-title>
-        L'étudiant a été ajouté avec succès
+        Professeur a été ajouté avec succès
     </swal-title>
     <swal-html>
         <table class="table">
             <tr>
-                <th>Nom d'étudiant</th>
-                <td>{{ucfirst($newProfesseur['prenom'])}} {{ucfirst($newProfesseur['nom'])}}</td>
+                <th>Nom du Professeur</th>
+                <td>{{ucfirst(session()->get('newProfesseur')[0]['prenom'])}} {{ucfirst(session()->get('newProfesseur')[0]['nom'])}}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{session()->get('newProfesseur')[0]['username']}}</td>
             </tr>
             <tr>
                 <th>Mot de Passe</th>
-                <td>{{$newProfesseur['password']}}</td>
+                <td>{{session()->get('newProfesseur')[0]['password']}}</td>
             </tr>
         </table>
     </swal-html>
@@ -146,9 +150,8 @@
 
 <script>
     Swal.fire({
-        template: '#Professeur-password',
+        template: '#professeur-password',
     });
-    
 </script>
 @endif
 @endsection

@@ -12,6 +12,7 @@
                 <span><i class="mdi mdi-chevron-right"></i></span>{{ $group->designation }}
             </p>
         </div>
+        @staff
         <div>
             <a>
                 <button type="button" class="deleteButton btn btn-outline-danger" data-url="/groupes/{{ $group->idGroup }}"
@@ -21,6 +22,7 @@
                 </button>
             </a>
         </div>
+        @endstaff
     </div>
 
 
@@ -35,26 +37,32 @@
                                 type="button" role="tab" aria-controls="profile"
                                 aria-selected="true">Informations</button>
                         </li>
+                        @staff
                         {{-- Paramètres --}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings"
                                 type="button" role="tab" aria-controls="settings"
                                 aria-selected="false">Paramètres</button>
                         </li>
+                        @endstaff
+                        @teacher
                         {{-- Absence --}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="markAttendance-tab" data-bs-toggle="tab"
                                 data-bs-target="#markAttendance" type="button" role="tab" aria-controls="markAttendance"
                                 aria-selected="false">Marquer l'Absence</button>
                         </li>
+                        @endteacher
+                        @staff
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="attendance-tab" data-bs-toggle="tab" data-bs-target="#attendance"
                                 type="button" role="tab" aria-controls="attendance"
                                 aria-selected="false">Paramètres d'Absence</button>
                         </li>
+                        @endstaff
                     </ul>
                     <div class="tab-content px-3 px-xl-5" id="myTabContent">
-
+                        {{-- Informations --}}
                         <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="tab-widget mt-5">
                                 <div class="row">
@@ -149,7 +157,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                @staff
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="tab-pane-content mt-5">
@@ -227,10 +235,49 @@
                                         </div>
                                     </div>
                                 </div>
+                                @else
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="tab-pane-content mt-5">
+                                            <table id="responsive-data-table" class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nom</th>
+                                                        <th>Rejoint le</th>
+                                                    </tr>
+                                                </thead>
+    
+                                                <tbody>
+                                                    @foreach ($students as $student)
+                                                        <tr>
+                                                            <td>
+                                                                {{ $student->matricule }}
+                                                            </td>
+                                                            <td>
+                                                                {{ $student->prenom_fr }}
+                                                                {{ $student->nom_fr }}
+                                                                @if ($student->sexe == 'Homme')
+                                                                    <span class="badge badge-pill badge-info">M</span>
+                                                                @else
+                                                                    <span
+                                                                        class="badge badge-pill badge-purple">F</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>{{ $student->dateAjout }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endstaff
                             </div>
                         </div>
 
-
+                        @staff
+                        {{-- Parametres --}}
                         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                             <div class="tab-pane-content mt-5">
                                 <form action="{{ route('groups.update', ['idGroup' => $group->idGroup]) }}" method="post">
@@ -406,8 +453,9 @@
                                 </form>
                             </div>
                         </div>
-
-                        {{-- Absence --}}
+                        @endstaff
+                        @teacher
+                        {{-- Attendance --}}
                         <div class="tab-pane fade" id="markAttendance" role="tabpanel" aria-labelledby="markAttendance-tab">
                             <div class="tab-pane-content">
                                 <div class="card p-4 mb-4">
@@ -499,7 +547,9 @@
                                 </div>
                             </div>
                         </div>
-
+                        @endteacher
+                        @staff
+                        {{-- Attendance Settings --}}
                         <div class="tab-pane fade" id="attendance" role="tabpanel" aria-labelledby="attendance-tab">
                             <div class="tab-pane-content mt-5">
                                 <div class="card p-4 mb-2">
@@ -558,6 +608,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endstaff
                     </div>
                 </div>
             </div>

@@ -83,7 +83,7 @@ class User extends Authenticatable
 
     public static function createStudentAccount($idStudent, $name, $username){
         $role = Roles::getStudentRole();
-        $password = Str::random(10);
+        $password = Str::random(8);
         User::create([
             'name' => $name,
             'idStudent' => $idStudent,
@@ -98,7 +98,7 @@ class User extends Authenticatable
 
     public static function createProfAccount($idProfesseur, $name, $username){
         $role = Roles::getProfRole();
-        $password = Str::random(10);
+        $password = Str::random(8);
         User::create([
             'name' => $name,
             'idProfesseur' => $idProfesseur,
@@ -113,7 +113,7 @@ class User extends Authenticatable
 
     public static function createStaffAccount($idStaff, $name, $username){
         $role = Roles::getStaffRole();
-        $password = Str::random(10);
+        $password = Str::random(8);
         User::create([
             'name' => $name,
             'idStaff' => $idStaff,
