@@ -277,12 +277,15 @@ Route::middleware([
         / --------------------------------------- */
         // Users Page
         Route::get('/utilisateurs', [UserController::class, 'users'])->name('users');
-        // Add User
-        Route::post('/utilisateurs', [UserController::class, 'users'])->name('users.add');
     });
 
     // Admin Permission View
     Route::middleware(['is_admin'])->group(function () {
+        /* --------------------------------------
+        / Incomes Statistics 
+        / --------------------------------------- */
+        Route::get('stats',[IncomesController::class,'incomeStats'])->name('incomes.stats');
+        Route::post('stats',[IncomesController::class,'incomeStats'])->name('incomes.stats.query');
 
         /* --------------------------------------
         / activites 
@@ -304,6 +307,12 @@ Route::middleware([
         // Update roles
         Route::get('/roles/update/{idRole}',[RolesController::class, 'updateRoles'])->name('roles.update.page');
         Route::put('/roles/update/{idRole}',[RolesController::class, 'updateRoles'])->name('roles.update');
+        
+        /* --------------------------------------
+        / Users 
+        / --------------------------------------- */
+        Route::post('/utilisateurs/add',[UserController::class, 'register'])->name('users.add');
+
     });
 
     // Moderator Deletion Permissions
@@ -341,5 +350,8 @@ Route::middleware([
 
         // Delete & Update Grade
         Route::get('/niveau/{action}/{idGrade}', [GradesController::class,'actionGrade'])->name('grades.action');
+
+        // Reset user password
+        Route::post('/resetPassword/',[UserController::class,'resetPassword'])->name('resetPassword');
     });
 });

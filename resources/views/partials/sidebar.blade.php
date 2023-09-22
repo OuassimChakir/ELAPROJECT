@@ -153,7 +153,7 @@
 							</li>
 
 							<!-- Incomes -->
-							<li class="has-sub {{ Route::is('typeIncome') || Route::is('incomePayment') ? 'active' : ''}}">
+							<li class="has-sub {{ Route::is('typeIncome') || Route::is('incomePayment') || Route::is('incomes.stats') ? 'active' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-cash-stack"></i>
 									<span class="nav-text">Revenus</span> <b class="caret"></b>
@@ -168,6 +168,11 @@
 										<li class="{{Route::is('incomePayment') ? 'active' : ''}}">
 											<a class="sidenav-item-link" href="{{route('incomePayment')}}">
 												<span class="nav-text">Reçus de Payment</span>
+											</a>
+										</li>
+										<li class="{{Route::is('incomes.stats') ? 'active' : ''}}">
+											<a class="sidenav-item-link" href="{{route('incomes.stats')}}">
+												<span class="nav-text">Statistiques</span>
 											</a>
 										</li>
 									</ul>

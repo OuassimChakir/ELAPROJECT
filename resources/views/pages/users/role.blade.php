@@ -48,7 +48,6 @@
 											<label for="codeRole" class="col-12 col-form-label">Code Roles</label> 
 											<div class="col-12">
 												<input id="codeRole" name="codeRole" class="form-control" type="text" value="{{$updatedRoles->codeRole}}">
-												<small>01 : Administrateur - 02 : Comptable</small>
 											</div>
 										</div>
 
@@ -85,7 +84,6 @@
 											<label for="codeRole" class="col-12 col-form-label">Code Roles</label> 
 											<div class="col-12">
 												<input id="codeRole" name="codeRole" class="form-control" type="text">
-												<small>01 : Administrateur - 02 : Comptable</small>
 											</div>
 										</div>
 
