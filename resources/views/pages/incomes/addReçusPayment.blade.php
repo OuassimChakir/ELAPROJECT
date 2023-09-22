@@ -5,7 +5,7 @@
             <div class="modal-header px-4">
                 <h5 class="modal-title" id="exampleModalCenterTitle">Ajoute Reçus de Payment</h5>
             </div>
-            <form action="{{ route('incomePayment.add') }}" method="post" id="invoicePaimentForm" class="">
+            <form action="{{ route('incomePayment.add') }}" method="post" id="invoicePaimentForm">
                 @csrf
                 @method('post')
                 <div class="modal-body px-4">
@@ -19,7 +19,8 @@
                                         <optgroup label="les mois">
                                             @foreach ($incomes as $income)
                                                 @if ($income->activationDate != 00 && $income->activationDate != null)
-                                                    <option value="{{ $income->idIncome.'|'.$income->activationDate.'|'.$income->designation}}">
+                                                    <option
+                                                        value="{{ $income->idIncome . '|' . $income->activationDate . '|' . $income->designation }}">
                                                         {{ $income->designation }}
                                                     </option>
                                                 @endif
@@ -27,8 +28,9 @@
                                         </optgroup>
                                         <optgroup label="les Frais">
                                             @foreach ($incomes as $income)
-                                                @if ($income->activationDate == 00 && $income->activationDate != null )
-                                                    <option value="{{ $income->idIncome.'|'.$income->activationDate.'|'.$income->designation}}">
+                                                @if ($income->activationDate == 00 && $income->activationDate != null)
+                                                    <option
+                                                        value="{{ $income->idIncome . '|' . $income->activationDate . '|' . $income->designation }}">
                                                         {{ $income->designation }}
                                                     </option>
                                                 @endif
@@ -37,7 +39,8 @@
                                         @foreach ($incomes as $income)
                                             @if ($income->activationDate == null)
                                                 <optgroup label="Les événements">
-                                                    <option value="{{ $income->idIncome.'|'.$income->activationDate.'|'.$income->designation}}">
+                                                    <option
+                                                        value="{{ $income->idIncome . '|' . $income->activationDate . '|' . $income->designation }}">
                                                         {{ $income->designation }}
                                                     </option>
                                             @endif
@@ -49,20 +52,22 @@
                             <div class="col-lg-6">
                                 <label for="search" id="EtudiantLabel">Etudiant</label>
                                 <div class="form-group mb-4 d-flex justify-content-center" id="search-autocomplete">
-                                    <input type="text" name="search" id="search"  placeholder="Search Etudiant Data"
-                                     class="form-control" value="" required>
-                                    
-                                </div> 
+                                    <input type="text" name="search" id="search"
+                                        placeholder="Search Etudiant Data" class="form-control" value="" required>
+                                    <button type="button" class="btn btn-primary" id="searchBtn">
+                                        <span class="mdi mdi-magnify"></span>
+                                    </button>
+                                </div>
                                 <div id="userList" style="display: block;"></div>
                             </div>
                         </div>
                         <div class="row mb-2 g-3">
                             <div class="">
-                                <div class="groupe form-group mb-4">
-                                    <label for="idgroup" id="groupLabel">les group</label>
-                                    <select name="idgroup" id="idGroup" class="form-select " required>
+                                <div class="form-group mb-4" id="groupSelect">
+                                    <label for="idGroup" id="groupLabel">les group</label>
+                                    <select name="idGroup" id="idGroup" class="form-select  " required>
                                         <option disabled selected>-- Choisir un groupe --</option>
-                                        
+
                                     </select>
                                 </div>
                             </div>
@@ -109,8 +114,8 @@
                                 <label>Type de Paiement</label>
                                 <div class="col">
                                     <div class="form-check">
-                                        <input class="form-check-input" value="Espece" type="radio" name="paymentMode"
-                                            id="typePyament1" checked>
+                                        <input class="form-check-input" value="Espece" type="radio"
+                                            name="paymentMode" id="typePyament1" checked>
                                         <label class="form-check-label" for="typePyament1" checked>
                                             Espèce
                                         </label>
@@ -141,84 +146,109 @@
 <script src="{{ asset('JS/jquery.min.js') }}"></script>
 <script src="{{ asset('Bootstrap/js/bootstrap.min.js') }}"></script>
 <script>
-    $('.groupe').hide();
+    $('#groupSelect').hide();
     $('.hidden').hide();
-    $(document).ready(function(){
-    $('#idIncome').change(function(){
+    $(document).ready(function() {
+        $('#idIncome').change(function() {
             var array = $(this).val().split('|');
             var activationDate = array[1];
             var idincome = array[0];
-    $('#search').on('keyup',function() {
-        var query = $(this).val(); 
-        $.ajax({
-            url:"{{ route('search.etudiant') }}",
-            type:"GET",
-            data:{'query':query},
-            success:function (data) {
-                $('#userList').html(data);
-            }
-        })
+            $('#search').on('keyup', function() {
+                $('#userList').show();
+                $('#idGroup').empty();
+                $('#idGroup').prop('disabled', true);
+                $('#groupSelect').hide();
+                var query = $(this).val();
+                $.ajax({
+                    url: "{{ route('search.etudiant') }}",
+                    type: "GET",
+                    data: {
+                        'query': query
+                    },
+                    success: function(data) {
+                        $('#userList').html(data);
+                    }
+                })
 
-        // Make the second AJAX request
-        var studentIdQuery = $('#idStudent').val();
-        $.ajax({
-            url: "{{ route('search.group') }}",
-            type: "GET",
-            data: { 'studentIdQuery': studentIdQuery },
-            success: function(data) {
-                if (!$.isEmptyObject(data) && activationDate != '00' && activationDate != null) {
-                    $('#idGroup').html(data);
-                    $('.groupe').show();
-                } else {
-                    $('.groupe').hide();
-                }
-            }
+            });
+            $('body').on('click', '#searchBtn', function() {
+                var value = $('#search').val();
+                // Make the second AJAX request
+                $.ajax({
+                    url: "{{ route('search.group') }}",
+                    type: "GET",
+                    data: {
+                        'matricule': value
+                    },
+                    success: function(data) {
+                        if (data.length > 0) {
+                            let html = '';
+                            for (let i = 0; i < data.length; i++) {
+                                html += "<option value=" + data[i].idGroup + ">" +
+                                    data[i].designation + "</option>";
+                            }
+                            $('#idGroup').empty();
+                            $('#idGroup').append(html);
+                            $('#idGroup').prop('disabled', false);
+                            $('#groupSelect').show();
+                        } else {
+                            $('#idGroup').prop('disabled', true);
+                            $('#groupSelect').hide();
+                        }
+                    }
+                });
+            });
         });
 
+    });
+    $('#numeroRecu').on('keyup', function() {
+        var numRecuQuery = $('#numeroRecu').val();
 
-    }); 
-    $('body').on('click', 'idSearch', function(){
-        var value = $(this).text();
-        //do what ever you want
-    });
-}); 
-        
-    });
-    $('#numeroRecu').on('keyup',function() {
-    var numRecuQuery = $('#numeroRecu').val();
-    
         $.ajax({
             url: "{{ route('search.numRecu') }}",
             type: "GET",
-            data: { 'numRecuQuery': numRecuQuery },
+            data: {
+                'numRecuQuery': numRecuQuery
+            },
             success: function(data) {
                 if (data == 0) {
                     $('#numeroRecu').removeClass("is-invalid");
                     $('#numeroRecu').addClass("is-valid");
-                }else {
+                } else {
                     $('#numeroRecu').removeClass("is-valid");
                     $('#numeroRecu').addClass("is-invalid");
                 }
             }
-        }); 
+        });
     });
-  $(document).ready(function(){
-  $("select").click(function(){
-    $("select").addClass("is-valid");
+    $(document).ready(function() {
+        $("select").click(function() {
+            $("select").addClass("is-valid");
 
 
-  });
-});
+        });
+    });
+</script>
 
-    </script>
-    <style>
-     #userList{
-    display: none;
-    position: absolute;
-    top: 90px;
-    overflow-y: hidden;
-    width: 43%;
-    z-index: 999999;
-    background-color: white;
-     }  
-    </style>
+<script>
+    $(document).on('click', '.userListElement', function() {
+        let value = $(this).attr('value');
+        $('#search').val(value);
+        $('#userList').hide();
+    });
+</script>
+<style>
+    .userListElement {
+        cursor: pointer;
+    }
+
+    #userList {
+        display: none;
+        position: absolute;
+        top: 90px;
+        overflow-y: hidden;
+        width: 43%;
+        z-index: 999999;
+        background-color: white;
+    }
+</style>

@@ -27,8 +27,13 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <input type="month" class="form-control" name="statsMonth" id="statsMonth" value="{{isset($datePayment) && $statsType == 0 ? $datePayment : date('Y-m')}}" {{$statsType == 0 ? '' : 'disabled'}}>
-                                    <input type="date" class="form-control" name="statsDay" id="statsDay" value="{{isset($datePayment) && $statsType == 1 ? $datePayment : date('Y-m-d')}}" {{$statsType == 1 ? '' : 'disabled'}}>
+                                    @if (!isset($statsType))
+                                    <input type="month" class="form-control" name="statsMonth" id="statsMonth" value="{{isset($datePayment) && $statsType == 0 ? $datePayment : date('Y-m')}}">
+                                    <input type="date" class="form-control" name="statsDay" id="statsDay" value="{{isset($datePayment) && $statsType == 1 ? $datePayment : date('Y-m-d')}}" disabled>
+                                    @else
+                                    <input type="month" class="form-control" name="statsMonth" id="statsMonth" value="{{isset($datePayment) && $statsType == 0 ? $datePayment : date('Y-m')}}" {{($statsType == 0) ? '' : 'disabled'}}>
+                                    <input type="date" class="form-control" name="statsDay" id="statsDay" value="{{isset($datePayment) && $statsType == 1 ? $datePayment : date('Y-m-d')}}" {{($statsType == 1) ? '' : 'disabled'}}>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-sm-1">
@@ -235,7 +240,7 @@
     <script>
         $('#statsDay').hide();
     </script>
-    @if ($statsType == 1)
+    @if (isset($statsType) && $statsType == 1)
         <script>
             $('#statsDay').show();
             $('#statsMonth').hide();

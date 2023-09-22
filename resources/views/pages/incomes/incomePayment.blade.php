@@ -29,9 +29,8 @@ Reçus de Payment
                             <thead>
                                 <tr>
                                     <th>Numéro</th>
-                                    <th>Etudiants</th>
                                     <th>Designation</th>
-                                    <th>Type de Paiement</th>
+                                    <th>Description</th>
                                     <th>Prix</th>
                                     <th>Date de Reçus</th>
                                     <th>Action</th>
@@ -43,10 +42,9 @@ Reçus de Payment
 
                                     @foreach ($incomePayment as $Payment)
                                         <tr>
-                                            <td>ELA-R.{{str_pad((string) $Payment->idPayment, 4, 0, STR_PAD_LEFT)}}</td>
-                                            <td><span class="badge badge-warning">{{$Payment->matricule}}</span></td>
+                                            <td>BMA-R.{{str_pad((string) $Payment->numeroRecu, 4, 0, STR_PAD_LEFT)}}</td>
                                             <td><span class="badge badge-primary">{{$Payment->designation}}</span></td>
-                                            <td>{{$Payment->paymentMode}}</td>
+                                            <td>{{$Payment->note}}</td>
                                             <td><span class="badge badge-dark">{{$Payment->amount}} DH</span></td>
                                             <td>{{$Payment->datePayment}}</td>
                                             <td>

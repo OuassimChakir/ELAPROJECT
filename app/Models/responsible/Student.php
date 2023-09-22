@@ -53,6 +53,10 @@ class Student extends Model
     public static function selectStudents($matricule){
         return Student::find($matricule);
     }
+    public static function selectStudent($matricule){
+        return Student::select('*')->where('matricule', $matricule)->get();
+    }
+
 
 
     // Select one Student

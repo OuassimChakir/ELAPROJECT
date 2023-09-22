@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activite;
 use App\Models\Group;
+use App\Models\GroupElements;
 use Illuminate\Http\Request;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
@@ -92,8 +93,10 @@ class IncomesController extends Controller
             $income = Income::find($select[0]);
             $note = $income->description . ' - ' . date('Y');
             $amountPaid = $request->amountPaid;
-            $idGroup = $request->idgroup;
-            $idStudent = $request->idStudent;
+            $idGroup = $request->idGroup;
+            
+            $idStudent = Student::selectStudent($request->search);
+            dd($idStudent->idStudent);
             $etat = null;
             $numeroRecu = $request->numeroRecu;
             Payment::createPayment($numeroRecu, $datePayment, $paymentMode, $amount, $amountPaid, $note, $etat, $idGroup, $idStudent, $income->idIncome);
@@ -239,9 +242,6 @@ class IncomesController extends Controller
     public function searchEtudiant(Request $request)
     {
         $query = $request->get('query');
-        Student::where('matricule', 'like', '%' . $query . '%')
-            ->orderBy('idStudent', 'desc')
-            ->get();
         if (!empty($query)) {
             if ($request->ajax()) {
                 $data =  DB::table('students')->where('matricule', 'like', '%' . $query . '%')
@@ -250,11 +250,11 @@ class IncomesController extends Controller
                 if (count($data) > 0) {
                     $output = '<ul class="list-group">';
                     foreach ($data as $row) {
-                        $output .= '<li class="list-group-item" id="idStudent"  value=' . $row->idStudent . '><a href="#">' . $row->matricule . '</a></li>';
+                        $output .= '<li class="list-group-item userListElement" value="' . $row->matricule . '">' . $row->matricule . '</li>';
                     }
                     $output .= '</ul>';
                 } else {
-                    $output .= '<li class="list-group-item">' . 'No results' . '</li>';
+                    $output = '<li class="list-group-item">' . 'No results' . '</li>';
                 }
                 return $output;
             }
@@ -262,24 +262,18 @@ class IncomesController extends Controller
     }
     public function searchGroup(Request $request)
     {
-        $query = $request->get('studentIdQuery');
-        if (!empty($query)) {
+        $query = $request->get('matricule');
+        if (!empty($query))
             if ($request->ajax()) {
-                $data =  DB::table('groupelements')->select('*')
+                $data = GroupElements::select('*')
                     ->join('groups', 'groups.idGroup', '=', 'groupelements.idGroup')
                     ->join('subjects', 'subjects.idSubject', '=', 'groups.idSubject')
                     ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
-                    ->where('groupelements.idStudent', $query)
+                    ->join('students','students.idStudent','=','groupelements.idStudent')
+                    ->where('students.matricule', $query)
                     ->get();
-                $output = '';
-                if (count($data) > 0) {
-                    foreach ($data as $row) {
-                        $output .= '<option value=' . $row->idGroup . '>' . $row->designation . '</option>';
-                    }
-                }
-                return $output;
+                return response()->json($data);
             }
-        } else return $output = "<script>$('.groupe').hide(); </script>";
     }
     public function searchRecu(Request $request)
     {
