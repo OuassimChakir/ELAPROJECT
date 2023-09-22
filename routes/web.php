@@ -181,6 +181,8 @@ Route::middleware([
     Route::get('/typeIncome', [IncomesController::class,'allIncomes'])->name('typeIncome');
     // Add New typeIncomes
     Route::post('/typeIncome/add', [IncomesController::class,'allIncomes'])->name('typeIncome.add');
+    // Serach etudiant
+    Route::get('/typeIncome/Serach', [IncomesController::class,'searchEtudiant'])->name('search.etudiant');
     // Delete typeIncomes
     Route::get('/typeIncome/delete/{idIncome}', [IncomesController::class,'deleteIncome'])->name('typeIncome.delete');
     // Update a typeIncomes

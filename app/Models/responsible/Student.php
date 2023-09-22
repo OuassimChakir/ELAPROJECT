@@ -120,4 +120,10 @@ class Student extends Model
             ->where('matricule',$matricule)
             ->forceDelete();
     }
+    //-------------------- search student --------------//
+    public static function searchstudentsbyMatricule($query){
+        Student::where('matricule', 'like', '%'.$query.'%')
+                    ->orderBy('idStudent', 'desc')
+                    ->get();
+    }
 }
