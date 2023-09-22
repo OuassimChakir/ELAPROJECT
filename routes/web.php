@@ -87,10 +87,6 @@ Route::middleware([
     // Attendance AJAX
     Route::get('/attendance/{idGroup}/{dateAbsence}', [AttendanceController::class,'getAttendanceMonthDates']);
 
-    // Serach etudiant
-    Route::get('/typeIncome/Serach', [IncomesController::class,'searchEtudiant'])->name('search.etudiant');
-    Route::get('/typeIncome/Serach/group', [IncomesController::class,'searchGroup'])->name('search.group');
-    Route::get('/typeIncome/Serach/Recu', [IncomesController::class,'searchRecu'])->name('search.numRecu');
     
     // ----- pdf de facture
     Route::get('/pdf/{idExpensePayment}',[PdfController::class, 'pdf'])->name('pdf.generate');
@@ -227,7 +223,9 @@ Route::middleware([
         Route::post('/typeIncome/add', [IncomesController::class,'allIncomes'])->name('typeIncome.add');
         // Serach etudiant
         Route::get('/typeIncome/search', [IncomesController::class,'searchEtudiant'])->name('search.etudiant');
-        // Delete typeIncomes
+        Route::get('/typeIncome/search/group', [IncomesController::class,'searchGroup'])->name('search.group');
+        Route::get('/typeIncome/search/Recu', [IncomesController::class,'searchRecu'])->name('search.numRecu');
+        // Delete search
         Route::get('/typeIncome/delete/{idIncome}', [IncomesController::class,'deleteIncome'])->name('typeIncome.delete');
         // Update a typeIncomes
         Route::get('/typeIncome/update/{idIncome}', [IncomesController::class,'updateIncome'])->name('typeIncome.update.page');
