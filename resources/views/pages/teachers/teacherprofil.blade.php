@@ -71,50 +71,31 @@
                             <div class="tab-widget mt-5">
                                 @if (isset($groups))
                                     <div class="row">
-                                        @foreach ($groups as $group)
-                                            <div class="col-xl-4">
-                                                <div class="media widget-media p-3 bg-white border">
-                                                    <div class="icon rounded-circle mr-3 bg-primary">
-                                                        <i class="bi bi-collection-fill text-white "></i>
-                                                    </div>
-                                                    <div class="media-body align-self-center">
-                                                        <a
-                                                            href="{{ route('groups.profil', ['idGroup' => $group->idGroup]) }}">
-                                                            <h4 class="text-primary mb-2">{{ $group->designation }}</h4>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @endif
-                                @if (isset($factures))
-                                    <div class="row">
                                         <div class="col-xl-12">
 
                                             <!-- Notification Table -->
                                             <div class="card card-default">
                                                 <div class="card-header justify-content-between mb-1">
-                                                    <h2>Les Factures</h2>
+                                                    <h2>Les groups</h2>
                                                 </div>
                                                 <div class="card-body compact-notifications" data-simplebar
                                                     style="height: 434px;">
-                                                    @foreach ($factures as $facture)
+                                                    @foreach ($groups as $group)
                                                         <div class="media py-3 align-items-center justify-content-between">
                                                             <div
                                                                 class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-warning text-white">
-                                                                <i class="bi bi-receipt font-size-20"></i>
+                                                                <i class="bi bi-collection-fill font-size-20"></i>
 
                                                             </div>
                                                             <div class="media-body pr-3">
                                                                 <a class="mt-0 mb-1 font-size-15 text-dark" target="_blank"
-                                                                    href="{{ route('pdf.generate', ['idExpensePayment' => $facture->idExpensePayment]) }}">
-                                                                    {{ $facture->designation }}</a>
-                                                                <p>{{ $facture->description }}</p>
+                                                                    href="{{ route('groups.profil', ['idGroup' => $group->idGroup]) }}">
+                                                                    {{ $group->designation }}</a>
+                                                                <p>capacité de groupe :<b> {{ $group->nbElements }}/{{ $group->capacity }}</b> </p>
                                                             </div>
                                                             <span class=" font-size-12 d-inline-block"><i
                                                                     class="mdi mdi-clock-outline"></i>
-                                                                {{ $facture->datePayment }}</span>
+                                                                {{ $group->created_at }}</span>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -255,8 +236,63 @@
                 </div>
             </div>
         </div>
-    </div>
+ 
+        {{-- FACTURES --}}
+        <div class="row">
+            <div class="col-12">
+                <div class="ec-vendor-list card card-default p-4">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h3 class="card-title">Factures</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table id="responsive-data-table"  class="table">
+                            <thead>
+                                <tr>
+                                    <th>Numéro</th>
+                                    <th>Type de Dépense</th>
+                                    <th>Description</th> 
+                                    <th>Prix</th>
+                                    <th>Date de Facture</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
+                            <tbody>
+                                @if (isset($factures))
+
+                                    @foreach ($factures as $facture)
+                                        <tr>
+                                            <td>BMA-F.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
+                                            <td><span class="badge badge-primary">{{$facture->designation}}</span></td>
+                                            <td>{{$facture->description}}</td>
+                                            <td><span class="badge badge-dark">{{$facture->amount}} DH</span></td>
+                                            <td>{{$facture->datePayment}}</td>
+                                            <td>
+                                                <div class="btn-group-spaced">
+                                                    <a href="{{route('pdf.generate',['idExpensePayment'=>$facture->idExpensePayment])}}" target="_blank">
+                                                        <button type="submit" class="btn btn-outline-success" name="print">
+                                                            <i class="bi bi-printer-fill"></i></i>
+                                                        </button>
+                                                    </a>
+                                                    <a href="{{route('factureDepenses.delete',['idExpensePayment' => $facture->idExpensePayment])}}">
+                                                        <button type="submit" class="btn btn-outline-danger" name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
+                                                                <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="{{ asset('JS/jquery.min.js') }}"></script>
     <script src="{{ asset('Bootstrap/js/bootstrap.min.js') }}"></script>
     <script>
