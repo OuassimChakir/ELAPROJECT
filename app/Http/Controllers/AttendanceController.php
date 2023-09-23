@@ -61,7 +61,7 @@ class AttendanceController extends Controller
             if($role->codeRole != '22'){
                 $students = GroupElements::groupElements($request->idGroup);
                 for ($i=0; $i < count($students); $i++){
-                    $students[$i]->attendance = Attendance::getGroupAttendaceByDate($request->dateAbsence, $students[$i]->idElement);
+                    $students[$i]->attendance = Attendance::getGroupAttendanceByDate($request->dateAbsence, $students[$i]->idElement);
                     if($students[$i]->attendance->count() == 0) $students[$i]->attendance = null;
                 }
                 return view('pages.groupes.presence')->with([
@@ -73,7 +73,7 @@ class AttendanceController extends Controller
             }else{
                 $student = Student::getStudent(Auth::user()->idStudent);
                 $element = GroupElements::getElement($request->idGroup,$student->idStudent);
-                $student->attendance =  Attendance::getGroupAttendaceByDate($request->dateAbsence, $element->idElement);
+                $student->attendance =  Attendance::getGroupAttendanceByDate($request->dateAbsence, $element->idElement);
                 if($student->attendance->count() == 0) $student->attendance = null;
                 return view('pages.groupes.presence')->with([
                     'groups' => $allGroups,

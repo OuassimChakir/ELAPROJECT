@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-
+    
             <div class="col-xl-2">
                 <button class="add2GroupBtn btn btn-outline-success" value="{{ $student->idStudent }}"
                     data-bs-toggle="modal" data-bs-target="#add2Group" id="tab-widget-addBtn">
@@ -70,7 +70,6 @@
             </div>
             <div class="mt-3"></div>
         </div>
-
     </div>
 </div>
 

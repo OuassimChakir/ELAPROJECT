@@ -87,8 +87,7 @@ class Student extends Model
             'updated_at' => date('Y-m-d H:i:s')
         ]);
     }
-
-
+    
     /* ---------------------------------------
     / Archive & Delete
     / ---------------------------------------*/
