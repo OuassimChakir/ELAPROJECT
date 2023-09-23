@@ -124,9 +124,14 @@ class StaffController extends Controller
     }
 
     public function archivedStaff($idStaff)
-    {
+    {  
+        $staffTypes = Stafftype::getStaffTypes();
+        $factures = Facture::getFacturesByStaff($idStaff);
         $staffInfo = staff::getDeletedStaff($idStaff);
-        return view('pages.staff.archivedStaffProfil')->with('staff', $staffInfo);
+        return view('pages.staff.archivedStaffProfil')
+        ->with('staff', $staffInfo)
+        ->with('factures', $factures)
+        ->with('staffTypes', $staffTypes);
     }
 
     public function restoreArchivedStaff($idStaff)

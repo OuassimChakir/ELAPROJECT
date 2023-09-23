@@ -99,30 +99,30 @@ class Student extends Model
     / ---------------------------------------*/
 
     // Delete Student
-    public static function deleteStudent($matricule){
-        Student::find($matricule)->delete();
+    public static function deleteStudent($idStudent){
+        Student::find($idStudent)->delete();
     }
 
     public static function softDeletedStudents(){
         return Student::onlyTrashed()->get();
     }
 
-    public static function getDeletedStudent($matricule){
+    public static function getDeletedStudent($idStudent){
         return Student::onlyTrashed()
             ->select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
-            ->where('students.idStudent',$matricule)
+            ->where('students.idStudent',$idStudent)
             ->leftJoin('responsibles','students.cnieResponsible','=','responsibles.cnieResponsible')->first();
     }
 
-    public static function restoreStudent($matricule){
+    public static function restoreStudent($idStudent){
         Student::withTrashed()
-            ->where('matricule',$matricule)
+            ->where('idStudent',$idStudent)
             ->restore();
     }
    
-    public static function forceDeleteStudent($matricule){
+    public static function forceDeleteStudent($idStudent){
         Student::withTrashed()
-            ->where('matricule',$matricule)
+            ->where('idStudent',$idStudent)
             ->forceDelete();
     }
     //-------------------- search student --------------//

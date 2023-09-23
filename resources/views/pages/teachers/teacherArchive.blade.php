@@ -51,7 +51,7 @@
                                             {{$teacher->libelle}}
                                         </div>
                                     </td>
-                                    <td>{{$teacher->dateEngagement}}</td>
+                                    <td>{{$teacher->created_at}}</td>
                                     <td>{{$teacher->deleted_at}}</td>
                                     <td>
                                         <div class="">

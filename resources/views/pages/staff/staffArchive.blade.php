@@ -26,7 +26,6 @@
                                     <th><input type="checkbox" class="form-check-input" id="selectAllArchived"></th>
                                 @endif
                                 <th>Nom</th>
-                                <th>CINE</th>
                                 <th>Spécialité</th>
                                 <th>Date d'engagement</th>
                                 <th>Supprimé le</th>
@@ -47,14 +46,13 @@
                                             <div class="badge badge-pill badge-purple">F</div>
                                         @endif
                                     </td>
-                                    <td>{{$staff->cnie}}</td>
                                     <td>
                                         <div class="badge bg-dark">
                                             {{$staff->designation}}
                                         </div>
                                     </td>
-                                    <td>{{$staff->dateEngagement}}</td>
-                                    <td>{{$staff->DELETED_AT}}</td>
+                                    <td>{{$staff->created_at}}</td>
+                                    <td>{{$staff->deleted_at}}</td>
                                     <td>
                                         <div class="">
                                             <a href="{{route('staff.archive.profil',['idStaff' => $staff->idStaff])}}">

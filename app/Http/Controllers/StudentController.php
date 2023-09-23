@@ -177,16 +177,32 @@ class StudentController extends Controller
         return view('pages.students.studentArchive')->with('students', $students);
     }
 
-    public function archivedStudent($matricule)
+    public function archivedStudent($idStudent)
     {
-        $studentInfo = Student::getDeletedStudent($matricule);
-        return view('pages.students.archivedStudentProfil')->with('student', $studentInfo);
+        $subjects = Group::existedGroupSubjects();
+        $courseTypes = Group::existedGroupCourseTypes();
+        $pendingPaiment = Payment::getStudentPendingPaiment($idStudent);
+        $studentGroups = GroupElements::studentGroups($idStudent);
+        $lastPaiments = Payment::getStudentLastestPaiments($idStudent);
+        $invoiceGroups = Group::getGroupWithStudentInvoices($idStudent);
+        $paiment = Payment::getStudentPaiment(101);
+        $studentInfo = Student::getDeletedStudent($idStudent);
+        return view('pages.students.archivedStudentProfil')->with([
+            'student' => $studentInfo,
+            'pendingPaiment' => $pendingPaiment,
+            'subjects' => $subjects,
+            'courseTypes' => $courseTypes,
+            'studentGroups' => $studentGroups,
+            'lastPaiments' => $lastPaiments,
+            'invoiceGroups' => $invoiceGroups,
+            'paiment' => $paiment
+        ]);
     }
 
-    public function restoreArchivedStudent($matricule)
+    public function restoreArchivedStudent($idStudent)
     {
-        Student::restoreStudent($matricule);
-        $stu = Student::selectStudents($matricule);
+        Student::restoreStudent($idStudent);
+        $stu = Student::selectStudents($idStudent);
         if (session()->get('user')) {
             $typeActivity = 3;
             $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
@@ -195,25 +211,25 @@ class StudentController extends Controller
         return Redirect::back()->with('restoreMessage', "L'étudiant a été restorer avec succès");
     }
 
-    public function deleteArchivedStudent($matricule)
+    public function deleteArchivedStudent($idStudent)
     {
-        $stu = Student::getDeletedStudent($matricule);
+        $stu = Student::getDeletedStudent($idStudent);
         if (session()->get('user')) {
             $typeActivity = 10;
             $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
         }
         Responsible::fordeleteResponsible($stu->cnieResponsible);
-        Student::forceDeleteStudent($matricule);
+        Student::forceDeleteStudent($idStudent);
         return Redirect::back()->with('deleteMessage', "L'étudiant a été supprimer Définitivement");
     }
 
     public function multipleArchivedStudents(Request $request)
     {
         if ($request->has('restoreAll')) {
-            foreach ($request->archivedStudents as $matricule) {
-                Student::restoreStudent($matricule);
-                $stu = Student::selectStudents($matricule);
+            foreach ($request->archivedStudents as $idStudent) {
+                Student::restoreStudent($idStudent);
+                $stu = Student::selectStudents($idStudent);
                 if (session()->get('user')) {
                     $typeActivity = 3;
                     $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
@@ -223,19 +239,19 @@ class StudentController extends Controller
             return Redirect::back()->with('restoreMessage', "Les étudiants séléctionés ont été restorer avec succès");
         }
         if ($request->has('deleteAll')) {
-            foreach ($request->archivedStudents as $matricule) {
-                $studentInfo = Student::getStudent($matricule);
+            foreach ($request->archivedStudents as $idStudent) {
+                $studentInfo = Student::getStudent($idStudent);
                 $Responsible = new Responsible();
                 if ($studentInfo->cnieResponsible != 'NULL')
-                    $Responsible->deleteResponsible($studentInfo->cnieResponsible, $matricule);
+                    $Responsible->deleteResponsible($studentInfo->cnieResponsible, $idStudent);
 
-                $stu = Student::getDeletedStudent($matricule);
+                $stu = Student::getDeletedStudent($idStudent);
                 if (session()->get('user')) {
                     $typeActivity = 10;
                     $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
                 }
-                Student::forceDeleteStudent($matricule);
+                Student::forceDeleteStudent($idStudent);
             }
             return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été supprimer Définitivement");
         }
