@@ -20,6 +20,8 @@ class Payment extends Model
     {
         return Payment::select('*')
             ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+            ->leftjoin('students','students.idStudent','=','payment.idStudent')
+            ->orderBy('datePayment','DESC')
             ->get();
     }
 
@@ -39,6 +41,30 @@ class Payment extends Model
             ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
             ->where('idPayment',$idPayment)
             ->first();
+    }
+
+    public static function getStudentPaiments($idStudent, $datePayment = 0){
+        if($datePayment == 0)
+            return Payment::select('payment.*','students.*','incomes.*','groups.designation as groupDesignation','incomes.designation as incomeDesignation')
+            ->join('incomes','payment.idIncome','=','incomes.idIncome')
+            ->join('students','payment.idStudent','=','students.idStudent')
+            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
+            ->where('payment.idStudent',$idStudent)
+            ->whereNotNull('etat')
+            ->orderBy('datePayment','DESC')
+            ->get();
+        else{
+            $date = explode('-',$datePayment);
+            return Payment::select('payment.*','students.*','incomes.*','groups.designation as groupDesignation','incomes.designation as incomeDesignation')
+            ->join('incomes','payment.idIncome','=','incomes.idIncome')
+            ->join('students','payment.idStudent','=','students.idStudent')
+            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
+            ->where('payment.idStudent',$idStudent)
+            ->whereNotNull('etat')
+            ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
+            ->orderBy('datePayment','DESC')
+            ->get();
+        }
     }
         //------------ find reçue by idStudent & idGroup-------- //
         public static function selectPayment($idGroup, $idStudent, $idIncome)
@@ -305,6 +331,28 @@ class Payment extends Model
                 ->where('idGroup',$idGroup)
                 ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
                 ->first();
+    }
+
+    public static function getGroupPaiments($idGroup, $datePayment){
+        if($datePayment != 'all'){
+            $date = explode('-',$datePayment);
+            return Payment::select('*')
+                    ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                    ->join('students','students.idStudent','=','payment.idStudent')
+                    ->where('etat',1)
+                    ->where('idGroup',$idGroup)
+                    ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
+                    ->orderBy('datePayment','DESC')
+                    ->get();
+        }else{
+            return Payment::select('*')
+                    ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                    ->join('students','students.idStudent','=','payment.idStudent')
+                    ->where('etat',1)
+                    ->where('idGroup',$idGroup)
+                    ->orderBy('datePayment','DESC')
+                    ->get();
+        }
     }
 }
 

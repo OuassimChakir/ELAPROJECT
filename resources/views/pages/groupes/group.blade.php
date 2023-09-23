@@ -14,6 +14,11 @@
         </div>
         @staff
         <div>
+            <a href="{{route('group.incomes',['idGroup' => $group->idGroup, 'datePayment' => 'all'])}}" target="_blank">
+                <button type="button" class="btn btn-primary">
+                    Revenus
+                </button>
+            </a>
             <a>
                 <button type="button" class="deleteButton btn btn-outline-danger" data-url="/groupes/{{ $group->idGroup }}"
                     data-confirm="Une fois supprimé, vous ne pourrez plus récupérer ce groupe !" data-title="Êtes-vous sûr?"

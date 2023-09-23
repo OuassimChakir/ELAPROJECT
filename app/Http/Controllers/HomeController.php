@@ -226,9 +226,9 @@ class HomeController extends Controller
                 ->with('days', $days)
                 ->with('allfacture', $allfacture);
         }elseif($role->codeRole == '22'){
-        /* ------------------------------------
-        / Students Home
-        / -------------------------------------*/
+            /* ------------------------------------
+            / Students Home
+            / -------------------------------------*/
             $student = Student::getStudent(auth()->user()->idStudent);
             $pendingPaiment = Payment::getStudentPendingPaiment(auth()->user()->idStudent);
             $studentGroups = GroupElements::studentGroups(auth()->user()->idStudent);
@@ -240,9 +240,9 @@ class HomeController extends Controller
                 'lastestAttendances' => $lastestAttendances,
             ]);
         }elseif($role->codeRole=='33'){
-        /* ------------------------------------
-        / Teachers Home
-        / -------------------------------------*/
+            /* ------------------------------------
+            / Teachers Home
+            / -------------------------------------*/
             $teacher = Professeurs::getProfesseur(auth()->user()->idProfesseur);
             $teacherGroups = Group::getProfGroups(auth()->user()->idProfesseur);
             return view('teacherhome')->with([

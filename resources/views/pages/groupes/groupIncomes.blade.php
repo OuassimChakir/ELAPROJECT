@@ -5,19 +5,20 @@
 @section('content')
     <div class="breadcrumb-wrapper breadcrumb-contacts">
         <div>
-            <h1>Reçus de Payment</h1>
+            @if ($datePayment == 'all')
+            <h1>Revenus du Group</h1>
+            @else
+            @php
+                $date = date_create($datePayment);
+            @endphp
+            <h1>Revenus du Group: {{date_format($date,'M, Y')}}</h1>
+            @endif
             <p class="breadcrumbs">
                 <span><a href="{{ route('acceuil') }}">Acceuil</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>Reçus de Payment
+                <span><i class="mdi mdi-chevron-right"></i></span><a href="{{route('groups.profil',['idGroup' => $group->idGroup])}}">{{$group->designation}}</a>
+                <span><i class="mdi mdi-chevron-right"></i></span>Revenus
             </p>
         </div>
-
-        <div>
-            <button type="button" class="btn btn-info" id="showFormButton" data-bs-toggle="modal" data-bs-target="#addFacture">
-                <i class="bi bi-plus-square"></i> Ajouter une Paiement
-            </button>
-        </div>
-
     </div>
 
     <div class="row">
@@ -98,8 +99,6 @@
             </div>
         </div>
     </div>
-    <!-- add the Income Payment -->
-    @include('pages.incomes.addReçusPayment');
     <script src="{{ asset('JS/jquery.min.js') }}"></script>
     <script src="{{ asset('Bootstrap/js/bootstrap.min.js') }}"></script>
     <script>

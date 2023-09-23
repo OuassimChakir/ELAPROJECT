@@ -80,13 +80,11 @@ class IncomesController extends Controller
     //-------------- List of Payment  ---------------- //
     public function allPayment(Request $request)
     {
-        $students = Student::getStudents();
         // List of Payment
         $Incomes = Income::allIncome();
         // list of Payment
         $incomePayment = Payment::allPayment();
         if ($request->has('validatePaiment')) {
-
             $select = explode('|', $request->idIncome);
             $datePayment = $request->datePayment;
             $paymentMode = $request->paymentMode;
@@ -114,6 +112,32 @@ class IncomesController extends Controller
         return view('pages.incomes.incomePayment')
             ->with('incomePayment', $incomePayment)
             ->with('incomes', $Incomes);
+    }
+
+    public function groupPayments($idGroup, $datePayment){
+        $group = Group::getGroup($idGroup);
+        $incomePayment = Payment::getGroupPaiments($idGroup, $datePayment);
+        return view('pages.groupes.groupIncomes')->with([
+            'incomePayment' => $incomePayment,
+            'group' => $group,
+            'datePayment' => $datePayment,
+        ]);
+    }
+
+    public function studentPaiments(Request $request, $idStudent){
+        $student = Student::getStudent($idStudent);
+        if($request->has('datePayment')){
+            $incomePayment = Payment::getStudentPaiments($idStudent, $request->datePayment);
+            $datePayment = $request->datePayment;
+        }else{
+            $incomePayment = Payment::getStudentPaiments($idStudent);
+            $datePayment = date('Y-m');
+        }
+        return view('pages.students.studentIncomes')->with([
+            'incomePayment' => $incomePayment,
+            'student' => $student,
+            'datePayment' => $datePayment,
+        ]);
     }
 
     public function paimentPage(Request $request, $idPayment)
