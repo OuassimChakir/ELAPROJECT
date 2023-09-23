@@ -26,6 +26,11 @@ class AttendanceController extends Controller
             $flag = 0;
             $date = explode('-',$request->dateAbsence);
             $income = Income::getIncomeByDate($date[1]);
+            if(session()->get('user')){
+                $typeActivity = 0; 
+                $activityDescription = "l'absence de groupe"." "."(".$idGroup.")"." "."par"." ".session()->get('user')->name; 
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            }
             for ($i=0; $i < count($request->students); $i++) { 
                 $element = GroupElements::getElement($idGroup,$request->students[$i]);
                 if(Attendance::checkAbsence($request->dateAbsence, $element->idElement) != 0){
@@ -33,11 +38,6 @@ class AttendanceController extends Controller
                     break;
                 }
                 Attendance::markAttendance($request->absence[$i],$request->dateAbsence,$element->idElement);
-                if(session()->get('user')){
-                    $typeActivity = 0; 
-                    $activityDescription = "l'absence de groupe"." "."(".$idGroup.")"." "."par"." ".session()->get('user')->name; 
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
-                }
                 if(Attendance::countAttendances($element->idElement, $date[1]) >= 2){
                     $paiment = Payment::selectPayment($idGroup, $element->idStudent,$income->idIncome);
                     if(is_null($paiment->etat))
@@ -128,13 +128,13 @@ class AttendanceController extends Controller
     public function updateAttendance(Request $request){
         if($request->has('updateAttendance')){
             $income = Income::getIncomeByDate(explode('-',$request->deletionDateAbsence)[1]);
+            if(session()->get('user')){
+                $typeActivity = 2; 
+                $activityDescription = "l'absence de groupe"." "."(".$request->idGroup.")"." "."par"." ".session()->get('user')->name;
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            }
             for ($i=0; $i < count($request->attendances); $i++) {
                 Attendance::updateAbsence($request->attendances[$i], $request->absence[$i],$request->dateAbsence);
-                if(session()->get('user')){
-                    $typeActivity = 2; 
-                    $activityDescription = "l'absence de groupe"." "."(".$request->idGroup.")"." "."par"." ".session()->get('user')->name;
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
-                }
                 // Disactivated Payment if the absence was deleted
                 $student = Attendance::getAttendance($request->attendances[$i]);
                 $paiment = Payment::getElementActivatedPaiment($request->idGroup,$student->idStudent,$income->idIncome);
@@ -152,15 +152,14 @@ class AttendanceController extends Controller
     public function deleteAttendance(Request $request){
         if($request->has('deleteAttendance')){
             $income = Income::getIncomeByDate(explode('-',$request->deletionDateAbsence)[1]);
-
+            if(session()->get('user')){
+                $typeActivity = 1; 
+                $activityDescription = "l'absence de groupe"." "."(".$request->idGroup.")"." "."par"." ".session()->get('user')->name;
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            }
             for ($i=0; $i < count($request->attendances); $i++) {
                 // Delete Attendance
                 $student = Attendance::getAttendance($request->attendances[$i]);
-                if(session()->get('user')){
-                    $typeActivity = 1; 
-                    $activityDescription = "l'absence de groupe"." "."(".$request->idGroup.")"." "."par"." ".session()->get('user')->name;
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
-                }
                 Attendance::deleteGroupAttendance($request->attendances[$i]);
                 // Disactivated Payment if the absence was deleted
                 $paiment = Payment::getElementActivatedPaiment($request->idGroup,$student->idStudent,$income->idIncome);
