@@ -11,7 +11,7 @@ class Expenses extends Model
         protected $table = "expenses";
         protected $primaryKey = "idExpense";
         public $timestamps = false;
-        protected $fillable = ['description','code'];
+        protected $fillable = ['designation','code'];
 
 
         //------------- select Expenses----------//

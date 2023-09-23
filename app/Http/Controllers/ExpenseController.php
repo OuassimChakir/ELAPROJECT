@@ -19,7 +19,7 @@ class ExpenseController extends Controller
         $expenses = Expenses::selectExpenses();
         if ($request->has('ajouterexpense')) {
             if(isset($request->code)) $code = $request->code;
-            else{$code = NULL;} 
+            else$code = NULL;
             $designation = $request->designation;
             Expenses::createExpense($designation,$code);
             // Add to Activity Ajout
