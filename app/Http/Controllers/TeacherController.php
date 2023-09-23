@@ -119,10 +119,20 @@ class TeacherController extends Controller
         return view('pages.teachers.teacherArchive')->with('teachers', $teachers);
     }
 
-    public function archivedTeacher(Request $request, $idProfesseur)
+    public function archivedTeacher($idProfesseur)
     {
+        $subjects = Subjects::getSubjects();
+        $courseTypes = CourseType::selectCourses();
+        $groups = Group::getProfGroups($idProfesseur);
+        $factures = Facture::getFacturesByProf($idProfesseur);
         $teacher = Professeurs::getDeletedTeacher($idProfesseur);
-        return view('pages.teachers.archivedTeacherProfil')->with('teacher', $teacher);
+        return view('pages.teachers.archivedTeacherProfil')           
+        ->with('teacher', $teacher)
+        ->with('subjects', $subjects)
+        ->with('courseTypes', $courseTypes)
+        ->with('groups', $groups)
+        ->with('factures', $factures);
+
     }
 
     public function restoreArchivedTeacher($idProfesseur)

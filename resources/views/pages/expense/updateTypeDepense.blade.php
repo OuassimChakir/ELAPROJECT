@@ -51,12 +51,7 @@
                                
                             </div>
                             </div>
-                            <div class="col-lg-6">
-                            <div class="form-group ">
-                                <label for="parent-category" class="form-label">Description</label> 
-                                    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3">{{$updatedExpense->description}}</textarea>
-                            </div>
-                            </div>
+
                            </div>
                         <div class="row">
                             <div class="col-12">

@@ -12,67 +12,93 @@
 </p>
 </div>
 </div>
+@if(isset($students))
 <div class="row">
     <div class="col-12">
         <div class="ec-vendor-list card card-default"> 
             <div class="card-body">
-                <form action="{{route('student.archive.multiple')}}" method="post">
+                <form action="{{ route('student.delete.multiple') }}" method="post">
                     @csrf
-                    @method('post')
-                    <table id="responsive-data-table" class="table table-hover">
+                    @method('delete')
+                    <table id="responsive-data-table" class="table">
                         <thead>
-                            <tr>
-                                <th><input type="checkbox" class="form-check-input" id="selectAllArchived"></th>
-                                <th>#</th>
-                                <th>Nom</th>
-                                <th>Prenom</th>
-                                <th>Téléphone</th>
-                                <th>Inscrie le</th>
-                                <th>Supprimé le</th>
-                                <th>Action</th>
-                            </tr>
+                            @if ($students->count() != 0)
+                                <th>
+                                    <input type="checkbox" class="form-check-input" id="selectAllArchived">
+                                </th>
+                            @endif
+                            <th>#</th>
+                            <th>Matricule</th>
+                            <th>Nom</th>
+                            <th>Téléphone</th>
+                            <th>Inscrie</th>
+                            <th>Action</th>
                         </thead>
-
+                        @php
+                            $i = 0;
+                        @endphp
                         <tbody>
-                            @foreach ($students as $student)
-                                <tr>
-                                    <td><input type="checkbox" name="archivedStudents[]" value="{{$student->matricule}}" class="form-check-input archivedStudents"></td>
-                                    <td>{{$student->matricule}}</td>
-                                    <td>{{$student->nom_fr}}</td>
-                                    <td>{{$student->prenom_fr}}</td>
-                                    <td>{{$student->numTel}}</td>
-                                    <td>{{$student->CREATED_AT}}</td>
-                                    <td>{{$student->deleted_at}}</td>
-                                    <td>
-                                        <div class="">
-                                            <a href="{{route('student.archive.profil',['matricule' => $student->matricule])}}">
-                                                <button type="button" name="show" class="btn btn-outline-info" value="{{$student->matricule}}">
-                                                    <i class="bi bi-person-fill"></i>
+                            @if (!is_null($students[0]->idStudent))
+                                @foreach ($students as $student)
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="students[]" value="{{ $student->matricule }}"class="form-check-input archivedStudents">
+                                        </td>
+                                        <td>{{ ++$i }}</td>
+                                        <td>
+                                            {{ $student->matricule }}
+                                            @if ($student->pendingPayment == 0)
+                                                <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
+                                            @else
+                                                <span class="badge badge-danger">{{ $student->pendingPayment }} <i
+                                                        class="bi bi-hourglass"></i></span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{ $student->prenom_fr }}
+                                            {{ $student->nom_fr }}
+                                            @if ($student->sexe == 'Homme')
+                                                <span class="badge badge-pill badge-info">M</span>
+                                            @else
+                                                <span class="badge badge-pill badge-purple">F</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $student->numTel }}</td>
+                                        <td>{{ $student->created_at }}</td>
+                                        <td>
+                                            <div class="btn-group-spaced">
+                                                <button type="button" class="add2GroupBtn btn btn-outline-success"
+                                                    value="{{ $student->idStudent }}" data-bs-toggle="modal"
+                                                    data-bs-target="#add2Group" data-toggle="tooltip"
+                                                    data-placement="right" title="Ajouter au Groupe">
+                                                    <i class="bi bi-plus-lg"></i>
                                                 </button>
-                                            </a>
-                                            <a href="{{route('student.archive.restore',['matricule' => $student->matricule])}}">
-                                                <button type="button" name="show" class="btn btn-outline-success" value="{{$student->matricule}}" onclick="return confirm('Vous êtes sûr?');">
-                                                    <i class="bi bi-arrow-repeat"></i>
+
+                                                <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                                    <button type="button" name="show" class="btn btn-outline-info"
+                                                        value="{{ $student->idStudent }}">
+                                                        <i class="bi bi-person-fill"></i>
+                                                    </button>
+                                                </a>
+                                                <button type="button" name="delete"
+                                                    class="deleteButton btn btn-outline-danger"
+                                                    data-url="{{ route('student.delete', ['idStudent' => $student->idStudent]) }}"
+                                                    data-confirm="Veuillez confirmer votre opération"
+                                                    data-title="Êtes-vous sûr?" data-type="error">
+                                                    <i class="bi bi-trash-fill"></i>
                                                 </button>
-                                            </a>
-                                            <a href="{{route('student.archive.delete',['matricule'=>$student->matricule])}}">
-                                                <button type="button" class="btn btn-outline-danger" name="delete" value="{{$student->matricule}}" onclick="return confirm('Voulez-vous supprimer définitivement cet étudiant?');">
-                                                        <i class="bi bi-trash-fill"></i>
-                                                </button>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                     <div class="row">
                         <div class="col btns">
-                            <button type="submit" name="restoreAll" class="btn btn-outline-success" onclick="return confirm('Vous êtes sûr?');">
-                                <i class="bi bi-arrow-repeat"></i> Restaurer la Sélection
-                            </button>
-                            <button type="submit" name="deleteAll" class="btn btn-outline-danger" onclick="return confirm('Voulez-vous supprimer définitivement ces étudiants?');">
-                                <i class="bi bi-trash-fill"></i> Supprimer la Sélection
+                            <button type="submit" name="deleteAll" class="btn btn-outline-danger"
+                                onclick="return confirm('Voulez-vous supprimer définitivement ces Etudiants?');">
+                                <i class="bi bi-trash-fill"></i> Supprimer Tous
                             </button>
                         </div>
                     </div>
@@ -81,34 +107,28 @@
         </div>
     </div>
 </div>
+@endif
 
 
 <script src="{{asset('JS/jquery.min.js')}}"></script>
 <script>
     // Listen for click on toggle checkbox
-    $('#selectAllArchived').click(function(event) {   
-        if(this.checked) {
+    $('#selectAllArchived').click(function(event) {
+        if (this.checked) {
             // Iterate each checkbox
             $(':checkbox').each(function() {
-                this.checked = true;                        
+                this.checked = true;
             });
         } else {
             $(':checkbox').each(function() {
-                this.checked = false;                       
+                this.checked = false;
             });
         }
-    });
-    $(document).ready(function() {
-        $('#responsive-data-table tr').click(function(event) {
-            if (event.target.type !== 'checkbox') {
-                $(':checkbox', this).trigger('click');
-            }
-        });
     });
 
     $(".btns").hide();
     $(":checkbox").click(function() {
-        if($(this).is(":checked")) {
+        if ($(this).is(":checked")) {
             $(".btns").show();
         } else {
             $(".btns").hide();

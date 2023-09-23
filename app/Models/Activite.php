@@ -43,6 +43,7 @@ class Activite extends Model
         public static function selectaActivite(){
             return Activite::select('*')
             ->leftJoin('users','users.id','=','activities.idUser')
+            ->orderby('activities.created_at','DESC')
             ->get();
         }
         //------------------ select activite by date 
@@ -50,6 +51,7 @@ class Activite extends Model
             return Activite::select('*')
             ->leftJoin('users','users.id','=','activities.idUser')
             ->where('dateActivite',$dateActivite)
+            ->orderby('activities.created_at','DESC')
             ->get();
        }
 }

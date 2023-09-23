@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activite;
 use App\Models\Group;
+use App\Models\GroupElements;
 use Illuminate\Http\Request;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
@@ -84,20 +85,31 @@ class IncomesController extends Controller
         $Incomes = Income::allIncome();
         // list of Payment
         $incomePayment = Payment::allPayment();
-        if ($request->has('addPayment')) {
+        if ($request->has('validatePaiment')) {
+
+            $select = explode('|', $request->idIncome);
             $datePayment = $request->datePayment;
             $paymentMode = $request->paymentMode;
             $amount = $request->amount;
-            $description = $request->description;
-            $idIncome = $request->idIncome;
-            $matricule = $request->matricule;
-            Payment::createPayment($datePayment, $paymentMode, $amount, $description, $matricule, $idIncome);
-            if (session()->get('user')) {
-                $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-                $activityDescription = 'Un Payment (Description: ' . $description . ")";
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
-            }
-            return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
+            $income = Income::find($select[0]);
+            $note = $income->description . ' - ' . date('Y');
+            $amountPaid = $request->amountPaid;
+            $idGroup = $request->idGroup;
+            $idIncome = $income->idIncome;
+            $dataidstudent = Student::selectStudent($request->search);
+            $idStudent = $dataidstudent->idStudent;
+            $etat = null;
+            $numeroRecu = $request->numeroRecu;
+            $count = Payment::checkElementPaiment($idGroup, $idStudent, $idIncome);
+            if ($count == 0) {
+                Payment::createPayment($numeroRecu, $datePayment, $paymentMode, $amount, $amountPaid, $note, $etat, $idGroup, $idStudent, $idIncome);
+                if (session()->get('user')) {
+                    $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
+                    $activityDescription = 'Un Payment (Description: ' . $note . ")";
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+                }
+                return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
+            } else return Redirect::back()->with('deleteMessage', "Ce facture est déja existé !!!");
         }
         return view('pages.incomes.incomePayment')
             ->with('incomePayment', $incomePayment)
@@ -125,14 +137,15 @@ class IncomesController extends Controller
     /* --------------------------------------------------
     / Page Statistique des Groups
     / -------------------------------------------------- */
-    public static function incomeStats(Request $request){
-        if($request->has('getStats')){
-            if($request->statsType == 0){
+    public static function incomeStats(Request $request)
+    {
+        if ($request->has('getStats')) {
+            if ($request->statsType == 0) {
                 // Monthly
                 $inscription_stats = Payment::stats_inscriptionPaimentsByMonth($request->statsMonth);
                 $groups = Group::getGroups();
-                for ($i=0; $i < $groups->count(); $i++)
-                    $groups[$i]->stats = Payment::stats_groupsPaimentsByMonth($request->statsMonth,$groups[$i]->idGroup);
+                for ($i = 0; $i < $groups->count(); $i++)
+                    $groups[$i]->stats = Payment::stats_groupsPaimentsByMonth($request->statsMonth, $groups[$i]->idGroup);
                 // dd($groups);
                 return view('pages.incomes.incomestats')->with([
                     'inscription_stats' => $inscription_stats,
@@ -140,14 +153,14 @@ class IncomesController extends Controller
                     'statsType' => 0,
                     'datePayment' => $request->statsMonth
                 ]);
-            }else{
+            } else {
                 // Daily
                 $inscription_stats = Payment::stats_inscriptionPaimentsByDay($request->statsDay);
                 $inscription_stats->monthTotal = Payment::stats_inscriptionPaimentsByMonth($request->statsDay)->total;
                 $groups = Group::getGroups();
-                for ($i=0; $i < $groups->count(); $i++){
-                    $groups[$i]->stats = Payment::stats_groupPaimentsByDay($request->statsDay,$groups[$i]->idGroup);
-                    $groups[$i]->stats->totalMonth = Payment::stats_groupsPaimentsByMonth($request->statsDay,$groups[$i]->idGroup)->totalGroup;
+                for ($i = 0; $i < $groups->count(); $i++) {
+                    $groups[$i]->stats = Payment::stats_groupPaimentsByDay($request->statsDay, $groups[$i]->idGroup);
+                    $groups[$i]->stats->totalMonth = Payment::stats_groupsPaimentsByMonth($request->statsDay, $groups[$i]->idGroup)->totalGroup;
                 }
                 // dd($groups);
                 return view('pages.incomes.incomestats')->with([
@@ -233,27 +246,53 @@ class IncomesController extends Controller
     public function searchEtudiant(Request $request)
     {
         $query = $request->get('query');
-        Student::where('matricule', 'like', '%'.$query.'%')
-        ->orderBy('idStudent', 'desc')
-        ->get();
-        if(!empty($query)){
-        if ($request->ajax()) {
-            $data =  DB::table('students')->
-            where('matricule', 'like', '%'.$query.'%')
-            ->orderBy('idStudent', 'desc')->get();
-            $output = '';
-            if (count($data) > 0) {
-                $output = '<ul class="list-group">';
-                foreach ($data as $row) {
-                    $output .= '<li class="list-group-item">' . $row->matricule . '</li>';
+        if (!empty($query)) {
+            if ($request->ajax()) {
+                $data =  DB::table('students')->where('matricule', 'like', '%' . $query . '%')
+                    ->orderBy('idStudent', 'desc')->get();
+                $output = '';
+                if (count($data) > 0) {
+                    $output = '<ul class="list-group">';
+                    foreach ($data as $row) {
+                        $output .= '<li class="list-group-item userListElement" value="' . $row->matricule . '">' . $row->matricule . '</li>';
+                    }
+                    $output .= '</ul>';
+                } else {
+                    $output = '<li class="list-group-item">' . 'No results' . '</li>';
                 }
-                $output .= '</ul>';
-            } else {
-                $output .= '<li class="list-group-item">' . 'No results' . '</li>';
+                return $output;
             }
-            return $output;
-        }}
+        }
     }
-
-    
+    public function searchGroup(Request $request)
+    {
+        $query = $request->get('matricule');
+        if (!empty($query))
+            if ($request->ajax()) {
+                $data = GroupElements::select('*')
+                    ->join('groups', 'groups.idGroup', '=', 'groupelements.idGroup')
+                    ->join('subjects', 'subjects.idSubject', '=', 'groups.idSubject')
+                    ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
+                    ->join('students', 'students.idStudent', '=', 'groupelements.idStudent')
+                    ->where('students.matricule', $query)
+                    ->get();
+                return response()->json($data);
+            }
+    }
+    public function searchRecu(Request $request)
+    {
+        $query = $request->get('numRecuQuery');
+        $output = 0;
+        if (!empty($query)) {
+            if ($request->ajax()) {
+                $data = DB::table('payment')->where('numeroRecu', $query)->get();
+                if (count($data) > 0) {
+                    return $output = 1;
+                }
+                return  $output;
+            }
+        } else {
+            return  $output;
+        }
+    }
 }

@@ -26,7 +26,6 @@
                                     <th><input type="checkbox" class="form-check-input" id="selectAllArchived"></th>
                                 @endif
                                 <th>Nom</th>
-                                <th>CINE</th>
                                 <th>Matière Enseignée</th>
                                 <th>Date d'engagement</th>
                                 <th>Supprimé le</th>
@@ -47,13 +46,12 @@
                                             <div class="badge badge-pill badge-purple">F</div>
                                         @endif
                                     </td>
-                                    <td>{{$teacher->cine}}</td>
                                     <td>
                                         <div class="badge bg-dark">
                                             {{$teacher->libelle}}
                                         </div>
                                     </td>
-                                    <td>{{$teacher->dateEngagement}}</td>
+                                    <td>{{$teacher->created_at}}</td>
                                     <td>{{$teacher->deleted_at}}</td>
                                     <td>
                                         <div class="">

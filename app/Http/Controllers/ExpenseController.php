@@ -19,7 +19,7 @@ class ExpenseController extends Controller
         $expenses = Expenses::selectExpenses();
         if ($request->has('ajouterexpense')) {
             if(isset($request->code)) $code = $request->code;
-            else $code = NULL;
+            else$code = NULL;
             $designation = $request->designation;
             Expenses::createExpense($designation,$code);
             // Add to Activity Ajout
@@ -53,7 +53,7 @@ class ExpenseController extends Controller
         $expenses = Expenses::selectExpenses();
         $updatedExpense = Expenses::selectExpense($idExpense);
         if ($request->has('updateExpense')) {
-            Expenses::updateExpense($idExpense,$request->description,$request->code);
+            Expenses::updateExpense($idExpense,$request->designation,$request->code);
             // Add to Activity Modification
             if (session()->get('user')) {
                 $typeActivity = 2;
