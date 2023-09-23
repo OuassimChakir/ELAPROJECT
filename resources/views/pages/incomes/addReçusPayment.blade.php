@@ -103,7 +103,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group mb-3 was-validated">
                                     <label for="paimentAmountPaid">Montant Payé</label>
-                                    <input type="number" class="form-control "  name="amountPaid" id="paimentAmountPaid"
+                                    <input type="number" class="form-control " name="amountPaid" id="paimentAmountPaid"
                                         max="{{-- $paiment->amount --}}" min="0" required>
                                     <small class="text-muted">Le montant payer par le client en Dirham</small>
                                 </div>
@@ -173,8 +173,8 @@
             });
             $('body').on('click', '#searchBtn', function() {
                 var value = $('#search').val();
-                   $('#search').removeClass("is-invalid");
-                    $('#search').addClass("is-valid");
+                $('#search').removeClass("is-invalid");
+                $('#search').addClass("is-valid");
                 // Make the second AJAX request
                 $.ajax({
                     url: "{{ route('search.group') }}",
