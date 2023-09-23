@@ -172,9 +172,13 @@ class StudentController extends Controller
 
     // ----------- ARCHIVE ------------- //
     public function archive()
-    {
+    {    
+        $groupSubjects = Group::existedGroupSubjects();
+        $groupCourseTypes = Group::existedGroupCourseTypes();
         $students = Student::softDeletedStudents();
-        return view('pages.students.studentArchive')->with('students', $students);
+        return view('pages.students.studentArchive')->with('students', $students)
+        ->with('subjects', $groupSubjects)
+        ->with('courseTypes', $groupCourseTypes);
     }
 
     public function archivedStudent($idStudent)
