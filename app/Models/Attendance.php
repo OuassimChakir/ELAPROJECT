@@ -35,12 +35,23 @@ class Attendance extends Model
                 ->first();
     }
 
-    public static function getGroupAttendaceByDate($dateAbsence, $idElement)
+    public static function getGroupAttendanceByDate($dateAbsence, $idElement)
     {
         $date = explode('-',$dateAbsence);
         return Attendance::selectRaw('*, DAY(dateAbsence) as day')
             ->where('idElement', $idElement)
             ->whereRaw('MONTH(dateAbsence) = '.$date[1].' AND YEAR(dateAbsence) = '.$date[0])
+            ->get();
+    }
+
+    public static function studentLastestAttendances($idStudent){
+        return Attendance::select('*')
+            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+            ->join('groups','groups.idGroup','=','groupelements.idGroup')
+            ->where('idStudent',$idStudent)
+            ->orderBy('dateAbsence','DESC')
+            ->skip(0)
+            ->take(20)
             ->get();
     }
 

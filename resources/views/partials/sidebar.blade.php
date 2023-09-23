@@ -211,6 +211,16 @@
 								<hr>
 							</li>
 							@endstaff
+							@onlystudent
+							<hr>
+							<li class="{{Route::is('teachers.profil') ? 'active' : ''}}">
+								<a class="sidenav-item-link" href="#">
+									<i class="bi bi-people-fill"></i>
+									<span class="nav-text">Mes Paiements</span>
+								</a>
+							</li>
+							<hr>
+							@endonlystudent
 							@staff
 								<!-- ARCHIVE -->
 								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive')
