@@ -103,11 +103,7 @@ class Student extends Model
     }
 
     public static function softDeletedStudents(){
-        return Student::onlyTrashed()->selectRaw("students.*,count(idPayment) - sum(etat) as pendingPayment")
-        ->leftjoin('payment','payment.idStudent','=','students.idStudent')
-        ->whereNotNull('etat')
-        ->groupBy('students.idStudent')
-        ->get();
+        return Student::onlyTrashed()->select('*')->get();
     }
 
     public static function getDeletedStudent($idStudent){

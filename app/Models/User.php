@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 class User extends Authenticatable
 {
     use HasApiTokens;
+    use SoftDeletes;
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
@@ -36,6 +38,7 @@ class User extends Authenticatable
         'idStaff',
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 
     /**
@@ -57,7 +60,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-    ]; 
+    ];
 
     /**
      * The accessors to append to the model's array form.
@@ -68,20 +71,23 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public static function getUsers(){
+    public static function getUsers()
+    {
         return User::select('*')
-                ->leftJoin('roles','users.idRole','=','roles.idRole')
-                ->orderBy('codeRole')
-                ->get();
+            ->leftJoin('roles', 'users.idRole', '=', 'roles.idRole')
+            ->orderBy('codeRole')
+            ->get();
     }
 
-    public static function getUser($username){
+    public static function getUser($username)
+    {
         return User::select('*')
-                    ->leftJoin('roles','users.idRole','=','roles.idRole')
-                    ->where('username',$username)->first();
+            ->leftJoin('roles', 'users.idRole', '=', 'roles.idRole')
+            ->where('username', $username)->first();
     }
 
-    public static function createStudentAccount($idStudent, $name, $username){
+    public static function createStudentAccount($idStudent, $name, $username)
+    {
         $role = Roles::getStudentRole();
         $password = Str::random(8);
         User::create([
@@ -96,7 +102,8 @@ class User extends Authenticatable
         return $password;
     }
 
-    public static function createProfAccount($idProfesseur, $name, $username){
+    public static function createProfAccount($idProfesseur, $name, $username)
+    {
         $role = Roles::getProfRole();
         $password = Str::random(8);
         User::create([
@@ -111,7 +118,8 @@ class User extends Authenticatable
         return $password;
     }
 
-    public static function createStaffAccount($idStaff, $name, $username){
+    public static function createStaffAccount($idStaff, $name, $username)
+    {
         $role = Roles::getStaffRole();
         $password = Str::random(8);
         User::create([
@@ -126,34 +134,58 @@ class User extends Authenticatable
         return $password;
     }
 
-    public static function checkUsername($username){
+    public static function checkUsername($username)
+    {
         return User::select('*')
-                ->where('username',$username)
-                ->count();
+            ->where('username', $username)
+            ->count();
     }
 
-    
-    public static function checkEmail($email){
+
+    public static function checkEmail($email)
+    {
         return User::select('*')
-                ->where('email',$email)
-                ->count();
+            ->where('email', $email)
+            ->count();
     }
 
     /* -------------------------------
     / Reset Password
     / -------------------------------*/
-    public static function resetPassword($id,$password){
+    public static function resetPassword($id, $password)
+    {
         $user = User::find($id);
         $user->password = Hash::make($password);
         $user->save();
     }
-    
-    public static function deleteStaffAccount($idStaff){
-        User::where('idStaff',$idStaff)
-        ->delete();
-    }
-    public static function deleteProfAccount($idProfesseur){
-        User::where('idProfesseur',$idProfesseur)->delete();
-    }
 
+    public static function deleteStaffAccount($idStaff)
+    {
+        User::where('idStaff', $idStaff)
+            ->delete();
+    }
+    public static function deleteProfAccount($idProfesseur)
+    {
+        User::where('idProfesseur', $idProfesseur)->delete();
+    }
+    public static function deleteStudentAccount($idStudent)
+    {
+        User::where('idStudent', $idStudent)->delete();
+    }
+    // force delete
+    public static function forceProfAccount($idProfesseur)
+    {
+        User::withTrashed()->where('idProfesseur', $idProfesseur)
+            ->forceDelete();
+    }
+    public static function forceStaffAccount($idStaff)
+    {
+        User::withTrashed()->where('idStaff', $idStaff)
+            ->forceDelete();
+    }
+    public static function forceStudentAccount($idStudent)
+    {
+        User::withTrashed()->where('idStudent', $idStudent)
+            ->forceDelete();
+    }
 }

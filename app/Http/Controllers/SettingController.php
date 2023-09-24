@@ -17,7 +17,7 @@ class SettingController extends Controller
 
     public function index(Request $request)
     {
-        $datesortie = date('Y');
+        $datesortie = intval(date('Y'));
         if ($request->has('newYear')) {
             $etudiants = Student::getStudents();
             $oldeStudents = Student::softDeletedStudents();
@@ -28,17 +28,24 @@ class SettingController extends Controller
                 $deleted = Student::getDeletedStudent($oldeStudent->idStudent);
                 $date = new DateTime($deleted->deleted_at);
                 $futureDate = $date->format('Y') + 1;
-                dd($futureDate);
                 if ($futureDate == $datesortie) {
-                    Payment::deletePaymentByidStudent($oldeStudent->idStudent);
-                    Payment::updatePaiment($oldeStudent->idStudent);
+                    $payments= Payment::getPaymentByidStudent($oldeStudent->idStudent);
+                    //dd($payments);
+                    foreach($payments as $payment){
+                        Payment::updatePaiment($payment->idPayment);
+                        Payment::deletePayment($payment->idPayment);
+                    }
+                    User::forceStudentAccount($oldeStudent->idStudent);
                     Student::forceDeleteStudent($oldeStudent->idStudent);
                 }
             }
+            dd($etudiants);
             foreach ($etudiants as $student) {
+                User::deleteStudentAccount($etudiants->idStudent);
                 Student::deleteStudent($student->idStudent);
             }
             foreach ($professuers as $professuer) {
+                User::deleteProfAccount($professuer->idProfesseur);
                 Professeurs::deleteProfesseur($professuer->idProfesseur);
             }
             return Redirect::back()->with('successMessage', "La nouvelle Année fait avec succès");
