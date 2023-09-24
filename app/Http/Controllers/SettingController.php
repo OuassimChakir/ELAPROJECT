@@ -26,19 +26,18 @@ class SettingController extends Controller
             $oldeStudents = Student::softDeletedStudents();
             $archiveGroupes = Group::softDeletedGroups();
             $professuers = Professeurs::getProfesseurs();
-            $user = User::getUsers();
             $groupes = Group::getGroups();
-            if(isset($groupes)){          
-             foreach ($groupes as $groupe) {
-                $payments=Payment::getPaymentByidGroup($groupe->idGroup);
+
+            foreach ($groupes as $groupe) {
+                $payments = Payment::getPaymentByidGroup($groupe->idGroup);
                 dd($payments);
                 foreach ($payments as $payment) {
-                    
+
                     Payment::updatePaimentidGroup($payment->idPayment);
                     Payment::deletePayment($payment->idPayment);
                 }
                 Group::deleteGroup($groupe->idGroup);
-            }}
+            }
             foreach ($oldeStudents as $oldeStudent) {
                 $deleted = Student::getDeletedStudent($oldeStudent->idStudent);
                 $date = new DateTime($deleted->deleted_at);
@@ -63,13 +62,13 @@ class SettingController extends Controller
             }
             foreach ($archiveGroupes as $groupe) {
                 Payment::updatePaimentidGroup($groupe->idGroup);
-                $groupElements=GroupElements::groupElements($groupe->idGroup);
+                $groupElements = GroupElements::groupElements($groupe->idGroup);
                 foreach ($groupElements as $goupElements) {
                     Attendance::deleteGroupAttendancebyidElement($goupElements->idElement);
                     GroupElements::cancelAssignment($goupElements->idElement);
                 }
                 GroupGrades::deleteGroupGrades($groupe->idGroup);
-                $payments=Payment::getPaymentByidGroup($groupe->idGroup);
+                $payments = Payment::getPaymentByidGroup($groupe->idGroup);
                 foreach ($payments as $payment) {
                     Payment::updatePaimentidGroup($payment->idPayment);
                     Payment::deletePayment($payment->idPayment);
