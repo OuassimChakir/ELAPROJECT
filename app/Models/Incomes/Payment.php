@@ -123,6 +123,13 @@ class Payment extends Model
         $paiment->save();
     }
 
+    // Update in new year || 
+    public static function updatePaiment($idStudent){
+        $paiment = Payment::select('*')->where('idStudent',$idStudent)->first();
+        $paiment->idStudent = null;
+        $paiment->save();
+    }
+
     //------ total amount
     public static function totalAmount()
     {
@@ -227,6 +234,10 @@ class Payment extends Model
     public static function deletePayment($idPayment)
     {
         Payment::find($idPayment)->delete();
+    }
+    public static function deletePaymentByidStudent($idStudent)
+    {
+        Payment::where('idStudent',$idStudent)->delete();
     }
 
     public static function deleteDisactivatedPaiments($idGroup,$idStudent){
