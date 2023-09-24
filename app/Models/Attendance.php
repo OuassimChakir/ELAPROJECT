@@ -118,4 +118,11 @@ class Attendance extends Model
     {
         Attendance::find($idAttendance)->delete();
     }
+    /* ---------------------------------
+    /  Delete Attendance by Group Element
+    /----------------------------------*/
+    public static function deleteGroupAttendancebyidElement($idElement)
+    {
+        Attendance::where('idElement', $idElement)->delete();
+    }
 }

@@ -77,6 +77,7 @@ class GroupElements extends Model
     {
         GroupElements::where('idGroup', $idGroup)->delete();
     }
+    
 
     // Get Assignment
     public static function getAssignment($idElement)

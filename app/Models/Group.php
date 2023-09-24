@@ -30,7 +30,6 @@ class Group extends Model
             ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
             ->get();
     }
-
     public static function getStudentGroups($idStudent){
         return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
             ->selectRaw('(SELECT count(idPayment) FROM  payment
@@ -176,7 +175,7 @@ class Group extends Model
         return Group::onlyTrashed()
         ->select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
         ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
-        ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
+        ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject') 
         ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
         ->get();
     }

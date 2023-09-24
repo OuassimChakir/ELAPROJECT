@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Group;
+use App\Models\GroupElements;
+use App\Models\GroupGrades;
 use App\Models\Incomes\Payment;
 use App\Models\responsible\Professeurs;
 use App\Models\Responsible\Student;
@@ -19,19 +22,30 @@ class SettingController extends Controller
     {
         $datesortie = intval(date('Y'));
         if ($request->has('newYear')) {
-            $etudiants = Student::getStudents();
+            $students = Student::getStudents();
             $oldeStudents = Student::softDeletedStudents();
+            $archiveGroupes = Group::softDeletedGroups();
             $professuers = Professeurs::getProfesseurs();
             $user = User::getUsers();
             $groupes = Group::getGroups();
+            if(isset($groupes)){          
+             foreach ($groupes as $groupe) {
+                $payments=Payment::getPaymentByidGroup($groupe->idGroup);
+                dd($payments);
+                foreach ($payments as $payment) {
+                    
+                    Payment::updatePaimentidGroup($payment->idPayment);
+                    Payment::deletePayment($payment->idPayment);
+                }
+                Group::deleteGroup($groupe->idGroup);
+            }}
             foreach ($oldeStudents as $oldeStudent) {
                 $deleted = Student::getDeletedStudent($oldeStudent->idStudent);
                 $date = new DateTime($deleted->deleted_at);
                 $futureDate = $date->format('Y') + 1;
                 if ($futureDate == $datesortie) {
-                    $payments= Payment::getPaymentByidStudent($oldeStudent->idStudent);
-                    //dd($payments);
-                    foreach($payments as $payment){
+                    $payments = Payment::getPaymentByidStudent($oldeStudent->idStudent);
+                    foreach ($payments as $payment) {
                         Payment::updatePaiment($payment->idPayment);
                         Payment::deletePayment($payment->idPayment);
                     }
@@ -39,14 +53,28 @@ class SettingController extends Controller
                     Student::forceDeleteStudent($oldeStudent->idStudent);
                 }
             }
-            dd($etudiants);
-            foreach ($etudiants as $student) {
-                User::deleteStudentAccount($etudiants->idStudent);
+            foreach ($students as $student) {
+                User::deleteStudentAccount($student->idStudent);
                 Student::deleteStudent($student->idStudent);
             }
             foreach ($professuers as $professuer) {
                 User::deleteProfAccount($professuer->idProfesseur);
                 Professeurs::deleteProfesseur($professuer->idProfesseur);
+            }
+            foreach ($archiveGroupes as $groupe) {
+                Payment::updatePaimentidGroup($groupe->idGroup);
+                $groupElements=GroupElements::groupElements($groupe->idGroup);
+                foreach ($groupElements as $goupElements) {
+                    Attendance::deleteGroupAttendancebyidElement($goupElements->idElement);
+                    GroupElements::cancelAssignment($goupElements->idElement);
+                }
+                GroupGrades::deleteGroupGrades($groupe->idGroup);
+                $payments=Payment::getPaymentByidGroup($groupe->idGroup);
+                foreach ($payments as $payment) {
+                    Payment::updatePaimentidGroup($payment->idPayment);
+                    Payment::deletePayment($payment->idPayment);
+                }
+                Group::forceDeleteGroup($groupe->idGroup);
             }
             return Redirect::back()->with('successMessage', "La nouvelle Année fait avec succès");
         }

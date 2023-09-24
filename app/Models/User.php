@@ -148,6 +148,12 @@ class User extends Authenticatable
             ->where('email', $email)
             ->count();
     }
+    public static function getUserbyidStudent($idStudent)
+    {
+        return User::select('*')
+            ->where('idStudent', $idStudent)->first();
+    }
+
 
     /* -------------------------------
     / Reset Password

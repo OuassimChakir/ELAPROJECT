@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activite;
 use App\Models\Attendance;
-use App\Models\Courses\CourseType;
+use App\Models\Courses\CourseType; 
 use App\Models\Courses\Subjects;
 use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
