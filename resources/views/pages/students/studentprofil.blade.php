@@ -12,6 +12,13 @@
                 <span><i class="mdi mdi-chevron-right"></i></span>{{ $student->prenom_fr . ' ' . $student->nom_fr }}
             </p>
         </div>
+        <div>
+            <a href="{{route('student.incomes',['idStudent' => $student->idStudent])}}" target="_blank">
+                <button type="button" class="btn btn-primary">
+                    Mes Paiements
+                </button>
+            </a>
+        </div>
     </div>
 
     <div class="card  mb-4 bg-white profile-content">

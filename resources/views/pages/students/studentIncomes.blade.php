@@ -1,23 +1,29 @@
 @extends('layouts.layout')
 @section('title')
-    Reçus de Payment
+    Paiements
 @endsection
 @section('content')
     <div class="breadcrumb-wrapper breadcrumb-contacts">
         <div>
-            <h1>Reçus de Payment</h1>
+            <h1>Paiements</h1>
             <p class="breadcrumbs">
                 <span><a href="{{ route('acceuil') }}">Acceuil</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>Reçus de Payment
+                <span><i class="mdi mdi-chevron-right"></i></span>Paiements
             </p>
         </div>
-
-        <div>
-            <button type="button" class="btn btn-info" id="showFormButton" data-bs-toggle="modal" data-bs-target="#addFacture">
-                <i class="bi bi-plus-square"></i> Ajouter une Paiement
-            </button>
+        <div class="col-sm-6">
+            <form action="{{route('student.incomes.query', ['idStudent' => $student->idStudent])}}" method="post">
+                @csrf
+                <div class="row">
+                    <div class="form-group col-sm-10">
+                        <input type="month" name="datePayment" class="form-control mt-4" value="{{$datePayment}}" required>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary mt-4"><span class="mdi mdi-magnify"></span></button>
+                    </div>
+                </div>
+            </form>
         </div>
-
     </div>
 
     <div class="row">
@@ -98,8 +104,6 @@
             </div>
         </div>
     </div>
-    <!-- add the Income Payment -->
-    @include('pages.incomes.addReçusPayment');
     <script src="{{ asset('JS/jquery.min.js') }}"></script>
     <script src="{{ asset('Bootstrap/js/bootstrap.min.js') }}"></script>
     <script>

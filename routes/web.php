@@ -58,6 +58,8 @@ Route::middleware([
     / ---------------------------------*/
     Route::middleware(['is_student'])->group(function () {
         Route::get('/student/{idStudent}', [StudentController::class, 'studentProfil'])->name('student.profil');
+        Route::get('/student/incomes/{idStudent}', [IncomesController::class, 'studentPaiments'])->name('student.incomes');
+        Route::post('/student/incomes/{idStudent}', [IncomesController::class, 'studentPaiments'])->name('student.incomes.query');
     });
 
     /* ---------------------------------
@@ -197,7 +199,7 @@ Route::middleware([
         Route::post('/groupes/add', [GroupController::class,'groups'])->name('groups.add');
         Route::get('/groupes/delete/{idGroup}', [GroupController::class,'deleteGroup'])->name('groups.delete');
         Route::put('/groupe/update/{idGroup}', [GroupController::class,'updateGroup'])->name('groups.update');
-
+        Route::get('/groupe/{idGroup}/revenus/{datePayment}',[IncomesController::class,'groupPayments'])->name('group.incomes');
         // Load Data
         Route::get('/groupes/get/{idGradeCategory}', [GroupController::class,'getGrade'])->name('groups.getData');
         

@@ -160,7 +160,7 @@
                                     <td class="align-middle">{{is_null($group->stats->totalGroup) ? 0 : $group->stats->totalGroup}} DH</td>
                                     <td class="align-middle">{{is_null($group->stats->totalMonth) ? 0 : $group->stats->totalMonth}} DH</td>
                                     <td class="align-middle">
-                                        <a href="#">
+                                        <a href="{{route('group.incomes',['idGroup' => $group->idGroup, 'datePayment' => $datePayment])}}" target="_blank">
                                             <button type="button" class="btn btn-outline-info btn-sm">
                                                 <span class="mdi mdi-information"></span>
                                             </button>
@@ -209,7 +209,7 @@
                                     
                                     <td class="align-middle">{{is_null($group->stats->totalGroup) ? 0 : $group->stats->totalGroup}} DH</td>
                                     <td class="align-middle">
-                                        <a href="#">
+                                        <a href="{{route('group.incomes',['idGroup' => $group->idGroup, 'datePayment' => $datePayment])}}" target="_blank">
                                             <button type="button" class="btn btn-outline-info btn-sm">
                                                 <span class="mdi mdi-information"></span>
                                             </button>
