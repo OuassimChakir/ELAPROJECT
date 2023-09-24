@@ -27,15 +27,12 @@ class SettingController extends Controller
             $archiveGroupes = Group::softDeletedGroups();
             $professuers = Professeurs::getProfesseurs();
             $groupes = Group::getGroups();
-
+            $allfacture= Payment::allPayment();
+            foreach ($allfacture as $payment) {
+                Payment::deletePayment($payment->idPayment);
+            }
             foreach ($groupes as $groupe) {
                 $payments = Payment::getPaymentByidGroup($groupe->idGroup);
-                dd($payments);
-                foreach ($payments as $payment) {
-
-                    Payment::updatePaimentidGroup($payment->idPayment);
-                    Payment::deletePayment($payment->idPayment);
-                }
                 Group::deleteGroup($groupe->idGroup);
             }
             foreach ($oldeStudents as $oldeStudent) {
@@ -61,7 +58,7 @@ class SettingController extends Controller
                 Professeurs::deleteProfesseur($professuer->idProfesseur);
             }
             foreach ($archiveGroupes as $groupe) {
-                Payment::updatePaimentidGroup($groupe->idGroup);
+               // Payment::updatePaimentidGroup($groupe->idGroup);
                 $groupElements = GroupElements::groupElements($groupe->idGroup);
                 foreach ($groupElements as $goupElements) {
                     Attendance::deleteGroupAttendancebyidElement($goupElements->idElement);
@@ -70,8 +67,9 @@ class SettingController extends Controller
                 GroupGrades::deleteGroupGrades($groupe->idGroup);
                 $payments = Payment::getPaymentByidGroup($groupe->idGroup);
                 foreach ($payments as $payment) {
-                    Payment::updatePaimentidGroup($payment->idPayment);
-                    Payment::deletePayment($payment->idPayment);
+                    if($payment->idGroup != null){
+                       Payment::updatePaimentidGroup($payment->idPayment); 
+                    }  
                 }
                 Group::forceDeleteGroup($groupe->idGroup);
             }
