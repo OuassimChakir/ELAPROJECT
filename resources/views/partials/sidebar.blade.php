@@ -230,7 +230,7 @@
 								</a>
 							</li>
 							<hr>
-							@onlyteacher
+							@endonlyteacher
 							@staff
 								<!-- ARCHIVE -->
 								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive')
