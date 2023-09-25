@@ -86,21 +86,16 @@ class IncomesController extends Controller
         $incomePayment = Payment::allPayment();
         if ($request->has('validatePaiment')) {
             $select = explode('|', $request->idIncome);
-            $datePayment = $request->datePayment;
-            $paymentMode = $request->paymentMode;
-            $amount = $request->amount;
             $income = Income::find($select[0]);
             $note = $income->description . ' - ' . date('Y');
-            $amountPaid = $request->amountPaid;
-            $idGroup = $request->idGroup;
             $idIncome = $income->idIncome;
             $dataidstudent = Student::selectStudent($request->search);
             $idStudent = $dataidstudent->idStudent;
             $etat = null;
-            $numeroRecu = $request->numeroRecu;
-            $count = Payment::checkElementPaiment($idGroup, $idStudent, $idIncome);
+            $count = Payment::checkElementPaiment($request->idGroup, $idStudent, $idIncome);
             if ($count == 0) {
-                Payment::createPayment($numeroRecu, $datePayment, $paymentMode, $amount, $amountPaid, $note, $etat, $idGroup, $idStudent, $idIncome);
+                Payment::createPayment($request->numeroRecu, $request->datePayment, $request->paymentMode,
+                 $request->amount, $request->amountPaid, $note, $etat, $request->idGroup, $request->idStudent,$idIncome);
                 if (session()->get('user')) {
                     $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                     $activityDescription = 'Un Payment (Description: ' . $note . ")";

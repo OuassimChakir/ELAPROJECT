@@ -111,6 +111,21 @@ class ExpenseController extends Controller
             ->with('Professeurs',$Professeurs)
             ->with('staffs',$staffs);
     }
+    public function profFactures(Request $request, $idProfesseur){
+        $Professeur = Professeurs::getProfesseur($idProfesseur);
+        if($request->has('datePayment')){
+            $FacturePayment = Facture::getFacturesByProf($idProfesseur, $request->datePayment);
+            $datePayment = $request->datePayment;
+        }else{
+            $FacturePayment = Facture::getFacturesByProf($idProfesseur);
+            $datePayment = date('Y-m');
+        }
+        return view('pages.teachers.teacherFactures')->with([
+            'FacturePayment' => $FacturePayment,
+            'Professeur' => $Professeur,
+            'datePayment' => $datePayment,
+        ]);
+    }
 
     // ------------ Suppression du Facture --------- //
     public function deleteFacture($idExpensePayment)

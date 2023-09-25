@@ -68,7 +68,9 @@ Route::middleware([
     / ---------------------------------*/
     Route::middleware(['is_teacher'])->group(function () {
         Route::get('/teacher/{idProfesseur}', [TeacherController::class, 'teacherProfil'])->name('teachers.profil');
-
+        Route::get('/teacher/factures/{idProfesseur}', [ExpenseController::class, 'profFactures'])->name('teachers.factures');
+        Route::post('/teacher/factures/{idProfesseur}', [ExpenseController::class, 'profFactures'])->name('teachers.factures.query');
+        Route::get('/teacher/pdf/{idExpensePayment}',[PdfController::class, 'pdf'])->name('teachers.pdf');
         // Mark Attendance
         Route::post('/groupe/{idGroup}/markAttendance', [AttendanceController::class,'addAbsence'])->name('absence.add');
     });

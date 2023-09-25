@@ -167,7 +167,9 @@ class User extends Authenticatable
         $user->password = Hash::make($password);
         $user->save();
     }
-
+    /* -------------------------------
+    / delete ACCOUNT
+    / -------------------------------*/
     public static function deleteStaffAccount($idStaff)
     {
         User::where('idStaff', $idStaff)
@@ -181,7 +183,27 @@ class User extends Authenticatable
     {
         User::where('idStudent', $idStudent)->delete();
     }
-    // force delete
+    /* -------------------------------
+    / restore Account
+    / -------------------------------*/
+    public static function restoreStaffAccount($idStaff){
+        User::withTrashed()
+            ->where('idStaff', $idStaff)
+            ->restore();
+    }
+    public static function restoreProfAccount($idProfesseur){
+        User::withTrashed()
+            ->where('idProfesseur', $idProfesseur)
+            ->restore();
+    }
+    public static function restoreStudentAccount($idStudent){
+        User::withTrashed()
+            ->where('idStudent', $idStudent)
+            ->restore();
+    }
+    /* -------------------------------
+    / force delete
+    / -------------------------------*/
     public static function forceProfAccount($idProfesseur)
     {
         User::withTrashed()->where('idProfesseur', $idProfesseur)
