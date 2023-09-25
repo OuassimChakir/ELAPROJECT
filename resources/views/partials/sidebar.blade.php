@@ -221,6 +221,16 @@
 							</li>
 							<hr>
 							@endonlystudent
+							@onlyteacher
+							<hr>
+							<li class="{{Route::is('student.incomes') ? 'active' : ''}}">
+								<a class="sidenav-item-link" href="#">
+									<i class="mdi mdi-cash"></i>
+									<span class="nav-text">Mes Paiements</span>
+								</a>
+							</li>
+							<hr>
+							@endonlyteacher
 							@staff
 								<!-- ARCHIVE -->
 								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive')

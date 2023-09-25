@@ -56,6 +56,12 @@ class AppServiceProvider extends ServiceProvider
             return auth()->user() && $role->codeRole == '22';
         });
         
+        Blade::if('onlyteacher', function(){
+            $user = Auth::user();
+            $role = Roles::getRole($user->idRole);
+            return auth()->user() && $role->codeRole == '33';
+        });
+
         Blade::if('teacher', function(){
             $user = Auth::user();
             $role = Roles::getRole($user->idRole);
