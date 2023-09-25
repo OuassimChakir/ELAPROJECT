@@ -149,14 +149,14 @@
                        <div class="receipt-header">
                            <div class="col">
                                <div class="receipt-left">
-                                
-                                <div class="serial-right">
-                                    <h3>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></h3>
-                                </div>
-                                    {{-- Header --}}
-                                    @if($invoice->logo)
-                                        <img class="img-responsive" alt="iamgurdeeposahan" src="{{ $invoice->getLogo() }}" style="width: 71px;">
-                                    @endif
+                                    
+                                    <div class="serial-right">
+                                        <h3>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></h3>
+                                    </div>
+                                        {{-- Header --}}
+                                        @if($invoice->logo)
+                                            <img class="img-responsive" alt="iamgurdeeposahan" src="{{ $invoice->getLogo() }}" style="width: 20%;">
+                                        @endif
                                </div>
                            </div>
                            <div class="col-xs-6 col-sm-6 col-md-6 text-right">

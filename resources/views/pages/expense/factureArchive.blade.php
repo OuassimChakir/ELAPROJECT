@@ -42,7 +42,7 @@
                                             <td><input type="checkbox" name="archivedFacture[]"
                                                     value="{{ $facture->idExpensePayment }}"
                                                     class="form-check-input archivedFacture"></td>
-                                            <td>ELA-R.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
+                                            <td>BMA-R.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
                                             </td>
                                             <td>
                                             @if (is_null($facture->nom))

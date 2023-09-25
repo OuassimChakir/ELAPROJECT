@@ -13,7 +13,7 @@ return [
     ],
 
     'serial_number' => [
-        'series'           => 'ELA-F',
+        'series'           => 'BMA-F',
         'sequence'         => 1,
         /**
          * Sequence will be padded accordingly, for ex. 00001
@@ -78,10 +78,10 @@ return [
          * Default attributes for Seller::class
          */
         'attributes' => [
-            'name'          => 'Easy Learn Academy',
-            'address'       => '1èr et 2ème étage N° 37 Lot El Oukhouwa Errachidia Maroc',
-            'Email'         => 'ela.communication.center@gmail.com',
-            'phone'         => '+212 658 183 965',
+            'name'          => 'Center Name',
+            'address'       => 'Center Adresse',
+            'Email'         => 'Center Email',
+            'phone'         => 'Phone',
             'custom_fields' => [
                 /**
                  * Custom attributes for Seller::class
@@ -89,7 +89,7 @@ return [
                  * Used to display additional info on Seller section in invoice
                  * attribute => value
                  */
-                'phone 2' => '+212 658 186 062',
+                'phone 2' => 'Phone2',
             ],
         ],
     ],

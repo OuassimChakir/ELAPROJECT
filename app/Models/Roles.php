@@ -26,6 +26,9 @@ class Roles extends Model
         return Roles::where('codeRole','33')->first();
     }
     public static function getStaffRole(){
+        return Roles::where('codeRole','55')->first();
+    }
+    public static function getModRole(){
         return Roles::where('codeRole','11')->first();
     }
     public static function getStudentRole(){

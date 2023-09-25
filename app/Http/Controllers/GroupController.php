@@ -44,8 +44,9 @@ class GroupController extends Controller
             $designation = $gradeCategory->category.'-'.$matiere->short.'-G'.$numGroups;
             $newGroup = Group::createGroup($designation, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
 
-            foreach ($request->grades as $idGrade)
-                GroupGrades::newGroupGrade($idGrade,$newGroup);
+            if(isset($request->grades))
+                foreach ($request->grades as $idGrade)
+                    GroupGrades::newGroupGrade($idGrade,$newGroup);
             
 
             if (session()->get('user')) {
@@ -120,17 +121,19 @@ class GroupController extends Controller
     public function updateGroup(Request $request, $idGroup)
     {
         if ($request->has('updateGroup') && isset($idGroup)) {
+            Group::updateGroup($idGroup, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
 
-            $groupName = explode('-', Group::getGroup($idGroup)->designation)[0];
-            $matiere = Subjects::getSubject($request->idSubject);
-            $designation = $groupName . "-" . $matiere->short;
-            if (!is_null($request->description))
-                $designation .= "-" . $request->description;
-            Group::updateGroup($idGroup, $designation, $request->capacity, $request->idSubject, $request->idGrade, $request->idStaff);
+            if(isset($request->grades)){
+                GroupGrades::deleteGroupGrades($idGroup);
+                foreach ($request->grades as $idGrade)
+                    GroupGrades::newGroupGrade($idGrade,$idGroup);
+            }
+
+            $group = Group::getGroup($idGroup);
             if (session()->get('user')) {
                 $typeActivity = 2; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
-                $activityDescription = "Le Groupe " . $designation . " (ID = " . $idGroup . ")";
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+                $activityDescription = "Le Groupe " . $group->designation . " (ID = " . $idGroup . ")";
+                Activite::addActivity(auth()->user()->id, $typeActivity, $activityDescription,auth()->user()->name);
             }
             return Redirect::back()->with('updateMessage', 'La Modification du Groupe est faite avec Succès');
         }

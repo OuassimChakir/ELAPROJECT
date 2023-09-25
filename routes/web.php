@@ -12,6 +12,7 @@ use App\Http\Controllers\GradesController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\SpecialiteController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
@@ -313,15 +314,15 @@ Route::middleware([
         Route::delete('/staff/deleteAll',[StaffController::class, 'deleteMultipleStaff'])->name('staff.delete.multiple');
         // Staff Profil
         Route::get('/staff/{idStaff}',[StaffController::class, 'staffProfil'])->name('staff.profil');
-                
+
         // Speciality
-        Route::get('/specialites',[StaffController::class, 'staffType'])->name('specialite');
+        Route::get('/specialites',[SpecialiteController::class, 'staffType'])->name('specialite');
         // Add staff Type
-        Route::post('/specialites/add',[StaffController::class, 'staffType'] )->name('specialite.add');
+        Route::post('/specialites/add',[SpecialiteController::class, 'staffType'] )->name('specialite.add');
         // Update Staff Type
-        Route::get('/specialites/update/{idStaffType}', [StaffController::class, 'updateStaffType'])->name('specialite.update');
-        Route::put('/specialites/update/{idStaffType}', [StaffController::class, 'updateStaffType'])->name('specialite.update.request');
-        Route::get('/specialites/delete/{idStaffType}',[StaffController::class, 'deleteStaffType'])->name('specialite.delete');
+        Route::get('/specialites/update/{idStaffType}', [SpecialiteController::class, 'updateStaffType'])->name('specialite.update');
+        Route::put('/specialites/update/{idStaffType}', [SpecialiteController::class, 'updateStaffType'])->name('specialite.update.request');
+        Route::get('/specialites/delete/{idStaffType}',[SpecialiteController::class, 'deleteStaffType'])->name('specialite.delete');
 
         /* --------------------------------------
         / Users 

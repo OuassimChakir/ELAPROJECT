@@ -14,31 +14,31 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="firstName">Prénom</label>
-                                <input type="text" class="form-control" name="prenom" id="firstName" value="John" required>
+                                <input type="text" class="form-control" name="prenom" id="firstName" placeholder="John" required>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="lastName">Nom</label>
-                                <input type="text" class="form-control" name="nom" id="lastName" value="Deo" required>
+                                <input type="text" class="form-control" name="nom" id="lastName" placeholder="Deo" required>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
                                 <label for="numTel">Numéro de Téléphone</label>
-                                <input type="tel" class="form-control" name="numTel" id="numTel" value="0612345678" required>
+                                <input type="tel" class="form-control" name="numTel" id="numTel" required>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <label for="cine">CINE</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-text">
-                                  <input class="form-check-input mt-0" type="checkbox" id="Checkbox" value="true" aria-label="Checkbox for following text input">
+                                    <input class="form-check-input mt-0" type="checkbox" id="Checkbox" value="true" aria-label="Checkbox for following text input">
                                 </div>
                                 <input type="text" class="form-control" id="cine" name="cine" aria-label="Text input with checkbox" disabled>
-                              </div>
+                            </div>
                         </div>
 
                         <!-- sexe -->
@@ -66,13 +66,9 @@
                                 <select name="idStaffType" id="id-stafftype" class="form-select" required>
                                     <option disabled selected>-- Choisir une Spécialité</option>
                                     @foreach( $staffTypes as $type)
-                                    
-                                        @if ($type->designation != ucfirst("Professeurs"))
-                                            <option value="{{ $type->idStaffType }}" >
-                                                {{ $type->designation }}
-                                            </option>
-                                        @endif
-                                    
+                                        <option value="{{ $type->idStaffType }}">
+                                            {{ $type->designation }} {{!is_null($type->is_moderator) ? '(Moderateur)' : ''}}
+                                        </option>                                    
                                     @endforeach
                                 </select>
                             </div>

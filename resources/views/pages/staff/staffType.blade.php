@@ -13,7 +13,7 @@
     </div>
     <div>
         <button type="button" class="btn btn-primary" id="showFormButton">
-            <i class="bi bi-plus-square"></i> Ajouter une Spécialité
+            <i class="bi bi-plus-square"></i> Ajouter une Spécialitée
         </button>
     </div>
 </div>
@@ -29,13 +29,13 @@
                         <form action="{{route('specialite.update.request',['idStaffType' => $updatedStaffType->idStaffType])}}" method="post">
                             @csrf
                             @method('put')
-                            <div class="form-group row">
-                                <label for="text" class="col-12 col-form-label">Designation</label> 
-                                <div class="col-10">
-                                    <input id="text" name="designation" class="form-control" type="text" value="{{$updatedStaffType->designation}}">
-                                </div>
+                            <div class="form-group">
+                                <label for="text" class="col-form-label">Designation</label> 
+                                <input id="text" name="designation" class="form-control" type="text" value="{{$updatedStaffType->designation}}">
                             </div>
-                            <div class="field_wrapper">
+                            <div class="form-check mb-4">
+                                <input id="is_mod" name="is_mod" class="form-check-input" type="checkbox" value="1" {{!is_null($updatedStaffType->is_moderator) ? 'checked' : ''}}>
+                                <label for="is_mod" class="form-check-label">Moderateur</label> 
                             </div>
                             <div class="row">
                                 <div class="col-12">
@@ -57,13 +57,13 @@
                             <form action="{{route('specialite.add')}}" method="post">
                                 @csrf
                                 @method('post')
-                                <div class="form-group row">
-                                    <label for="text" class="col-12 col-form-label">Designation</label> 
-                                    <div class="col-10">
-                                        <input id="text" name="designation" class="form-control" type="text">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-form-label">Designation</label> 
+                                    <input id="text" name="designation" class="form-control" type="text">
                                 </div>
-                                <div class="field_wrapper">
+                                <div class="form-check mb-4">
+                                    <input id="is_mod" name="is_mod" class="form-check-input" type="checkbox" value="1">
+                                    <label for="is_mod" class="form-check-label">Moderateur</label> 
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -89,6 +89,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Designation</th>
+                                <th>Type</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -100,7 +101,12 @@
                                 @foreach ($staffTypes as $staffType)
                                     <tr>
                                         <td>{{++$i}}</td>
-                                        <td><div class="badge bg-dark">{{$staffType->designation}}</div></td>
+                                        <td>{{$staffType->designation}}</td>
+                                        @if (is_null($staffType->is_moderator))
+                                            <td><div class="badge bg-dark">Normal</div></td>
+                                        @else
+                                            <td><div class="badge bg-primary">Moderateur</div></td>
+                                        @endif
                                         <td>
                                             <div class="btn-group">
                                                 <a href="{{route('specialite.update',['idStaffType' => $staffType->idStaffType])}}">

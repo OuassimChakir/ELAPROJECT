@@ -37,10 +37,10 @@ class StaffController extends Controller
             // check cine if vide
             if (isset($request->cine)) $cine = $request->cine;
             else $cine = NULL;
+            $staffType = Stafftype::getStaffType($request->idStaffType);
 
             $idStaff = staff::addStaff($cine, $request->prenom, $request->nom, $request->sexe, $request->numTel, $request->idStaffType);
-            //DD($idStaff->idStaff);
-            $password = User::createStaffAccount($idStaff->idStaff, ucfirst($request->prenom) . ' ' . Str::upper($request->nom), $username);
+            $password = User::createStaffAccount($idStaff->idStaff, ucfirst($request->prenom) . ' ' . Str::upper($request->nom), $username, $staffType->is_moderator);
             $newStaff = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'username' => $username, 'password' => $password]);
 
             if (session()->get('user')) {
