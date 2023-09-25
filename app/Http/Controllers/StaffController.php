@@ -85,7 +85,8 @@ class StaffController extends Controller
     }
 
     public function deleteStaff($idStaff)
-    {
+    { 
+        User::deleteStaffAccount($idStaff);
         staff::deleteStaff($idStaff);
         $staffs = staff::getStaffs();
         $st = staff::getDeletedStaff($idStaff);
@@ -103,6 +104,7 @@ class StaffController extends Controller
     {
         if ($request->has('deleteAll')) {
             foreach ($request->staffs as $idStaff) {
+                User::deleteStaffAccount($idStaff);
                 staff::deleteStaff($idStaff);
                 $st = staff::getDeletedStaff($idStaff);
                 if (session()->get('user')) {
@@ -137,6 +139,7 @@ class StaffController extends Controller
     public function restoreArchivedStaff($idStaff)
     {
         staff::restoreStaff($idStaff);
+        User::restoreStaffAccount($idStaff);
         $staffs = staff::softDeletedStaffs();
         $st = staff::getStaff($idStaff);
         if (session()->get('user')) {
@@ -155,7 +158,7 @@ class StaffController extends Controller
             $activityDescription = 'Le staff' . " " . $st->prenom . " " . $st->nom . "(" . $idStaff . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
-        User::deleteStaffAccount($idStaff);
+        User::forceStaffAccount($idStaff);
         staff::forceDeleteStaff($idStaff);
         return Redirect::route('staff.archive')->with('deleteMessage', "Le Staff a été supprimer Définitivement");
     }
@@ -165,6 +168,7 @@ class StaffController extends Controller
         if ($request->has('restoreAll')) {
             foreach ($request->archivedStaff as $idStaff) {
                 staff::restoreStaff($idStaff);
+                User::restoreStaffAccount($idStaff);
                 $st = staff::getStaff($idStaff);
                 if (session()->get('user')) {
                     $typeActivity = 3;
@@ -182,7 +186,7 @@ class StaffController extends Controller
                     $activityDescription = 'Le staff' . " " . $st->prenom . " " . $st->nom . "(" . $idStaff . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
-                User::deleteStaffAccount($idStaff);
+                User::forceStaffAccount($idStaff);
                 staff::forceDeleteStaff($idStaff);
             }
             return Redirect::route('staff.archive')->with('deleteMessage', "Les Staffs séléctionés ont été supprimer Définitivement");

@@ -89,6 +89,7 @@ class TeacherController extends Controller
             $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . " (" . $teach->idProfesseur . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
+        User::deleteProfAccount($idProfesseur);
         Professeurs::deleteProfesseur($idProfesseur);
         return Redirect::route('teachers.liste')
             ->with('deleteMessage', "La suppression est faite avec succès")
@@ -105,6 +106,7 @@ class TeacherController extends Controller
                     $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . " (" . $teach->idProfesseur . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
+                User::deleteProfAccount($idProfesseur);
                 Professeurs::deleteProfesseur($idProfesseur);
             }
             return Redirect::back()->with('deleteMessage', "Les Professeurs séléctionés ont été supprimer");
@@ -136,6 +138,7 @@ class TeacherController extends Controller
 
     public function restoreArchivedTeacher($idProfesseur)
     {
+        User::restoreProfAccount($idProfesseur);
         Professeurs::restoreTeacher($idProfesseur);
         $teachers = Professeurs::softDeletedTeachers();
         $teach = Professeurs::getProfesseur($idProfesseur);
@@ -155,7 +158,7 @@ class TeacherController extends Controller
             $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . "(" . $teach->idProfesseur . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
-        User::deleteProfAccount($idProfesseur);
+        User::forceProfAccount($idProfesseur);
         Professeurs::forceDeleteTeacher($idProfesseur);
 
         return Redirect::back()->with('deleteMessage', "Le Professeur a été supprimer Définitivement");
@@ -165,6 +168,7 @@ class TeacherController extends Controller
     {
         if ($request->has('restoreAll')) {
             foreach ($request->archivedTeachers as $idProfesseur) {
+                User::restoreProfAccount($idProfesseur);
                 Professeurs::restoreTeacher($idProfesseur);
                 $teach = Professeurs::getProfesseur($idProfesseur);
                 if (session()->get('user')) {
@@ -183,7 +187,7 @@ class TeacherController extends Controller
                     $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . " (" . $teach->idProfesseur . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
-                User::deleteProfAccount($idProfesseur);
+                User::forceProfAccount($idProfesseur);
                 Professeurs::forceDeleteTeacher($idProfesseur);
             }
             return Redirect::back()->with('deleteMessage', "Les Professeurs séléctionés ont été supprimer Définitivement");
