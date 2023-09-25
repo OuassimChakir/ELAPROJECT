@@ -1,50 +1,32 @@
-@extends('layouts.loginLayout')
-@section('title')
-    Se Connecter
-@endsection
-@section('content')
-    <body id="body" class="sign-inup bg-primary" >
-        <div class="container d-flex align-items-center justify-content-center form-height-login pt-24px pb-24px">
-			<div class="row justify-content-center">
-				<div class="col-lg-6 col-md-10">
-					<div class="card">
-						<div class="card-header">
-							<div class="ec-brand text-center">
-									<img src="{{asset('images/Logo/logo.webp')}}" width="30%" alt="" />
-							</div>
-						</div>
-						<div class="card-body p-5">
-							<h4 class="text-dark mb-5">S'Authentifier</h4>
-							
-							<form action="{{route('login')}}" method="POST">
-								@csrf
-								<div class="row">
-									<div class="form-group col-md-12 mb-4">
-										<input type="text" name="username" class="form-control" id="email" placeholder="Username" required>
-									</div>
-									
-									<div class="form-group col-md-12 ">
-										<input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
-									</div>
-									
-									<div class="col-md-12">
-										<div class="d-flex my-2 justify-content-between">
-											@if (Route::has('password.request'))
-												<p><a class="text-blue" href="{{ route('password.request') }}">Mot de passe Oublié?</a></p>
-											@endif
-											
-										</div>
-										
-										<button type="submit" class="btn btn-primary btn-block mb-4">
-											{{ __('Log in') }}
-										</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-    </body>
-@endsection
+<x-guest-layout>
+    <x-jet-authentication-card>
+        <x-slot name="logo">
+            <x-jet-authentication-card-logo />
+        </x-slot>
+
+        <x-jet-validation-errors class="mb-4" />
+
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="mt-4">
+                <x-jet-label for="username" value="{{ __('Username') }}" />
+                <x-jet-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('email')" required />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="password" value="{{ __('Password') }}" />
+                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            </div>
+
+            <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                    {{ __('Mot de Passe Oublié?') }}
+                </a>
+
+                <x-jet-button class="ml-4">
+                    {{ __('Se Connecter') }}
+                </x-jet-button>
+            </div>
+        </form>
+    </x-jet-authentication-card>
+</x-guest-layout>

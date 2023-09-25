@@ -214,8 +214,8 @@
 							@onlystudent
 							<hr>
 							<li class="{{Route::is('student.incomes') ? 'active' : ''}}">
-								<a class="sidenav-item-link" href="{{route('student.incomes',['idStudent' => $student->idStudent])}}">
-									<i class="bi bi-people-fill"></i>
+								<a class="sidenav-item-link" href="{{route('student.incomes',['idStudent' => auth()->user()->idStudent])}}">
+									<i class="mdi mdi-cash"></i>
 									<span class="nav-text">Mes Paiements</span>
 								</a>
 							</li>
