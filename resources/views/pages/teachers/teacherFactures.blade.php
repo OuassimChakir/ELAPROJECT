@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 @section('title')
- Les Facture
+    Les Facture
 @endsection
 @section('content')
     <div class="breadcrumb-wrapper breadcrumb-contacts">
@@ -12,11 +12,13 @@
             </p>
         </div>
         <div class="col-sm-6">
-            <form action="{{route('teachers.factures.query', ['idProfesseur' => $Professeur->idProfesseur])}}" method="post">
+            <form action="{{ route('teachers.factures.query', ['idProfesseur' => $Professeur->idProfesseur]) }}"
+                method="post">
                 @csrf
                 <div class="row">
                     <div class="form-group col-sm-10">
-                        <input type="month" name="datePayment" class="form-control mt-4" value="{{$datePayment}}" required>
+                        <input type="month" name="datePayment" class="form-control mt-4" value="{{ $datePayment }}"
+                            required>
                     </div>
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-primary mt-4"><span class="mdi mdi-magnify"></span></button>
@@ -43,7 +45,7 @@
                             </tr>
                         </thead>
                         @php
-                        $i = 0;
+                            $i = 0;
                         @endphp
                         <tbody>
                             @if (isset($FacturePayment))
@@ -75,7 +77,7 @@
             </div>
         </div>
     </div>
- 
+
     <script src="{{ asset('JS/jquery.min.js') }}"></script>
     <script src="{{ asset('Bootstrap/js/bootstrap.min.js') }}"></script>
 

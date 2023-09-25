@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
 class StudentController extends Controller
 {
     // -------------- Students -------------- //
-    public function students(Request $request)
+    public function students()
     {   
         $groupSubjects = Group::existedGroupSubjects();
         $groupCourseTypes = Group::existedGroupCourseTypes();
