@@ -62,9 +62,9 @@
                     <div class="card card-default mb-24px">
                         <div class="card-header justify-content-between mb-1">
                             <h2>Factures</h2>
-                            <div>
-                                <button class="text-black-50 mr-2 font-size-20"><i class="mdi mdi-cached"></i></button>
-                            </div>
+                            <a href="{{route('teachers.factures',['idProfesseur' => auth()->user()->idProfesseur])}}">
+                                <button class="text-black-50 mr-2 font-size-20"><i class="mdi mdi-open-in-new"></i></button>
+                            </a>
     
                         </div>
                             <div class="card-body compact-notifications" data-simplebar style="height: 300px!important;">
@@ -81,13 +81,18 @@
                                                     <span class="mdi mdi-receipt"></span>
                                                 </div>
                                                 <div class="media-body pr-3 ">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark" href="#">Facture: {{ $item->description }}</a> <span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
+                                                    Facture: {{ $item->description }} <span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
         
                                                     <p>{{ $item->note }}</p>
                                                 </div>
                                                 <span class=" font-size-12 d-inline-block">
-                                                    <button class="btn btn-outline-success payInvoiceBtn" data-bs-toggle="modal"
-                                                    data-bs-target="#invoicePaiment" value="{{$item->idPayment}}"><span class="mdi mdi-check"></span></button>
+                                                        <a href="{{ route('teachers.pdf', ['idExpensePayment' => $item->idExpensePayment]) }}"
+                                                            target="_blank">
+                                                            <button type="submit" class="btn btn-outline-success" name="print">
+                                                                <i class="bi bi-printer-fill"></i></i>
+                                                            </button>
+                                                        </a>
+
                                                 </span>
                                             </div>
                                             @else

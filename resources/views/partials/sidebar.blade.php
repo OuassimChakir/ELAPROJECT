@@ -223,8 +223,8 @@
 							@endonlystudent
 							@onlyteacher
 							<hr>
-							<li class="{{Route::is('student.incomes') ? 'active' : ''}}">
-								<a class="sidenav-item-link" href="#">
+							<li class="{{Route::is('teachers.factures') ? 'active' : ''}}">
+								<a class="sidenav-item-link" href="{{route('teachers.factures',['idProfesseur' => auth()->user()->idProfesseur])}}">
 									<i class="mdi mdi-cash"></i>
 									<span class="nav-text">Mes Paiements</span>
 								</a>
