@@ -11,7 +11,7 @@
 	<!--  WRAPPER  -->
     <div class="ec-content-wrapper">
         <div class="content">
-            <!-- Top Statistics -->
+            <!-- Top Statistics --> 
             <div class="row">
                 <div class="col-xl-12 col-sm-6 p-b-15 lbl-card">
                     <div class="card card-mini dash-card card-1">
@@ -37,7 +37,7 @@
                         <div class="card-body compact-notifications" data-simplebar style="height: 300px!important;">
                             @if ($teacherGroups->count() == 0)
                                 <div class="alert alert-warning">
-                                    Aucune facture <b>impayée</b> n'a été trouvée!
+                                    Aucune <b>groupes</b> trouvée!
                                 </div>
                             @else
                                 @foreach ($teacherGroups as $group)

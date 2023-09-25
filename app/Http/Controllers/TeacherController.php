@@ -132,7 +132,6 @@ class TeacherController extends Controller
         ->with('courseTypes', $courseTypes)
         ->with('groups', $groups)
         ->with('factures', $factures);
-
     }
 
     public function restoreArchivedTeacher($idProfesseur)

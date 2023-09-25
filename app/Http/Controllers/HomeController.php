@@ -244,10 +244,12 @@ class HomeController extends Controller
             / Teachers Home
             / -------------------------------------*/
             $teacher = Professeurs::getProfesseur(auth()->user()->idProfesseur);
+            $pendingPaiment = Facture::getFacturesByProf(auth()->user()->idProfesseur);
             $teacherGroups = Group::getProfGroups(auth()->user()->idProfesseur);
             return view('teacherhome')->with([
                 'teacher' => $teacher,
                 'teacherGroups' => $teacherGroups,
+                'pendingPaiment'=>$pendingPaiment,
             ]);
         }
     }
