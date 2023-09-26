@@ -39,7 +39,7 @@ class PdfController extends Controller
             ->addItem($item);
         $invoice->sequence($data->idExpensePayment);
         $invoice->name = "BMA Facture";
-        $invoice->logo = asset('images/Logo/ca_logo.png');
+        $invoice->logo = asset('images/Logo/logo.png');
         $invoice->hasItemUnits = true;
         return $invoice->stream();
     }
