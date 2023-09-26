@@ -17,7 +17,7 @@ class PdfController extends Controller
             $customer = new Buyer([
                 'name'          => $data->prenom.' '.$data->nom,
                 'custom_fields' => [
-                    'Payement' => $data->designation,
+                    'Paiement' => $data->designation,
                     'description' => $data->description,
                 ],
             ]);
@@ -25,7 +25,7 @@ class PdfController extends Controller
         }else{
             $customer = new Buyer([
                 'custom_fields' => [
-                    'Payement' => $data->designation,
+                    'Paiement' => $data->designation,
                     'description' => $data->description,
                 ],
             ]);

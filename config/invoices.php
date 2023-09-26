@@ -78,10 +78,8 @@ return [
          * Default attributes for Seller::class
          */
         'attributes' => [
-            'name'          => 'Center Name',
-            'address'       => 'Center Adresse',
-            'Email'         => 'Center Email',
-            'phone'         => 'Phone',
+            'name'          => 'BMA Centre',
+            'phone'         => '+212 708 13 44 91',
             'custom_fields' => [
                 /**
                  * Custom attributes for Seller::class
@@ -89,7 +87,7 @@ return [
                  * Used to display additional info on Seller section in invoice
                  * attribute => value
                  */
-                'phone 2' => 'Phone2',
+                'Fixe' => '+212 808 65 37 74',
             ],
         ],
     ],
