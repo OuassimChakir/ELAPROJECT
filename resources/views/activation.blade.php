@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 @section('title')
-    Activation
+    Activités
 @endsection
 @section('content')
     <!--  WRAPPER  -->
@@ -8,7 +8,7 @@
         <div class="content">
             <div class="breadcrumb-wrapper breadcrumb-contacts">
                 <div>
-                    <h1>Activation</h1>
+                    <h1>Activités</h1>
                     <p class="breadcrumbs">
                         <span><a href="{{ route('acceuil') }}">Acceuil</a></span>
                         <span><i class="mdi mdi-chevron-right"></i></span><a href="{{ route('activite') }}">Activités</a>
@@ -30,7 +30,7 @@
                     @csrf
                     @method('post')
                     <div class="card-header justify-content-between mb-1">
-                        <h2 class="mt-3">les dernières activations</h2>
+                        <h2 class="mt-3">les dernières Activités</h2>
                         <div class="col-5">
                             <label for="exampleFormControlTextarea1" class="form-label">Date Activités</label>
                             <input type="date" name="dateActivite" class="form-control" value="{{ date('Y-m-d') }}">
