@@ -13,7 +13,7 @@ class Payment extends Model
     use SoftDeletes;
     protected $table = "payment";
     protected $primaryKey = "idPayment";
-        protected $fillable = ['numeroRecu','datePayment', 'paymentMode', 'amount','amountPaid', 'note', 'etat','idGroup','idStudent', 'idIncome', 'created_at', 'updated_at'];
+    protected $fillable = ['numeroRecu','datePayment', 'paymentMode', 'amount','amountPaid', 'note', 'etat','idGroup','idStudent', 'idIncome', 'created_at', 'updated_at'];
 
     //------------- all Payment de incomes----------//
     public static function allPayment()
@@ -334,9 +334,9 @@ class Payment extends Model
         return Payment::selectRaw('count(idStudent) as nbStudents, sum(amountPaid) as total')
                 ->join('incomes','incomes.idIncome','=','payment.idIncome')
                 ->where('etat',1)
-                ->where('activationDate','00')
+                ->where('incomes.designation','Inscription')
                 ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
-                ->first();
+                ->w();
     }
 
     public static function stats_groupPaimentsByDay($datePayment,$idGroup){
@@ -376,6 +376,15 @@ class Payment extends Model
                     ->orderBy('datePayment','DESC')
                     ->get();
         }
+    }
+
+    public static function nbInscrits(){
+        return Payment::select('*')
+            ->join('incomes','incomes.idIncome','=','payment.idIncome')
+            ->where('designation','Inscription')
+            ->where('activationDate','00')
+            ->where('etat',1)
+            ->count();
     }
 }
 

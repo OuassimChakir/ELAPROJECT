@@ -44,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
             $role = Roles::getRole($user->idRole);
             return auth()->user() && ($role->codeRole == '00' || $role->codeRole == '11');
         });
+        
         Blade::if('student', function(){
             $user = Auth::user();
             $role = Roles::getRole($user->idRole);

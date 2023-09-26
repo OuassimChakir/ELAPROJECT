@@ -28,7 +28,8 @@
                     </div>
                 </div>
             </div>
-            @elseif(session()->get('user')->codeRole == '00')
+            @endif
+            @admin
             <div class="row">
                 <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
                     <div class="card card-mini dash-card card-1">
@@ -45,6 +46,37 @@
                             <h2 class="mb-1">{{$NumGroups}}</h2>
                             <p>Les groups</p>
                             <span class="mdi mdi-content-paste"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                    <div class="card card-mini dash-card card-1">
+                        <div class="card-body">
+                            <h2 class="mb-1">{{$professeurs}}</h2>
+                            <p>Les Professeurs</p>
+                            <span class="mdi mdi-account-arrow-left"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                    <div class="card card-mini dash-card card-2">
+                        <div class="card-body">
+                            <h2 class="mb-1">{{$staffs}}</h2>
+                            <p>Les Staffs</p>
+                            <span class="mdi mdi-account-arrow-left"></span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                    <div class="card card-mini dash-card card-3">
+                        <div class="card-body">
+                            <h2 class="mb-1">{{$Inscrits}}</h2>
+                            <p>Inscrits</p>
+                            <span><i class="mdi mdi-account-plus-outline"></i></span>
                         </div>
                     </div>
                 </div>
@@ -66,9 +98,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+                    <div class="card card-mini dash-card card-4">
+                        <div class="card-body">
+                            <h2 class="mb-1">{{$Payments-$Factures}} DH</h2>
+                            <p>Resultat Bilan</p>
+                            @if ($Payments-$Factures == 0)
+                            <span class="mdi mdi-currency-usd bg-warning"></span>
+                            @elseif ($Payments-$Factures > 0)
+                            <span class="mdi mdi-currency-usd bg-success"></span>
+                            @else
+                            <span class="mdi mdi-currency-usd bg-danger"></span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
-            @endif
-
+            
             <div class="row">
                 <div class="col-xl-8 col-md-12 p-b-15">
                     <!-- Sales Graph -->
@@ -108,6 +154,7 @@
                     </div>
                 </div>
             </div>
+            @endadmin
 
             <div class="row">
                 <div class="col-xl-12 col-md-12 p-b-15">

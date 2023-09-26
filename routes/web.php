@@ -85,13 +85,11 @@ Route::middleware([
     Route::get('/attendance', [AttendanceController::class, 'allAbsences'])->name('absence');
     Route::post('/attendance', [AttendanceController::class, 'allAbsences'])->name('getAttendance');
 
-    // Update Student
-    Route::get('/attendance/update/{idGroup}-{dateAbsence}', [AttendanceController::class, 'updateAttendanceAjax']);
-    Route::post('/attendance/update', [AttendanceController::class, 'updateAttendance'])->name('attendance.update');
-    Route::post('/attendance/delete', [AttendanceController::class, 'deleteAttendance'])->name('attendance.delete');
-
     // Attendance AJAX
     Route::get('/attendance/{idGroup}/{dateAbsence}', [AttendanceController::class, 'getAttendanceMonthDates']);
+
+    // Expenses AJAX
+    Route::get('/teacher/groups/{idProfesseur}',[ExpenseController::class,'teacherGroups'])->name('teacher.groups.ajax');
 
 
     // ----- pdf de facture
@@ -109,9 +107,14 @@ Route::middleware([
 
     // Moderator Permission View
     Route::middleware(['is_moderator'])->group(function () {
+        
         // Staff Profil
         Route::get('/staff/{idStaff}', [StaffController::class, 'staffProfil'])->name('staff.profil');
 
+        // Update Attendance
+        Route::get('/attendance/update/{idGroup}-{dateAbsence}', [AttendanceController::class, 'updateAttendanceAjax']);
+        Route::post('/attendance/update', [AttendanceController::class, 'updateAttendance'])->name('attendance.update');
+        Route::post('/attendance/delete', [AttendanceController::class, 'deleteAttendance'])->name('attendance.delete');
         /* -----------------------------------------------
         / GRADES
         / --------------------------------------------- */
@@ -171,12 +174,6 @@ Route::middleware([
         Route::get('/teachers', [TeacherController::class, 'teacher'])->name('teachers.liste');
         // Add staff
         Route::post('/teacher/add',  [TeacherController::class, 'teacher'])->name('teachers.add');
-        // Update Staff
-        Route::put('/teacher/update/{idProfesseur}',  [TeacherController::class, 'updateTeacher'])->name('teachers.update');
-        // Delete Staff
-        Route::get('/teacher/delete/{idProfesseur}', [TeacherController::class, 'deleteTeacher'])->name('teachers.delete');
-        Route::delete('/teacher/delete', [TeacherController::class, 'deleteMultipleTeachers'])->name('teachers.delete.multiple');
-
 
         /* -----------------------------------------------
         / Students
@@ -208,7 +205,9 @@ Route::middleware([
         // Load Data
         Route::get('/groupes/get/{idGradeCategory}', [GroupController::class, 'getGrade'])->name('groups.getData');
 
-        // ------------- Classroom ---------- // 
+        /* -----------------------------------------------
+        / Classroom (GroupElement)
+        / --------------------------------------------- */
         // Add Student to Group
         Route::get('/groupes/{idGroup}/classroom/{idStudent}', [GroupController::class, 'assignElement']);
 
@@ -284,6 +283,15 @@ Route::middleware([
         / Settings 
         / --------------------------------------- */
         Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+
+        /* --------------------------------------
+        / Teachers 
+        / --------------------------------------- */
+        // Update Staff
+        Route::put('/teacher/update/{idProfesseur}',  [TeacherController::class, 'updateTeacher'])->name('teachers.update');
+        // Delete Staff
+        Route::get('/teacher/delete/{idProfesseur}', [TeacherController::class, 'deleteTeacher'])->name('teachers.delete');
+        Route::delete('/teacher/delete', [TeacherController::class, 'deleteMultipleTeachers'])->name('teachers.delete.multiple');
 
         /* --------------------------------------
         / Roles 
