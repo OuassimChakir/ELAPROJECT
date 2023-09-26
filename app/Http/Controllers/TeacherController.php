@@ -167,7 +167,7 @@ class TeacherController extends Controller
             }
         }
         // update sur les groups de le prof
-        if ($factures != null) {
+        if ($groups != null) {
             foreach ($groups as $group) {
                 Facture::updateidProfesseurGroup($group->idGroup);
             }
