@@ -26,26 +26,26 @@ class SettingController extends Controller
             $oldeStudents = Student::softDeletedStudents();
             $professuers = Professeurs::getProfesseurs();
             $groupes = Group::getGroups();
-            $allfacture= Payment::allPayment();
+            $allfacture = Payment::allPayment();
             foreach ($allfacture as $payment) {
                 Payment::deletePayment($payment->idPayment);
             }
             foreach ($groupes as $groupe) {
                 // Payment::updatePaimentidGroup($groupe->idGroup);
-                 $groupElements = GroupElements::groupElements($groupe->idGroup);
-                 foreach ($groupElements as $goupElements) {
-                     Attendance::deleteGroupAttendancebyidElement($goupElements->idElement);
-                     GroupElements::cancelAssignment($goupElements->idElement);
-                 }
-                 GroupGrades::deleteGroupGrades($groupe->idGroup);
-                 $payments = Payment::getPaymentByidGroup($groupe->idGroup);
-                 foreach ($payments as $payment) {
-                     if($payment->idGroup != null){ 
-                        Payment::updatePaimentidGroup($payment->idPayment); 
-                     }  
-                 }
-                 Group::deleteGroup($groupe->idGroup);
-             }
+                $groupElements = GroupElements::groupElements($groupe->idGroup);
+                foreach ($groupElements as $goupElements) {
+                    Attendance::deleteGroupAttendancebyidElement($goupElements->idElement);
+                    GroupElements::cancelAssignment($goupElements->idElement);
+                }
+                GroupGrades::deleteGroupGrades($groupe->idGroup);
+                $payments = Payment::getPaymentByidGroup($groupe->idGroup);
+                foreach ($payments as $payment) {
+                    if ($payment->idGroup != null) {
+                        Payment::updatePaimentidGroup($payment->idPayment);
+                    }
+                }
+                Group::deleteGroup($groupe->idGroup);
+            }
             foreach ($oldeStudents as $oldeStudent) {
                 $deleted = Student::getDeletedStudent($oldeStudent->idStudent);
                 $date = new DateTime($deleted->deleted_at);
