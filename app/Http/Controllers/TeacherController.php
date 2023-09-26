@@ -163,7 +163,7 @@ class TeacherController extends Controller
         // update sur les factures pour le prof
         if ($factures != null) {
             foreach ($factures as $facture) {
-                Facture::updateProfFacture($facture->idExpensePayment);
+                Facture::forceDeleteFacture($facture->idExpensePayment);
             }
         }
         // update sur les groups de le prof

@@ -267,6 +267,15 @@ class Payment extends Model
     {
         return  Payment::select('*')->where('idStudent',$idStudent)->get();
     }   
+
+    public static function getOldPaymentByidStudent($idStudent)
+    {
+        return  Payment::withTrashed()
+            ->select('*')
+            ->where('idStudent',$idStudent)
+            ->get();
+    }   
+
     public static function getPaymentByidGroup($idGroup)
     {
         return  Payment::select('*')->where('idGroup',$idGroup)->get();
@@ -340,7 +349,7 @@ class Payment extends Model
                 ->where('etat',1)
                 ->where('incomes.designation','Inscription')
                 ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
-                ->w();
+                ->first();
     }
 
     public static function stats_groupPaimentsByDay($datePayment,$idGroup){
