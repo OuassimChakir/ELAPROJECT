@@ -128,12 +128,12 @@ class TeacherController extends Controller
         $groups = Group::getProfGroups($idProfesseur);
         $factures = Facture::getFacturesByProf($idProfesseur);
         $teacher = Professeurs::getDeletedTeacher($idProfesseur);
-        return view('pages.teachers.archivedTeacherProfil')           
-        ->with('teacher', $teacher)
-        ->with('subjects', $subjects)
-        ->with('courseTypes', $courseTypes)
-        ->with('groups', $groups)
-        ->with('factures', $factures);
+        return view('pages.teachers.archivedTeacherProfil')
+            ->with('teacher', $teacher)
+            ->with('subjects', $subjects)
+            ->with('courseTypes', $courseTypes)
+            ->with('groups', $groups)
+            ->with('factures', $factures);
     }
 
     public function restoreArchivedTeacher($idProfesseur)
@@ -152,11 +152,25 @@ class TeacherController extends Controller
 
     public function deleteArchivedTeacher($idProfesseur)
     {
+        $factures = Facture::getFacturesByProf($idProfesseur);
+        $groups = Group::getProfGroups($idProfesseur);
         $teach = Professeurs::getDeletedTeacher($idProfesseur);
         if (session()->get('user')) {
             $typeActivity = 10;
             $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . "(" . $teach->idProfesseur . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+        }
+        // update sur les factures pour le prof
+        if ($factures != null) {
+            foreach ($factures as $facture) {
+                Facture::updateProfFacture($facture->idExpensePayment);
+            }
+        }
+        // update sur les groups de le prof
+        if ($groups != null) {
+            foreach ($groups as $group) {
+                Facture::updateidProfesseurGroup($group->idGroup);
+            }
         }
         User::forceProfAccount($idProfesseur);
         Professeurs::forceDeleteTeacher($idProfesseur);
@@ -182,10 +196,24 @@ class TeacherController extends Controller
         if ($request->has('deleteAll')) {
             foreach ($request->archivedTeachers as $idProfesseur) {
                 $teach = Professeurs::getDeletedTeacher($idProfesseur);
+                $factures = Facture::getFacturesByProf($idProfesseur);
+                $groups = Group::getProfGroups($idProfesseur);
                 if (session()->get('user')) {
                     $typeActivity = 10;
                     $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . " (" . $teach->idProfesseur . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+                }
+                // update sur les factures pour le prof
+                if ($factures != null) {
+                    foreach ($factures as $facture) {
+                        Facture::updateProfFacture($facture->idExpensePayment);
+                    }
+                }
+                // update sur les groups de le prof
+                if ($groups != null) {
+                    foreach ($groups as $group) {
+                        Facture::updateidProfesseurGroup($group->idGroup);
+                    }
                 }
                 User::forceProfAccount($idProfesseur);
                 Professeurs::forceDeleteTeacher($idProfesseur);

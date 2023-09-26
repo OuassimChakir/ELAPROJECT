@@ -38,17 +38,18 @@ class StaffController extends Controller
             if (isset($request->cine)) $cine = $request->cine;
             else $cine = NULL;
             $staffType = Stafftype::getStaffType($request->idStaffType);
-
-            $idStaff = staff::addStaff($cine, $request->prenom, $request->nom, $request->sexe, $request->numTel, $request->idStaffType);
-            $password = User::createStaffAccount($idStaff->idStaff, ucfirst($request->prenom) . ' ' . Str::upper($request->nom), $username, $staffType->is_moderator);
-            $newStaff = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'username' => $username, 'password' => $password]);
-
             if (session()->get('user')) {
                 $typeActivity = 0;
                 $activityDescription = 'Le étudiants' . " " . $request->prenom . " " . $request->nom;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
             }
-            return Redirect::back()->with('newStaff', $newStaff);
+            $idStaff = staff::addStaff($cine, $request->prenom, $request->nom, $request->sexe, $request->numTel, $request->idStaffType);
+            if ($staffType->is_moderator != null) {
+                $password = User::createStaffAccount($idStaff->idStaff, ucfirst($request->prenom) . ' ' . Str::upper($request->nom), $username, $staffType->is_moderator);
+                $newStaff = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'username' => $username, 'password' => $password]);
+                return Redirect::back()->with('newStaff', $newStaff);
+            } else
+                return Redirect::back()->with(['successMessage' => "Le staff Ajoutée avec succée!"]);
         }
         return view('pages.staff.staff')
             ->with('subjects', $subjects)
@@ -85,7 +86,7 @@ class StaffController extends Controller
     }
 
     public function deleteStaff($idStaff)
-    { 
+    {
         User::deleteStaffAccount($idStaff);
         staff::deleteStaff($idStaff);
         $staffs = staff::getStaffs();
@@ -152,11 +153,18 @@ class StaffController extends Controller
 
     public function deleteArchivedStaff($idStaff)
     {
+        $factures = Facture::getFacturesByStaff($idStaff);
         $st = staff::getDeletedStaff($idStaff);
         if (session()->get('user')) {
             $typeActivity = 10;
             $activityDescription = 'Le staff' . " " . $st->prenom . " " . $st->nom . "(" . $idStaff . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+        }
+        // update sur les factures pour le prof
+        if ($factures != null) {
+            foreach ($factures as $facture) {
+                Facture::updateStaffFacture($facture->idExpensePayment);
+            }
         }
         User::forceStaffAccount($idStaff);
         staff::forceDeleteStaff($idStaff);
@@ -180,11 +188,18 @@ class StaffController extends Controller
         }
         if ($request->has('deleteAll')) {
             foreach ($request->archivedStaff as $idStaff) {
+                $factures = Facture::getFacturesByStaff($idStaff);
                 $st = staff::getDeletedStaff($idStaff);
                 if (session()->get('user')) {
                     $typeActivity = 10;
                     $activityDescription = 'Le staff' . " " . $st->prenom . " " . $st->nom . "(" . $idStaff . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+                }
+                // update sur les factures pour le prof
+                if ($factures != null) {
+                    foreach ($factures as $facture) {
+                        Facture::updateStaffFacture($facture->idExpensePayment);
+                    }
                 }
                 User::forceStaffAccount($idStaff);
                 staff::forceDeleteStaff($idStaff);

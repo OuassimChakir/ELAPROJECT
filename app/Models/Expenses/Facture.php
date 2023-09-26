@@ -47,6 +47,20 @@ class Facture extends Model
         ->orderBy('created_at','asc')
         ->get();
     }
+    // update id Prof 
+    public static function updateProfFacture($idExpensePayment){
+        $paiment = Facture::find($idExpensePayment);
+        $paiment->idProfesseur = null;
+        $paiment->save();
+        
+    }
+    // update  id staff
+    public static function updateStaffFacture($idExpensePayment){
+        $paiment = Facture::find($idExpensePayment);
+        $paiment->idStaff = null;
+        $paiment->save();
+        
+    }
 
 
     //------------- create facture ----------//         

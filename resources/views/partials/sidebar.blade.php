@@ -503,14 +503,14 @@
 							@staff
 								<!-- ARCHIVE -->
 								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive') || Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
-								||Route::is('groups.archive') ? 'active expand' : ''}}">
+								 ? 'active expand' : ''}}">
 									<a class="sidenav-item-link" href="javascript:void(0)">
 										<i class="bi bi-archive-fill"></i>
 										<span class="nav-text">Archive</span> <b class="caret"></b>
 									</a>
 									<div class="collapse {{ Route::is('student.archive') || Route::is('teachers.archive')
 									|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
-									|| Route::is('groups.archive') ? 'show' : 'collapsed'}}">
+									  ? 'show' : 'collapsed'}}">
 										<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 											<li class="{{Route::is('student.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('student.archive')}}">
@@ -536,11 +536,6 @@
 											<li class="{{Route::is('incomePayment.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('incomePayment.archive')}}">
 													<span class="nav-text">Archive des Reçus de Paiement</span>
-												</a>
-											</li>
-											<li class="{{Route::is('groups.archive') ? 'active' : ''}}">
-												<a class="sidenav-item-link" href="{{route('groups.archive')}}">
-													<span class="nav-text">Archive des Groupes</span>
 												</a>
 											</li>
 											@endadmin
