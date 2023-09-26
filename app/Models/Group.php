@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Group extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $table = "groups";
     protected $primaryKey = "idGroup";
     protected $fillable = ['designation', 'capacity', 'idSubject', 'idGrade', 'idStaff', 'CREATED_AT', 'UPDATED_AT'];
@@ -148,7 +147,12 @@ class Group extends Model
         $group->nbElements = $nbElements;
         $group->save();
     }
-
+    public static function updateidProfesseurGroup($idGroup){
+        $group = Group::find($idGroup);
+        $group->idProfesseur = null;
+        $group->save();
+    }
+    
     // ---------- Deletion ----------- //
     public static function deleteGroup($idGroup) {
         Group::find($idGroup)->delete();
@@ -166,40 +170,6 @@ class Group extends Model
             ->rightJoin('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
             ->GROUPBY('subjects.idCourseType')
             ->get();
-    }
-
-        // --------------- Group ARCHIVE ------------------ //
-
-    // Select deleted Group
-    public static function softDeletedGroups(){
-        return Group::onlyTrashed()
-        ->select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
-        ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
-        ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject') 
-        ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
-        ->get();
-    }
-
-    public static function getDeletedGroups($idGroup){
-        return Group::onlyTrashed()
-        -> select('groups.*', 'subjects.*', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
-        ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
-        ->Join('coursetype', 'subjects.idCourseType', '=', 'coursetype.idCourseType')
-        ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
-        ->where('idGroup', $idGroup)
-        ->first();
-    }
-
-    public static function restoreGroup($idGroup){
-        Group::withTrashed()
-            ->where('idGroup', $idGroup)
-            ->restore();
-    }
-
-    public static function forceDeleteGroup($idGroup){
-        Group::withTrashed()
-            ->where('idGroup', $idGroup)
-            ->forceDelete();
     }
 
 }

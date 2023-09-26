@@ -24,7 +24,6 @@ class SettingController extends Controller
         if ($request->has('newYear')) {
             $students = Student::getStudents();
             $oldeStudents = Student::softDeletedStudents();
-            $archiveGroupes = Group::softDeletedGroups();
             $professuers = Professeurs::getProfesseurs();
             $groupes = Group::getGroups();
             $allfacture= Payment::allPayment();
@@ -32,9 +31,21 @@ class SettingController extends Controller
                 Payment::deletePayment($payment->idPayment);
             }
             foreach ($groupes as $groupe) {
-                $payments = Payment::getPaymentByidGroup($groupe->idGroup);
-                Group::deleteGroup($groupe->idGroup);
-            }
+                // Payment::updatePaimentidGroup($groupe->idGroup);
+                 $groupElements = GroupElements::groupElements($groupe->idGroup);
+                 foreach ($groupElements as $goupElements) {
+                     Attendance::deleteGroupAttendancebyidElement($goupElements->idElement);
+                     GroupElements::cancelAssignment($goupElements->idElement);
+                 }
+                 GroupGrades::deleteGroupGrades($groupe->idGroup);
+                 $payments = Payment::getPaymentByidGroup($groupe->idGroup);
+                 foreach ($payments as $payment) {
+                     if($payment->idGroup != null){
+                        Payment::updatePaimentidGroup($payment->idPayment); 
+                     }  
+                 }
+                 Group::deleteGroup($groupe->idGroup);
+             }
             foreach ($oldeStudents as $oldeStudent) {
                 $deleted = Student::getDeletedStudent($oldeStudent->idStudent);
                 $date = new DateTime($deleted->deleted_at);
@@ -56,22 +67,6 @@ class SettingController extends Controller
             foreach ($professuers as $professuer) {
                 User::deleteProfAccount($professuer->idProfesseur);
                 Professeurs::deleteProfesseur($professuer->idProfesseur);
-            }
-            foreach ($archiveGroupes as $groupe) {
-               // Payment::updatePaimentidGroup($groupe->idGroup);
-                $groupElements = GroupElements::groupElements($groupe->idGroup);
-                foreach ($groupElements as $goupElements) {
-                    Attendance::deleteGroupAttendancebyidElement($goupElements->idElement);
-                    GroupElements::cancelAssignment($goupElements->idElement);
-                }
-                GroupGrades::deleteGroupGrades($groupe->idGroup);
-                $payments = Payment::getPaymentByidGroup($groupe->idGroup);
-                foreach ($payments as $payment) {
-                    if($payment->idGroup != null){
-                       Payment::updatePaimentidGroup($payment->idPayment); 
-                    }  
-                }
-                Group::forceDeleteGroup($groupe->idGroup);
             }
             return Redirect::back()->with('successMessage', "La nouvelle Année fait avec succès");
         }

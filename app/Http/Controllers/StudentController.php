@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activite;
+use App\Models\Expenses\Facture;
 use App\Models\Group;
 use App\Models\GroupElements;
 use App\Models\Incomes\Income;

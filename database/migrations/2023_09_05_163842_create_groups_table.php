@@ -22,9 +22,8 @@ class CreateGroupsTable extends Migration
             $table->date('debutFormation');
             $table->date('finFormation');
             $table->bigInteger('idSubject',false,true);
-            $table->bigInteger('idProfesseur',false,true);
+            $table->bigInteger('idProfesseur',false,true)->nullable();
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
         });
         Schema::table('groups', function (Blueprint $table){
             $table->foreign('idSubject')->references('idSubject')->on('subjects');
