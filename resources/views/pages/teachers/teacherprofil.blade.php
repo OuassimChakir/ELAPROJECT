@@ -181,7 +181,7 @@
                                                 <div class="form-group mb-4">
                                                     <label for="cine">CINE</label>
                                                     <input type="text" class="form-control" name="cine"
-                                                        id="cine"value="{{ $teacher->cnie }}" required>
+                                                        id="cine"value="{{ $teacher->cnie }}">
                                                 </div>
                                             </div>
 

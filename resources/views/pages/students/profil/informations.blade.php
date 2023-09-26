@@ -52,8 +52,38 @@
                     <div class="mt-3"></div>
                 </div>
 
+                <div class="card card-default mb-24px">
+                    <div class="card-header justify-content-between mb-1">
+                        <h2>Remarques</h2>
+                    </div>
+                        <div class="card-body compact-notifications" data-simplebar style="height: auto;">
+                            @if (isset($notes))
+                                @foreach ($notes as $note)
+                                @php
+                                    $date = date_create($note->created_at)
+                                @endphp
+                                    <div class="media pb-3 align-items-center justify-content-between">
+                                        <div class="media-body pr-3 ">
+                                            <a class="mt-0 mb-1 font-size-15 text-dark">Note du Group: {{ $note->designation }}</a> <span class="badge badge-primary"><i class="mdi mdi-clock-outline"></i> {{date_format($note->created_at,'d-m-Y')}}</span>
+
+                                            <p>{{ $note->note }}</p>
+                                        </div>
+                                        @staff
+                                        <span class=" font-size-12 d-inline-block">
+                                            <button class="deleteNote btn btn-outline-danger" value="{{$note->idNote}}"><span class="mdi mdi-delete"></span></button>
+                                        </span>
+                                        @endstaff
+                                    </div>
+                                @endforeach
+                            @endif
+
+                        </div>
+                    <div class="mt-3"></div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
 @include('pages.incomes.paimentModal')

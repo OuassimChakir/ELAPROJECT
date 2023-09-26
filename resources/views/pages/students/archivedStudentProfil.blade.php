@@ -1,15 +1,15 @@
 @extends('layouts.layout')
 @section('title')
-    {{ $student->prenom_fr . ' ' . $student->nom_fr }}
+    {{ $student->prenom_ar . ' ' . $student->nom_ar }}
 @endsection
 @section('content')
     <link rel="stylesheet" type="text/css" href="http://www.arabic-keyboard.org/keyboard/keyboard.css">
     <div class="breadcrumb-wrapper breadcrumb-contacts">
         <div>
-            <h1>{{ $student->prenom_fr . ' ' . $student->nom_fr }}</h1>
+            <h1>{{ $student->prenom_ar . ' ' . $student->nom_ar }}</h1>
             <p class="breadcrumbs"><span><a href="{{ route('acceuil') }}">Acceuil</a></span>
                 <span><i class="mdi mdi-chevron-right"></i></span><a href="{{ route('student.liste') }}">Etudiants</a>
-                <span><i class="mdi mdi-chevron-right"></i></span>{{ $student->prenom_fr . ' ' . $student->nom_fr }}
+                <span><i class="mdi mdi-chevron-right"></i></span>{{ $student->prenom_ar . ' ' . $student->nom_ar }}
             </p>
         </div>
         <div>
@@ -27,7 +27,7 @@
                 <div class="profile-content-left profile-left-spacing">
                     <div class="text-center widget-profile px-0 border-0">
                         <div class="card-body">
-                            <h4 class="py-2 text-dark">{{ $student->prenom_fr . ' ' . $student->nom_fr }}</h4>
+                            <h4 class="py-2 text-dark">{{ $student->prenom_ar . ' ' . $student->nom_ar }}</h4>
                             <p>{{ $student->matricule }}</p>
                         </div>
                     </div>

@@ -38,7 +38,7 @@
                             @if (isset($factureDepenses))
                                 @foreach ($factureDepenses as $facture)
                                     <tr>
-                                        <td>ELA-F.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
+                                        <td>BMA-F.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
                                         </td>
 
                                         <td>

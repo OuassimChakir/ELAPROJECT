@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="@yield('title') - ELA CENTER">
+    <meta name="description" content="@yield('title') - BMA School">
 
-    <title>@yield('title') - ELA CENTER</title>
+    <title>@yield('title') - BMA School</title>
     <!-- FAVICON -->
     <link href="favicon.ico" rel="shortcut icon" />
     <!-- Scripts -->

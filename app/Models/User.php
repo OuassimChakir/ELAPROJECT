@@ -118,9 +118,12 @@ class User extends Authenticatable
         return $password;
     }
 
-    public static function createStaffAccount($idStaff, $name, $username)
+    public static function createStaffAccount($idStaff, $name, $username, $is_mod = null)
     {
-        $role = Roles::getStaffRole();
+        if(is_null($is_mod))
+            $role = Roles::getStaffRole();
+        else
+            $role = Roles::getModRole();
         $password = Str::random(8);
         User::create([
             'name' => $name,

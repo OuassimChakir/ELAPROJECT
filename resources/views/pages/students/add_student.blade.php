@@ -76,8 +76,7 @@ Ajouter un Etudiant
                                 <div class="col-lg-6">
                                     <div class="form-group mb-4">
                                         <label for="cnie">CNIE</label>
-                                        <input type="text" class="form-control" name="cnie"
-                                            id="cnie">
+                                        <input type="text" class="form-control" name="cnie" id="cnie">
                                     </div>
                                 </div>
                                 <!-- adresse-->

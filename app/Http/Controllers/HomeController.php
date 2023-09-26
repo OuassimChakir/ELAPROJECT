@@ -8,6 +8,7 @@ use App\Models\Attendance;
 use App\Models\Incomes\Payment;
 use App\Models\Expenses\Facture;
 use App\Models\GroupElements;
+use App\Models\Notes;
 use App\Models\responsible\Professeurs;
 use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
@@ -233,11 +234,13 @@ class HomeController extends Controller
             $pendingPaiment = Payment::getStudentPendingPaiment(auth()->user()->idStudent);
             $studentGroups = GroupElements::studentGroups(auth()->user()->idStudent);
             $lastestAttendances = Attendance::studentLastestAttendances(auth()->user()->idStudent);
+            $notes = Notes::studentNotes(auth()->user()->idStudent);
             return view('studenthome')->with([
                 'student' => $student,
                 'pendingPaiment' => $pendingPaiment,
                 'studentGroups' => $studentGroups,
                 'lastestAttendances' => $lastestAttendances,
+                'notes' => $notes,
             ]);
         }elseif($role->codeRole=='33'){
             /* ------------------------------------

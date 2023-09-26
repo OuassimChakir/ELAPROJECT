@@ -16,6 +16,7 @@ class CreateStafftypeTable extends Migration
         Schema::create('stafftype', function (Blueprint $table) {
             $table->bigIncrements('idStaffType');
             $table->string('designation',100);
+            $table->tinyInteger('is_moderator',1)->nullable();
         });
     }
 

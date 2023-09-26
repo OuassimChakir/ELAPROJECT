@@ -57,7 +57,7 @@
                                         <td>
                                             @if (!is_null($Payment->idStudent))
                                             <a href="{{route('student.profil',['idStudent' => $Payment->idStudent])}}">
-                                                {{$Payment->prenom_fr}} {{strtoupper($Payment->nom_fr)}}
+                                                {{$Payment->prenom_ar}} {{$Payment->nom_ar}}
                                             </a>    
                                             @else
                                                 -

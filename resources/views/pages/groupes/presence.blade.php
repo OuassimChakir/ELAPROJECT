@@ -76,7 +76,7 @@
                                 </tr>
                                 @foreach ($studentsAttendance as $student)
                                     <tr>
-                                        <th>{{ ucfirst($student->prenom_fr) }} {{ ucfirst($student->nom_fr) }}</th>
+                                        <th>{{ ucfirst($student->prenom_ar) }} {{ ucfirst($student->nom_ar) }}</th>
                                         @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, $dateAbsence[1], $dateAbsence[0]); $i++)
                                             @if (is_null($student->attendance))
                                                 <td></td>
@@ -116,7 +116,7 @@
                                 @endfor
                             </tr>
                                 <tr>
-                                    <th>{{ ucfirst($student->prenom_fr) }} {{ ucfirst($student->nom_fr) }}</th>
+                                    <th>{{ ucfirst($student->prenom_ar) }} {{ ucfirst($student->nom_ar) }}</th>
                                     @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, $dateAbsence[1], $dateAbsence[0]); $i++)
                                         @if (is_null($student->attendance))
                                             <td></td>
