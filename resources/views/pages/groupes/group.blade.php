@@ -20,9 +20,7 @@
                 </button>
             </a>
             <a>
-                <button type="button" class="deleteButton btn btn-outline-danger" data-url="/groupes/{{ $group->idGroup }}"
-                    data-confirm="Une fois supprimé, vous ne pourrez plus récupérer ce groupe !" data-title="Êtes-vous sûr?"
-                    data-type="error">
+                <button type="button" class="deleteButton btn btn-outline-danger" data-url="/groupes/{{ $group->idGroup }}" data-confirm="Une fois supprimé, vous ne pourrez plus récupérer ce groupe!" data-title="Êtes-vous sûr?" data-type="error">
                     <i class="bi bi-trash-fill"></i> Supprimer
                 </button>
             </a>
@@ -71,51 +69,85 @@
                         <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="tab-widget mt-5">
                                 <div class="row">
-                                    <div class="col-xl-4">
-                                        <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle mr-3 bg-primary">
-                                                <i class="bi bi-collection-fill text-white"></i>
-                                            </div>
+                                @teacher
+                                        <div class="col-xl-4">
+                                            <div class="media widget-media p-3 bg-white border">
+                                                <div class="icon rounded-circle mr-3 bg-primary">
+                                                    <i class="bi bi-collection-fill text-white"></i>
+                                                </div>
 
-                                            <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">{{ $group->designation }}</h4>
-                                                <p>Designation</p>
+                                                <div class="media-body align-self-center">
+                                                    <h4 class="text-primary mb-2">{{ $group->designation }}</h4>
+                                                    <p>Designation</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-4">
+                                            <div class="media widget-media p-3 bg-white border">
+                                                <div class="icon rounded-circle bg-warning mr-3">
+                                                    <i class="bi bi-person-video3 text-white"></i>
+                                                </div>
+
+                                                <div class="media-body align-self-center">
+                                                    <h4 class="text-primary mb-2">
+                                                        <a
+                                                            href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
+                                                            {{ $group->prenom . ' ' . $group->nom }}
+                                                        </a>
+                                                    </h4>
+                                                    <p>Encadrant</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-4">
+                                            <div class="media widget-media p-3 bg-white border">
+                                                <div class="icon rounded-circle mr-3 bg-success">
+                                                    <i class="bi bi-people-fill text-white"></i>
+                                                </div>
+
+                                                <div class="media-body align-self-center">
+                                                    <h4 class="text-primary mb-2">
+                                                        {{ $group->nbElements }}/{{ $group->capacity }}</h4>
+                                                    <p>Capacité</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                @else
+                                        <div class="col-xl-6">
+                                            <div class="media widget-media p-3 bg-white border">
+                                                <div class="icon rounded-circle mr-3 bg-primary">
+                                                    <i class="bi bi-collection-fill text-white"></i>
+                                                </div>
 
-                                    <div class="col-xl-4">
-                                        <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle bg-warning mr-3">
-                                                <i class="bi bi-person-video3 text-white"></i>
+                                                <div class="media-body align-self-center">
+                                                    <h4 class="text-primary mb-2">{{ $group->designation }}</h4>
+                                                    <p>Designation</p>
+                                                </div>
                                             </div>
+                                        </div>
 
-                                            <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">
-                                                    <a
-                                                        href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
-                                                        {{ $group->prenom . ' ' . $group->nom }}
-                                                    </a>
-                                                </h4>
-                                                <p>Encadrant</p>
+                                        <div class="col-xl-6">
+                                            <div class="media widget-media p-3 bg-white border">
+                                                <div class="icon rounded-circle bg-warning mr-3">
+                                                    <i class="bi bi-person-video3 text-white"></i>
+                                                </div>
+
+                                                <div class="media-body align-self-center">
+                                                    <h4 class="text-primary mb-2">
+                                                        <a
+                                                            href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
+                                                            {{ $group->prenom . ' ' . $group->nom }}
+                                                        </a>
+                                                    </h4>
+                                                    <p>Encadrant</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-xl-4">
-                                        <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle mr-3 bg-success">
-                                                <i class="bi bi-people-fill text-white"></i>
-                                            </div>
-
-                                            <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">
-                                                    {{ $group->nbElements }}/{{ $group->capacity }}</h4>
-                                                <p>Capacité</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endteacher
 
                                 <div class="row">
                                     <div class="col-xl-6">
@@ -203,8 +235,7 @@
                                                                 <td>
                                                                     <a
                                                                         href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
-                                                                        {{ $student->prenom_fr }}
-                                                                        {{ $student->nom_fr }}
+                                                                        {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
                                                                     </a>
                                                                     @if ($student->sexe == 'Homme')
                                                                         <span class="badge badge-pill badge-info">M</span>
@@ -217,6 +248,9 @@
                                                                 <td>{{ $student->dateAjout }}</td>
                                                                 <td>
                                                                     <div class="btn-group-spaced">
+                                                                        <button type="button" class="addNote btn btn-outline-primary" value="{{$student->idElement}}">
+                                                                            <i class="bi bi-info"></i>
+                                                                        </button>
                                                                         <button type="button" class="btn btn-outline-danger" onclick="cancelAssignment({{$student->idElement}});">
                                                                             <i class="bi bi-trash-fill"></i>
                                                                         </button>
@@ -240,7 +274,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                @else
+                                @endstaff
+                                @onlyteacher
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="tab-pane-content mt-5">
@@ -260,8 +295,7 @@
                                                                 {{ $student->matricule }}
                                                             </td>
                                                             <td>
-                                                                {{ $student->prenom_fr }}
-                                                                {{ $student->nom_fr }}
+                                                                {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
                                                                 @if ($student->sexe == 'Homme')
                                                                     <span class="badge badge-pill badge-info">M</span>
                                                                 @else
@@ -277,7 +311,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endstaff
+                                @endonlyteacher
                             </div>
                         </div>
 
@@ -519,8 +553,7 @@
                                                             </td>
                                                             <td>
                                                                 <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
-                                                                    {{ $student->prenom_fr }}
-                                                                    {{ $student->nom_fr }}
+                                                                    {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
                                                                 </a>
                                                                 @if ($student->sexe == 'Homme')
                                                                     <span class="badge badge-pill badge-info">M</span>
@@ -810,7 +843,7 @@
                                     html += '<td> <input type="checkbox" class="form-check-input updatedAttendanceStudents" '+((response[i].absence == 1) ? 'checked' : '') + '/> </td>'
                                     html += '<td> ' + response[i].matricule + '<input type="hidden" name="attendances[]" class="form-control" value="' + response[i].idAttendance + '" /> </td>';
 
-                                    html += '<td> <a href="/student/'+response[i].idStudent+'" > '+response[i].prenom_fr+' '+response[i].nom_fr+'</a> '+((response[i].sexe == 'Homme') ? '<span class="badge badge-pill badge-info">M</span>' : '<span class="badge badge-pill badge-purple">F</span>')+' </td>';
+                                    html += '<td> <a href="/student/'+response[i].idStudent+'" > '+response[i].prenom_fr+' '+response[i].nom_fr+' - '+response[i].prenom_ar+' '+response[i].nom_ar+'</a> '+((response[i].sexe == 'Homme') ? '<span class="badge badge-pill badge-info">M</span>' : '<span class="badge badge-pill badge-purple">F</span>')+' </td>';
                                     html += '<td> <select name="absence[]" id="id-Subject" class="updatedAbsenceState form-select form-control" required >';
                                     html += '<option value="0" '+((response[i].absence == 0) ? 'selected' : '')+'>Présent</option>';
                                     html += '<option value="1" '+((response[i].absence == 1) ? 'selected' : '')+'>Absent</option>';
@@ -861,5 +894,44 @@
                     $(this).closest('tr').find('.updatedAbsenceState option:first-child').prop('selected', true);
                 }
             });
+        </script>
+
+
+        {{-- Add Note --}}
+        <script>
+            $(document).on('click','.addNote',function(){
+
+                let idElement = $(this).val();
+                Swal.fire({
+                    input: 'textarea',
+                    inputLabel: 'Message',
+                    inputPlaceholder: 'Type your message here...',
+                    inputAttributes: {
+                        'aria-label': 'Type your message here'
+                    },
+                    showCancelButton: true
+                }).then(function(value) {
+                    if(value.isConfirmed){
+                        let note = value.value;
+                        // AJAX request 
+                        $.ajax({
+                            type:'POST',
+                            url:"{{ route('notes.add') }}",
+                            data:{"note" : note, "idElement" : idElement, "_token" : "{{ csrf_token() }}"},
+                            success: function(response) {
+                                if(response == 'true')
+                                    Swal.fire('Note Ajoutée!', '', 'success')
+                                else
+                                    Swal.fire('problème rencontré ! Réessayez !', '', 'warning')
+
+                            },
+                            error: function(request, status, error) {
+                                console.log(request.responseText);
+                            }
+                        });
+                    }
+                });
+
+            })
         </script>
     @endsection

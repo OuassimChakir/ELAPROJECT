@@ -9,23 +9,18 @@
                 @method('post')
                 <div class="modal-body px-4">
                     <div class="alert alert-warning" id="paimentNote">
-                        {{$paiment->note}}
                     </div>
                     <div class="row mb-2 g-3">
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
                                 <label for="form-label">Designationt</label>
-                                @if (!is_null($paiment->idGroup))
-                                <input type="text" id="paimentDesignation" class="form-control" value="{{$paiment->groupDesignation}}" id="designation" disabled>
-                                @else
-                                <input type="text" class="form-control" value="{{$paiment->incomeDesignation}}" id="designation" id="paimentDesignation" disabled>
-                                @endif
+                                <input type="text" id="paimentDesignation" class="form-control" value="" id="designation" disabled>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
                                 <label for="paimentIdStudent" id="staffLabel">Etudiant</label>
-                                <input type="text" name="idStudent" class="form-control" value="{{$paiment->matricule}}" id="paimentIdStudent" readonly required>
+                                <input type="text" name="idStudent" class="form-control" value="" id="paimentIdStudent" readonly required>
                             </div>
                         </div>
                     </div>
@@ -48,14 +43,14 @@
                         <div class="col-lg-6">
                             <div class="form-group mb-3">
                                 <label for="paimentAmount">Montant à Payer</label>
-                                <input type="number" class="form-control" name="amount" id="paimentAmount" value="{{$paiment->amount}}" required>
+                                <input type="number" class="form-control" name="amount" id="paimentAmount" value="" required>
                                 <small class="text-muted">Le montant à payer en Dirham</small>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group mb-3">
                                 <label for="paimentAmountPaid">Montant Payé</label>
-                                <input type="number" class="form-control" name="amountPaid" id="paimentAmountPaid" max="{{$paiment->amount}}" min="0" required>
+                                <input type="number" class="form-control" name="amountPaid" id="paimentAmountPaid" max="" min="0" required>
                                 <small class="text-muted">Le montant payer par le client en Dirham</small>
                             </div>
                         </div>

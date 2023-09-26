@@ -61,8 +61,8 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                {{ $student->prenom_fr }}
-                                                {{ $student->nom_fr }}
+                                                {{ $student->prenom_ar }}
+                                                {{ $student->nom_ar }}
                                                 @if ($student->sexe == 'Homme')
                                                     <span class="badge badge-pill badge-info">M</span>
                                                 @else

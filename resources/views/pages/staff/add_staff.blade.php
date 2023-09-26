@@ -91,11 +91,10 @@
             var checkbox = $(this);
             if(checkbox.is(':checked')){
                 $('#cine').prop('disabled',false);
-                $('#cine').prop('value','U');
             }
             if(checkbox.is(':checked') == false){
                 $('#cine').prop('disabled',true);
-                $('#cine').prop('value',"Nulle");
+                $('#cine').prop('value',"");
             }
         });
 </script>

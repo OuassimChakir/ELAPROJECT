@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\GroupElements;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
+use App\Models\Notes;
 use App\Models\Responsible\Responsible;
 use App\Models\responsible\Student;
 use App\Models\User;
@@ -46,12 +47,12 @@ class StudentController extends Controller
 
             // ========== Create new Student ============= //
             $matricule = "BMA" . $studentsCounter . "-" . date('Y');
-            $prenom_fr = $request->prenom_fr;
-            $nom_fr = $request->nom_fr;
+            $prenom_ar = $request->prenom_ar;
+            $nom_ar = $request->nom_ar;
             $idStudent = Student::addStudent($matricule, $request->nom_fr, $request->nom_ar, $request->prenom_fr, $request->prenom_ar, $request->cnie, $request->numTel, $request->sexe, $request->adresse, $request->dateNaissance);
-            $password = User::createStudentAccount($idStudent,ucfirst($prenom_fr).' '.Str::upper($nom_fr),$matricule);
+            $password = User::createStudentAccount($idStudent,$prenom_ar.' '.$nom_ar,$matricule);
 
-            $newStudent = array(['nom' => $nom_fr, 'prenom' => $prenom_fr, 'matricule' => $matricule, 'password' => $password]);
+            $newStudent = array(['nom' => $nom_ar, 'prenom' => $prenom_ar, 'matricule' => $matricule, 'password' => $password]);
             // ========== Generation Initial Payment ============= //
             $initialIncomes = Income::getInitialIncomes();
             foreach ($initialIncomes as $value) {
@@ -61,7 +62,7 @@ class StudentController extends Controller
             // ========== Create new Activity ============= //
             if (session()->get('user')) {
                 $typeActivity = 0;
-                $activityDescription = 'Le étudiants' . " " . " " . $prenom_fr . " " . $nom_fr;
+                $activityDescription = 'Le étudiants' . " " . " " . $prenom_ar . " " . $nom_ar;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
 
@@ -81,7 +82,7 @@ class StudentController extends Controller
         $studentGroups = GroupElements::studentGroups($idStudent);
         $lastPaiments = Payment::getStudentLastestPaiments($idStudent);
         $invoiceGroups = Group::getGroupWithStudentInvoices($idStudent);
-        $paiment = Payment::getStudentPaiment(101);
+        $notes = Notes::studentNotes($idStudent);
         return view('pages.students.studentprofil')->with([
             'student' => $studentInfo,
             'pendingPaiment' => $pendingPaiment,
@@ -90,7 +91,7 @@ class StudentController extends Controller
             'studentGroups' => $studentGroups,
             'lastPaiments' => $lastPaiments,
             'invoiceGroups' => $invoiceGroups,
-            'paiment' => $paiment
+            'notes' => $notes
         ]);
 
     }

@@ -304,23 +304,23 @@
 								</li>
 								@endstaff
 
-								@teacher
+								@onlyteacher
 								<li class="{{Route::is('teachers.profil') ? 'active' : ''}}">
 									<a class="sidenav-item-link" href="{{route('teachers.profil',['idProfesseur' => auth()->user()->idProfesseur])}}">
 										<i class="bi bi-people-fill"></i>
 										<span class="nav-text">Espace Enseignant</span>
 									</a>
 								</li>
-								@endteacher
+								@endonlyteacher
 
-								@student
+								@onlystudent
 								<li class="{{ Route::is('student.profil') ? 'active' : ''}}">
 									<a class="sidenav-item-link" href="{{route('student.profil',['idStudent' => auth()->user()->idStudent])}}">
 										<i class="bi bi-people-fill"></i>
 										<span class="nav-text">Espace Etudiant</span>
 									</a>
 								</li>
-								@endstudent
+								@endonlystudent
 							@endnotadmin
 							@admin
 							<li class="has-sub {{ Route::is('staff.liste') || Route::is('specialite') || Route::is('specialite.update') || Route::is('staff.profil') ? 'active expand' : ''}}">
@@ -344,7 +344,7 @@
 								</div>
 							</li>
 							<li class="has-sub {{ Route::is('roles') || Route::is('users') ||
-							Route::is('profile.show') ? 'active' : ''}}">
+							Route::is('profile.show') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-people-fill"></i>
 									<span class="nav-text">Utilisateurs</span> <b class="caret"></b>
@@ -387,7 +387,7 @@
 							</li>
 							@staff
 							<!-- Subjects -->
-							<li class="has-sub {{ Route::is('subjects') || Route::is('courseType') ? 'active' : ''}}">
+							<li class="has-sub {{ Route::is('subjects') || Route::is('courseType') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-book-fill"></i>
 									<span class="nav-text">Matières</span> <b class="caret"></b>
@@ -408,7 +408,7 @@
 								</div>
 							</li>
 							<!-- Grades -->
-							<li class="has-sub {{ Route::is('grades') || Route::is('gradesCategory') ? 'active' : ''}}">
+							<li class="has-sub {{ Route::is('grades') || Route::is('gradesCategory') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-list-ol"></i>
 									<span class="nav-text">Niveaux</span> <b class="caret"></b>
@@ -432,7 +432,7 @@
 							@endstaff
 							<!-- Expenses -->
 							@admin
-							<li class="has-sub {{ Route::is('typeDepenses') || Route::is('factureDepenses') ? 'active' : ''}}">
+							<li class="has-sub {{ Route::is('typeDepenses') || Route::is('factureDepenses') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-wallet2"></i>
 									<span class="nav-text">Dépenses</span> <b class="caret"></b>
@@ -452,10 +452,8 @@
 									</ul>
 								</div>
 							</li>
-							@endadmin
-							@staff
 							<!-- Incomes -->
-							<li class="has-sub {{ Route::is('typeIncome') || Route::is('incomePayment') || Route::is('incomes.stats') ? 'active' : ''}}">
+							<li class="has-sub {{ Route::is('typeIncome') || Route::is('incomePayment') || Route::is('incomes.stats') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-cash-stack"></i>
 									<span class="nav-text">Revenus</span> <b class="caret"></b>
@@ -481,7 +479,7 @@
 								</div>
 								<hr>
 							</li>
-							@endstaff
+							@endadmin
 							@onlystudent
 							<hr>
 							<li class="{{Route::is('student.incomes') ? 'active' : ''}}">
@@ -504,9 +502,8 @@
 							@endonlyteacher
 							@staff
 								<!-- ARCHIVE -->
-								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive')
-								|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
-								||Route::is('groups.archive') ? 'active' : ''}}">
+								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive') || Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
+								||Route::is('groups.archive') ? 'active expand' : ''}}">
 									<a class="sidenav-item-link" href="javascript:void(0)">
 										<i class="bi bi-archive-fill"></i>
 										<span class="nav-text">Archive</span> <b class="caret"></b>
@@ -520,12 +517,12 @@
 													<span class="nav-text">Archive des Etudiants</span>
 												</a>
 											</li>
+											@admin
 											<li class="{{Route::is('teachers.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('teachers.archive')}}">
 													<span class="nav-text">Archive des Professeurs</span>
 												</a>
 											</li>
-											@admin
 											<li class="{{Route::is('staff.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('staff.archive')}}">
 													<span class="nav-text">Archive des Staffs</span>
@@ -536,7 +533,6 @@
 													<span class="nav-text">Archive des Facture Dépenses</span>
 												</a>
 											</li>
-											@endadmin
 											<li class="{{Route::is('incomePayment.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('incomePayment.archive')}}">
 													<span class="nav-text">Archive des Reçus de Paiement</span>
@@ -547,6 +543,7 @@
 													<span class="nav-text">Archive des Groupes</span>
 												</a>
 											</li>
+											@endadmin
 										</ul>
 									</div>
 									<hr>

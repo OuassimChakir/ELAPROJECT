@@ -5,7 +5,11 @@
 @section('content')
 <div class="breadcrumb-wrapper breadcrumb-contacts">
     <div>
-        <h1>Bonjour {{$student->prenom_fr}} {{strtoupper($student->nom_fr)}},</h1>
+        @if (is_null($student->nom_ar) || is_null($student->prenom_ar))
+            <h1>Bonjour {{$student->prenom_fr}} {{strtoupper($student->nom_fr)}},</h1>
+        @else
+            <h1>Bonjour {{$student->prenom_fr}} {{strtoupper($student->nom_fr)}} - {{$student->prenom_ar}} {{$student->nom_ar}},</h1>
+        @endif
     </div>
 </div>
 	<!--  WRAPPER  -->
@@ -34,39 +38,40 @@
             </div>
 
             <div class="row">
-                {{-- Groups --}}
-                <div class="col-xl-6 col-md-12 p-b-15">
+                {{-- Remarques --}}
+                <div class="col-xl-6 col-md-12">
                     <div class="card card-default mb-24px">
                         <div class="card-header justify-content-between mb-1">
-                            <h2>Groupes</h2>
-                            <a href="{{route('groups')}}">
-                                <button class="text-black-50 mr-2 font-size-20"><i class="mdi mdi-open-in-new"></i></button>
-                            </a>
+                            <h2>Remarques</h2>
                         </div>
-                        <div class="card-body compact-notifications" data-simplebar style="height: 300px!important;">
-                            @if ($studentGroups->count() == 0)
-                                <div class="alert alert-warning">
-                                    Aucune facture <b>impayée</b> n'a été trouvée!
-                                </div>
-                            @else
-                                @foreach ($studentGroups as $group)
-                                <div class="media pb-3 align-items-center justify-content-between">
-                                    <div
-                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                        {{$group->shortForm}}
+                            <div class="card-body compact-notifications" data-simplebar style="height: auto!important;max-height: 300px!important;">
+                                @if (isset($notes))
+                                    @if ($notes->count() != 0)
+                                        @foreach ($notes as $note)
+                                        @php
+                                            $date = date_create($note->created_at)
+                                        @endphp
+                                            <div class="media pb-3 align-items-center justify-content-between">
+                                                <div class="media-body pr-3 ">
+                                                    <a class="mt-0 mb-1 font-size-15 text-dark">Note du Group: {{ $note->designation }}</a> <span class="badge badge-primary"><i class="mdi mdi-clock-outline"></i> {{date_format($note->created_at,'d-m-Y')}}</span>
+        
+                                                    <p>{{ $note->note }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                    <div class="alert alert-warning">
+                                        Aucune <b>Remarque</b> n'a été trouvée!
                                     </div>
-                                    <div class="media-body pr-3 ">
-                                        <a class="mt-0 mb-1 font-size-15 text-dark" href="{{route('groups.profil', ['idGroup' => $group->idGroup])}}" target="_blank">Groupe: {{$group->designation}}</a> <span  class="badge badge-dark">{{$group->nbElements}}/{{$group->capacity}}</span>
-                
-                                        <p>{{$group->prenom}} {{$group->nom}}</p>
-                                    </div>
-                                </div>
-                                @endforeach
-                            @endif
-                        </div>
+                                    @endif
+
+                                @endif
+    
+                            </div>
                         <div class="mt-3"></div>
                     </div>
                 </div>
+                
 
                 {{-- Last Activity --}}
                 <div class="col-xl-6 col-md-12 p-b-15">
@@ -80,7 +85,7 @@
                             </div>
     
                         </div>
-                            <div class="card-body compact-notifications" data-simplebar style="height: 300px!important;">
+                            <div class="card-body compact-notifications" data-simplebar style="height: auto!important;max-height: 300px!important;">
                                     @if ($lastestAttendances->count() == 0)
                                         <div class="alert alert-warning">
                                             Aucune <b>Fréquentation</b> n'a été trouvée!
@@ -110,7 +115,7 @@
 
             <div class="row">
                 {{-- Pending Paiment --}}
-                <div class="col-xl-12 col-md-12 p-b-15">
+                <div class="col-xl-6 col-md-12 p-b-15">
                     <div class="card card-default mb-24px">
                         <div class="card-header justify-content-between mb-1">
                             <h2>Factures</h2>
@@ -119,7 +124,7 @@
                             </div>
     
                         </div>
-                            <div class="card-body compact-notifications" data-simplebar style="height: 300px!important;">
+                            <div class="card-body compact-notifications" data-simplebar style="height: auto!important;max-height: 300px!important;">
                                 @if (isset($pendingPaiment))
                                     @if ($pendingPaiment->count() == 0)
                                         <div class="alert alert-warning">
@@ -167,6 +172,40 @@
                         <div class="mt-3"></div>
                     </div>
                 </div>
+                {{-- Groups --}}
+                <div class="col-xl-6 col-md-12 p-b-15">
+                    <div class="card card-default mb-24px">
+                        <div class="card-header justify-content-between mb-1">
+                            <h2>Groupes</h2>
+                            <a href="{{route('groups')}}">
+                                <button class="text-black-50 mr-2 font-size-20"><i class="mdi mdi-open-in-new"></i></button>
+                            </a>
+                        </div>
+                        <div class="card-body compact-notifications" data-simplebar style="height: auto!important;max-height: 300px!important;">
+                            @if ($studentGroups->count() == 0)
+                                <div class="alert alert-warning">
+                                    Aucune facture <b>impayée</b> n'a été trouvée!
+                                </div>
+                            @else
+                                @foreach ($studentGroups as $group)
+                                <div class="media pb-3 align-items-center justify-content-between">
+                                    <div
+                                        class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
+                                        {{$group->shortForm}}
+                                    </div>
+                                    <div class="media-body pr-3 ">
+                                        <a class="mt-0 mb-1 font-size-15 text-dark" href="{{route('groups.profil', ['idGroup' => $group->idGroup])}}" target="_blank">Groupe: {{$group->designation}}</a> <span  class="badge badge-dark">{{$group->nbElements}}/{{$group->capacity}}</span>
+
+                                        <p>{{$group->prenom}} {{$group->nom}}</p>
+                                    </div>
+                                </div>
+                                @endforeach
+                            @endif
+                        </div>
+                        <div class="mt-3"></div>
+                    </div>
+                </div>
+
             </div>
         </div> <!-- End Content -->
     </div> <!-- End Content Wrapper -->
