@@ -30,7 +30,6 @@ class SettingController extends Controller
             $professeurs = Professeurs::getProfesseurs();
             $staffs = Staff::getStaffs();
             $groupes = Group::getGroups();
-            dd($oldStudents);
             foreach ($groupes as $groupe) {
                 // Payment::updatePaimentidGroup($groupe->idGroup);
                 $groupElements = GroupElements::groupElements($groupe->idGroup);
