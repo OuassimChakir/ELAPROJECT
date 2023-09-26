@@ -278,6 +278,7 @@ Route::middleware([
         / --------------------------------------- */
         Route::get('/activites', [ActiviteController::class, 'activite'])->name('activite');
         Route::post('/activites', [ActiviteController::class, 'activite'])->name('activite.date');
+        Route::delete('/activites/delete', [ActiviteController::class, 'activitedeleteAll'])->name('activite.delete.all');
 
         /* --------------------------------------
         / Settings 
