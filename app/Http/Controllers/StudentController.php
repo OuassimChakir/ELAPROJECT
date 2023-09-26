@@ -21,7 +21,7 @@ class StudentController extends Controller
 {
     // -------------- Students -------------- //
     public function students()
-    {   
+    {
         $groupSubjects = Group::existedGroupSubjects();
         $groupCourseTypes = Group::existedGroupCourseTypes();
 
@@ -34,7 +34,8 @@ class StudentController extends Controller
             ->with('courseTypes', $groupCourseTypes);
     }
 
-    public function addStudent(Request $request){
+    public function addStudent(Request $request)
+    {
         $students = Student::getStudents();
         // New Student
         if ($request->has('addStudent')) {
@@ -51,7 +52,7 @@ class StudentController extends Controller
             $prenom_ar = $request->prenom_ar;
             $nom_ar = $request->nom_ar;
             $idStudent = Student::addStudent($matricule, $request->nom_fr, $request->nom_ar, $request->prenom_fr, $request->prenom_ar, $request->cnie, $request->numTel, $request->sexe, $request->adresse, $request->dateNaissance);
-            $password = User::createStudentAccount($idStudent,$prenom_ar.' '.$nom_ar,$matricule);
+            $password = User::createStudentAccount($idStudent, $prenom_ar . ' ' . $nom_ar, $matricule);
 
             $newStudent = array(['nom' => $nom_ar, 'prenom' => $prenom_ar, 'matricule' => $matricule, 'password' => $password]);
             // ========== Generation Initial Payment ============= //
@@ -64,7 +65,7 @@ class StudentController extends Controller
             if (session()->get('user')) {
                 $typeActivity = 0;
                 $activityDescription = 'Le étudiants' . " " . " " . $prenom_ar . " " . $nom_ar;
-                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
             }
 
             return Redirect::back()->with([
@@ -94,7 +95,6 @@ class StudentController extends Controller
             'invoiceGroups' => $invoiceGroups,
             'notes' => $notes
         ]);
-
     }
 
     public function updateStudent(Request $request, $idStudent)
@@ -104,7 +104,7 @@ class StudentController extends Controller
 
             if (session()->get('user')) {
                 $activityDescription = 'Le étudiants' . " " . $request->prenom_fr . " " . $request->nom_fr . "(" . $request->matricule . ")";
-                Activite::addActivity(session()->get('user')->id, 2, $activityDescription,session()->get('user')->name);
+                Activite::addActivity(session()->get('user')->id, 2, $activityDescription, session()->get('user')->name);
             }
             return Redirect::back()->with('updateMessage', "La Modification est faite avec succès");
         }
@@ -114,14 +114,20 @@ class StudentController extends Controller
     public function deleteMultipleStudents(Request $request)
     {
         if ($request->has('deleteAll')) {
-            foreach ($request->students as $matricule) {
-                $stu = Student::selectStudents($matricule);
+            foreach ($request->students as $idStudent) {
+                $stu = Student::selectStudents($idStudent);
                 if (session()->get('user')) {
                     $typeActivity = 1;
                     $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
-                Student::deleteStudent($matricule);
+                $payments = Payment::getPaymentByidStudent($idStudent);
+                if ($payments != null) {
+                    foreach ($payments as $payment) {
+                        Payment::deletePayment($payment->idPayment);
+                    }
+                }
+                Student::deleteStudent($idStudent);
             }
             return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été supprimer");
         } else
@@ -135,7 +141,13 @@ class StudentController extends Controller
         if (session()->get('user')) {
             $typeActivity = 1;
             $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+        }
+        $payments = Payment::getPaymentByidStudent($idStudent);
+        if ($payments != null) {
+            foreach ($payments as $payment) {
+                Payment::deletePayment($payment->idPayment);
+            }
         }
         User::deleteStudentAccount($idStudent);
         Student::deleteStudent($idStudent);
@@ -146,11 +158,11 @@ class StudentController extends Controller
 
     // -------------- Responsible -------------- //
     public function addResponsible(Request $request)
-{
+    {
         if ($request->has('addReponsible')) {
             $idResponsible = Responsible::addResponsible($request->cnie, $request->nom, $request->prenom, $request->numTel, $request->sexe);
             // Relate Responsible to Student
-            Student::where('idStudent',$request->idStudent)->update(['idResponsible' => $idResponsible]);
+            Student::where('idStudent', $request->idStudent)->update(['idResponsible' => $idResponsible]);
             dd($idResponsible);
             // Make A Reponsible Account
             return Redirect::back()->with('successMessage', "L'ajout du Responsable est faite avec succès");
@@ -160,14 +172,14 @@ class StudentController extends Controller
     public function updateResponsible(Request $request, $idResponsible)
     {
         $Responsible = new Responsible();
-        $Responsible->updateResponsible($idResponsible,$request->cnie, $request->nom, $request->prenom, $request->numTel, $request->sexe);
+        $Responsible->updateResponsible($idResponsible, $request->cnie, $request->nom, $request->prenom, $request->numTel, $request->sexe);
         return Redirect::back()->with('updateMessage', "La Modification du Responsable est faite avec succès");
     }
 
     public function deleteResponsible(Request $request, $idStudent, $idResponsible)
     {
         $Responsible = new Responsible();
-        Student::where('idStudent',$request->idStudent)->update(['idResponsible' => NULL]);
+        Student::where('idStudent', $request->idStudent)->update(['idResponsible' => NULL]);
         $Responsible->deleteResponsible($idResponsible);
         return Redirect::back()->with('deleteMessage', "La suppression du Responsable est faite avec succès");
     }
@@ -175,13 +187,13 @@ class StudentController extends Controller
 
     // ----------- ARCHIVE ------------- //
     public function archive()
-    {    
+    {
         $groupSubjects = Group::existedGroupSubjects();
         $groupCourseTypes = Group::existedGroupCourseTypes();
         $students = Student::softDeletedStudents();
         return view('pages.students.studentArchive')->with('students', $students)
-        ->with('subjects', $groupSubjects)
-        ->with('courseTypes', $groupCourseTypes);
+            ->with('subjects', $groupSubjects)
+            ->with('courseTypes', $groupCourseTypes);
     }
 
     public function archivedStudent($idStudent)
@@ -208,28 +220,43 @@ class StudentController extends Controller
 
     public function restoreArchivedStudent($idStudent)
     {
+        $payments = Payment::ArchivePaymentByidStudent($idStudent);
+        if ($payments != null) {
+            foreach ($payments as $payment) {
+                Payment::restorePayment($payment->idPayment);
+            }
+        }
         User::restoreStudentAccount($idStudent);
         Student::restoreStudent($idStudent);
         $stu = Student::selectStudents($idStudent);
         if (session()->get('user')) {
             $typeActivity = 3;
             $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
         return Redirect::back()->with('restoreMessage', "L'étudiant a été restorer avec succès");
     }
 
     public function deleteArchivedStudent($idStudent)
     {
+        $payments = Payment::ArchivePaymentByidStudent($idStudent);
         $stu = Student::getDeletedStudent($idStudent);
         if (session()->get('user')) {
             $typeActivity = 10;
             $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
         User::forceStudentAccount($idStudent);
-        Responsible::fordeleteResponsible($stu->cnieResponsible);
+        if ($stu->cnieResponsible != null) {
+            Responsible::fordeleteResponsible($stu->cnieResponsible);
+        }
+        if ($payments != null) {
+            foreach ($payments as $payment) {
+                Payment::forceDeletePayment($payment->idPayment);
+            }
+        }
         Student::forceDeleteStudent($idStudent);
+    
         return Redirect::back()->with('deleteMessage', "L'étudiant a été supprimer Définitivement");
     }
 
@@ -237,19 +264,26 @@ class StudentController extends Controller
     {
         if ($request->has('restoreAll')) {
             foreach ($request->archivedStudents as $idStudent) {
+                $payments = Payment::ArchivePaymentByidStudent($idStudent);
+                if ($payments != null) {
+                    foreach ($payments as $payment) {
+                        Payment::restorePayment($payment->idPayment);
+                    }
+                }
                 User::restoreStudentAccount($idStudent);
                 Student::restoreStudent($idStudent);
                 $stu = Student::selectStudents($idStudent);
                 if (session()->get('user')) {
                     $typeActivity = 3;
                     $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
             }
             return Redirect::back()->with('restoreMessage', "Les étudiants séléctionés ont été restorer avec succès");
         }
         if ($request->has('deleteAll')) {
             foreach ($request->archivedStudents as $idStudent) {
+                $payments = Payment::ArchivePaymentByidStudent($idStudent);
                 $studentInfo = Student::getStudent($idStudent);
                 $Responsible = new Responsible();
                 if ($studentInfo->cnieResponsible != 'NULL')
@@ -259,9 +293,17 @@ class StudentController extends Controller
                 if (session()->get('user')) {
                     $typeActivity = 10;
                     $activityDescription = 'Le étudiants' . " " . $stu->prenom_fr . " " . $stu->nom_fr . "(" . $stu->matricule . ")";
-                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
                 User::forceStudentAccount($idStudent);
+                if ($stu->cnieResponsible != null) {
+                    Responsible::fordeleteResponsible($stu->cnieResponsible);
+                }
+                if ($payments != null) {
+                    foreach ($payments as $payment) {
+                        Payment::forceDeletePayment($payment->idPayment);
+                    }
+                }
                 Student::forceDeleteStudent($idStudent);
             }
             return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été supprimer Définitivement");
@@ -284,12 +326,12 @@ class StudentController extends Controller
 
 
     //--------- Student ------------//
-    public function getInvoicesByGroupAndStudent($idStudent,$idGroup){
-        if($idGroup == 'null')
+    public function getInvoicesByGroupAndStudent($idStudent, $idGroup)
+    {
+        if ($idGroup == 'null')
             $invoices = Payment::getStudentLastestPaiments($idStudent);
         else
-            $invoices = Payment::getStudentLastestPaiments($idStudent,$idGroup);
+            $invoices = Payment::getStudentLastestPaiments($idStudent, $idGroup);
         return response()->json($invoices);
     }
-
 }

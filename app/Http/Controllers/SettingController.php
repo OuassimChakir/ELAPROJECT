@@ -40,7 +40,7 @@ class SettingController extends Controller
                  GroupGrades::deleteGroupGrades($groupe->idGroup);
                  $payments = Payment::getPaymentByidGroup($groupe->idGroup);
                  foreach ($payments as $payment) {
-                     if($payment->idGroup != null){
+                     if($payment->idGroup != null){ 
                         Payment::updatePaimentidGroup($payment->idPayment); 
                      }  
                  }
