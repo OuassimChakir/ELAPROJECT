@@ -188,7 +188,7 @@ class GroupController extends Controller
         }
 
         Payment::deleteDisactivatedPaiments($assignment->idGroup,$assignment->idStudent);
-        Attendance::deleteGroupAttendance($idElement);
+        Attendance::deleteGroupAttendancebyidElement($idElement);
         GroupElements::cancelAssignment($idElement);
         return Redirect::back()->with('deleteMessage', "L'étudiant a été retiré du groupe avec succès");
     }

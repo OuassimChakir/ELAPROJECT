@@ -1,1 +1,0 @@
-<img src="{{asset('images/Logo/logo.webp')}}" width="20%" id="appLogo" alt="" />

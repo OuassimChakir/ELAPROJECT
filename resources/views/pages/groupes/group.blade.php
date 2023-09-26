@@ -150,6 +150,45 @@
                                 @endteacher
 
                                 <div class="row">
+                                    @admin
+                                    <div class="col-xl-4">
+                                        <div class="media widget-media p-3 bg-white border">
+                                            <div class="icon rounded-circle mr-3 text-white bg-dark">
+                                                <i class="bi bi-book-fill text-white"></i>
+                                            </div>
+
+                                            <div class="media-body align-self-center">
+                                                <h4 class="text-primary mb-2">{{ $group->short }}</h4>
+                                                <p>Matière</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="media widget-media p-3 bg-white border">
+                                            <div class="icon rounded-circle mr-3 bg-info">
+                                                <i class="bi bi-cash text-white"></i>
+                                            </div>
+
+                                            <div class="media-body align-self-center">
+                                                <h4 class="text-primary mb-2">{{ $group->amount*$group->nbElements }} DH</h4>
+                                                <p>Montant Total</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-xl-4">
+                                        <div class="media widget-media p-3 bg-white border">
+                                            <div class="icon rounded-circle mr-3 bg-success">
+                                                <i class="bi bi-calendar-date text-white"></i>
+                                            </div>
+
+                                            <div class="media-body align-self-center">
+                                                <h4 class="text-primary mb-2">{{ date_format(date_create($group->created_at), 'd-m-Y') }}</h4>
+                                                <p>Année de Creation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @else
                                     <div class="col-xl-6">
                                         <div class="media widget-media p-3 bg-white border">
                                             <div class="icon rounded-circle mr-3 text-white bg-dark">
@@ -162,8 +201,7 @@
                                             </div>
                                         </div>
                                     </div>
-
-
+                                    
                                     <div class="col-xl-6">
                                         <div class="media widget-media p-3 bg-white border">
                                             <div class="icon rounded-circle mr-3 bg-success">
@@ -171,11 +209,12 @@
                                             </div>
 
                                             <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">{{ $group->created_at }}</h4>
+                                                <h4 class="text-primary mb-2">{{ date_format(date_create($group->created_at), 'd-m-Y') }}</h4>
                                                 <p>Année de Creation</p>
                                             </div>
                                         </div>
                                     </div>
+                                    @endadmin
                                 </div>
 
                                 <div class="col-xl-12">

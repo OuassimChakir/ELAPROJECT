@@ -10,6 +10,7 @@ use App\Models\Expenses\Facture;
 use App\Models\GroupElements;
 use App\Models\Notes;
 use App\Models\responsible\Professeurs;
+use App\Models\Responsible\Staff;
 use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -51,7 +52,9 @@ class HomeController extends Controller
             $NumGroups = Group::totalGroups();
             $Payments = Payment::totalAmount();
             $Factures = Facture::totalAmountExpense();
-
+            $teachers = Professeurs::getProfesseurs()->count();
+            $staffs = Staff::getStaffs()->count();
+            $Inscrits = Payment::nbInscrits();
             /* ------------------------------------
             / Graph Dépenses et Revenus
             / -------------------------------------*/
@@ -200,8 +203,8 @@ class HomeController extends Controller
                 ->labels($tygroup)
                 ->datasets([
                     [
-                        'backgroundColor' => ['#FF6384', '#36A2EB', "8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
-                        'hoverBackgroundColor' => ['#FF6384', '#36A2EB', "8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
+                        'backgroundColor' => ['#FF6384', '#36A2EB', "#8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
+                        'hoverBackgroundColor' => ['#FF6384', '#36A2EB', "#8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
                         'data' => $nbTypeGroup
                     ]
                 ])
@@ -212,20 +215,24 @@ class HomeController extends Controller
 
             $allfacture = Facture::allFactureParDate();
 
-            return view('home')->with('students', $students)
-                ->with('NumGroups', $NumGroups)
-                ->with('Payments', $Payments)
-                ->with('Factures', $Factures)
-                ->with('scolareYears', $scolareYears)
-                ->with('depenses', $depenses)
-                ->with('inconespayment', $inconespayment)
-                ->with('present', $present)
-                ->with('Absences', $Absences)
-                ->with('chartjs', $chartjs)
-                ->with('max', $max)
-                ->with('maxAP', $maxAP)
-                ->with('days', $days)
-                ->with('allfacture', $allfacture);
+            return view('home')->with('students', $students)->with([
+                'NumGroups' =>  $NumGroups,
+                'Payments' =>  $Payments,
+                'Factures' =>  $Factures,
+                'scolareYears' =>  $scolareYears,
+                'depenses' =>  $depenses,
+                'inconespayment' =>  $inconespayment,
+                'present' =>  $present,
+                'Absences' =>  $Absences,
+                'chartjs' =>  $chartjs,
+                'max' =>  $max,
+                'maxAP' =>  $maxAP,
+                'days' =>  $days,
+                'allfacture' =>  $allfacture,
+                'staffs' => $staffs,
+                'professeurs' => $teachers,
+                'Inscrits' => $Inscrits,
+            ]);
         }elseif($role->codeRole == '22'){
             /* ------------------------------------
             / Students Home

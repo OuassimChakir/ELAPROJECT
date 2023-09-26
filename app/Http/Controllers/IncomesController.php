@@ -161,7 +161,7 @@ class IncomesController extends Controller
         if ($request->has('getStats')) {
             if ($request->statsType == 0) {
                 // Monthly
-                $inscription_stats = Payment::stats_inscriptionPaimentsByMonth($request->statsMonth);
+                $inscription_stats = Payment::stats_inscriptionPaimentsByMonth($request->statsMonth);   
                 $groups = Group::getGroups();
                 for ($i = 0; $i < $groups->count(); $i++)
                     $groups[$i]->stats = Payment::stats_groupsPaimentsByMonth($request->statsMonth, $groups[$i]->idGroup);
