@@ -16,6 +16,7 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -25,6 +26,11 @@ class SettingController extends Controller
     {
         $currentYear = intval(date('Y'));
         if ($request->has('newYear')) {
+            /* ------------------------------------
+            / Reset annnéeScolaire File
+            / ------------------------------------*/
+            Storage::disk('local')->put('anneeScolaire.txt', date('Y') . "\n" . (int)date('Y')+1);
+
             $students = Student::getStudents();
             $oldStudents = Student::softDeletedStudents();
             $professeurs = Professeurs::getProfesseurs();

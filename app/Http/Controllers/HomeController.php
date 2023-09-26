@@ -35,11 +35,19 @@ class HomeController extends Controller
             if ($mois >= 9 && $mois <= 12) {
                 $premierAnnee = intval(date('Y'));
                 $deuxiemeAnne = $premierAnnee + 1;
-            } elseif ($mois <= 1 && $mois <= 8) {
+            } elseif ($mois <= 1 && $mois <= 6) {
                 $deuxiemeAnne = intval(date('Y'));
                 $premierAnnee = $deuxiemeAnne - 1;
             }
             Storage::disk('local')->put('anneeScolaire.txt', $premierAnnee . "\n" . $deuxiemeAnne);
+        }else{
+            $scolareYears = Storage::get('anneeScolaire.txt');
+            $scolareYears = explode("\n", $scolareYears);
+            if(date('Y') == $scolareYears[1]){
+                Storage::disk('local')->put('professerus.txt', 0);
+                Storage::disk('local')->put('staff.txt', 0);
+                Storage::disk('local')->put('student.txt', 0);
+            }
         }
 
         /* ------------------------------------
