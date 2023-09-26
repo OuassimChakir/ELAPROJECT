@@ -38,7 +38,7 @@
                                     $i = 0;
                                 @endphp
                                 <tbody>
-                                   
+                                    @if (isset($students[0]->idStudent))
                                         @foreach ($students as $student)
                                             <tr>
                                                 <td>
@@ -99,6 +99,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                             <div class="row">

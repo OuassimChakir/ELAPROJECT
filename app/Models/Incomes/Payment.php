@@ -266,7 +266,7 @@ class Payment extends Model
     public static function getPaymentByidStudent($idStudent)
     {
         return  Payment::select('*')->where('idStudent',$idStudent)->get();
-    }
+    }   
     public static function getPaymentByidGroup($idGroup)
     {
         return  Payment::select('*')->where('idGroup',$idGroup)->get();
@@ -313,6 +313,10 @@ class Payment extends Model
             ->where('idPayment', $idPayment)
             ->forceDelete();
     }
+    public static function ArchivePaymentByidStudent($idStudent)
+    {
+        return  Payment::onlyTrashed()->select('*')->where('idStudent',$idStudent)->get();
+    }  
 
 
     

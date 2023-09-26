@@ -12,7 +12,7 @@
             </p>
         </div>
         <div>
-            <a href="{{route('student.add.page')}}">
+            <a href="{{ route('student.add.page') }}">
                 <button type="button" class="btn btn-primary">
                     <i class="bi bi-plus-square"></i> Ajouter un Etudiant
                 </button>
@@ -44,11 +44,13 @@
                                 $i = 0;
                             @endphp
                             <tbody>
-                                @if (!is_null($students[0]->idStudent))
+
+                                @if (isset($students[0]->idStudent))
                                     @foreach ($students as $student)
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="students[]" value="{{ $student->matricule }}"class="form-check-input archivedStudents">
+                                                <input type="checkbox" name="students[]"
+                                                    value="{{ $student->idStudent }}"class="form-check-input archivedStudents">
                                             </td>
                                             <td>{{ ++$i }}</td>
                                             <td>
@@ -80,19 +82,21 @@
                                                         <i class="bi bi-plus-lg"></i>
                                                     </button>
 
-                                                    <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                                    <a
+                                                        href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
                                                         <button type="button" name="show" class="btn btn-outline-info"
                                                             value="{{ $student->idStudent }}">
                                                             <i class="bi bi-person-fill"></i>
                                                         </button>
                                                     </a>
-                                                    <button type="button" name="delete"
-                                                        class="deleteButton btn btn-outline-danger"
-                                                        data-url="{{ route('student.delete', ['idStudent' => $student->idStudent]) }}"
-                                                        data-confirm="Veuillez confirmer votre opération"
-                                                        data-title="Êtes-vous sûr?" data-type="error">
-                                                        <i class="bi bi-trash-fill"></i>
-                                                    </button>
+                                                    <a
+                                                        href="{{ route('student.delete', ['idStudent' => $student->idStudent]) }}">
+                                                        <button type="button" class="btn btn-outline-danger" name="delete"
+                                                            value="{{ $student->idStudent }}"
+                                                            onclick="return confirm('Voulez-vous supprimer définitivement ce Etudiant?');">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -152,41 +156,41 @@
 
 
     @if (session()->has('newStudent'))
-    <template id="student-password">
-        <swal-title>
-            L'étudiant a été ajouté avec succès
-        </swal-title>
-        <swal-html>
-            <table class="table">
-                <tr>
-                    <th>Nom d'étudiant</th>
-                    <td>{{ucfirst(session()->get('newStudent')[0]['prenom'])}} {{ucfirst(session()->get('newStudent')[0]['nom'])}}</td>
-                </tr>
-                <tr>
-                    <th>Matricule</th>
-                    <td>{{session()->get('newStudent')[0]['matricule']}}</td>
-                </tr>
-                <tr>
-                    <th>Mot de Passe</th>
-                    <td>{{session()->get('newStudent')[0]['password']}}</td>
-                </tr>
-            </table>
-        </swal-html>
-        <swal-icon type="success"></swal-icon>
-        <swal-button type="confirm">
-            Terminer
-        </swal-button>
-        <swal-param name="allowEscapeKey" value="false" />
-        <swal-param name="customClass" value='{ "popup": "my-popup" }' />
-        <swal-function-param name="didOpen" value="popup => console.log(popup)" />
-    </template>
-    
-    <script>
-        Swal.fire({
-            template: '#student-password',
-        });
-        
-    </script>
+        <template id="student-password">
+            <swal-title>
+                L'étudiant a été ajouté avec succès
+            </swal-title>
+            <swal-html>
+                <table class="table">
+                    <tr>
+                        <th>Nom d'étudiant</th>
+                        <td>{{ ucfirst(session()->get('newStudent')[0]['prenom']) }}
+                            {{ ucfirst(session()->get('newStudent')[0]['nom']) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Matricule</th>
+                        <td>{{ session()->get('newStudent')[0]['matricule'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mot de Passe</th>
+                        <td>{{ session()->get('newStudent')[0]['password'] }}</td>
+                    </tr>
+                </table>
+            </swal-html>
+            <swal-icon type="success"></swal-icon>
+            <swal-button type="confirm">
+                Terminer
+            </swal-button>
+            <swal-param name="allowEscapeKey" value="false" />
+            <swal-param name="customClass" value='{ "popup": "my-popup" }' />
+            <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+        </template>
+
+        <script>
+            Swal.fire({
+                template: '#student-password',
+            });
+        </script>
     @endif
 
 @endsection
