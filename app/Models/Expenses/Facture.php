@@ -119,6 +119,18 @@ class Facture extends Model
             ->where('expensespayment.idStaff', NULL)
             ->first();
     }
+    // get all facture archive by id staff ou id prof
+    public static function getDeletedFacturebyIdStaff($idStaff){
+        return Facture::onlyTrashed()
+            ->where('idStaff', $idStaff)
+            ->get();
+    }
+    public static function getDeletedFacturebyIdProf($idProfesseur){
+        return Facture::onlyTrashed()
+            ->where('idProfesseur', $idProfesseur)
+            ->get();
+    }
+
 
     public static function restoreFacture($idExpensePayment){
         Facture::withTrashed()
