@@ -19,6 +19,11 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Users table seeded!');
         $this->call(IncomesSeeder::class);
         $this->command->info('Incomes table seeded!');
-
+        $this->call(CourseTypeSeeder::class);
+        $this->command->info('CourseType table seeded!');
+        $this->call(GradeCategorySeeder::class);
+        $this->command->info('GradesCategory table seeded!');
+        $this->call(GradeSeeder::class);
+        $this->command->info('Grades table seeded!');
     }
 }

@@ -38,7 +38,6 @@ use Illuminate\Support\Facades\Route;
 | admin : admin123
 | BMA-S4	 : KDN1bmQX
 | BMA9 : dMTprPJv
-| BMA-P2 : rOPFIxuw
 | BMA-P5 : 9OAiikax
 */
 
