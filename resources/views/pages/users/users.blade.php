@@ -54,9 +54,11 @@
                                         <button type="button" class="resetPassword btn btn-outline-warning" value="{{ $user->id }}">
                                             <i class="mdi mdi-reload"></i>
                                         </button>
-                                        <button type="button" class="deleteUser btn btn-outline-danger" name="delete">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
+                                        <a href="{{route('user.delete', ['id' => $user->id])}}">
+                                            <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Voulez-vous supprimer cet utilisateur ?');">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </a>
                                         @if (!is_null($user->idStudent))
                                             <a href="{{route('student.profil', ['idStudent' => $user->idStudent])}}">
                                                 <button type="button" class="btn btn-outline-info">

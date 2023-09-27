@@ -13,162 +13,170 @@ class Payment extends Model
     use SoftDeletes;
     protected $table = "payment";
     protected $primaryKey = "idPayment";
-    protected $fillable = ['numeroRecu','datePayment', 'paymentMode', 'amount','amountPaid', 'note', 'etat','idGroup','idStudent', 'idIncome', 'created_at', 'updated_at'];
+    protected $fillable = ['numeroRecu', 'datePayment', 'paymentMode', 'amount', 'amountPaid', 'note', 'etat', 'idGroup', 'idStudent', 'idIncome', 'created_at', 'updated_at'];
 
     //------------- all Payment de incomes----------//
     public static function allPayment()
     {
         return Payment::select('*')
             ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
-            ->leftjoin('students','students.idStudent','=','payment.idStudent')
+            ->leftjoin('students', 'students.idStudent', '=', 'payment.idStudent')
             ->whereNotNull('etat')
-            ->orderBy('datePayment','DESC')
+            ->orderBy('datePayment', 'DESC')
             ->get();
     }
 
-    public static function getStudentPendingPaiment($idStudent){
+    public static function getStudentPendingPaiment($idStudent)
+    {
         return Payment::selectRaw('payment.*, groups.idGroup, groups.designation, groups.debutFormation, groups.finFormation, incomes.designation as incomesDesignation, incomes.description, incomes.activationDate')
-            ->join('incomes','payment.idIncome','=','incomes.idIncome')
-            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
-            ->where('idStudent',$idStudent)
-            ->where('etat',0)
+            ->join('incomes', 'payment.idIncome', '=', 'incomes.idIncome')
+            ->leftjoin('groups', 'payment.idGroup', '=', 'groups.idGroup')
+            ->where('idStudent', $idStudent)
+            ->where('etat', 0)
             ->get();
     }
 
-    public static function getStudentPaiment($idPayment){
-        return Payment::select('payment.*','students.*','incomes.*','groups.designation as groupDesignation','incomes.designation as incomeDesignation')
-            ->join('incomes','payment.idIncome','=','incomes.idIncome')
-            ->join('students','payment.idStudent','=','students.idStudent')
-            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
-            ->where('idPayment',$idPayment)
+    public static function getStudentPaiment($idPayment)
+    {
+        return Payment::select('payment.*', 'students.*', 'incomes.*', 'groups.designation as groupDesignation', 'incomes.designation as incomeDesignation')
+            ->join('incomes', 'payment.idIncome', '=', 'incomes.idIncome')
+            ->join('students', 'payment.idStudent', '=', 'students.idStudent')
+            ->leftjoin('groups', 'payment.idGroup', '=', 'groups.idGroup')
+            ->where('idPayment', $idPayment)
             ->first();
     }
 
-    public static function getStudentPaiments($idStudent, $datePayment = 0){
-        if($datePayment == 0)
-            return Payment::select('payment.*','students.*','incomes.*','groups.designation as groupDesignation','incomes.designation as incomeDesignation')
-            ->join('incomes','payment.idIncome','=','incomes.idIncome')
-            ->join('students','payment.idStudent','=','students.idStudent')
-            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
-            ->where('payment.idStudent',$idStudent)
-            ->whereNotNull('etat')
-            ->orderBy('datePayment','DESC')
-            ->get();
-        else{
-            $date = explode('-',$datePayment);
-            return Payment::select('payment.*','students.*','incomes.*','groups.designation as groupDesignation','incomes.designation as incomeDesignation')
-            ->join('incomes','payment.idIncome','=','incomes.idIncome')
-            ->join('students','payment.idStudent','=','students.idStudent')
-            ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
-            ->where('payment.idStudent',$idStudent)
-            ->whereNotNull('etat')
-            ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
-            ->orderBy('datePayment','DESC')
-            ->get();
+    public static function getStudentPaiments($idStudent, $datePayment = 0)
+    {
+        if ($datePayment == 0)
+            return Payment::select('payment.*', 'students.*', 'incomes.*', 'groups.designation as groupDesignation', 'incomes.designation as incomeDesignation')
+                ->join('incomes', 'payment.idIncome', '=', 'incomes.idIncome')
+                ->join('students', 'payment.idStudent', '=', 'students.idStudent')
+                ->leftjoin('groups', 'payment.idGroup', '=', 'groups.idGroup')
+                ->where('payment.idStudent', $idStudent)
+                ->whereNotNull('etat')
+                ->orderBy('datePayment', 'DESC')
+                ->get();
+        else {
+            $date = explode('-', $datePayment);
+            return Payment::select('payment.*', 'students.*', 'incomes.*', 'groups.designation as groupDesignation', 'incomes.designation as incomeDesignation')
+                ->join('incomes', 'payment.idIncome', '=', 'incomes.idIncome')
+                ->join('students', 'payment.idStudent', '=', 'students.idStudent')
+                ->leftjoin('groups', 'payment.idGroup', '=', 'groups.idGroup')
+                ->where('payment.idStudent', $idStudent)
+                ->whereNotNull('etat')
+                ->whereRaw('MONTH(datePayment) = ' . $date[1] . ' and year(datePayment) = ' . $date[0])
+                ->orderBy('datePayment', 'DESC')
+                ->get();
         }
     }
-        //------------ find reçue by idStudent & idGroup-------- //
-        public static function selectPayment($idGroup, $idStudent, $idIncome)
-        {
-            return Payment::select('*')
-                ->join('incomes','payment.idIncome','=','incomes.idIncome')
-                ->join('students','payment.idStudent','=','students.idStudent')
-                ->join('groups','payment.idGroup','=','groups.idGroup')
-                ->where('payment.idStudent', $idStudent)
-                ->where('payment.idGroup', $idGroup)
-                ->where('payment.idIncome', $idIncome)
-                ->first();
-        }
+    //------------ find reçue by idStudent & idGroup-------- //
+    public static function selectPayment($idGroup, $idStudent, $idIncome)
+    {
+        return Payment::select('*')
+            ->join('incomes', 'payment.idIncome', '=', 'incomes.idIncome')
+            ->join('students', 'payment.idStudent', '=', 'students.idStudent')
+            ->join('groups', 'payment.idGroup', '=', 'groups.idGroup')
+            ->where('payment.idStudent', $idStudent)
+            ->where('payment.idGroup', $idGroup)
+            ->where('payment.idIncome', $idIncome)
+            ->first();
+    }
 
 
     // Select Last 10 Paiements of a Students
-    public static function getStudentLastestPaiments($idStudent, $idGroup = null){
+    public static function getStudentLastestPaiments($idStudent, $idGroup = null)
+    {
         // null (Random) | 0 (Other Paiments) | >=1 Group Paiments
-        if(is_null($idGroup)){
+        if (is_null($idGroup)) {
             // Random Last 10 Groups
-            return Payment::select('*','groups.designation as groupsDesignation','payment.amount')
-                ->leftjoin('groups','payment.idGroup','=','groups.idGroup')
-                ->join('incomes','incomes.idIncome','=','payment.idIncome')
-                ->where('idStudent',$idStudent)
+            return Payment::select('*', 'groups.designation as groupsDesignation', 'payment.amount')
+                ->leftjoin('groups', 'payment.idGroup', '=', 'groups.idGroup')
+                ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+                ->where('idStudent', $idStudent)
                 ->whereNotNull('etat')
                 ->orderBy('datePayment')
                 ->skip(0)
                 ->take(10)
                 ->get();
-        }elseif($idGroup == 0){
+        } elseif ($idGroup == 0) {
             // 10 last Paiment, groups not included
-            return Payment::select('*','incomes.designation as incomeDesignation','payment.amount')
-                ->join('incomes','incomes.idIncome','=','payment.idIncome')
-                ->where('idStudent',$idStudent)
+            return Payment::select('*', 'incomes.designation as incomeDesignation', 'payment.amount')
+                ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+                ->where('idStudent', $idStudent)
                 ->whereNotNull('etat')
                 ->whereNull('payment.idGroup')
                 ->orderBy('datePayment')
                 ->get();
-        }else{
+        } else {
             // 10 last paiment, only group paiments
-            return Payment::select('*','incomes.designation as incomeDesignation','payment.amount')
-            ->join('groups','payment.idGroup','=','groups.idGroup')
-            ->join('incomes','incomes.idIncome','=','payment.idIncome')
-            ->where('idStudent',$idStudent)
-            ->where('payment.idGroup',$idGroup)
-            ->whereNotNull('etat')
-            ->orderBy('datePayment')
-            ->get();
+            return Payment::select('*', 'incomes.designation as incomeDesignation', 'payment.amount')
+                ->join('groups', 'payment.idGroup', '=', 'groups.idGroup')
+                ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+                ->where('idStudent', $idStudent)
+                ->where('payment.idGroup', $idGroup)
+                ->whereNotNull('etat')
+                ->orderBy('datePayment')
+                ->get();
         }
     }
-    public static function checkElementPaiment($idGroup, $idStudent, $idIncome){
+    public static function checkElementPaiment($idGroup, $idStudent, $idIncome)
+    {
         return Payment::select('*')
-            ->where('idGroup',$idGroup)
-            ->where('idStudent',$idStudent)
-            ->where('idIncome',$idIncome)
+            ->where('idGroup', $idGroup)
+            ->where('idStudent', $idStudent)
+            ->where('idIncome', $idIncome)
             ->count();
     }
 
-    public static function getElementActivatedPaiment($idGroup, $idStudent, $idIncome){
+    public static function getElementActivatedPaiment($idGroup, $idStudent, $idIncome)
+    {
         return Payment::select('*')
-            ->where('idGroup',$idGroup)
-            ->where('idStudent',$idStudent)
-            ->where('idIncome',$idIncome)
-            ->where('etat',0)
+            ->where('idGroup', $idGroup)
+            ->where('idStudent', $idStudent)
+            ->where('idIncome', $idIncome)
+            ->where('etat', 0)
             ->first();
     }
 
-    public static function activatePaiment($idGroup, $idStudent, $month){
+    public static function activatePaiment($idGroup, $idStudent, $month)
+    {
         $paiment = Payment::select('*')
-            ->join('incomes','payment.idIncome','=','incomes.idIncome')
-            ->where('idGroup',$idGroup)
-            ->where('idStudent',$idStudent)
-            ->where('activationDate',$month)
+            ->join('incomes', 'payment.idIncome', '=', 'incomes.idIncome')
+            ->where('idGroup', $idGroup)
+            ->where('idStudent', $idStudent)
+            ->where('activationDate', $month)
             ->first();
         $paiment->etat = 0;
         $paiment->save();
     }
 
-    public static function disactivatePaiment($idPayment){
+    public static function disactivatePaiment($idPayment)
+    {
         $paiment = Payment::find($idPayment);
         $paiment->etat = null;
         $paiment->save();
     }
 
     // Update in new year || 
-    public static function updatePaiment($idPayment){
+    public static function updatePaiment($idPayment)
+    {
         $paiment = Payment::find($idPayment);
         $paiment->idStudent = null;
         $paiment->save();
-        
     }
-     // Update in new year by group|| 
-    public static function updatePaimentidGroup($idPayment){
+    // Update in new year by group|| 
+    public static function updatePaimentidGroup($idPayment)
+    {
         $paiment = Payment::find($idPayment);
         $paiment->idGroup = null;
         $paiment->save();
-        
     }
 
     //------ total amount
     public static function totalAmount()
     {
-        return Payment::select()->where('etat',1)->get()->sum('amountPaid');
+        return Payment::select()->where('etat', 1)->get()->sum('amountPaid');
     }
 
 
@@ -235,30 +243,33 @@ class Payment extends Model
         ]);
     }
 
-    public static function pendingGroupPaiments($idGroup,$idStudent){
+    public static function pendingGroupPaiments($idGroup, $idStudent)
+    {
         return Payment::select('*')
-                ->join('incomes','incomes.idIncome','=','payment.idIncome')
-                ->where('idStudent',$idStudent)
-                ->where('idGroup',$idGroup)
-                ->where('activationDate','!=','00')
-                ->whereNotNull('activationDate')
-                ->get();
+            ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+            ->where('idStudent', $idStudent)
+            ->where('idGroup', $idGroup)
+            ->where('activationDate', '!=', '00')
+            ->whereNotNull('activationDate')
+            ->get();
     }
-    
+
     /* ---------------------------------------
     / Payment of Student
     / ---------------------------------------*/
-    public static function nbPayments($idStudent,$etat = 0){
-        return Payment::where('idStudent',$idStudent)->where('etat',$etat)->count();
+    public static function nbPayments($idStudent, $etat = 0)
+    {
+        return Payment::where('idStudent', $idStudent)->where('etat', $etat)->count();
     }
 
 
-    public static function validateStudentPaiment($idPayment,$numeroRecu,$datePayment,$amountPaid,$paymentMode){
+    public static function validateStudentPaiment($idPayment, $numeroRecu, $datePayment, $amountPaid, $paymentMode)
+    {
         $paiment = Payment::find($idPayment);
         $paiment->numeroRecu = $numeroRecu;
         $paiment->datePayment = $datePayment;
         $paiment->amountPaid = $amountPaid;
-        if($paiment->amount == $amountPaid)
+        if ($paiment->amount == $amountPaid)
             $paiment->etat = 1;
         $paiment->paymentMode = $paymentMode;
         $paiment->save();
@@ -266,27 +277,28 @@ class Payment extends Model
 
     public static function getPaymentByidStudent($idStudent)
     {
-        return  Payment::select('*')->where('idStudent',$idStudent)->get();
-    }   
+        return Payment::select('*')->where('idStudent', $idStudent)->get();
+    }
 
     public static function getOldPaymentByidStudent($idStudent)
     {
-        return  Payment::withTrashed()
+        return Payment::withTrashed()
             ->select('*')
-            ->where('idStudent',$idStudent)
+            ->where('idStudent', $idStudent)
             ->get();
-    }   
+    }
 
     public static function getPaymentByidGroup($idGroup)
     {
-        return  Payment::select('*')->where('idGroup',$idGroup)->get();
+        return Payment::where('idGroup', $idGroup)->get();
     }
 
-    public static function getGroupPendingPaiments($idGroup){
+    public static function getGroupPendingPaiments($idGroup)
+    {
         return Payment::select('*')
-                ->where('idGroup',$idGroup)
-                ->where('etat',0)
-                ->count();
+            ->where('idGroup', $idGroup)
+            ->where('etat', 0)
+            ->count();
     }
     // --------- Delete Payment ----------------- //
     public static function deletePayment($idPayment)
@@ -295,8 +307,9 @@ class Payment extends Model
     }
 
 
-    public static function deleteDisactivatedPaiments($idGroup,$idStudent){
-        Payment::where('idGroup',$idGroup)->where('idStudent',$idStudent)->whereNull('etat')->forceDelete();
+    public static function deleteDisactivatedPaiments($idGroup, $idStudent)
+    {
+        Payment::where('idGroup', $idGroup)->where('idStudent', $idStudent)->whereNull('etat')->forceDelete();
     }
 
     // --------------- Archive Payment ------------------ //
@@ -332,80 +345,85 @@ class Payment extends Model
     }
     public static function ArchivePaymentByidStudent($idStudent)
     {
-        return  Payment::onlyTrashed()->select('*')->where('idStudent',$idStudent)->get();
-    }  
+        return  Payment::onlyTrashed()->select('*')->where('idStudent', $idStudent)->get();
+    }
 
 
-    
+
     /*----------------------------------
     / Stats Page 
     /----------------------------------*/
 
-    public static function stats_inscriptionPaimentsByDay($datePayment){
+    public static function stats_inscriptionPaimentsByDay($datePayment)
+    {
         return Payment::selectRaw('count(idStudent) as nbStudents, sum(amountPaid) as total')
-                ->join('incomes','incomes.idIncome','=','payment.idIncome')
-                ->where('etat',1)
-                ->where('activationDate','00')
-                ->where('datePayment',$datePayment)
-                ->first();
+            ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+            ->where('etat', 1)
+            ->where('activationDate', '00')
+            ->where('datePayment', $datePayment)
+            ->first();
     }
 
-    public static function stats_inscriptionPaimentsByMonth($datePayment){
-        $date = explode('-',$datePayment);
+    public static function stats_inscriptionPaimentsByMonth($datePayment)
+    {
+        $date = explode('-', $datePayment);
         return Payment::selectRaw('count(idStudent) as nbStudents, sum(amountPaid) as total')
-                ->join('incomes','incomes.idIncome','=','payment.idIncome')
-                ->where('etat',1)
-                ->where('incomes.designation','Inscription')
-                ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
-                ->first();
+            ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+            ->where('etat', 1)
+            ->where('incomes.designation', 'Inscription')
+            ->whereRaw('MONTH(datePayment) = ' . $date[1] . ' and year(datePayment) = ' . $date[0])
+            ->first();
     }
 
-    public static function stats_groupPaimentsByDay($datePayment,$idGroup){
+    public static function stats_groupPaimentsByDay($datePayment, $idGroup)
+    {
         return Payment::selectRaw('sum(amountPaid) as totalGroup, count(idPayment) as nbElements')
-                ->where('etat',1)
-                ->where('idGroup',$idGroup)
-                ->where('datePayment',$datePayment)
-                ->first();
+            ->where('etat', 1)
+            ->where('idGroup', $idGroup)
+            ->where('datePayment', $datePayment)
+            ->first();
     }
 
-    public static function stats_groupsPaimentsByMonth($datePayment,$idGroup){
-        $date = explode('-',$datePayment);
+    public static function stats_groupsPaimentsByMonth($datePayment, $idGroup)
+    {
+        $date = explode('-', $datePayment);
         return Payment::selectRaw('sum(amountPaid) as totalGroup, count(idPayment) as nbElements')
-                ->where('etat',1)
-                ->where('idGroup',$idGroup)
-                ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
-                ->first();
+            ->where('etat', 1)
+            ->where('idGroup', $idGroup)
+            ->whereRaw('MONTH(datePayment) = ' . $date[1] . ' and year(datePayment) = ' . $date[0])
+            ->first();
     }
 
-    public static function getGroupPaiments($idGroup, $datePayment){
-        if($datePayment != 'all'){
-            $date = explode('-',$datePayment);
+    public static function getGroupPaiments($idGroup, $datePayment)
+    {
+        if ($datePayment != 'all') {
+            $date = explode('-', $datePayment);
             return Payment::select('*')
-                    ->join('incomes','incomes.idIncome','=','payment.idIncome')
-                    ->join('students','students.idStudent','=','payment.idStudent')
-                    ->where('etat',1)
-                    ->where('idGroup',$idGroup)
-                    ->whereRaw('MONTH(datePayment) = '.$date[1].' and year(datePayment) = '.$date[0])
-                    ->orderBy('datePayment','DESC')
-                    ->get();
-        }else{
+                ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+                ->join('students', 'students.idStudent', '=', 'payment.idStudent')
+                ->where('etat', 1)
+                ->where('idGroup', $idGroup)
+                ->whereRaw('MONTH(datePayment) = ' . $date[1] . ' and year(datePayment) = ' . $date[0])
+                ->orderBy('datePayment', 'DESC')
+                ->get();
+        } else {
             return Payment::select('*')
-                    ->join('incomes','incomes.idIncome','=','payment.idIncome')
-                    ->join('students','students.idStudent','=','payment.idStudent')
-                    ->where('etat',1)
-                    ->where('idGroup',$idGroup)
-                    ->orderBy('datePayment','DESC')
-                    ->get();
+                ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+                ->join('students', 'students.idStudent', '=', 'payment.idStudent')
+                ->where('etat', 1)
+                ->where('idGroup', $idGroup)
+                ->orderBy('datePayment', 'DESC')
+                ->get();
         }
     }
 
-    public static function nbInscrits(){
+    public static function nbInscrits()
+    {
         return Payment::select('*')
-            ->join('incomes','incomes.idIncome','=','payment.idIncome')
-            ->where('designation','Inscription')
-            ->where('activationDate','00')
-            ->where('etat',1)
+            ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
+            ->where('designation', 'Inscription')
+            ->where('activationDate', '00')
+            ->where('etat', 1)
             ->count();
     }
 }
-

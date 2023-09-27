@@ -86,6 +86,13 @@ class User extends Authenticatable
             ->where('username', $username)->first();
     }
 
+    public static function getUserById($id)
+    {
+        return User::select('*')
+            ->leftJoin('roles', 'users.idRole', '=', 'roles.idRole')
+            ->where('id', $id)->first();
+    }
+
     public static function createStudentAccount($idStudent, $name, $username)
     {
         $role = Roles::getStudentRole();
@@ -218,5 +225,13 @@ class User extends Authenticatable
     {
         User::withTrashed()->where('idStudent', $idStudent)
             ->forceDelete();
+    }
+
+
+    public static function countAdmins(){
+        return User::select('*')
+            ->leftjoin('roles','roles.idRole','=','users.idRole')
+            ->where('codeRole','00')
+            ->count();
     }
 }

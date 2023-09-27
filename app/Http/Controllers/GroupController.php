@@ -13,6 +13,7 @@ use App\Models\GroupElements;
 use App\Models\GroupGrades;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
+use App\Models\Notes;
 use App\Models\responsible\Professeurs;
 use App\Models\Roles;
 use Illuminate\Http\Request;
@@ -121,6 +122,7 @@ class GroupController extends Controller
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
             }
             Attendance::deleteGroupAttendancebyidGroup($idGroup);
+            Notes::deleteGroupNotes($idGroup);
             GroupElements::deleteGroupClassroom($idGroup);
             Group::deleteGroup($idGroup);
             return response()->json(true);
@@ -211,46 +213,5 @@ class GroupController extends Controller
         }
         GroupElements::cancelAssignment($student);
         return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
-    }
-
-
-    // ----------- ARCHIVE ------------- //
-    public function archive()
-    {
-        $groupes = Group::softDeletedGroups();
-        return view('pages.groupes.groupArchive')->with('groupes', $groupes);
-    }
-
-    public function archivedGroup($idGroup)
-    {
-        $Group = Group::softDeletedGroups($idGroup);
-        return view('pages.Groups.archivedGroupProfil')->with('Group', $Group);
-    }
-
-    public function restoreArchivedGroup($idGroup)
-    {
-        Group::restoreGroup($idGroup);
-        $groupes = Group::softDeletedGroups();
-        $group = Group::getGroup($idGroup);
-        if (session()->get('user')) {
-            $typeActivity = 3;
-            $activityDescription = 'Le profisseur' . " " . $group->nom . " " . $group->prenom . " (" . $group->idGroup . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
-        }
-        return Redirect::route('groups.archive')->with('restoreMessage', "Le Professeur a été restorer avec succès")->with('groupes', $groupes);
-    }
-
-    public function deleteArchivedGroup($idGroup)
-    {
-        $group = Group::getDeletedGroups($idGroup);
-        if (session()->get('user')) {
-            $typeActivity = 10;
-            $activityDescription = 'Le profisseur' . " " . $group->nom . " " . $group->prenom . "(" . $group->idGroup . ")";
-            Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
-        }
-        GroupElements::deleteGroupClassroom($idGroup);
-        Group::forceDeleteGroup($idGroup);
-
-        return Redirect::back()->with('deleteMessage', "Le Professeur a été supprimer Définitivement");
     }
 }

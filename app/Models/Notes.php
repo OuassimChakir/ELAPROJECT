@@ -51,4 +51,11 @@ class Notes extends Model
 
         Notes::whereRaw('MONTH(created_at) = '.$deadNotes.' AND YEAR(created_at) = '.$deadyear)->delete();
     }
+
+    public static function deleteGroupNotes($idGroup){
+        Notes::select('*')
+            ->join('groupelements','groupelements.idElement','=','notes.idElement')
+            ->where('idGroup',$idGroup)
+            ->delete();
+    }
 }

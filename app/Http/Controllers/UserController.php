@@ -56,6 +56,7 @@ class UserController extends Controller
     }
 
 
+
     /* -------------------------------
     / Reset Password
     / -------------------------------*/
@@ -64,5 +65,19 @@ class UserController extends Controller
         $user = User::find($request->id);
         $user->newPassword = $request->newPassword;
         return response()->json($user);
+    }
+
+    
+    /* -------------------------------
+    / Archive
+    / -------------------------------*/
+    public function softDeleteUser($id){
+        $user = User::getUserById($id);
+        if($user->codeRole == '00'){
+            if(User::countAdmins() > 1)
+                return Redirect::back()->with('deleteMessage','Impossible de supprimer cet administrateur !');
+        }
+        User::find($id)->forceDelete();
+        return Redirect::back()->with('successMessage','Utilisateur supprimé avec succès !');
     }
 }

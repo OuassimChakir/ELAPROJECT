@@ -283,6 +283,7 @@ Route::middleware([
         / Settings 
         / --------------------------------------- */
         Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+        Route::post('/settings', [SettingController::class, 'index'])->name('settings.reset');
 
         /* --------------------------------------
         / Teachers 
@@ -330,7 +331,7 @@ Route::middleware([
         / --------------------------------------- */
         Route::get('/utilisateurs', [UserController::class, 'users'])->name('users');
         Route::post('/utilisateurs/add', [UserController::class, 'register'])->name('users.add');
-
+        Route::get('/utilisateur/delete/{id}',[UserController::class,'softDeleteUser'])->name('user.delete');
         /* -----------------------------------------------
         / Expenses
         / --------------------------------------------- */
