@@ -246,65 +246,67 @@
                                             <form action="{{ route('classroom.multipleCancel') }}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <table id="responsive-data-table" class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            @if ($students->count() != 0)
-                                                                <th>
-                                                                    <input type="checkbox" class="form-check-input"
-                                                                        id="selectAllArchived">
-                                                                </th>
-                                                            @endif
-                                                            <th>#</th>
-                                                            <th>Nom</th>
-                                                            <th>Téléphone</th>
-                                                            <th>Rejoint le</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-
-                                                    <tbody>
-                                                        @foreach ($students as $student)
+                                                <div class="table-responsive">
+                                                    <table id="responsive-data-table" class="table">
+                                                        <thead>
                                                             <tr>
-                                                                <td>
-                                                                    <input type="checkbox" name="students[]" value="{{ $student->idElement }}" class="form-check-input archivedStudents">
-                                                                </td>
-                                                                <td>
-                                                                    {{ $student->matricule }}
-                                                                    @if ($student->pendingPaiment == 0)
-                                                                        <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
-                                                                    @else
-                                                                        <span class="badge badge-danger">{{ $student->pendingPaiment }} <i class="bi bi-hourglass"></i></span>
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    <a
-                                                                        href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
-                                                                        {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
-                                                                    </a>
-                                                                    @if ($student->sexe == 'Homme')
-                                                                        <span class="badge badge-pill badge-info">M</span>
-                                                                    @else
-                                                                        <span
-                                                                            class="badge badge-pill badge-purple">F</span>
-                                                                    @endif
-                                                                </td>
-                                                                <td>{{ $student->numTel }}</td>
-                                                                <td>{{ $student->dateAjout }}</td>
-                                                                <td>
-                                                                    <div class="btn-group-spaced">
-                                                                        <button type="button" class="addNote btn btn-outline-primary" value="{{$student->idElement}}">
-                                                                            <i class="bi bi-info"></i>
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-outline-danger" onclick="cancelAssignment({{$student->idElement}});">
-                                                                            <i class="bi bi-trash-fill"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </td>
+                                                                @if ($students->count() != 0)
+                                                                    <th>
+                                                                        <input type="checkbox" class="form-check-input"
+                                                                            id="selectAllArchived">
+                                                                    </th>
+                                                                @endif
+                                                                <th>#</th>
+                                                                <th>Nom</th>
+                                                                <th>Téléphone</th>
+                                                                <th>Rejoint le</th>
+                                                                <th>Action</th>
                                                             </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+
+                                                        <tbody>
+                                                            @foreach ($students as $student)
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="checkbox" name="students[]" value="{{ $student->idElement }}" class="form-check-input archivedStudents">
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ $student->matricule }}
+                                                                        @if ($student->pendingPaiment == 0)
+                                                                            <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
+                                                                        @else
+                                                                            <span class="badge badge-danger">{{ $student->pendingPaiment }} <i class="bi bi-hourglass"></i></span>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        <a
+                                                                            href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                                                            {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
+                                                                        </a>
+                                                                        @if ($student->sexe == 'Homme')
+                                                                            <span class="badge badge-pill badge-info">M</span>
+                                                                        @else
+                                                                            <span
+                                                                                class="badge badge-pill badge-purple">F</span>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>{{ $student->numTel }}</td>
+                                                                    <td>{{ $student->dateAjout }}</td>
+                                                                    <td>
+                                                                        <div class="btn-group-spaced">
+                                                                            <button type="button" class="addNote btn btn-outline-primary" value="{{$student->idElement}}">
+                                                                                <i class="bi bi-info"></i>
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-outline-danger" onclick="cancelAssignment({{$student->idElement}});">
+                                                                                <i class="bi bi-trash-fill"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                                 <div class="row">
                                                     <div class="col btns">
                                                         <button type="submit" name="deleteAll"
@@ -324,35 +326,37 @@
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="tab-pane-content mt-5">
-                                            <table id="responsive-data-table" class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Nom</th>
-                                                        <th>Rejoint le</th>
-                                                    </tr>
-                                                </thead>
-    
-                                                <tbody>
-                                                    @foreach ($students as $student)
+                                            <div class="table-responsive">
+                                                <table id="responsive-data-table" class="table">
+                                                    <thead>
                                                         <tr>
-                                                            <td>
-                                                                {{ $student->matricule }}
-                                                            </td>
-                                                            <td>
-                                                                {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
-                                                                @if ($student->sexe == 'Homme')
-                                                                    <span class="badge badge-pill badge-info">M</span>
-                                                                @else
-                                                                    <span
-                                                                        class="badge badge-pill badge-purple">F</span>
-                                                                @endif
-                                                            </td>
-                                                            <td>{{ $student->dateAjout }}</td>
+                                                            <th>#</th>
+                                                            <th>Nom</th>
+                                                            <th>Rejoint le</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+        
+                                                    <tbody>
+                                                        @foreach ($students as $student)
+                                                            <tr>
+                                                                <td>
+                                                                    {{ $student->matricule }}
+                                                                </td>
+                                                                <td>
+                                                                    {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
+                                                                    @if ($student->sexe == 'Homme')
+                                                                        <span class="badge badge-pill badge-info">M</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="badge badge-pill badge-purple">F</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ $student->dateAjout }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -567,63 +571,65 @@
                                     <h3 class="card-title">Marquer l'Absence</h3>
                                     <div class="card-body">
                                         <form method="POST" action="{{ route('absence.add', ['idGroup' => $group->idGroup]) }}">
-                                            <table id="responsive-data-table" class="table">
-                                                <div class="col-3 input-group-date">
-                                                @csrf
-                                                @method('post')
-                                                <input type="date" name="dateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
-                                                </div>
-                                                <thead>
-                                                    <tr>
-                                                        @if ($students->count() != 0)
-                                                            <th>
-                                                                <input type="checkbox" class="form-check-input" id="selectAll">
-                                                            </th>
-                                                        @endif
-                                                        <th>#</th>
-                                                        <th>Nom</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($students as $student)
+                                            <div class="table-responsive">
+                                                <table id="responsive-data-table" class="table">
+                                                    <div class="col-3 input-group-date">
+                                                    @csrf
+                                                    @method('post')
+                                                    <input type="date" name="dateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
+                                                    </div>
+                                                    <thead>
                                                         <tr>
-                                                            <td>
-                                                                <input type="checkbox" class="form-check-input students">
-                                                            </td>
-                                                            <td>
-                                                                {{ $student->matricule }}
-                                                                <input type="hidden" name="students[]" class="form-control"
-                                                                    value="{{ $student->idStudent }}">
-                                                            </td>
-                                                            <td>
-                                                                <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
-                                                                    {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
-                                                                </a>
-                                                                @if ($student->sexe == 'Homme')
-                                                                    <span class="badge badge-pill badge-info">M</span>
-                                                                @else
-                                                                    <span class="badge badge-pill badge-purple">F</span>
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                <select name="absence[]" id="id-Subject"
-                                                                    class="absenceState form-select form-control" required>
-                                                                    <option value="0">
-                                                                        Présent
-                                                                    </option>
-                                                                    <option value="1">
-                                                                        Absent
-                                                                    </option>
-                                                                    <option value="2">
-                                                                        Justifié
-                                                                    </option>
-                                                                </select>
-                                                            </td>
+                                                            @if ($students->count() != 0)
+                                                                <th>
+                                                                    <input type="checkbox" class="form-check-input" id="selectAll">
+                                                                </th>
+                                                            @endif
+                                                            <th>#</th>
+                                                            <th>Nom</th>
+                                                            <th>Action</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($students as $student)
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="checkbox" class="form-check-input students">
+                                                                </td>
+                                                                <td>
+                                                                    {{ $student->matricule }}
+                                                                    <input type="hidden" name="students[]" class="form-control"
+                                                                        value="{{ $student->idStudent }}">
+                                                                </td>
+                                                                <td>
+                                                                    <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                                                        {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
+                                                                    </a>
+                                                                    @if ($student->sexe == 'Homme')
+                                                                        <span class="badge badge-pill badge-info">M</span>
+                                                                    @else
+                                                                        <span class="badge badge-pill badge-purple">F</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <select name="absence[]" id="id-Subject"
+                                                                        class="absenceState form-select form-control" required>
+                                                                        <option value="0">
+                                                                            Présent
+                                                                        </option>
+                                                                        <option value="1">
+                                                                            Absent
+                                                                        </option>
+                                                                        <option value="2">
+                                                                            Justifié
+                                                                        </option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                             <button type="submit" name="markAttendance" class="btn btn-primary btn-pill">Marquée L'absence</button>
                                         </form>
                                     </div>
@@ -660,30 +666,32 @@
                                     <h3 class="card-title">Gérer l'Absence</h3>
                                     <div class="card-body">
                                         <form method="POST" action="{{ route('attendance.update') }}">
-                                            <table id="responsive-data-table" class="table">
-                                                <div class="col-3 input-group-date">
-                                                @csrf
-                                                @method('post')
-                                                <input type="date" name="dateAbsence" id="updatedDateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
-                                                <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
-                                                <input type="hidden" name="deletionDateAbsence" id="deletionDateAbsence">
-                                                </div>
-                                                <thead>
-                                                    <tr>
-                                                        @if ($students->count() != 0)
-                                                            <th>
-                                                                <input type="checkbox" class="form-check-input" id="selectAllUpdated">
-                                                            </th>
-                                                        @endif
-                                                        <th>#</th>
-                                                        <th>Nom</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="updateAttendanceStudents">
-                                                    
-                                                </tbody>
-                                            </table>
+                                            <div class="table-responsive">
+                                                <table id="responsive-data-table" class="table">
+                                                    <div class="col-3 input-group-date">
+                                                    @csrf
+                                                    @method('post')
+                                                    <input type="date" name="dateAbsence" id="updatedDateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
+                                                    <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
+                                                    <input type="hidden" name="deletionDateAbsence" id="deletionDateAbsence">
+                                                    </div>
+                                                    <thead>
+                                                        <tr>
+                                                            @if ($students->count() != 0)
+                                                                <th>
+                                                                    <input type="checkbox" class="form-check-input" id="selectAllUpdated">
+                                                                </th>
+                                                            @endif
+                                                            <th>#</th>
+                                                            <th>Nom</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="updateAttendanceStudents">
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                             <button type="submit" name="updateAttendance" id="updateAttendanceBtn" class="btn btn-warning btn-pill" disabled>Modifier L'absence</button>
                                             <button type="submit" name="deleteAttendance" id="deleteAttendanceBtn" class="btn btn-outline-danger btn-pill" formaction="{{route('attendance.delete')}}" onclick="return confirm('ATTENTION: Vous êtes sur le point de supprimer cette présence!!');" disabled>Supprimer L'absence</button>
                                         </form>

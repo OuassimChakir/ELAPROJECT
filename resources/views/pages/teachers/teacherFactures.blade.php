@@ -32,47 +32,49 @@
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default">
                 <div class="card-body">
-                    <table id="responsive-data-table" class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Numéro</th>
-                                <th>Type de Dépense</th>
-                                <th>Description</th>
-                                <th>Prix</th>
-                                <th>Date de Facture</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        @php
-                            $i = 0;
-                        @endphp
-                        <tbody>
-                            @if (isset($FacturePayment))
-                                @foreach ($FacturePayment as $facture)
-                                    <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>ELA-F.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
-                                        </td>
-                                        <td><span class="badge badge-primary">{{ $facture->designation }}</span></td>
-                                        <td>{{ $facture->description }}</td>
-                                        <td><span class="badge badge-dark">{{ $facture->amount }} DH</span></td>
-                                        <td>{{ $facture->datePayment }}</td>
-                                        <td>
-                                            <div class="btn-group-spaced">
-                                                <a href="{{ route('teachers.pdf', ['idExpensePayment' => $facture->idExpensePayment]) }}"
-                                                    target="_blank">
-                                                    <button type="submit" class="btn btn-outline-success" name="print">
-                                                        <i class="bi bi-printer-fill"></i></i>
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="responsive-data-table" class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Numéro</th>
+                                    <th>Type de Dépense</th>
+                                    <th>Description</th>
+                                    <th>Prix</th>
+                                    <th>Date de Facture</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            @php
+                                $i = 0;
+                            @endphp
+                            <tbody>
+                                @if (isset($FacturePayment))
+                                    @foreach ($FacturePayment as $facture)
+                                        <tr>
+                                            <td>{{ ++$i }}</td>
+                                            <td>ELA-F.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
+                                            </td>
+                                            <td><span class="badge badge-primary">{{ $facture->designation }}</span></td>
+                                            <td>{{ $facture->description }}</td>
+                                            <td><span class="badge badge-dark">{{ $facture->amount }} DH</span></td>
+                                            <td>{{ $facture->datePayment }}</td>
+                                            <td>
+                                                <div class="btn-group-spaced">
+                                                    <a href="{{ route('teachers.pdf', ['idExpensePayment' => $facture->idExpensePayment]) }}"
+                                                        target="_blank">
+                                                        <button type="submit" class="btn btn-outline-success" name="print">
+                                                            <i class="bi bi-printer-fill"></i></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

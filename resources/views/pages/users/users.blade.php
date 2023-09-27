@@ -20,72 +20,74 @@
         <div class="col-12">
             <div class="ec-vendor-list card card-default">
                 <div class="card-body">
-                    <table id="responsive-data-table" class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nom</th>
-                                <th>Username</th>
-                                <th>Role</th>
-                                <th>Créé à</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $i = 0;
-                            @endphp
-                            @foreach ($users as $user)
+                    <div class="table-responsive">
+                        <table id="responsive-data-table" class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{++$i}}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->username }}</td>
-                                    <td>
-                                        @if (!is_null($user->idRole))
-                                            <div class="badge" style="color: white;background-color: {{ $user->color }}">
-                                                {{ $user->role }}
-                                            </div>
-                                        @else
-                                            <div class="badge badge-dark">Utilisateur</div>
-                                        @endif
-                                    </td>
-                                    <td><i class="bi bi-clock"></i> {{ $user->created_at }}</td>
-                                    <td>
-                                        <button type="button" class="resetPassword btn btn-outline-warning" value="{{ $user->id }}">
-                                            <i class="mdi mdi-reload"></i>
-                                        </button>
-                                        @if ($user->codeRole == '00' || $user->codeRole == '11')
-                                        <a href="{{route('user.delete', ['id' => $user->id])}}">
-                                            <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Voulez-vous supprimer cet utilisateur ?');">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </button>
-                                        </a>
-                                        @endif
-                                        @if (!is_null($user->idStudent))
-                                            <a href="{{route('student.profil', ['idStudent' => $user->idStudent])}}">
-                                                <button type="button" class="btn btn-outline-info">
-                                                    <i class="mdi mdi-account"></i>
-                                                </button>
-                                            </a>
-                                            @elseif(!is_null($user->idProfesseur))
-                                            <a href="{{route('teachers.profil', ['idProfesseur' => $user->idProfesseur])}}">
-                                                <button type="button" class="btn btn-outline-info">
-                                                    <i class="mdi mdi-account"></i>
-                                                </button>
-                                            </a>
-                                            @elseif(!is_null($user->idStaff))
-                                            <a href="{{route('staff.profil', ['idStaff' => $user->idStaff])}}">
-                                                <button type="button" class="btn btn-outline-info">
-                                                    <i class="mdi mdi-account"></i>
-                                                </button>
-                                            </a>
-                                        @endif
-                                    </td>
+                                    <th>#</th>
+                                    <th>Nom</th>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Créé à</th>
+                                    <th>Action</th>
                                 </tr>
-                            @endforeach
-    
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $i = 0;
+                                @endphp
+                                @foreach ($users as $user)
+                                    <tr>
+                                        <td>{{++$i}}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->username }}</td>
+                                        <td>
+                                            @if (!is_null($user->idRole))
+                                                <div class="badge" style="color: white;background-color: {{ $user->color }}">
+                                                    {{ $user->role }}
+                                                </div>
+                                            @else
+                                                <div class="badge badge-dark">Utilisateur</div>
+                                            @endif
+                                        </td>
+                                        <td><i class="bi bi-clock"></i> {{ $user->created_at }}</td>
+                                        <td>
+                                            <button type="button" class="resetPassword btn btn-outline-warning" value="{{ $user->id }}">
+                                                <i class="mdi mdi-reload"></i>
+                                            </button>
+                                            @if ($user->codeRole == '00' || $user->codeRole == '11')
+                                            <a href="{{route('user.delete', ['id' => $user->id])}}">
+                                                <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Voulez-vous supprimer cet utilisateur ?');">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </button>
+                                            </a>
+                                            @endif
+                                            @if (!is_null($user->idStudent))
+                                                <a href="{{route('student.profil', ['idStudent' => $user->idStudent])}}">
+                                                    <button type="button" class="btn btn-outline-info">
+                                                        <i class="mdi mdi-account"></i>
+                                                    </button>
+                                                </a>
+                                                @elseif(!is_null($user->idProfesseur))
+                                                <a href="{{route('teachers.profil', ['idProfesseur' => $user->idProfesseur])}}">
+                                                    <button type="button" class="btn btn-outline-info">
+                                                        <i class="mdi mdi-account"></i>
+                                                    </button>
+                                                </a>
+                                                @elseif(!is_null($user->idStaff))
+                                                <a href="{{route('staff.profil', ['idStaff' => $user->idStaff])}}">
+                                                    <button type="button" class="btn btn-outline-info">
+                                                        <i class="mdi mdi-account"></i>
+                                                    </button>
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+        
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

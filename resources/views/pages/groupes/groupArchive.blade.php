@@ -30,82 +30,84 @@
                     <form action="" method="POST">
                         @method('delete')
                         @csrf
-                        <table id="responsive-data-table" class="table">
-                            <thead>
-                                <tr>
-                                    @if ($groupes->count() != 0)
-                                        <th>
-                                            <input type="checkbox" class="form-check-input" id="selectAllArchived">
-                                        </th>
+                        <div class="table-responsive">
+                            <table id="responsive-data-table" class="table">
+                                <thead>
+                                    <tr>
+                                        @if ($groupes->count() != 0)
+                                            <th>
+                                                <input type="checkbox" class="form-check-input" id="selectAllArchived">
+                                            </th>
+                                        @endif
+                                        <th>Designation</th>
+                                        <th>Matière</th>
+                                        <th>Professeur</th>
+                                        <th>Prix/Etudiant</th>
+                                        <th>Date du Creation</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($groupes))
+                                        @foreach ($groupes as $groupe)
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" name="groupes[]" value="{{ $groupe->idGroup }}"
+                                                        class="form-check-input archivedStudents">
+                                                </td>
+                                                <td>
+                                                    <a
+                                                        href="{{ route('groups.profil', ['idGroup' => $groupe->idGroup]) }}">{{ $groupe->designation }}</a>
+                                                    @if ($groupe->nbElements == $groupe->capacity)
+                                                        <div class="badge badge-pill badge-warning">
+                                                            {{ $groupe->nbElements }}/{{ $groupe->capacity }}</div><br>
+                                                    @else
+                                                        <div class="badge badge-pill badge-success">
+                                                            {{ $groupe->nbElements }}/{{ $groupe->capacity }}</div><br>
+                                                    @endif
+                                                    <small>{{ $groupe->course }}</small>
+                                                </td>
+                                                <td>
+                                                    <div class="badge bg-dark">{{ $groupe->libelle }}</div>
+                                                </td>
+                                                <td><a
+                                                        href="{{ route('teachers.profil', ['idProfesseur' => $groupe->idProfesseur]) }}">{{ $groupe->prenom . ' ' . $groupe->nom }}</a>
+                                                </td>
+                                                <td>
+                                                    <div class="badge bg-primary">{{ $groupe->amount }} DH</div>
+                                                </td>
+                                                <td>{{ $groupe->created_at }}</td>
+                                                <td>
+                                                    <div class="">
+                                                        <a href="{{ route('groups.profil', ['idGroup' => $groupe->idGroup]) }}">
+                                                            <button type="button" name="edit" class="btn btn-outline-info">
+                                                                <i class="bi bi-collection"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a
+                                                            href="{{ route('groups.archive.restore', ['idGroup' => $groupe->idGroup]) }}">
+                                                            <button type="button" name="show"
+                                                                class="btn btn-outline-success" value="{{ $groupe->idGroup }}"
+                                                                onclick="return confirm('Vous êtes sûr?');">
+                                                                <i class="bi bi-arrow-repeat"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a
+                                                            href="{{ route('groups.archive.delete', ['idGroup' => $groupe->idGroup]) }}">
+                                                            <button type="button" class="btn btn-outline-danger" name="delete"
+                                                                onclick="return confirm('Vous êtes sûr?');">
+                                                                <i class="bi bi-trash-fill"></i>
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     @endif
-                                    <th>Designation</th>
-                                    <th>Matière</th>
-                                    <th>Professeur</th>
-                                    <th>Prix/Etudiant</th>
-                                    <th>Date du Creation</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (isset($groupes))
-                                    @foreach ($groupes as $groupe)
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="groupes[]" value="{{ $groupe->idGroup }}"
-                                                    class="form-check-input archivedStudents">
-                                            </td>
-                                            <td>
-                                                <a
-                                                    href="{{ route('groups.profil', ['idGroup' => $groupe->idGroup]) }}">{{ $groupe->designation }}</a>
-                                                @if ($groupe->nbElements == $groupe->capacity)
-                                                    <div class="badge badge-pill badge-warning">
-                                                        {{ $groupe->nbElements }}/{{ $groupe->capacity }}</div><br>
-                                                @else
-                                                    <div class="badge badge-pill badge-success">
-                                                        {{ $groupe->nbElements }}/{{ $groupe->capacity }}</div><br>
-                                                @endif
-                                                <small>{{ $groupe->course }}</small>
-                                            </td>
-                                            <td>
-                                                <div class="badge bg-dark">{{ $groupe->libelle }}</div>
-                                            </td>
-                                            <td><a
-                                                    href="{{ route('teachers.profil', ['idProfesseur' => $groupe->idProfesseur]) }}">{{ $groupe->prenom . ' ' . $groupe->nom }}</a>
-                                            </td>
-                                            <td>
-                                                <div class="badge bg-primary">{{ $groupe->amount }} DH</div>
-                                            </td>
-                                            <td>{{ $groupe->created_at }}</td>
-                                            <td>
-                                                <div class="">
-                                                    <a href="{{ route('groups.profil', ['idGroup' => $groupe->idGroup]) }}">
-                                                        <button type="button" name="edit" class="btn btn-outline-info">
-                                                            <i class="bi bi-collection"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a
-                                                        href="{{ route('groups.archive.restore', ['idGroup' => $groupe->idGroup]) }}">
-                                                        <button type="button" name="show"
-                                                            class="btn btn-outline-success" value="{{ $groupe->idGroup }}"
-                                                            onclick="return confirm('Vous êtes sûr?');">
-                                                            <i class="bi bi-arrow-repeat"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a
-                                                        href="{{ route('groups.archive.delete', ['idGroup' => $groupe->idGroup]) }}">
-                                                        <button type="button" class="btn btn-outline-danger" name="delete"
-                                                            onclick="return confirm('Vous êtes sûr?');">
-                                                            <i class="bi bi-trash-fill"></i>
-                                                        </button>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="row">
                             <div class="col btns">
                                 <button type="submit" name="deleteAll" class="btn btn-outline-danger"

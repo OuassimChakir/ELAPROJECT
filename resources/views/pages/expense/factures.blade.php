@@ -21,59 +21,61 @@
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default">
                 <div class="card-body">
-                    <table id="responsive-data-table" class="table">
-                        <thead>
-                            <tr>
-                                <th>Numéro</th>
-                                <th>Nom</th>
-                                <th>Type de Dépense</th>
-                                <th>Description</th>
-                                <th>Prix</th>
-                                <th>Date de Facture</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                    <div class="table-responsive">
+                        <table id="responsive-data-table" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Numéro</th>
+                                    <th>Nom</th>
+                                    <th>Type de Dépense</th>
+                                    <th>Description</th>
+                                    <th>Prix</th>
+                                    <th>Date de Facture</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
-                            @if (isset($factureDepenses))
-                                @foreach ($factureDepenses as $facture)
-                                    <tr>
-                                        <td>BMA-F.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
-                                        </td>
+                            <tbody>
+                                @if (isset($factureDepenses))
+                                    @foreach ($factureDepenses as $facture)
+                                        <tr>
+                                            <td>BMA-F.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
+                                            </td>
 
-                                        <td>
-                                            @if (is_null($facture->nom))
-                                                -
-                                            @else
-                                                {{ $facture->nom . ' ' . $facture->prenom }}
-                                            @endif
-                                        </td>
-                                        <td><span class="badge badge-primary">{{ $facture->designation }}</span></td>
-                                        <td>{{ $facture->description }}</td>
-                                        <td><span class="badge badge-dark">{{ $facture->amount }} DH</span></td>
-                                        <td>{{ $facture->datePayment }}</td>
-                                        <td>
-                                            <div class="btn-group-spaced">
-                                                <a href="{{ route('pdf.generate', ['idExpensePayment' => $facture->idExpensePayment]) }}"
-                                                    target="_blank">
-                                                    <button type="submit" class="btn btn-outline-success" name="print">
-                                                        <i class="bi bi-printer-fill"></i></i>
-                                                    </button>
-                                                </a>
-                                                <a
-                                                    href="{{ route('factureDepenses.delete', ['idExpensePayment' => $facture->idExpensePayment]) }}">
-                                                    <button type="submit" class="btn btn-outline-danger"
-                                                        name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
-                                                        <i class="bi bi-trash-fill"></i>
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                                            <td>
+                                                @if (is_null($facture->nom))
+                                                    -
+                                                @else
+                                                    {{ $facture->nom . ' ' . $facture->prenom }}
+                                                @endif
+                                            </td>
+                                            <td><span class="badge badge-primary">{{ $facture->designation }}</span></td>
+                                            <td>{{ $facture->description }}</td>
+                                            <td><span class="badge badge-dark">{{ $facture->amount }} DH</span></td>
+                                            <td>{{ $facture->datePayment }}</td>
+                                            <td>
+                                                <div class="btn-group-spaced">
+                                                    <a href="{{ route('pdf.generate', ['idExpensePayment' => $facture->idExpensePayment]) }}"
+                                                        target="_blank">
+                                                        <button type="submit" class="btn btn-outline-success" name="print">
+                                                            <i class="bi bi-printer-fill"></i></i>
+                                                        </button>
+                                                    </a>
+                                                    <a
+                                                        href="{{ route('factureDepenses.delete', ['idExpensePayment' => $facture->idExpensePayment]) }}">
+                                                        <button type="submit" class="btn btn-outline-danger"
+                                                            name="deleteExpense" onclick="return confirm('Vous êtes sûr?');">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -24,65 +24,67 @@
                     <form action="{{ route('teachers.delete.multiple') }}" method="POST">
                         @method('delete')
                         @csrf
-                        <table id="responsive-data-table" class="table">
-                            <thead>
-                                <tr>
-                                    @if ($teachers->count() != 0)
-                                        <th>
-                                            <input type="checkbox" class="form-check-input" id="selectAllArchived">
-                                        </th>
-                                    @endif
-                                    <th>Nom</th>
-                                    <th>Téléphone</th>
-                                    <th>Matière Enseignée</th>
-                                    <th>Date d'engagement</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($teachers as $teacher)
+                        <div class="table-responsive">
+                            <table id="responsive-data-table" class="table">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <input type="checkbox" name="teachers[]" value="{{ $teacher->idProfesseur }}"
-                                                class="form-check-input archivedStudents">
-                                        </td>
-                                        <td>
-                                            {{ $teacher->prenom }}
-                                            {{ $teacher->nom }}
-                                            @if ($teacher->sexe == 'M')
-                                                <div class="badge badge-pill badge-info">M</div>
-                                            @else
-                                                <div class="badge badge-pill badge-purple">F</div>
-                                            @endif
-                                        </td>
-                                        <td>{{ $teacher->numTel }}</td>
-                                        <td>
-                                            <div class="badge bg-dark">{{ $teacher->libelle }}</div>
-                                        </td>
-                                        <td>{{ $teacher->created_at }}</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a
-                                                    href="{{ route('teachers.profil', ['idProfesseur' => $teacher->idProfesseur, 'nom' => $teacher->nom]) }}">
-                                                    <button type="button" name="edit" class="btn btn-outline-info"
-                                                        value="{{ $teacher->idProfesseur }}">
-                                                        <i class="bi bi-person-fill"></i>
-                                                    </button>
-                                                </a>
-                                                <a
-                                                    href="{{ route('teachers.delete', ['idProfesseur' => $teacher->idProfesseur]) }}">
-                                                    <button type="button" class="btn btn-outline-danger" name="delete"
-                                                        onclick="return confirm('Vous êtes sûr?');">
-                                                        <i class="bi bi-trash-fill"></i>
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </td>
+                                        @if ($teachers->count() != 0)
+                                            <th>
+                                                <input type="checkbox" class="form-check-input" id="selectAllArchived">
+                                            </th>
+                                        @endif
+                                        <th>Nom</th>
+                                        <th>Téléphone</th>
+                                        <th>Matière Enseignée</th>
+                                        <th>Date d'engagement</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endforeach
+                                </thead>
+                                <tbody>
+                                    @foreach ($teachers as $teacher)
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="teachers[]" value="{{ $teacher->idProfesseur }}"
+                                                    class="form-check-input archivedStudents">
+                                            </td>
+                                            <td>
+                                                {{ $teacher->prenom }}
+                                                {{ $teacher->nom }}
+                                                @if ($teacher->sexe == 'M')
+                                                    <div class="badge badge-pill badge-info">M</div>
+                                                @else
+                                                    <div class="badge badge-pill badge-purple">F</div>
+                                                @endif
+                                            </td>
+                                            <td>{{ $teacher->numTel }}</td>
+                                            <td>
+                                                <div class="badge bg-dark">{{ $teacher->libelle }}</div>
+                                            </td>
+                                            <td>{{ $teacher->created_at }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a
+                                                        href="{{ route('teachers.profil', ['idProfesseur' => $teacher->idProfesseur, 'nom' => $teacher->nom]) }}">
+                                                        <button type="button" name="edit" class="btn btn-outline-info"
+                                                            value="{{ $teacher->idProfesseur }}">
+                                                            <i class="bi bi-person-fill"></i>
+                                                        </button>
+                                                    </a>
+                                                    <a
+                                                        href="{{ route('teachers.delete', ['idProfesseur' => $teacher->idProfesseur]) }}">
+                                                        <button type="button" class="btn btn-outline-danger" name="delete"
+                                                            onclick="return confirm('Vous êtes sûr?');">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="row">
                             <div class="col btns">
                                 <button type="submit" name="deleteAll" class="btn btn-outline-danger"

@@ -20,88 +20,90 @@
                         <form action="{{ route('student.archive.multiple') }}" method="post">
                             @csrf
                             @method('post')
-                            <table id="responsive-data-table" class="table">
-                                <thead>
-                                    @if ($students->count() != 0)
-                                        <th>
-                                            <input type="checkbox" class="form-check-input" id="selectAllArchived">
-                                        </th>
-                                    @endif
-                                    <th>#</th>
-                                    <th>Matricule</th>
-                                    <th>Nom</th>
-                                    <th>Téléphone</th>
-                                    <th>Inscrie</th>
-                                    <th>Action</th>
-                                </thead>
-                                @php
-                                    $i = 0;
-                                @endphp
-                                <tbody>
-                                    @if (isset($students[0]->idStudent))
-                                        @foreach ($students as $student)
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" name="archivedStudents[]"
-                                                        value="{{ $student->idStudent }}"class="form-check-input"
-                                                        id="selectAllArchived">
-                                                </td>
-                                                <td>{{ ++$i }}</td>
-                                                <td>
-                                                    {{ $student->matricule }}
-                                                    @if ($student->pendingPayment == 0)
-                                                        <span class="badge badge-success"><i
-                                                                class="bi bi-check-lg"></i></span>
-                                                    @else
-                                                        <span class="badge badge-danger">{{ $student->pendingPayment }} <i
-                                                                class="bi bi-hourglass"></i></span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    {{ $student->prenom_ar }}
-                                                    {{ $student->nom_ar }}
-                                                    @if ($student->sexe == 'Homme')
-                                                        <span class="badge badge-pill badge-info">M</span>
-                                                    @else
-                                                        <span class="badge badge-pill badge-purple">F</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $student->numTel }}</td>
-                                                <td>{{ $student->created_at }}</td>
-                                                <td>
-                                                    <div class="btn-group-spaced">
-                                                        <a
-                                                            href="{{ route('student.archive.profil', ['idStudent' => $student->idStudent]) }}">
-                                                            <button type="button" name="show"
-                                                                class="btn btn-outline-info"
-                                                                value="{{ $student->idStudent }}">
-                                                                <i class="bi bi-person-fill"></i>
-                                                            </button>
-                                                        </a>
-                                                        <a
-                                                            href="{{ route('student.archive.restore', ['idStudent' => $student->idStudent]) }}">
-                                                            <button type="button" name="show"
-                                                                class="btn btn-outline-success"
-                                                                value="{{ $student->idStudent }}"
-                                                                onclick="return confirm('Vous êtes sûr?');">
-                                                                <i class="bi bi-arrow-repeat"></i>
-                                                            </button>
-                                                        </a>
-                                                        <a
-                                                            href="{{ route('student.archive.delete', ['idStudent' => $student->idStudent]) }}">
-                                                            <button type="button" class="btn btn-outline-danger"
-                                                                name="delete" value="{{ $student->idStudent }}"
-                                                                onclick="return confirm('Voulez-vous supprimer définitivement ce Etudiant?');">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                            </button>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table id="responsive-data-table" class="table">
+                                    <thead>
+                                        @if ($students->count() != 0)
+                                            <th>
+                                                <input type="checkbox" class="form-check-input" id="selectAllArchived">
+                                            </th>
+                                        @endif
+                                        <th>#</th>
+                                        <th>Matricule</th>
+                                        <th>Nom</th>
+                                        <th>Téléphone</th>
+                                        <th>Inscrie</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    @php
+                                        $i = 0;
+                                    @endphp
+                                    <tbody>
+                                        @if (isset($students[0]->idStudent))
+                                            @foreach ($students as $student)
+                                                <tr>
+                                                    <td>
+                                                        <input type="checkbox" name="archivedStudents[]"
+                                                            value="{{ $student->idStudent }}"class="form-check-input"
+                                                            id="selectAllArchived">
+                                                    </td>
+                                                    <td>{{ ++$i }}</td>
+                                                    <td>
+                                                        {{ $student->matricule }}
+                                                        @if ($student->pendingPayment == 0)
+                                                            <span class="badge badge-success"><i
+                                                                    class="bi bi-check-lg"></i></span>
+                                                        @else
+                                                            <span class="badge badge-danger">{{ $student->pendingPayment }} <i
+                                                                    class="bi bi-hourglass"></i></span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        {{ $student->prenom_ar }}
+                                                        {{ $student->nom_ar }}
+                                                        @if ($student->sexe == 'Homme')
+                                                            <span class="badge badge-pill badge-info">M</span>
+                                                        @else
+                                                            <span class="badge badge-pill badge-purple">F</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $student->numTel }}</td>
+                                                    <td>{{ $student->created_at }}</td>
+                                                    <td>
+                                                        <div class="btn-group-spaced">
+                                                            <a
+                                                                href="{{ route('student.archive.profil', ['idStudent' => $student->idStudent]) }}">
+                                                                <button type="button" name="show"
+                                                                    class="btn btn-outline-info"
+                                                                    value="{{ $student->idStudent }}">
+                                                                    <i class="bi bi-person-fill"></i>
+                                                                </button>
+                                                            </a>
+                                                            <a
+                                                                href="{{ route('student.archive.restore', ['idStudent' => $student->idStudent]) }}">
+                                                                <button type="button" name="show"
+                                                                    class="btn btn-outline-success"
+                                                                    value="{{ $student->idStudent }}"
+                                                                    onclick="return confirm('Vous êtes sûr?');">
+                                                                    <i class="bi bi-arrow-repeat"></i>
+                                                                </button>
+                                                            </a>
+                                                            <a
+                                                                href="{{ route('student.archive.delete', ['idStudent' => $student->idStudent]) }}">
+                                                                <button type="button" class="btn btn-outline-danger"
+                                                                    name="delete" value="{{ $student->idStudent }}"
+                                                                    onclick="return confirm('Voulez-vous supprimer définitivement ce Etudiant?');">
+                                                                    <i class="bi bi-trash-fill"></i>
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="row">
                                 <div class="col btns">
                                     <button type="submit" name="restoreAll" class="btn btn-outline-success"

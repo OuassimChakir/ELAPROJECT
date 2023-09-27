@@ -91,59 +91,61 @@
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default">
                 <div class="card-body">
-                    <table id="responsive-data-table" class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Designation</th>
-                                <th>Description</th>
-                                <th>Type</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                    <div class="table-responsive">
+                        <table id="responsive-data-table" class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Designation</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
-                            @if (isset($Incomes))
-                            @php
-                                $i = 0;
-                            @endphp
-                                @foreach ($Incomes as $income)
-                                    <tr>
-                                        <td>{{++$i}}</td>
-                                        <td>{{ $income->designation }} </td>
-                                        <td>
-                                            {{ $income->description }} 
-                                            @if (!is_null($income->fixedAmount))
-                                                <span class="badge badge-purple">{{$income->fixedAmount}} DH</span>
+                            <tbody>
+                                @if (isset($Incomes))
+                                @php
+                                    $i = 0;
+                                @endphp
+                                    @foreach ($Incomes as $income)
+                                        <tr>
+                                            <td>{{++$i}}</td>
+                                            <td>{{ $income->designation }} </td>
+                                            <td>
+                                                {{ $income->description }} 
+                                                @if (!is_null($income->fixedAmount))
+                                                    <span class="badge badge-purple">{{$income->fixedAmount}} DH</span>
+                                                @endif
+                                            </td>
+                                            @if (is_null($income->activationDate))
+                                                <td><span class="badge badge-dark">Autre</span></td>
+                                            @else
+                                                <td><span class="badge badge-primary">{{ucfirst('étudiant')}}</span></td>
                                             @endif
-                                        </td>
-                                        @if (is_null($income->activationDate))
-                                            <td><span class="badge badge-dark">Autre</span></td>
-                                        @else
-                                            <td><span class="badge badge-primary">{{ucfirst('étudiant')}}</span></td>
-                                        @endif
-                                        <td>
-                                            <div class="btn-group-spaced">
-                                                <a
-                                                    href="{{ route('typeIncome.update.page', ['idIncome' => $income->idIncome]) }}">
-                                                    <button type="submit" name="edit" class="btn btn-outline-warning">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </button>
-                                                </a>
-                                                <a
-                                                    href="{{ route('typeIncome.delete', ['idIncome' => $income->idIncome]) }}">
-                                                    <button type="submit" class="btn btn-outline-danger"
-                                                        name="deleteIncome" onclick="return confirm('Vous êtes sûr?');">
-                                                        <i class="bi bi-trash-fill"></i>
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                                            <td>
+                                                <div class="btn-group-spaced">
+                                                    <a
+                                                        href="{{ route('typeIncome.update.page', ['idIncome' => $income->idIncome]) }}">
+                                                        <button type="submit" name="edit" class="btn btn-outline-warning">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </a>
+                                                    <a
+                                                        href="{{ route('typeIncome.delete', ['idIncome' => $income->idIncome]) }}">
+                                                        <button type="submit" class="btn btn-outline-danger"
+                                                            name="deleteIncome" onclick="return confirm('Vous êtes sûr?');">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

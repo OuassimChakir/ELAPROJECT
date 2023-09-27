@@ -21,66 +21,68 @@
                     <form action="{{ route('factureDepenses.archive.multiple') }}" method="post">
                         @csrf
                         @method('post')
-                        <table id="responsive-data-table" class="table">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" class="form-check-input" id="selectAllArchived"></th>
-                                    <th>Numéro</th>
-                                    <th>Nom</th>
-                                    <th>Type de Dépense</th>
-                                    <th>Description</th>
-                                    <th>Prix</th>
-                                    <th>Date de Facture</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
+                        <div class="table-responsive">
+                            <table id="responsive-data-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="form-check-input" id="selectAllArchived"></th>
+                                        <th>Numéro</th>
+                                        <th>Nom</th>
+                                        <th>Type de Dépense</th>
+                                        <th>Description</th>
+                                        <th>Prix</th>
+                                        <th>Date de Facture</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                @if (isset($factureDepenses))
-                                    @foreach ($factureDepenses as $facture)
-                                        <tr>
-                                            <td><input type="checkbox" name="archivedFacture[]"
-                                                    value="{{ $facture->idExpensePayment }}"
-                                                    class="form-check-input archivedFacture"></td>
-                                            <td>BMA-R.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
-                                            </td>
-                                            <td>
-                                            @if (is_null($facture->nom))
-                                                -
-                                            @else
-                                                {{ $facture->nom . ' ' . $facture->prenom }}
-                                            @endif
-                                            </td>
-                                            <td><span class="badge badge-primary">{{ $facture->designation }}</span></td>
-                                            <td>{{ $facture->description }}</td>
-                                            <td><span class="badge badge-dark">{{ $facture->amount }} DH</span></td>
-                                            <td>{{ $facture->datePayment }}</td>
-                                            <td>
-                                                <div class="btn-group-spaced">
-                                                    <a
-                                                        href="{{ route('factureDepenses.archive.restore', ['idExpensePayment' => $facture->idExpensePayment]) }}">
-                                                        <button type="button" name="show"
-                                                            class="btn btn-outline-success"
-                                                            value="{{ $facture->idExpensePayment }}"
-                                                            onclick="return confirm('Vous êtes sûr?');">
-                                                            <i class="bi bi-arrow-repeat"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a
-                                                        href="{{ route('factureDepenses.archive.delete', ['idExpensePayment' => $facture->idExpensePayment]) }}">
-                                                        <button type="button" class="btn btn-outline-danger" name="delete"
-                                                            value="{{ $facture->idExpensePayment }}"
-                                                            onclick="return confirm('Voulez-vous supprimer définitivement cet facture?');">
-                                                            <i class="bi bi-trash-fill"></i>
-                                                        </button>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
+                                <tbody>
+                                    @if (isset($factureDepenses))
+                                        @foreach ($factureDepenses as $facture)
+                                            <tr>
+                                                <td><input type="checkbox" name="archivedFacture[]"
+                                                        value="{{ $facture->idExpensePayment }}"
+                                                        class="form-check-input archivedFacture"></td>
+                                                <td>BMA-R.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
+                                                </td>
+                                                <td>
+                                                @if (is_null($facture->nom))
+                                                    -
+                                                @else
+                                                    {{ $facture->nom . ' ' . $facture->prenom }}
+                                                @endif
+                                                </td>
+                                                <td><span class="badge badge-primary">{{ $facture->designation }}</span></td>
+                                                <td>{{ $facture->description }}</td>
+                                                <td><span class="badge badge-dark">{{ $facture->amount }} DH</span></td>
+                                                <td>{{ $facture->datePayment }}</td>
+                                                <td>
+                                                    <div class="btn-group-spaced">
+                                                        <a
+                                                            href="{{ route('factureDepenses.archive.restore', ['idExpensePayment' => $facture->idExpensePayment]) }}">
+                                                            <button type="button" name="show"
+                                                                class="btn btn-outline-success"
+                                                                value="{{ $facture->idExpensePayment }}"
+                                                                onclick="return confirm('Vous êtes sûr?');">
+                                                                <i class="bi bi-arrow-repeat"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a
+                                                            href="{{ route('factureDepenses.archive.delete', ['idExpensePayment' => $facture->idExpensePayment]) }}">
+                                                            <button type="button" class="btn btn-outline-danger" name="delete"
+                                                                value="{{ $facture->idExpensePayment }}"
+                                                                onclick="return confirm('Voulez-vous supprimer définitivement cet facture?');">
+                                                                <i class="bi bi-trash-fill"></i>
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="row">
                             <div class="col btns">
                                 <button type="submit" name="restoreAll" class="btn btn-outline-success"
