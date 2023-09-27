@@ -2,7 +2,6 @@
 
 namespace Laravel\Fortify\Http\Controllers;
 
-use App\Actions\Fortify\ResetUserPassword;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Laravel\Fortify\Contracts\PasswordUpdateResponse;
@@ -14,12 +13,12 @@ class PasswordController extends Controller
      * Update the user's password.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Laravel\Fortify\Contracts\ResetUserPassword  $updater
+     * @param  \Laravel\Fortify\Contracts\UpdatesUserPasswords  $updater
      * @return \Laravel\Fortify\Contracts\PasswordUpdateResponse
      */
-    public function update(Request $request, ResetUserPassword $updater)
+    public function update(Request $request, UpdatesUserPasswords $updater)
     {
-        $updater->reset($request->user(), $request->all());
+        $updater->update($request->user(), $request->all());
 
         return app(PasswordUpdateResponse::class);
     }
