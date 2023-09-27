@@ -19,32 +19,32 @@ class Group extends Model
 
     // ***** Select Groupes ******* //
     public static function getGroups(){
-        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*', 'groups.created_at', 'groups.updated_at')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at')
             ->selectRaw('(SELECT count(idStudent) FROM `groups` as g
             INNER JOIN payment ON payment.idGroup = g.idGroup
             WHERE etat = 0 AND g.idGroup = groups.idGroup) as pendingPaiment')
             ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
-            ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
+            ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
             ->get();
     }
     public static function getStudentGroups($idStudent){
-        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*', 'groups.created_at', 'groups.updated_at')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at')
             ->selectRaw('(SELECT count(idPayment) FROM  payment
             WHERE etat = 0 AND idStudent = '.$idStudent.') as pendingPaiment')
             ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
-            ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
+            ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
             ->join('groupelements','groupelements.idGroup','=','groups.idGroup')
             ->where('groupelements.idStudent',$idStudent)
             ->get();
     }
 
     public static function getProfGroups($idProfesseur){
-        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*', 'groups.created_at', 'groups.updated_at')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
-            ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
+            ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
             ->where('groups.idProfesseur',$idProfesseur)
             ->get();
     }
