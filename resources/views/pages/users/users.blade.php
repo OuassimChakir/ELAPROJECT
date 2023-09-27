@@ -54,11 +54,13 @@
                                         <button type="button" class="resetPassword btn btn-outline-warning" value="{{ $user->id }}">
                                             <i class="mdi mdi-reload"></i>
                                         </button>
+                                        @if ($user->codeRole == '00' || $user->codeRole == '11')
                                         <a href="{{route('user.delete', ['id' => $user->id])}}">
                                             <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Voulez-vous supprimer cet utilisateur ?');">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </a>
+                                        @endif
                                         @if (!is_null($user->idStudent))
                                             <a href="{{route('student.profil', ['idStudent' => $user->idStudent])}}">
                                                 <button type="button" class="btn btn-outline-info">
