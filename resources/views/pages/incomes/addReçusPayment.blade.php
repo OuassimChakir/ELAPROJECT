@@ -227,8 +227,14 @@
     });
     $(document).ready(function() {
         $("select").click(function() {
-            $("select").addClass("is-valid");
-
+            var idincome = $('#idIncome').val();
+            if (idincome !=null ) {
+                    $('#idIncome').removeClass("is-invalid");
+                    $('#idIncome').addClass("is-valid");
+                } else {
+                    $('#idIncome').removeClass("is-valid");
+                    $('#idIncome').addClass("is-invalid");
+                }
 
         });
     });
