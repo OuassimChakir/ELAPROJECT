@@ -19,7 +19,7 @@
                     <div class="col-12 text-center m-9">
                         <button type="submit" id="newYear" name="newYear" class="newYear btn btn-danger btn-lg" data-bs-toggle="modal"
                             data-bs-target="#addNewYear" onclick="return confirm('Vous êtes sûr?');"><i
-                                class="bi bi-arrow-clockwise"></i> Nouvel Année</button>
+                            class="bi bi-arrow-clockwise"></i> Nouvel Année</button>
                     </div>
                 </div>
         </div> <!-- End Content -->

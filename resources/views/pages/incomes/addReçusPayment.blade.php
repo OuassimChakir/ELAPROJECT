@@ -5,7 +5,7 @@
             <div class="modal-header px-4">
                 <h5 class="modal-title" id="exampleModalCenterTitle">Ajoute Reçus de Payment</h5>
             </div>
-            <form action="{{ route('incomePayment.add') }}" method="post" id="invoicePaimentForm">
+            <form action="{{ route('incomePayment.add') }}" method="post"  id="invoicePaimentForm">
                 @csrf
                 @method('post')
                 <div class="modal-body px-4">
@@ -15,7 +15,7 @@
                                 <div class="form-group mb-4">
                                     <label for="idIncome" id="IncomeLabel">type des incomes</label>
                                     <select name="idIncome" id="idIncome" class="form-select " required>
-                                        <option disabled selected>-- Choisir une invoice --</option>
+                                        <option disabled selected value="">-- Choisir une invoice --</option>
                                         <optgroup label="les mois">
                                             @foreach ($incomes as $income)
                                                 @if ($income->activationDate != 00 && $income->activationDate != null)
