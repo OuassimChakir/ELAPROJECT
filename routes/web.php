@@ -375,9 +375,6 @@ Route::middleware([
         Route::post('/archive/students/action', [StudentController::class, 'multipleArchivedStudents'])->name('student.archive.multiple');
         Route::get('/archive/students/delete/{idStudent}', [StudentController::class, 'deleteArchivedStudent'])->name('student.archive.delete');
 
-        // Delete Group
-        Route::get('/archive/groups/delete/{idGroup}', [GroupController::class, 'deleteArchivedGroup'])->name('groups.archive.delete');
-
         // Delete Student
         Route::get('/students/delete/{idStudent}', [StudentController::class, 'deleteStudent'])->name('student.delete');
         Route::delete('/staff/delete', [StudentController::class, 'deleteMultipleStudents'])->name('student.delete.multiple');
@@ -409,9 +406,5 @@ Route::middleware([
         Route::get('/archive/teachers', [TeacherController::class, 'archive'])->name('teachers.archive');
         Route::get('/archive/teacher/{idProfesseur}', [TeacherController::class, 'archivedTeacher'])->name('teachers.archive.profil');
         Route::get('/archive/teachers/restore/{idProfesseur}', [TeacherController::class, 'restoreArchivedTeacher'])->name('teachers.archive.restore');
-        // ARCHIVED group
-        Route::get('/archive/groups', [GroupController::class, 'archive'])->name('groups.archive');
-        Route::get('/archive/groups/{idGroup}', [GroupController::class, 'archivedGroup'])->name('groups.archive.profil');
-        Route::get('/archive/groups/restore/{idGroup}', [GroupController::class, 'restoreArchivedGroup'])->name('groups.archive.restore');
     });
 });
