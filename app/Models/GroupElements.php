@@ -70,6 +70,10 @@ class GroupElements extends Model
         return GroupElements::find($idElement)->delete();
     }
 
+    public static function cancelStudentAssignments($idStudent){
+        return GroupElements::where('idStudent',$idStudent)->delete();
+    }
+
     /* ---------------------------------
     /  Delete Group classroom Relations
     /----------------------------------*/

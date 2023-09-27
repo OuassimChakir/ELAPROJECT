@@ -3,6 +3,7 @@
 Ajouter un Etudiant
 @endsection
 @section('content')
+<link rel="stylesheet" type="text/css" href="http://www.arabic-keyboard.org/keyboard/keyboard.css">
     <div class="breadcrumb-wrapper breadcrumb-contacts">
         <div>
             <h1>Nouveau Etudiant(e)</h1>
@@ -121,7 +122,6 @@ Ajouter un Etudiant
                         </div>
                     </form>
                     <script type="text/javascript" src="http://www.arabic-keyboard.org/keyboard/keyboard.js" charset="UTF-8"></script>
-
                 </div>
             </div>
         </div>

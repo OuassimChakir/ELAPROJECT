@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Group extends Model
 {
@@ -20,20 +19,20 @@ class Group extends Model
 
     // ***** Select Groupes ******* //
     public static function getGroups(){
-        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*', 'groups.created_at', 'groups.updated_at')
             ->selectRaw('(SELECT count(idStudent) FROM `groups` as g
             INNER JOIN payment ON payment.idGroup = g.idGroup
             WHERE etat = 0 AND g.idGroup = groups.idGroup) as pendingPaiment')
-            ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
+            ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
             ->get();
     }
     public static function getStudentGroups($idStudent){
-        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*', 'groups.created_at', 'groups.updated_at')
             ->selectRaw('(SELECT count(idPayment) FROM  payment
             WHERE etat = 0 AND idStudent = '.$idStudent.') as pendingPaiment')
-            ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
+            ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
             ->join('groupelements','groupelements.idGroup','=','groups.idGroup')
@@ -42,7 +41,7 @@ class Group extends Model
     }
 
     public static function getProfGroups($idProfesseur){
-        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','courseType.*', 'groups.created_at', 'groups.updated_at')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('courseType', 'courseType.idCourseType', '=', 'subjects.idCourseType')
@@ -55,7 +54,7 @@ class Group extends Model
         return Group::select('groups.*', 'subjects.*', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->Join('coursetype', 'subjects.idCourseType', '=', 'coursetype.idCourseType')
-            ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
+            ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->where('idGroup', $idGroup)
             ->first();
     }
