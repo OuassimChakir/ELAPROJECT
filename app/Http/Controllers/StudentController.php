@@ -166,7 +166,6 @@ class StudentController extends Controller
             $idResponsible = Responsible::addResponsible($request->cnie, $request->nom, $request->prenom, $request->numTel, $request->sexe);
             // Relate Responsible to Student
             Student::where('idStudent', $request->idStudent)->update(['idResponsible' => $idResponsible]);
-            dd($idResponsible);
             // Make A Reponsible Account
             return Redirect::back()->with('successMessage', "L'ajout du Responsable est faite avec succès");
         }
