@@ -25,6 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('idStudent',false,true)->nullable();
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
