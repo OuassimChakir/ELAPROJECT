@@ -10,8 +10,8 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <!-- Scripts -->
-        <link rel="stylesheet" href="/css/app.css">
-        <script src="/js/app.js"></script>
+        <link rel="stylesheet" href="/CSS/app.css">
+        <script src="/JS/app.js"></script>
         <!-- Styles -->
         @livewireStyles
 

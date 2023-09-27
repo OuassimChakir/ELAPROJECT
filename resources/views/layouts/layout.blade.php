@@ -11,8 +11,8 @@
     <!-- FAVICON -->
     <link href="favicon.ico" rel="shortcut icon" />
     <!-- Scripts -->
-    <link rel="stylesheet" href="/css/app.css">
-    <script src="/js/app.js"></script>
+    <link rel="stylesheet" href="/CSS/app.css">
+    <script src="/JS/app.js"></script>
 
     <!-- Styles -->
     @include('assets.styles')
