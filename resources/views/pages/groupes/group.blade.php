@@ -397,6 +397,21 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="debutFormation">Début de formation</label>
+                                                    <input type="date" class="form-control" name="debutFormation" id="debutFormation" value='{{$group->debutFormation}}' required>
+                                                </div>
+                                            </div>
+                    
+                                            
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="finFormation">Fin de formation</label>
+                                                    <input type="date" class="form-control" name="finFormation" id="finFormation" value="{{$group->finFormation}}" required>
+                                                </div>
+                                            </div>
+
                                             {{-- Staff --}}
                                             <div class="col-lg-6">
                                                 <div class="form-group mb-4">

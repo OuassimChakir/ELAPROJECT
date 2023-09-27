@@ -135,7 +135,7 @@ class GroupController extends Controller
     public function updateGroup(Request $request, $idGroup)
     {
         if ($request->has('updateGroup') && isset($idGroup)) {
-            Group::updateGroup($idGroup, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
+            Group::updateGroup($idGroup, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades)) {
                 GroupGrades::deleteGroupGrades($idGroup);

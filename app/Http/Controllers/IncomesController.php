@@ -89,9 +89,29 @@ class IncomesController extends Controller
             $income = Income::find($select[0]);
             $note = $income->description . ' - ' . date('Y');
             $idIncome = $income->idIncome;
+            if(is_null($income->activationDate)){
+                Payment::create([
+                    'numeroRecu' => $request->numeroRecu,
+                    'datePayment' => $request->datePayment,
+                    'paymentMode' => $request->paymentMode,
+                    'amount' => $request->amount,
+                    'amountPaid' => $request->amountPaid,
+                    'note' => $note,
+                    'etat' => 1,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'idIncome' => $idIncome,
+                ]);
+                if (session()->get('user')) {
+                    $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
+                    $activityDescription = 'Un Payment (Description: ' . $note . ")";
+                    Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+                }
+                return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
+            }
             $dataidstudent = Student::selectStudent($request->search);
             $idStudent = $dataidstudent->idStudent;
-            $etat = null;
+            $etat = 1;
             $count = Payment::checkElementPaiment($request->idGroup, $idStudent, $idIncome);
             if ($count == 0) {
                 Payment::createPayment(

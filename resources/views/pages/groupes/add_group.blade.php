@@ -24,10 +24,11 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="capacity">Prix Individuel</label>
-                                <input type="number" min="1" class="form-control" name="amount" id="amount">
+                                <input type="number" min="1" class="form-control" name="amount" id="amount" value="0">
                             </div>
                         </div>
                         
+
                         {{-- Staff --}}
                         <div class="col-lg-6">
                             <div class="form-group mb-4">

@@ -52,8 +52,7 @@
                             <div class="col-lg-6">
                                 <label for="search" id="EtudiantLabel">Etudiant</label>
                                 <div class="form-group mb-4 d-flex justify-content-center" id="search-autocomplete">
-                                    <input type="text" name="search" id="search"
-                                        placeholder="Search Etudiant Data" class="form-control" value="" required>
+                                    <input type="text" name="search" id="search" placeholder="Search Etudiant Data" class="form-control" value="" required>
                                     <button type="button" class="btn btn-primary" id="searchBtn">
                                         <span class="mdi mdi-magnify"></span>
                                     </button>
@@ -153,6 +152,11 @@
             var array = $(this).val().split('|');
             var activationDate = array[1];
             var idincome = array[0];
+            if(activationDate == ''){
+                $('#search').prop('disabled',true);
+            }else{
+                $('#search').prop('disabled',false);
+            }
             $('#search').on('keyup', function() {
                 $('#userList').show();
                 $('#idGroup').empty();

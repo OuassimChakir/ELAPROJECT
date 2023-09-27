@@ -10,7 +10,7 @@ class Group extends Model
     use HasFactory;
     protected $table = "groups";
     protected $primaryKey = "idGroup";
-    protected $fillable = ['designation', 'capacity', 'idSubject', 'idGrade', 'idStaff', 'CREATED_AT', 'UPDATED_AT'];
+    protected $fillable = ['designation', 'capacity', 'amount', 'idSubject', 'idGrade', 'idStaff', 'CREATED_AT', 'UPDATED_AT'];
 
     // ------- Selections ----------- //
     public static function totalGroups(){
@@ -131,10 +131,12 @@ class Group extends Model
     }
 
     // --------- Update ------------- //
-    public static function updateGroup($idGroup, $capacity, $amount, $idSubject, $idProfesseur){
+    public static function updateGroup($idGroup, $capacity, $amount,$debutFormation, $finFormation, $idSubject, $idProfesseur){
         $group = Group::find($idGroup);
         $group->amount = $amount;
         $group->capacity = $capacity;
+        $group->debutFormation = $debutFormation;
+        $group->finFormation = $finFormation;
         $group->idSubject = $idSubject;
         $group->idProfesseur = $idProfesseur;
         $group->save();
