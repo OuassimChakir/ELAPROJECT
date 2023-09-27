@@ -89,6 +89,11 @@ class IncomesController extends Controller
             $income = Income::find($select[0]);
             $note = $income->description . ' - ' . date('Y');
             $idIncome = $income->idIncome;
+            if($request->amount == $request->amountPaid)
+                $etat = 1;
+            elseif($request->amount > $request->amountPaid)
+                $etat = 0;
+
             if(is_null($income->activationDate)){
                 Payment::create([
                     'numeroRecu' => $request->numeroRecu,
@@ -97,7 +102,7 @@ class IncomesController extends Controller
                     'amount' => $request->amount,
                     'amountPaid' => $request->amountPaid,
                     'note' => $note,
-                    'etat' => 1,
+                    'etat' => $etat,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'idIncome' => $idIncome,
@@ -111,7 +116,6 @@ class IncomesController extends Controller
             }
             $dataidstudent = Student::selectStudent($request->search);
             $idStudent = $dataidstudent->idStudent;
-            $etat = 1;
             $count = Payment::checkElementPaiment($request->idGroup, $idStudent, $idIncome);
             if ($count == 0) {
                 Payment::createPayment(

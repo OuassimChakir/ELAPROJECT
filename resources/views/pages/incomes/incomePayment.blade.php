@@ -33,6 +33,7 @@
                                     <th>Detail</th>
                                     <th>Etudiant</th>
                                     <th>Prix</th>
+                                    <th>Reste</th>
                                     <th>Etat</th>
                                     <th>Date de Reçus</th>
                                     <th>Action</th>
@@ -66,6 +67,7 @@
                                                 
                                             </td>
                                             <td><span class="badge badge-dark">{{ $Payment->amount }} DH</span></td>
+                                            <td><span class="badge badge-info">{{ $Payment->amount-$Payment->amountPaid }} DH</span></td>
                                             <td>
                                                 @if ($Payment->etat == 0)
                                                     <span class="badge badge-warning">Impayée</span>
