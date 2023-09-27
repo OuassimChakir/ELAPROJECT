@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activite;
+use App\Models\Attendance;
 use App\Models\Expenses\Facture;
 use App\Models\Group;
 use App\Models\GroupElements;
@@ -68,7 +69,7 @@ class StudentController extends Controller
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
             }
 
-            return Redirect::back()->with([
+            return Redirect::route('student.liste')->with([
                 'newStudent' => $newStudent,
             ]);
         }
@@ -149,6 +150,8 @@ class StudentController extends Controller
                 Payment::deletePayment($payment->idPayment);
             }
         }
+        Attendance::deleteGroupAttendancebyidStudent($idStudent);
+        GroupElements::cancelStudentAssignments($idStudent);
         User::deleteStudentAccount($idStudent);
         Student::deleteStudent($idStudent);
         return Redirect::route('student.liste')

@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PHPUnit\TextUI\XmlConfiguration\Groups;
 
 class TeacherController extends Controller
 {
@@ -179,9 +180,9 @@ class TeacherController extends Controller
             }
         }
         // update sur les groups de le prof
-        if ($groups != null) {
+        if (!is_null($groups)) {
             foreach ($groups as $group) {
-                Facture::updateidProfesseurGroup($group->idGroup);
+                Group::updateidProfesseurGroup($group->idGroup);
             }
         }
         User::forceProfAccount($idProfesseur);
@@ -228,9 +229,9 @@ class TeacherController extends Controller
                     }
                 }
                 // update sur les groups de le prof
-                if ($groups != null) {
+                if (!is_null($groups)) {
                     foreach ($groups as $group) {
-                        Facture::updateidProfesseurGroup($group->idGroup);
+                        Group::updateidProfesseurGroup($group->idGroup);
                     }
                 }
                 User::forceProfAccount($idProfesseur);

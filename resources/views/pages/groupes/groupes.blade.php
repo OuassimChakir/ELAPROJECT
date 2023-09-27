@@ -79,7 +79,15 @@
                             <small>{{$groupe->course}}</small>
                         </td>
                         <td><div class="badge bg-dark">{{$groupe->libelle}}</div></td>
-                        <td><a href="{{route('teachers.profil',['idProfesseur' => $groupe->idProfesseur])}}">{{$groupe->prenom.' '.$groupe->nom}}</a></td>
+                        <td>
+                            @if (is_null($groupe->idProfesseur))
+                                Non Assigné
+                            @else
+                            <a href="{{ route('teachers.profil', ['idProfesseur' => $groupe->idProfesseur]) }}">
+                                {{ $groupe->prenom . ' ' . $groupe->nom }}
+                            </a> 
+                            @endif
+                        </td>
                         <td><div class="badge bg-primary">{{$groupe->amount}} DH</div></td>
                         <td>{{$groupe->created_at}}</td>
                         @staff
@@ -90,11 +98,9 @@
                                             <i class="bi bi-collection"></i>
                                         </button>
                                     </a>
-                                    <a href="{{route('groups.delete',['idGroup'=>$groupe->idGroup])}}">
-                                        <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Vous êtes sûr?');">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </a>
+                                    <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$groupe->idGroup}}">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
                                 </div>
                         </td>
                         @else
@@ -146,7 +152,15 @@
                         <small>{{$groupe->course}}</small>
                     </td>
                     <td><div class="badge bg-dark">{{$groupe->libelle}}</div></td>
-                    <td><a href="{{route('teachers.profil',['idProfesseur' => $groupe->idProfesseur])}}">{{$groupe->prenom.' '.$groupe->nom}}</a></td>
+                    <td>
+                        @if (is_null($groupe->idProfesseur))
+                            Non Assigné
+                        @else
+                        <a href="{{ route('teachers.profil', ['idProfesseur' => $groupe->idProfesseur]) }}">
+                            {{ $groupe->prenom . ' ' . $groupe->nom }}
+                        </a> 
+                        @endif
+                    </td>
                     <td><div class="badge bg-primary">{{$groupe->amount}} DH</div></td>
                     <td>{{$groupe->created_at}}</td>
                     @staff
@@ -157,11 +171,9 @@
                                         <i class="bi bi-collection"></i>
                                     </button>
                                 </a>
-                                <a href="{{route('groups.delete',['idGroup'=>$groupe->idGroup])}}">
-                                    <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Vous êtes sûr?');">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </button>
-                                </a>
+                                <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$groupe->idGroup}}">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
                             </div>
                     </td>
                     @else
@@ -188,6 +200,37 @@
 <!-- Ajouter un teacher -->
 @include('pages.groupes.add_group')
 <script src="{{asset('JS/jquery.min.js')}}"></script>
+<script>
+    $(document).on('click','.deleteGroup',function(){
+        let id = $(this).val();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Confirmez votre demande !',
+            text: 'Vous êtes sur le point de supprimer ce groupe.',
+            showCancelButton: true,
+            confirmButtonText: 'Oui',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/groupes/delete/' + id,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response){
+                        if(response == true){
+                            Swal.fire("Le groupe a été supprimé avec succès !", '', 'success')
+                        }else{
+                            Swal.fire("Vous ne pouvez pas supprimer ce groupe", "Veuillez vérifier s'il y a des Paiements Impayés pour ce Group.", 'error')
+                        }
+                    },
+                    error: function(request, status, error) {
+                        console.log(request.responseText);
+                    }
+                    
+                });
+            }
+        })
+    });
+</script>
 <script>
     // Listen for click on toggle checkbox
     $('#selectAllArchived').click(function(event) {   

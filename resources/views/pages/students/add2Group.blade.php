@@ -93,14 +93,9 @@
                                 '</p></div><div class="col-1">';
 
                             if (capacity == nbElement)
-                                htmlOut +=
-                                '<button class="addStudentGroup btn btn-danger" value="' +
-                                idGroup +
-                                '" disabled=""><i class="bi bi-x-lg"></i></button>';
+                                htmlOut += '<button class="addStudentGroup btn btn-danger" value="' + idGroup + '" disabled=""><i class="bi bi-x-lg"></i></button>';
                             else
-                                htmlOut +=
-                                '<button class="addStudentGroup btn btn-outline-primary" value="' +
-                                idGroup + '"><i class="bi bi-plus-lg"></i></button>';
+                                htmlOut += '<button class="addStudentGroup btn btn-outline-primary" value="' + idGroup + '"><i class="bi bi-plus-lg"></i></button>';
                             htmlOut += '</div></div></div></div>';
                             $("#groupsResult").append(htmlOut);
                         }

@@ -91,10 +91,13 @@
 
                                                 <div class="media-body align-self-center">
                                                     <h4 class="text-primary mb-2">
-                                                        <a
-                                                            href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
+                                                        @if (is_null($group->idProfesseur))
+                                                            Non Assigné
+                                                        @else
+                                                        <a href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
                                                             {{ $group->prenom . ' ' . $group->nom }}
-                                                        </a>
+                                                        </a> 
+                                                        @endif
                                                     </h4>
                                                     <p>Encadrant</p>
                                                 </div>
@@ -137,10 +140,13 @@
 
                                                 <div class="media-body align-self-center">
                                                     <h4 class="text-primary mb-2">
-                                                        <a
-                                                            href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
+                                                        @if (is_null($group->idProfesseur))
+                                                            Non Assigné
+                                                        @else
+                                                        <a href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
                                                             {{ $group->prenom . ' ' . $group->nom }}
-                                                        </a>
+                                                        </a> 
+                                                        @endif
                                                     </h4>
                                                     <p>Encadrant</p>
                                                 </div>

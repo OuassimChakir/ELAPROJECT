@@ -125,4 +125,19 @@ class Attendance extends Model
     {
         Attendance::where('idElement', $idElement)->delete();
     }
+
+
+    public static function deleteGroupAttendancebyidStudent($idStudent){
+        Attendance::select('*')
+            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+            ->where('groupelements.idStudent', $idStudent)
+            ->delete();
+    }
+
+    public static function deleteGroupAttendancebyidGroup($idGroup){
+        Attendance::select('*')
+            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+            ->where('groupelements.idGroup', $idGroup)
+            ->delete();
+    }
 }

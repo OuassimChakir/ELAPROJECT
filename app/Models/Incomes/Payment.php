@@ -21,6 +21,7 @@ class Payment extends Model
         return Payment::select('*')
             ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
             ->leftjoin('students','students.idStudent','=','payment.idStudent')
+            ->whereNotNull('etat')
             ->orderBy('datePayment','DESC')
             ->get();
     }
@@ -279,6 +280,13 @@ class Payment extends Model
     public static function getPaymentByidGroup($idGroup)
     {
         return  Payment::select('*')->where('idGroup',$idGroup)->get();
+    }
+
+    public static function getGroupPendingPaiments($idGroup){
+        return Payment::select('*')
+                ->where('idGroup',$idGroup)
+                ->where('etat',0)
+                ->count();
     }
     // --------- Delete Payment ----------------- //
     public static function deletePayment($idPayment)

@@ -94,8 +94,18 @@ class IncomesController extends Controller
             $etat = null;
             $count = Payment::checkElementPaiment($request->idGroup, $idStudent, $idIncome);
             if ($count == 0) {
-                Payment::createPayment($request->numeroRecu, $request->datePayment, $request->paymentMode,
-                 $request->amount, $request->amountPaid, $note, $etat, $request->idGroup, $request->idStudent,$idIncome);
+                Payment::createPayment(
+                    $request->numeroRecu,
+                    $request->datePayment,
+                    $request->paymentMode,
+                    $request->amount,
+                    $request->amountPaid,
+                    $note,
+                    $etat,
+                    $request->idGroup,
+                    $request->idStudent,
+                    $idIncome
+                );
                 if (session()->get('user')) {
                     $typeActivity = 0; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
                     $activityDescription = 'Un Payment (Description: ' . $note . ")";
@@ -109,7 +119,8 @@ class IncomesController extends Controller
             ->with('incomes', $Incomes);
     }
 
-    public function groupPayments($idGroup, $datePayment){
+    public function groupPayments($idGroup, $datePayment)
+    {
         $group = Group::getGroup($idGroup);
         $incomePayment = Payment::getGroupPaiments($idGroup, $datePayment);
         return view('pages.groupes.groupIncomes')->with([
@@ -119,12 +130,13 @@ class IncomesController extends Controller
         ]);
     }
 
-    public function studentPaiments(Request $request, $idStudent){
+    public function studentPaiments(Request $request, $idStudent)
+    {
         $student = Student::getStudent($idStudent);
-        if($request->has('datePayment')){
+        if ($request->has('datePayment')) {
             $incomePayment = Payment::getStudentPaiments($idStudent, $request->datePayment);
             $datePayment = $request->datePayment;
-        }else{
+        } else {
             $incomePayment = Payment::getStudentPaiments($idStudent);
             $datePayment = date('Y-m');
         }
@@ -161,7 +173,7 @@ class IncomesController extends Controller
         if ($request->has('getStats')) {
             if ($request->statsType == 0) {
                 // Monthly
-                $inscription_stats = Payment::stats_inscriptionPaimentsByMonth($request->statsMonth);   
+                $inscription_stats = Payment::stats_inscriptionPaimentsByMonth($request->statsMonth);
                 $groups = Group::getGroups();
                 for ($i = 0; $i < $groups->count(); $i++)
                     $groups[$i]->stats = Payment::stats_groupsPaimentsByMonth($request->statsMonth, $groups[$i]->idGroup);
