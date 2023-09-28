@@ -19,11 +19,9 @@
                     Revenus
                 </button>
             </a>
-            <a href="{{route('group.incomes',['idGroup' => $group->idGroup])}}">
-                <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$group->idGroup}}">
-                    <i class="bi bi-trash-fill"></i> Supprimer
-                </button>
-            </a>
+            <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$group->idGroup}}">
+                <i class="bi bi-trash-fill"></i> Supprimer
+            </button>
         </div>
         @endstaff
     </div>
