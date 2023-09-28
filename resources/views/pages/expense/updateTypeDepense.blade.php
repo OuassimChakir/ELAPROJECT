@@ -22,22 +22,7 @@
         </div>
 
 </div>
-@if (session()->has('successMessage'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{session()->get('successMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('deleteMessage'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{session()->get('deleteMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('updateMessage'))
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{session()->get('updateMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif
+
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default">
@@ -66,12 +51,7 @@
                                
                             </div>
                             </div>
-                            <div class="col-lg-6">
-                            <div class="form-group ">
-                                <label for="parent-category" class="form-label">Description</label> 
-                                    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3">{{$updatedExpense->description}}</textarea>
-                            </div>
-                            </div>
+
                            </div>
                         <div class="row">
                             <div class="col-12">

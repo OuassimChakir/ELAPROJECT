@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CourseType extends Model
 {
     use HasFactory;
-    protected $table = "coursetype";
+    protected $table = "coursetype"; 
     protected $primaryKey = "idCourseType";
     public $timestamps = false;
     protected $fillable = ['course','shortForm'];

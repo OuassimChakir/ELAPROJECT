@@ -15,3 +15,5 @@ const mix = require('laravel-mix');
  .postCss('resources/css/app.css', 'public/css', [
      //
  ]);
+
+ mix.postCss('node_modules/@mdi/font/css/materialdesignicons.min.css','public/css')

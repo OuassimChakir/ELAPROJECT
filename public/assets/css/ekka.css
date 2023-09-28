@@ -7,10 +7,12 @@
  */
 :root {
   /* ELA COLORS */
-  --ela-navy: #092c38;
+  /* --ela-navy: #092c38;
   --ela-blue: #0f8daa;
-  --ela-cyan: #00dbff;
-
+  --ela-cyan: #00dbff; */
+  --ela-navy: #001244;
+  --ela-blue: #1582b4;
+  --ela-cyan: #dda60c;
 
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -20523,7 +20525,7 @@ div.copied {
 
 /*  Header Dark Version */
 .ec-header-dark .navbar {
-  background: #1a283e;
+  background: var(--ela-navy);
 }
 .ec-header-dark .navbar .search-form .input-group input, .ec-header-dark .navbar .search-form .input-group .btn {
   background-color: var(--ela-navy);
@@ -21091,12 +21093,12 @@ div.copied {
     overflow: hidden;
   }
 }
-.ec-brand a img {
+.ec-brand a #brandlogo {
   max-width: 30px;
   vertical-align: middle;
 }
 .ec-brand .ec-brand-name {
-  color: var(--ela-navy);
+  color: var(--ela-navy)!important;
   font-size: 30px;
   margin-left: 5px;
   max-width: 170px;
@@ -21803,13 +21805,13 @@ div.copied {
 }
 
 /* Sidebar Bg Dark */
-.ec-sidebar-dark .ec-brand a img {
+.ec-sidebar-dark .ec-brand a #brandlogo {
   max-width: 30px;
   vertical-align: middle;
-  filter: brightness(5);
+  filter: brightness(1000);
 }
 .ec-sidebar-dark .ec-brand .ec-brand-name{
-  color: white;
+  color: white!important;
   font-size: 30px;
   margin-left: 5px;
   max-width: 170px;
@@ -21827,7 +21829,7 @@ div.copied {
   background: #37455a;
 }
 .ec-sidebar-dark .ec-left-sidebar {
-  background-color: #1a283e;
+  background-color: var(--ela-navy);
 }
 .ec-sidebar-dark .sidebar .sub-menu {
   background: #293546;
@@ -22152,7 +22154,7 @@ div.copied {
 
 /* Dark Version  */
 .right-ec-sidebar-dark .right-nav-container {
-  background-color: #1a283e;
+  background-color: var(--ela-navy);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -24827,6 +24829,12 @@ div.dataTables_wrapper div.dataTables_filter {
 .compact-spacing .navbar .sidebar-offcanvas-toggle,
 .compact-spacing .navbar .sidebar-toggle {
   height: 60px;
+}
+.ec-header-dark .navbar .navbar-right .navbar-nav .user-menu .dropdown-toggle {
+  color:white!important;
+}
+.navbar .navbar-right .navbar-nav .user-menu .dropdown-toggle {
+  color:var(--ela-navy)!important;
 }
 .compact-spacing .navbar .navbar-right .navbar-nav .user-menu .dropdown-toggle {
   line-height: 60px;

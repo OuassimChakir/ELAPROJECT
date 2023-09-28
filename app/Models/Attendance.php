@@ -18,51 +18,73 @@ class Attendance extends Model
         return Attendance::all();
     }
 
-    public static function checkAbsence($dateAbsence, $idGroup)
+    public static function checkAbsence($dateAbsence, $idElement)
     {
         return Attendance::where('dateAbsence', $dateAbsence)
-            ->where('idGroup', $idGroup)
+            ->where('idElement', $idElement)
             ->count();
     }
 
     //          gt
-    public static function getOneAbsence($idAttendance)
+    public static function getAttendance($idAttendance)
     {
-        return Attendance::find($idAttendance);
+        return Attendance::select('*')
+                ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+                ->join('students','students.idStudent','=','groupelements.idStudent')
+                ->where('idAttendance',$idAttendance)
+                ->first();
     }
-    // ------------ add Absence ------------//     
-    public static function insertAbsence(array $absence, array $matricule, $dateAbsence, $idGroup)
+
+    public static function getGroupAttendanceByDate($dateAbsence, $idElement)
     {
-        if (Attendance::checkAbsence($dateAbsence, $idGroup) == 0) {
-            for ($i = 0; $i < count($matricule); $i++) {
-                $datesave = [
-                    'absence' => $absence[$i],
-                    'dateAbsence' => $dateAbsence,
-                    'matricule' => $matricule[$i],
-                    'idGroup' => $idGroup,
-                ];
-                DB::table('Attendance')->insert($datesave);
-            }
-            return 'true';
-        } else
-            return 'false';
+        $date = explode('-',$dateAbsence);
+        return Attendance::selectRaw('*, DAY(dateAbsence) as day')
+            ->where('idElement', $idElement)
+            ->whereRaw('MONTH(dateAbsence) = '.$date[1].' AND YEAR(dateAbsence) = '.$date[0])
+            ->get();
+    }
+
+    public static function studentLastestAttendances($idStudent){
+        return Attendance::select('*')
+            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+            ->join('groups','groups.idGroup','=','groupelements.idGroup')
+            ->where('idStudent',$idStudent)
+            ->orderBy('dateAbsence','DESC')
+            ->skip(0)
+            ->take(20)
+            ->get();
+    }
+
+    // ------------ add Absence ------------//     
+    public static function markAttendance($absence, $dateAbsence, $idElement)
+    {
+        Attendance::insert([
+            'absence' => $absence,
+            'dateAbsence' => $dateAbsence,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+            'idElement' => $idElement,
+        ]);
     }
 
     // ---------- Update absence ---------- //
-    public static function updateAbsence($idAttendance, $absence)
+    public static function updateAbsence($idAttendance, $absence, $dateAbsence)
     {
-        $updatedAbsence = Attendance::find($idAttendance);
-        $updatedAbsence->absence = $absence;
-        $updatedAbsence->save();
+        Attendance::where('idAttendance',$idAttendance)->update([
+            'absence' => $absence,
+            'dateAbsence' => $dateAbsence,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
-    public static function selectListeAbsenceByDateIdgroup($dateAbsence, $idGroup)
-    {
+
+    // ---------- Total attendances in a month ---------- //
+    public static function countAttendances($idElement, $month){
         return Attendance::select('*')
-            ->join('students', 'students.matricule', '=', 'attendance.matricule')
-            ->where('dateAbsence', $dateAbsence)
-            ->where('idGroup', $idGroup)
-            ->get();
+                ->where('idElement',$idElement)
+                ->where('absence',0)
+                ->whereRaw('MONTH(dateAbsence) = '.$month)
+                ->count();
     }
 
     // ---------- Total absence for Each Month in the Scolare Year ---------- //
@@ -80,13 +102,11 @@ class Attendance extends Model
     }
 
 
-    public static function totalAbsenceDay($firstYear, $secondYear, $month)
+    public static function totalAbsenceDay($currentYear, $month)
     {
-        return DB::table('attendance')
-            ->selectRaw('count(idAttendance) AS absence, DAY(dateAbsence) AS day ,absence AS etatabsence')
+        return Attendance::selectRaw('count(idAttendance) AS absence, DAY(dateAbsence) AS day ,absence AS etatabsence')
             ->whereMonth("dateAbsence", $month)
-            ->whereYear("dateAbsence", $firstYear)
-            ->orWhereYear("dateAbsence", $secondYear)
+            ->whereYear("dateAbsence", $currentYear)
             ->groupByRaw("DAY(dateAbsence),etatabsence")
             ->get();
     }
@@ -94,8 +114,30 @@ class Attendance extends Model
     /* ---------------------------------
     /  Delete Attendance by Group
     /----------------------------------*/
-    public static function deleteGroupAbsence($idGroup)
+    public static function deleteGroupAttendance($idAttendance)
     {
-        Attendance::where('idGroup', $idGroup)->delete();
+        Attendance::find($idAttendance)->delete();
+    }
+    /* ---------------------------------
+    /  Delete Attendance by Group Element
+    /----------------------------------*/
+    public static function deleteGroupAttendancebyidElement($idElement)
+    {
+        Attendance::where('idElement', $idElement)->delete();
+    }
+
+
+    public static function deleteGroupAttendancebyidStudent($idStudent){
+        Attendance::select('*')
+            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+            ->where('groupelements.idStudent', $idStudent)
+            ->delete();
+    }
+
+    public static function deleteGroupAttendancebyidGroup($idGroup){
+        Attendance::select('*')
+            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
+            ->where('groupelements.idGroup', $idGroup)
+            ->delete();
     }
 }

@@ -15,7 +15,80 @@ Parametres ( @Otman )
 https://codecanyon.net/item/posly-pos-with-inventory-management-system/46842690
 https://1.envato.market/GjyGV9
 
+https://preview.themeforest.net/item/crete-personal-portfolio-and-creative-agency-html-template/full_screen_preview/46314511?_ga=2.32577022.1179853421.1693847630-2082815744.1692017634
+https://line-html.vercel.app/line-html/home-two.html
+
 
 Hostinger DB:
 Allokhadamate pass: !K;x0a6uA
 Ela pass: $kV1w5=~8U3
+
+
+ROLES:
+00 = Admin
+11 = Staff
+22 = Student
+33 = Professeur
+
+
+
+SELECT INVOICES:
+
+<div class="card p-2 mt-2">
+<div class="card-title pl-3 pt-3">
+    <h5>Factures à produire</h5>
+</div>
+<div class="card-body">
+    <form action="">
+        <table class="table table-bordered" id="invoicesGenerationTable">
+            <tbody>
+                <tr>
+                    <div>
+                        <td class="align-middle .checkCol">
+                            <input type="checkbox" class="form-check-input form-control" name="invoices[]" value="10">
+                        </td>
+                        <td class="infoCol">Octobre 2023</td>
+                    </div>
+                    <div>
+                        <td class="align-middle .checkCol">
+                            <input type="checkbox" class="form-check-input form-control" name="invoices[]" value="20">
+                        </td>
+                        <td class="infoCol">Octobre 2023</td>
+                    </div>
+                    <div>
+                        <td class="align-middle .checkCol">
+                            <input type="checkbox" class="form-check-input form-control" name="invoices[]" value="30">
+                        </td>
+                        <td class="infoCol">Octobre 2023</td>
+                    </div>
+                </tr>
+                
+            </tbody>
+        </table>
+    </form>
+</div>
+</div>
+
+<script src="{{ asset('JS/jquery.min.js') }}"></script>
+<script>
+    $(document).ready(function(){
+        $(".infoCol").click(function(){
+            var closestCheck = $(this).closest('td').prev().find('input[type=checkbox]');
+            if(closestCheck.prop('checked') == true)
+                closestCheck.prop('checked',false);
+            else
+                closestCheck.prop('checked',true);
+        });
+    });
+</script>
+
+
+
+
+
+////////////
+https://sala.uxper.co/services-01/
+https://demo.casethemes.net/troma/services-2/#
+https://preview.themeforest.net/item/draven-multipurpose-creative-theme/full_screen_preview/23114330?_ga=2.73892944.350679479.1694436194-2082815744.1692017634
+https://gaaga.wpengine.com/contact-us/
+https://brisk.uicore.co/digital-agency/services/

@@ -2,7 +2,6 @@
 
 namespace App\Models\Courses;
 
-use App\Models\Courses\CourseType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,14 +11,17 @@ class Subjects extends Model
     protected $table = "subjects";
     protected $primaryKey = "idSubject";
     public $timestamps = false;
-   protected $fillable = ['libelle','short','idCourseType'];
+    protected $fillable = ['libelle','short','idCourseType'];
       // Select of Subjects
        public static function selectSubjects(){
         return Subjects::all();
        }
 
        public static function getSubject($idSubject){
-        return Subjects::find($idSubject);
+        return Subjects::select('*')
+            ->join('coursetype','subjects.idCourseType','=','coursetype.idCourseType')
+            ->where('idSubject',$idSubject)
+            ->first();
        }
 
        public static function getSubjects(){
@@ -34,11 +36,10 @@ class Subjects extends Model
         Subjects::create([
          'libelle' => $libelle,
          'short' => $short,
-         'idCourseType' => $idCourseType
+         'idCourseType' => $idCourseType,
         ]);
        }
-
-    //    Update Subject
+      //    Update Subject
        public static function updateSubject($idSubject,$libelle,$short,$idCourseType){
         $subject = Subjects::find($idSubject);
         $subject->libelle = $libelle;
@@ -47,7 +48,7 @@ class Subjects extends Model
         $subject->save();
        }
     
-    //    Delete Subject
+       //    Delete Subject
        public static function deleteSubject($idSubject){
         Subjects::find($idSubject)->delete();
        }

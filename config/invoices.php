@@ -13,7 +13,7 @@ return [
     ],
 
     'serial_number' => [
-        'series'           => 'ELA-F',
+        'series'           => 'BMA-F',
         'sequence'         => 1,
         /**
          * Sequence will be padded accordingly, for ex. 00001
@@ -58,7 +58,7 @@ return [
     ],
 
     'paper' => [
-        // A4 = 210 mm x 297 mm = 595 pt x 842 pt
+        // A4 = 210 mm x 297 mm = 595 pt x 842 pt orientation :landscape / portrait
         'size'        => 'a4',
         'orientation' => 'portrait',
     ],
@@ -78,10 +78,8 @@ return [
          * Default attributes for Seller::class
          */
         'attributes' => [
-            'name'          => 'Easy Learn Academy',
-            'address'       => '1èr et 2ème étage N° 37 Lot El Oukhouwa Errachidia Maroc',
-            'Email'         => 'ela.communication.center@gmail.com',
-            'phone'         => '+212 658 183 965',
+            'name'          => 'BMA Centre',
+            'phone'         => '+212 708 13 44 91',
             'custom_fields' => [
                 /**
                  * Custom attributes for Seller::class
@@ -89,7 +87,7 @@ return [
                  * Used to display additional info on Seller section in invoice
                  * attribute => value
                  */
-                'phone 2' => '+212 658 186 062',
+                'Fixe' => '+212 808 65 37 74',
             ],
         ],
     ],

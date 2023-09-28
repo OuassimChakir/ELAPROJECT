@@ -19,22 +19,7 @@
         </div>
 
 </div>
-@if (session()->has('successMessage'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{session()->get('successMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('deleteMessage'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{session()->get('deleteMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('updateMessage'))
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{session()->get('updateMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif
+
 
     <div class="row">
         <div class="col-xl-12 col-lg-12">
@@ -49,30 +34,21 @@
                             <div class="row">
                             <div class="col-lg-6">
                             <div class="form-group ">
-                                <label for="text" class="form-label">Designation</label> 
-                                <div class="col">
-                                    <input id="libelle" name="designation" class="form-control" type="text" required>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                            <div class="form-group ">
-                                <label for="text" class="form-label">Code</label> 
-                                <div class="col">
-                                    <input id="short" name="code" class="form-control" type="text">
-                                    <small class="text-muted">Professeurs: <b>000</b> -- Staff: <b>111</b> </small>
-                                </div>
-                               
+                                <label for="parent-category" class="form-label">Designation</label> 
+                                    <textarea class="form-control" name="designation" id="exampleFormControlTextarea1" rows="1"></textarea>
                             </div>
                             </div>
                             <div class="col-lg-6">
-                            <div class="form-group ">
-                                <label for="parent-category" class="form-label">Description</label> 
-                                    <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <label for="code">code</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-text">
+                                      <input class="form-check-input mt-0" type="checkbox" id="Checkbox" value="true" aria-label="Checkbox for following text input">
+                                    </div>
+                                    <input type="text" class="form-control" id="code" name="code" aria-label="Text input with checkbox" disabled>
+                                  </div>
+                                  <small><b>0</b>: Staff <b>1</b>: Professeur</small>
                             </div>
                             </div>
-                           </div>
                             <div class="row">
                                 <div class="col-12">
                                     <button name="ajouterexpense" type="submit" class="btn btn-primary">Ajouter</button>
@@ -91,8 +67,8 @@
                         <table id="responsive-data-table"  class="table">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Designation</th>
-                                    <th>Description</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -102,8 +78,8 @@
 
                                     @foreach ($expenses as $expense)
                                         <tr>
-                                            <td>{{$expense->designation}} </td>
-                                            <td>{{$expense->description}}</td>
+                                            <td>{{$expense->idExpense}}</td>
+                                            <td>{{$expense->designation}}</td>
                                             <td>
                                                 <div class="btn-group-spaced">
                                                     <a href="{{route('typeDepenses.update.page',['idExpense'=>$expense->idExpense])}}">
@@ -135,5 +111,18 @@
                 $("#formSection").slideToggle();
             });
         });
+
+        $(document).on('click','#Checkbox', function() {
+                var checkbox = $(this);
+                if(checkbox.is(':checked')){
+                    $('#code').prop('disabled',false);
+                    $('#code').prop('value','0');
+                }
+                if(checkbox.is(':checked') == false){
+                    $('#code').prop('disabled',true);
+                    $('#code').prop('value',"Nulle");
+                }
+            });
     </script>
+    
 @endsection

@@ -4,24 +4,6 @@
 @endsection
 @section('content')
 <link rel="stylesheet" type="text/css" href="http://www.arabic-keyboard.org/keyboard/keyboard.css">
-  <!--message success -->
-  @if (session()->has('restoreMessage'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{session()->get('restoreMessage')}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @elseif(session()->has('deleteMessage'))
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      {{session()->get('deleteMessage')}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @elseif(session()->has('updateMessage'))
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      {{session()->get('updateMessage')}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @endif
-  <!-- end errour du validation -->
 <div class="breadcrumb-wrapper breadcrumb-contacts">
 <div>
 <h1>Archive des Professeurs</h1>
@@ -44,7 +26,6 @@
                                     <th><input type="checkbox" class="form-check-input" id="selectAllArchived"></th>
                                 @endif
                                 <th>Nom</th>
-                                <th>CINE</th>
                                 <th>Matière Enseignée</th>
                                 <th>Date d'engagement</th>
                                 <th>Supprimé le</th>
@@ -55,7 +36,7 @@
                         <tbody>
                             @foreach ($teachers as $teacher)
                                 <tr>
-                                    <td><input type="checkbox" name="archivedTeachers[]" value="{{$teacher->idStaff}}" class="form-check-input archivedStudents"></td>
+                                    <td><input type="checkbox" name="archivedTeachers[]" value="{{$teacher->idProfesseur}}" class="form-check-input archivedStudents"></td>
                                     <td>
                                         {{$teacher->prenom}}
                                         {{$teacher->nom}}
@@ -65,28 +46,27 @@
                                             <div class="badge badge-pill badge-purple">F</div>
                                         @endif
                                     </td>
-                                    <td>{{$teacher->cine}}</td>
                                     <td>
                                         <div class="badge bg-dark">
                                             {{$teacher->libelle}}
                                         </div>
                                     </td>
-                                    <td>{{$teacher->dateEngagement}}</td>
+                                    <td>{{$teacher->created_at}}</td>
                                     <td>{{$teacher->deleted_at}}</td>
                                     <td>
                                         <div class="">
-                                            <a href="{{route('teachers.archive.profil',['idProfesseur' => $teacher->idStaff])}}">
-                                                <button type="button" name="show" class="btn btn-outline-info" value="{{$teacher->idStaff}}">
+                                            <a href="{{route('teachers.archive.profil',['idProfesseur' => $teacher->idProfesseur])}}">
+                                                <button type="button" name="show" class="btn btn-outline-info" value="{{$teacher->idProfesseur}}">
                                                     <i class="bi bi-person-fill"></i>
                                                 </button>
                                             </a>
-                                            <a href="{{route('teachers.archive.restore',['idProfesseur' => $teacher->idStaff])}}">
-                                                <button type="button" name="show" class="btn btn-outline-success" value="{{$teacher->idStaff}}" onclick="return confirm('Vous êtes sûr?');">
+                                            <a href="{{route('teachers.archive.restore',['idProfesseur' => $teacher->idProfesseur])}}">
+                                                <button type="button" name="show" class="btn btn-outline-success" value="{{$teacher->idProfesseur}}" onclick="return confirm('Vous êtes sûr?');">
                                                     <i class="bi bi-arrow-repeat"></i>
                                                 </button>
                                             </a>
-                                            <a href="{{route('teachers.archive.delete',['idProfesseur'=>$teacher->idStaff])}}">
-                                                <button type="button" class="btn btn-outline-danger" name="delete" value="{{$teacher->idStaff}}" onclick="return confirm('Voulez-vous supprimer définitivement ce Professeur?');">
+                                            <a href="{{route('teachers.archive.delete',['idProfesseur'=>$teacher->idProfesseur])}}">
+                                                <button type="button" class="btn btn-outline-danger" name="delete" value="{{$teacher->idProfesseur}}" onclick="return confirm('Voulez-vous supprimer définitivement ce Professeur?');">
                                                         <i class="bi bi-trash-fill"></i>
                                                 </button>
                                             </a>

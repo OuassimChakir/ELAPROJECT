@@ -2,191 +2,273 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use App\Models\responsible\Student;
 use App\Models\Group;
 use App\Models\Attendance;
 use App\Models\Incomes\Payment;
 use App\Models\Expenses\Facture;
-use DateTime;
+use App\Models\GroupElements;
+use App\Models\Notes;
+use App\Models\responsible\Professeurs;
+use App\Models\Responsible\Staff;
+use App\Models\Roles;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use PHPUnit\TextUI\XmlConfiguration\Groups;
 
 class HomeController extends Controller
 {
     // Bisextil Method 
     public static function est_bissextile($annee)
     {
-        return date("m-d", strtotime("$annee-02-29")) == "02-29";    
+        return date("m-d", strtotime("$annee-02-29")) == "02-29";
     }
-   
-     
 
-    public function index(){
+
+
+    public function index()
+    {
         // ---------------- Année Scolaire ----------- //
         //dd(session()->get("user"));
-        if(!Storage::exists('anneeScolaire.txt')){
+        if (!Storage::exists('anneeScolaire.txt')) {
             $mois = intval(date('m'));
-            if($mois >= 9 && $mois <= 12){
+            if ($mois >= 9 && $mois <= 12) {
                 $premierAnnee = intval(date('Y'));
-                $deuxiemeAnne = $premierAnnee+1;
-            }elseif($mois <= 1 && $mois <= 8){
+                $deuxiemeAnne = $premierAnnee + 1;
+            } elseif ($mois <= 1 && $mois <= 6) {
                 $deuxiemeAnne = intval(date('Y'));
-                $premierAnnee = $deuxiemeAnne-1;
+                $premierAnnee = $deuxiemeAnne - 1;
             }
-            Storage::disk('local')->put('anneeScolaire.txt',$premierAnnee."\n".$deuxiemeAnne);
+            Storage::disk('local')->put('anneeScolaire.txt', $premierAnnee . "\n" . $deuxiemeAnne);
+        }else{
+            $scolareYears = Storage::get('anneeScolaire.txt');
+            $scolareYears = explode("\n", $scolareYears);
+            if(date('Y') == $scolareYears[1]){
+                Storage::disk('local')->put('professerus.txt', 0);
+                Storage::disk('local')->put('staff.txt', 0);
+                Storage::disk('local')->put('student.txt', 0);
+            }
         }
-
-        $student=new Student();
-        $students=$student->totalStudents(); 
-        $NumGroups=Group::totalGroups(); 
-        $Payments=Payment::totalAmount();  
-        $Factures=Facture::totalAmountExpense();
 
         /* ------------------------------------
-        / Graph Dépenses et Revenus
+        / Admins & Staff
         / -------------------------------------*/
-        $scolareYears = Storage::get('anneeScolaire.txt');
-        $scolareYears = explode("\n",$scolareYears);
-        $salesGraph = Facture::totalAmountExepenseMonth($scolareYears[0],$scolareYears[1]);
-        $salesGraphPayment = Payment::totalAmountIncomeMonth($scolareYears[0],$scolareYears[1]);
-        $depenses = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $inconespayment = [0,0,0,0,0,0,0,0,0,0,0,0];
-        for($i = 0; $i<12; $i++){
-            foreach($salesGraph as $month){
-                switch ($month->mois) {
-                    case 9: $depenses[0] = $month->amount; break;
-                    case 10: $depenses[1] = $month->amount; break;
-                    case 11: $depenses[2] = $month->amount; break;
-                    case 12: $depenses[3] = $month->amount; break;
-                    case 1: $depenses[4] = $month->amount; break;
-                    case 2: $depenses[5] = $month->amount; break;
-                    case 3: $depenses[6] = $month->amount; break;
-                    case 4: $depenses[7] = $month->amount; break;
-                    case 5: $depenses[8] = $month->amount; break;
-                    case 6: $depenses[9] = $month->amount; break;
-                    case 7: $depenses[10] = $month->amount; break;
-                    case 8: $depenses[11] = $month->amount; break;                    
+        $role = Roles::getRole(Auth::user()->idRole);
+        if($role->codeRole == '00' || $role->codeRole == '11'){
+            $student = new Student();
+            $students = $student->totalStudents();
+            $NumGroups = Group::totalGroups();
+            $Payments = Payment::totalAmount();
+            $Factures = Facture::totalAmountExpense();
+            $teachers = Professeurs::getProfesseurs()->count();
+            $staffs = Staff::getStaffs()->count();
+            $Inscrits = Payment::nbInscrits();
+            /* ------------------------------------
+            / Graph Dépenses et Revenus
+            / -------------------------------------*/
+            $scolareYears = Storage::get('anneeScolaire.txt');
+            $scolareYears = explode("\n", $scolareYears);
+            $salesGraph = Facture::totalAmountExepenseMonth($scolareYears[0], $scolareYears[1]);
+            $salesGraphPayment = Payment::totalAmountIncomeMonth($scolareYears[0], $scolareYears[1]);
+            $depenses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            $inconespayment = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            for ($i = 0; $i < 12; $i++) {
+                foreach ($salesGraph as $month) {
+                    switch ($month->mois) {
+                        case 9:
+                            $depenses[0] = $month->amount;
+                            break;
+                        case 10:
+                            $depenses[1] = $month->amount;
+                            break;
+                        case 11:
+                            $depenses[2] = $month->amount;
+                            break;
+                        case 12:
+                            $depenses[3] = $month->amount;
+                            break;
+                        case 1:
+                            $depenses[4] = $month->amount;
+                            break;
+                        case 2:
+                            $depenses[5] = $month->amount;
+                            break;
+                        case 3:
+                            $depenses[6] = $month->amount;
+                            break;
+                        case 4:
+                            $depenses[7] = $month->amount;
+                            break;
+                        case 5:
+                            $depenses[8] = $month->amount;
+                            break;
+                        case 6:
+                            $depenses[9] = $month->amount;
+                            break;
+                        case 7:
+                            $depenses[10] = $month->amount;
+                            break;
+                        case 8:
+                            $depenses[11] = $month->amount;
+                            break;
+                    }
                 }
             }
-        }
-        for($i = 0; $i<12; $i++){
-            foreach($salesGraphPayment as $month){
-                switch ($month->mois) {
-                    case 9: $inconespayment[0] = $month->amount; break;
-                    case 10: $inconespayment[1] = $month->amount; break;
-                    case 11: $inconespayment[2] = $month->amount; break;
-                    case 12: $inconespayment[3] = $month->amount; break;
-                    case 1: $inconespayment[4] = $month->amount; break;
-                    case 2: $inconespayment[5] = $month->amount; break;
-                    case 3: $inconespayment[6] = $month->amount; break;
-                    case 4: $inconespayment[7] = $month->amount; break;
-                    case 5: $inconespayment[8] = $month->amount; break;
-                    case 6: $inconespayment[9] = $month->amount; break;
-                    case 7: $inconespayment[10] = $month->amount; break;
-                    case 8: $inconespayment[11] = $month->amount; break;                    
+            for ($i = 0; $i < 12; $i++) {
+                foreach ($salesGraphPayment as $month) {
+                    switch ($month->mois) {
+                        case 9:
+                            $inconespayment[0] = $month->amount;
+                            break;
+                        case 10:
+                            $inconespayment[1] = $month->amount;
+                            break;
+                        case 11:
+                            $inconespayment[2] = $month->amount;
+                            break;
+                        case 12:
+                            $inconespayment[3] = $month->amount;
+                            break;
+                        case 1:
+                            $inconespayment[4] = $month->amount;
+                            break;
+                        case 2:
+                            $inconespayment[5] = $month->amount;
+                            break;
+                        case 3:
+                            $inconespayment[6] = $month->amount;
+                            break;
+                        case 4:
+                            $inconespayment[7] = $month->amount;
+                            break;
+                        case 5:
+                            $inconespayment[8] = $month->amount;
+                            break;
+                        case 6:
+                            $inconespayment[9] = $month->amount;
+                            break;
+                        case 7:
+                            $inconespayment[10] = $month->amount;
+                            break;
+                        case 8:
+                            $inconespayment[11] = $month->amount;
+                            break;
+                    }
                 }
             }
+            $maxinconespayment = max($inconespayment);
+            $maxdepenses = max($depenses);
+            if ($maxinconespayment >= $maxdepenses)
+                $max = $maxinconespayment;
+            else
+                $max = $maxdepenses;
+
+            /* ---------------------------------
+            / Absence Activity CHART
+            / ---------------------------------*/
+            $currentMonth = date('m');
+            $currentYear = date('Y');
+            $Attend = Attendance::totalAbsenceDay($currentYear, $currentMonth);
+            // Fill Month Days
+            $nombreJours = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
+            // Fill Arrays With Values
+            $Absences = $present = array_fill(0, $nombreJours, 0);
+            foreach ($Attend as $value) {
+                if ($value->etatabsence == '0')
+                    $present[$value->day - 1] = $value->absence;
+                elseif ($value->etatabsence == '1')
+                    $Absences[$value->day - 1] = $value->absence;
+            }
+
+            $maxpresent = max($present);
+            $maxAbsences = max($Absences);
+            if ($maxpresent >= $maxAbsences)
+                $maxAP = $maxpresent;
+            else
+                $maxAP = $maxAbsences;
+
+            $days = [];
+            foreach ($Absences as $key => $value) {
+                $days[$key] = $key + 1;
+            }
+            // End Absences
+
+            /* ---------------------------------
+            / Groups Types CHART PIE
+            / ---------------------------------*/
+            // types Groupe
+            $typesgroupes = Group::StatisticTypesGroupes();
+            $tygroup = $nbTypeGroup = [];
+            foreach ($typesgroupes as $type) {
+                $tygroup[] = $type->course;
+                $nbTypeGroup[] = $type->nbtypegroupes;
+            }
+
+            $chartjs = app()->chartjs
+                ->name('pieChartTest')
+                ->type('pie')
+                ->size(['width' => 300, 'height' => 300])
+                ->labels($tygroup)
+                ->datasets([
+                    [
+                        'backgroundColor' => ['#FF6384', '#36A2EB', "#8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
+                        'hoverBackgroundColor' => ['#FF6384', '#36A2EB', "#8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
+                        'data' => $nbTypeGroup
+                    ]
+                ])
+                ->options([]);
+            // dd($chartjs->get('datasets')[0]['backgroundColor']);
+
+            // table de   facture 
+
+            $allfacture = Facture::allFactureParDate();
+
+            return view('home')->with('students', $students)->with([
+                'NumGroups' =>  $NumGroups,
+                'Payments' =>  $Payments,
+                'Factures' =>  $Factures,
+                'scolareYears' =>  $scolareYears,
+                'depenses' =>  $depenses,
+                'inconespayment' =>  $inconespayment,
+                'present' =>  $present,
+                'Absences' =>  $Absences,
+                'chartjs' =>  $chartjs,
+                'max' =>  $max,
+                'maxAP' =>  $maxAP,
+                'days' =>  $days,
+                'allfacture' =>  $allfacture,
+                'staffs' => $staffs,
+                'professeurs' => $teachers,
+                'Inscrits' => $Inscrits,
+            ]);
+        }elseif($role->codeRole == '22'){
+            /* ------------------------------------
+            / Students Home
+            / -------------------------------------*/
+            $student = Student::getStudent(auth()->user()->idStudent);
+            $pendingPaiment = Payment::getStudentPendingPaiment(auth()->user()->idStudent);
+            $studentGroups = GroupElements::studentGroups(auth()->user()->idStudent);
+            $lastestAttendances = Attendance::studentLastestAttendances(auth()->user()->idStudent);
+            $notes = Notes::studentNotes(auth()->user()->idStudent);
+            return view('studenthome')->with([
+                'student' => $student,
+                'pendingPaiment' => $pendingPaiment,
+                'studentGroups' => $studentGroups,
+                'lastestAttendances' => $lastestAttendances,
+                'notes' => $notes,
+            ]);
+        }elseif($role->codeRole=='33'){
+            /* ------------------------------------
+            / Teachers Home
+            / -------------------------------------*/
+            $teacher = Professeurs::getProfesseur(auth()->user()->idProfesseur);
+            $pendingPaiment = Facture::getFacturesByProf(auth()->user()->idProfesseur);
+            $teacherGroups = Group::getProfGroups(auth()->user()->idProfesseur);
+            return view('teacherhome')->with([
+                'teacher' => $teacher,
+                'teacherGroups' => $teacherGroups,
+                'pendingPaiment'=>$pendingPaiment,
+            ]);
         }
-        $maxinconespayment=max($inconespayment);
-        $maxdepenses=max($depenses);
-        if($maxinconespayment >= $maxdepenses)
-             $max=$maxinconespayment;
-             else $max=$maxdepenses;
-
-        /* ---------------------------------
-        / Absence Activity CHART
-        / ---------------------------------*/
-        $currentMonth = date('m');
-        $Attend = Attendance::totalAbsenceDay($scolareYears[0],$scolareYears[1],$currentMonth);
-        // Fill Month Days
-        $nombreJours = 0;
-        switch ($currentMonth) {
-            case '01': $nombreJours = 31; break;
-            case '03': $nombreJours = 31; break;
-            case '04': $nombreJours = 30; break;
-            case '05': $nombreJours = 31; break;
-            case '06': $nombreJours = 30; break;
-            case '07': $nombreJours = 31; break;
-            case '08': $nombreJours = 31; break;      
-            case '09': $nombreJours = 30; break;
-            case '10': $nombreJours = 31; break;
-            case '11': $nombreJours = 30; break;
-            case '12': $nombreJours = 31; break;              
-        }
-        if($currentMonth == '02'){
-            if(HomeController::est_bissextile(date('Y')))
-                $nombreJours = 29;
-            else 
-                $nombreJours = 28;
-        }
-        
-        // Fill Arrays With Values
-        $Absences = $present = array_fill(0,$nombreJours,0);
-        foreach ($Attend as $value) {
-            if($value->etatabsence == '0')
-                $present[$value->day-1] = $value->absence;
-            elseif($value->etatabsence == '1')
-                $Absences[$value->day-1] = $value->absence;
-        }
-
-        $maxpresent=max($present);
-        $maxAbsences=max($Absences);
-        if($maxpresent >= $maxAbsences)
-            $maxAP=$maxpresent;
-        else 
-            $maxAP=$maxAbsences;
-        
-        $days = [];
-        foreach ($Absences as $key => $value) {
-            $days[$key] = $key + 1;
-        }
-        // End Absences
-    
-        /* ---------------------------------
-        / Groups Types CHART PIE
-        / ---------------------------------*/
-        // types Groupe
-         $typesgroupes=Group::StatisticTypesGroupes();
-         foreach($typesgroupes as $type){
-                $tygroup[]=$type->course;
-                $nbTypeGroup[]=$type->nbtypegroupes;
-         }
-
-        $chartjs = app()->chartjs
-        ->name('pieChartTest')
-        ->type('pie')
-        ->size(['width' => 300, 'height' => 300])
-        ->labels($tygroup)
-        ->datasets([
-            [
-                'backgroundColor' => ['#FF6384', '#36A2EB',"8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
-                'hoverBackgroundColor' => ['#FF6384', '#36A2EB',"8061ef", "#ffa128", "#7be6ff", "#93ff7b", "#f67bff"],
-                'data' => $nbTypeGroup
-            ]
-        ])
-        ->options([]);
-        // dd($chartjs->get('datasets')[0]['backgroundColor']);
-        
-        // table de   facture 
-
-        $allfacture=Facture::allFactureParDate();
-
-        return view('home')->with('students',$students)
-                           ->with('NumGroups',$NumGroups)
-                           ->with('Payments',$Payments)
-                           ->with('Factures',$Factures)
-                           ->with('scolareYears',$scolareYears)
-                           ->with('depenses',$depenses)
-                           ->with('inconespayment',$inconespayment)
-                           ->with('present',$present)
-                           ->with('Absences',$Absences)
-                           ->with('chartjs',$chartjs)
-                           ->with('max',$max)
-                           ->with('maxAP',$maxAP)
-                           ->with('days',$days)
-                           ->with('allfacture',$allfacture);
-    }     
-
+    }
 }

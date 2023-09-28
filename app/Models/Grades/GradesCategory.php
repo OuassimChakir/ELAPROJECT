@@ -13,41 +13,32 @@ class GradesCategory extends Model
    public $timestamps = false;
    protected $fillable = ['category', 'description', 'idCourseType'];
 
-   public static function getGradeCategory($idGradeCategory)
-   {
+   public static function getGradeCategory($idGradeCategory){
       return GradesCategory::find($idGradeCategory);
    }
 
-   public static function getGradeCategories()
-   {
-      return GradesCategory::select('*')
-         ->join('coursetype', 'gradescategories.idCourseType', '=', 'coursetype.idCourseType')
-         ->get();
+   public static function getGradeCategories(){
+      return GradesCategory::select('*')->get();
    }
 
    // INSERT DATA (New Subject)
-   public static function addGradeCategory($category, $description, $idCourseType)
-   {
+   public static function addGradeCategory($category,$description,$idCourseType){
       GradesCategory::create([
          'category' => $category,
          'description' => $description,
-         'idCourseType' => $idCourseType
+         'idCourseType' => $idCourseType,
       ]);
    }
 
    //    Update Subject
-   public static function updateGradeCategory($idGradeCategory, $category, $description, $idCourseType)
-   {
+   public static function updateGradeCategory($idGradeCategory, $category){
       $gradeCategory = GradesCategory::find($idGradeCategory);
       $gradeCategory->category = $category;
-      $gradeCategory->description = $description;
-      $gradeCategory->idCourseType = $idCourseType;
       $gradeCategory->save();
    }
 
    //    Delete Subject
-   public static function deleteGradeCategory($idGradeCategory)
-   {
+   public static function deleteGradeCategory($idGradeCategory){
       GradesCategory::find($idGradeCategory)->delete();
    }
 }

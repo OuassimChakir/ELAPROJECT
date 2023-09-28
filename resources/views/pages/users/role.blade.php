@@ -3,22 +3,7 @@
     liste des Roles
 @endsection
 @section('content')
-@if (session()->has('successMessage'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{session()->get('successMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('deleteMessage'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{session()->get('deleteMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('updateMessage'))
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{session()->get('updateMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif
+
   <!--errour du validation -->
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -63,7 +48,6 @@
 											<label for="codeRole" class="col-12 col-form-label">Code Roles</label> 
 											<div class="col-12">
 												<input id="codeRole" name="codeRole" class="form-control" type="text" value="{{$updatedRoles->codeRole}}">
-												<small>01 : Administrateur - 02 : Comptable</small>
 											</div>
 										</div>
 
@@ -100,7 +84,6 @@
 											<label for="codeRole" class="col-12 col-form-label">Code Roles</label> 
 											<div class="col-12">
 												<input id="codeRole" name="codeRole" class="form-control" type="text">
-												<small>01 : Administrateur - 02 : Comptable</small>
 											</div>
 										</div>
 

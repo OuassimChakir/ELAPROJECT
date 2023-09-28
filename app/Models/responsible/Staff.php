@@ -10,170 +10,84 @@ class Staff extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $table = "staff";
+    protected $table = "staffs";
     protected $primaryKey = "idStaff";
-    protected $fillable = ['cnie', 'nom', 'prenom', 'sexe', 'email', 'numTel', 'idStaffType', 'idSubject', 'dateEngagement', 'UPDATED_AT'];
+    protected $fillable = ['cnie', 'nom', 'prenom', 'sexe', 'numTel', 'idStaffType', 'idSubject', 'created_at', 'UPDATED_AT'];
 
-    // Get All Staff & Teachers
-    public static function getStaffs()
-    {
-        return Staff::where('staff.idSubject', NULL)
-            ->join('staffType', 'staff.idStaffType', '=', 'staffType.idStaffType')
+    // Get All Staff 
+    public static function getStaffs(){
+        return Staff::select('*')
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
             ->get();
     }
-    public static function getProfesseurs()
-    {
-        return Staff::where('staff.idStaffType', NULL)
-            ->leftJoin('subjects', 'subjects.idSubject', '=', 'staff.idSubject')
-            ->get();
-    }
-    // Select one Staff || One Teacher
-    public static function getStaff($idStaff)
-    {
-        return Staff::where('staff.idStaff', $idStaff)
-            ->join('staffType', 'staff.idStaffType', '=', 'staffType.idStaffType')
+    // Select one Staff || 
+    public static function getStaff($idStaff){
+        return Staff::where('staffs.idStaff', $idStaff)
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
             ->first();
     }
-
-    public static function getProfesseur($idProfesseur)
-    {
-        return Staff::where('staff.idStaff', $idProfesseur)
-            ->join('subjects', 'subjects.idSubject', '=', 'staff.idSubject')
-            ->first();
-    }
-    // Adding a new staff || new Professeur
-    public static function addStaff($cine, $prenom, $nom, $sexe, $email, $numTel, $idStaffType)
-    {
-        Staff::Create([
+    // Adding a new staff ||
+    public static function addStaff($cine, $prenom, $nom, $sexe, $numTel, $idStaffType){
+        $idStaff=  Staff::Create([
             'cine' => $cine,
             'prenom' => $prenom,
             'nom' => $nom,
             'sexe' => $sexe,
-            'email' => $email,
             'numTel' => $numTel,
             'idStaffType' => $idStaffType,
-            'dateEngagement' => date('Y-m-d H:i:s'),
-            'UPDATED_AT' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
         ]);
+        return $idStaff;
     }
 
-    public static function addProfesseur($cine, $prenom, $nom, $sexe, $email, $numTel, $idSubject)
-    {
-        Staff::Create([
-            'cine' => $cine,
-            'prenom' => $prenom,
-            'nom' => $nom,
-            'sexe' => $sexe,
-            'email' => $email,
-            'numTel' => $numTel,
-            'idSubject' => $idSubject,
-            'dateEngagement' => date('Y-m-d H:i:s'),
-            'UPDATED_AT' => date('Y-m-d H:i:s')
-        ]);
-    }
-
-    // Update Staff || Professeur
-    public static function updateStaff($idStaff, $cine, $prenom, $nom, $sexe, $email, $numTel, $idStaffType)
-    {
+    // Update Staff || 
+    public static function updateStaff($idStaff, $cine, $prenom, $nom, $sexe, $numTel, $idStaffType){
         $staff = Staff::find($idStaff);
         $staff->cnie = $cine;
         $staff->nom = $nom;
         $staff->prenom = $prenom;
-        $staff->sexe = $sexe;
-        $staff->email = $email;
+        $staff->sexe = $sexe;   
         $staff->numTel = $numTel;
         $staff->idStaffType = $idStaffType;
         $staff->save();
     }
-
-    public static function updateProfesseur($idStaff, $cine, $prenom, $nom, $sexe, $email, $numTel, $idStaffType, $idSubject)
-    {
-        $staff = Staff::find($idStaff);
-        $staff->cnie = $cine;
-        $staff->nom = $nom;
-        $staff->prenom = $prenom;
-        $staff->sexe = $sexe;
-        $staff->email = $email;
-        $staff->numTel = $numTel;
-        $staff->idStaffType = $idStaffType;
-        $staff->idSubject = $idSubject;
-        $staff->save();
-    }
-
-    // Delete Staff || Delete Professeur
-    public static function deleteStaff($idStaff)
-    {
+    // Delete Staff ||
+    public static function deleteStaff($idStaff){
         Staff::find($idStaff)->delete();
     }
-
-    public static function deleteProfesseur($idStaff)
-    {
-        Staff::find($idStaff)->delete();
+    public static function getStaffsQuery(){
+        return Staff::select('*')
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
+            ->withQueryString();
     }
-
     // --------------- Staff ARCHIVE ------------------ //
 
     // Select deleted Staff
-    public static function softDeletedStaffs()
-    {
-        return Staff::onlyTrashed()->where('staff.idSubject', NULL)
-            ->join('stafftype', 'staff.idStaffType', '=', 'stafftype.idStaffType')
+    public static function softDeletedStaffs(){
+        return Staff::onlyTrashed()
+            ->select('*')
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
             ->get();
     }
 
-    public static function getDeletedStaff($idStaff)
-    {
+    public static function getDeletedStaff($idStaff){
         return Staff::onlyTrashed()
-            ->join('stafftype', 'staff.idStaffType', '=', 'stafftype.idStaffType')
-            ->where('staff.idStaff', $idStaff)
-            ->where('staff.idSubject', NULL)
+            ->join('stafftype', 'staffs.idStaffType', '=', 'stafftype.idStaffType')
+            ->where('staffs.idStaff', $idStaff)
             ->first();
     }
 
-    public static function restoreStaff($idStaff)
-    {
+    public static function restoreStaff($idStaff){
         Staff::withTrashed()
             ->where('idStaff', $idStaff)
             ->restore();
     }
 
-    public static function forceDeleteStaff($idStaff)
-    {
+    public static function forceDeleteStaff($idStaff){
         Staff::withTrashed()
             ->where('idStaff', $idStaff)
             ->forceDelete();
     }
 
-    // --------------- TEACHER ARCHIVE ------------------ //
-
-    // Select deleted Staff
-    public static function softDeletedTeachers()
-    {
-        return Staff::onlyTrashed()->where('staff.idStaffType', NULL)
-            ->leftJoin('subjects', 'subjects.idSubject', '=', 'staff.idSubject')
-            ->get();
-    }
-
-    public static function getDeletedTeacher($idStaff)
-    {
-        return Staff::onlyTrashed()
-            ->where('staff.idStaff', $idStaff)
-            ->where('staff.idStaffType', NULL)
-            ->leftJoin('subjects', 'subjects.idSubject', '=', 'staff.idSubject')
-            ->first();
-    }
-
-    public static function restoreTeacher($idStaff)
-    {
-        Staff::withTrashed()
-            ->where('idStaff', $idStaff)
-            ->restore();
-    }
-
-    public static function forceDeleteTeacher($idStaff)
-    {
-        Staff::withTrashed()
-            ->where('idStaff', $idStaff)
-            ->forceDelete();
-    }
 }

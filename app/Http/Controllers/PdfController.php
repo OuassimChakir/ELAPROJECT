@@ -3,29 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expenses\Facture;
-use Illuminate\Http\Request;
 use LaravelDaily\Invoices\Invoice;
 use LaravelDaily\Invoices\Classes\Buyer;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
-use LaravelDaily\Invoices\Classes\Seller;
+
 
 class PdfController extends Controller
 {
     public function pdf($idExpensePayment){
-        $Facture = new Facture();
-        $data = $Facture->getFacturePdf($idExpensePayment);
-        if(!is_null($data->idStaff)){
+        
+        $data =Facture::getFacturePdf($idExpensePayment);
+        if(!is_null($data->idStaff ||$data->idProfesseur )){
             $customer = new Buyer([
                 'name'          => $data->prenom.' '.$data->nom,
-                'phone'         => $data->numTel,
                 'custom_fields' => [
-                    'CNIE' => $data->cnie,
+                    'Paiement' => $data->designation,
+                    'description' => $data->description,
                 ],
             ]);
+            
         }else{
             $customer = new Buyer([
                 'custom_fields' => [
-                    'Payement' => $data->designation,
+                    'Paiement' => $data->designation,
                     'description' => $data->description,
                 ],
             ]);
@@ -38,8 +38,8 @@ class PdfController extends Controller
             ->buyer($customer)
             ->addItem($item);
         $invoice->sequence($data->idExpensePayment);
-        $invoice->name = "ELA Facture";
-        $invoice->logo = asset('images/Logo/logo_ela.png');
+        $invoice->name = "BMA Facture";
+        $invoice->logo = asset('images/Logo/logo.png');
         $invoice->hasItemUnits = true;
         return $invoice->stream();
     }

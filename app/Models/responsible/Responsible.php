@@ -8,42 +8,36 @@ use Illuminate\Database\Eloquent\Model;
 class Responsible extends Model
 {
     protected $table = "responsibles";
-    protected $primaryKey = "cnieResponsible";
+    protected $primaryKey = "idResponsible";
     public $incrementing = false;
-    protected $keyType = 'varchar';
     use HasFactory;
+    protected $fillable = ['nom','prenom','cnie','numTel','sexe','created_at','updated_at'];
 
-    public function addResponsible($cnieResponsible,$nom,$prenom,$numTel,$sexe,$matricule){
-        $this->cnieResponsible = $cnieResponsible;
-        $this->nom = $nom;
-        $this->prenom = $prenom;
-        $this->numTel = $numTel;
-        $this->sexe = $sexe;
-        $this->save();
+    public static function addResponsible($cnie,$nom,$prenom,$numTel,$sexe){
+        $idResponsible = Responsible::insertGetId([
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'numTel' => $numTel,
+            'cnie' => $cnie,
+            'sexe' => $sexe,            
+        ]);
 
-        $Student = new Student();
-        $updatedStudent = $Student::find($matricule);
-        $updatedStudent->cnieResponsible = $cnieResponsible;
-        $updatedStudent->save();
+        return $idResponsible;
     }
-    public function getResponsible($cnieResponsible){
-        return $this::find($cnieResponsible);
-    }
-
-    public function deleteResponsible($cnieResponsible,$matricule){
-        $student = new Student();
-        $updatedStudent = $student::find($matricule);
-        $updatedStudent -> cnieResponsible = NULL;
-        $updatedStudent -> save();
-        $this::find($cnieResponsible)->delete();
-    }
-    public static function fordeleteResponsible($cnieResponsible){
-          Responsible::find($cnieResponsible)->delete();
+    public static function getResponsible($idResponsible){
+        return Responsible::find($idResponsible);
     }
 
-    public function updateResponsible($cnieResponsible,$nom,$prenom,$numTel,$sexe){
-        $responsible = $this::find($cnieResponsible);
-        $responsible->cnieResponsible = $cnieResponsible;
+    public static function deleteResponsible($idResponsible){
+        Responsible::find($idResponsible)->delete();
+    }
+    public static function fordeleteResponsible($idResponsible){
+          Responsible::find($idResponsible)->delete();
+    }
+
+    public static function updateResponsible($idResponsible,$cnie,$nom,$prenom,$numTel,$sexe){
+        $responsible = Responsible::find($idResponsible);
+        $responsible->cnie = $cnie;
         $responsible->nom = $nom;
         $responsible->prenom = $prenom;
         $responsible->numTel = $numTel;

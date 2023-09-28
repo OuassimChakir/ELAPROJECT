@@ -7,96 +7,134 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Psy\Readline\Hoa\Console;
 
 class Student extends Model
 {
     use SoftDeletes;
     use HasFactory;
     protected $table = "students";
-    protected $primaryKey = "matricule";
+    protected $primaryKey = "idStudent";
     public $incrementing = false;
+    protected $fillable = ['idStudent','matricule','nom_fr','nom_ar','prenom_fr','prenom_ar','cnie','numTel','sexe','adresse','dateNaissance','created_at','updated_at','deleted_at'];
     
         // Adding a new student 
-    public function addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,
-        $email,$numTel,$sexe,$adresse,$dateNaissance){
-            $this->matricule = $matricule;
-            $this->nom_fr = $nom_fr;
-            $this->nom_ar = $nom_ar;
-            $this->prenom_fr = $prenom_fr;
-            $this->prenom_ar = $prenom_ar;
-            $this->cnie = $cnie;
-            $this->email = $email;
-            $this->numTel = $numTel;
-            $this->sexe = $sexe;
-            $this->adresse = $adresse;
-            $this->dateNaissance = $dateNaissance;
-            $this->save();
+    public static function addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$numTel,$sexe,$adresse,$dateNaissance){
+            $student = Student::insertGetId([
+                'matricule' => $matricule,
+                'nom_fr' => $nom_fr,
+                'nom_ar' => $nom_ar,
+                'prenom_fr' => $prenom_fr,
+                'prenom_ar' => $prenom_ar,
+                'cnie' => $cnie,
+                'numTel' => $numTel,
+                'sexe' => $sexe,
+                'adresse' => $adresse,
+                'dateNaissance' => $dateNaissance,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+            return $student;
     }
 
     // Get All Students
-    public function getStudents(){
-        return $this::all();
+    public static function getStudents(){
+        return Student::selectRaw("students.*,count(idPayment) - sum(etat) as pendingPayment")
+            ->leftjoin('payment','payment.idStudent','=','students.idStudent')
+            ->whereNotNull('etat')
+            ->groupBy('students.idStudent')
+            ->get();
+    }
+    public static function totalStudents(){
+        return Student::select()->get()->count();
     
     }
-    public function totalStudents(){
-        return $this::select()->get()->count();
-    
+    public static function selectStudents($idStudent){
+        return Student::find($idStudent);
     }
-    public function selectStudents($matricule){
-        return $this::find($matricule);
-    }
-    // Select one Student
-    public function getStudent($matricule){
-        return $this::select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
-                ->where('students.matricule',$matricule)
-                ->leftJoin('responsibles','students.cnieResponsible','=','responsibles.cnieResponsible')->first();
+    public static function selectStudent($idStudent){
+        return Student::where('idStudent', $idStudent)->first();
+       ;
     }
 
-    // Adding a new student 
+
+
+    // Select one Student
+    public static function getStudent($idStudent){
+        return Student::select('students.*',
+        'responsibles.nom as responsibleNom',
+        'responsibles.prenom as responsiblePrenom',
+        'responsibles.cnie as responsibleCnie',
+        'responsibles.sexe as responsibleSexe', 
+        'responsibles.numTel as responsibleTel',
+        'responsibles.created_at as responsibleCreated_at',
+        'responsibles.updated_at as responsibleUpdated_at',)
+                ->leftJoin('responsibles','students.idResponsible','=','responsibles.idResponsible')
+                ->where('students.idStudent',$idStudent)
+                ->first();
+    }
+
 
 
     // Update Student
-    public function updateStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$email,$numTel,$sexe,$adresse,$dateNaissance){
-        $student = $this::find($matricule);
-        $student->nom_fr = $nom_fr;
-        $student->nom_ar = $nom_ar;
-        $student->prenom_fr = $prenom_fr;
-        $student->prenom_ar = $prenom_ar;
-        $student->cnie = $cnie;
-        $student->email = $email;
-        $student->numTel = $numTel;
-        $student->sexe = $sexe;
-        $student->adresse = $adresse;
-        $student->dateNaissance = $dateNaissance;
-        $student->save();
+    public static function updateStudent($idStudent,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$numTel,$sexe,$adresse,$dateNaissance){
+        Student::where('idStudent',$idStudent)->update([
+            'nom_fr' => $nom_fr,
+            'nom_ar' => $nom_ar,
+            'prenom_fr' => $prenom_fr,
+            'prenom_ar' => $prenom_ar,
+            'cnie' => $cnie,
+            'numTel' => $numTel,
+            'sexe' => $sexe,
+            'adresse' => $adresse,
+            'dateNaissance' => $dateNaissance,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
+    
+    /* ---------------------------------------
+    / Archive & Delete
+    / ---------------------------------------*/
 
     // Delete Student
-    public function deleteStudent($matricule){
-        $this::find($matricule)->delete();
+    public static function deleteStudent($idStudent){
+        Student::find($idStudent)->delete();
     }
 
-    // Select deleted Students
-    public function softDeletedStudents(){
-        return $this::onlyTrashed()->get();
+    public static function softDeletedStudents(){
+        return Student::onlyTrashed()->select('*')->get();
     }
 
-    public function getDeletedStudent($matricule){
-        return $this::onlyTrashed()
-            ->select('students.*','responsibles.*','students.sexe as sSexe','students.numTel as sNumTel','students.CREATED_AT as sCREATED_AT','students.UPDATED_AT as sUPDATED_AT','students.deleted_at as sDELETED_AT','responsibles.sexe as rSexe', 'responsibles.numTel as rTel',)
-            ->where('students.matricule',$matricule)
-            ->leftJoin('responsibles','students.cnieResponsible','=','responsibles.cnieResponsible')->first();
+    public static function getDeletedStudent($idStudent){
+        return Student::onlyTrashed()
+        ->select('students.*',
+        'responsibles.nom as responsibleNom',
+        'responsibles.prenom as responsiblePrenom',
+        'responsibles.cnie as responsibleCnie',
+        'responsibles.sexe as responsibleSexe', 
+        'responsibles.numTel as responsibleTel',
+        'responsibles.created_at as responsibleCreated_at',
+        'responsibles.updated_at as responsibleUpdated_at',)
+                ->leftJoin('responsibles','students.idResponsible','=','responsibles.idResponsible')
+                ->where('students.idStudent',$idStudent)
+                ->first();
     }
 
-    public function restoreStudent($matricule){
-        $this::withTrashed()
-            ->where('matricule',$matricule)
+    public static function restoreStudent($idStudent){
+        Student::withTrashed()
+            ->where('idStudent',$idStudent)
             ->restore();
     }
-   
-    public function forceDeleteStudent($matricule){
-        $this::withTrashed()
-            ->where('matricule',$matricule)
+    public static function forceDeleteStudent($idStudent){
+        Student::withTrashed()
+            ->where('idStudent',$idStudent)
             ->forceDelete();
+    }
+    //-------------------- search student --------------//
+    public static function searchstudentsbyMatricule($query){
+        Student::where('matricule', 'like', '%'.$query.'%')
+                    ->orderBy('idStudent', 'desc')
+                    ->get();
     }
 }

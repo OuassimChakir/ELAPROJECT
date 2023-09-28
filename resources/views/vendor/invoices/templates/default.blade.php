@@ -7,10 +7,10 @@
     <title>Document</title>
     <style>
         body{
-            background:#eee;
+            background:#ffffff;
             margin-top:20px;
         }
-        .text-danger strong {
+        strong {
             color: #0f8daa;
         }
         .receipt-main {
@@ -55,6 +55,9 @@
             font-size: 16px;
             font-weight: bold;
             margin: 0 0 7px 0;
+        }
+        .serial-right{
+            float: right;
         }
         .receipt-right p {
             font-size: 12px;
@@ -126,7 +129,7 @@
         vertical-align: bottom;
         }
         .table > :not(:last-child) > :last-child > * {
-        border-bottom-color: gray;
+        border-bottom-color: rgb(255, 255, 255);
         }
         .text-left {
             text-align: left;
@@ -146,11 +149,14 @@
                        <div class="receipt-header">
                            <div class="col">
                                <div class="receipt-left">
-                                    {{-- Header --}}
-                                    @if($invoice->logo)
-                                        <img class="img-responsive" alt="iamgurdeeposahan" src="{{ $invoice->getLogo() }}" style="width: 71px;">
-                                    @endif
-                                   
+                                    
+                                    <div class="serial-right">
+                                        <h3>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></h3>
+                                    </div>
+                                        {{-- Header --}}
+                                        @if($invoice->logo)
+                                            <img class="img-responsive" alt="iamgurdeeposahan" src="{{ $invoice->getLogo() }}" style="width: 20%;">
+                                        @endif
                                </div>
                            </div>
                            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
@@ -195,11 +201,6 @@
                                     @endforeach
                                </div>
                            </div>
-                           <div class="col-xs-4 col-sm-4 col-md-4">
-                               <div class="receipt-left">
-                                   <h3>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></h3>
-                               </div>
-                           </div>
                        </div>
                    </div>
                    
@@ -208,22 +209,23 @@
                            <thead>
                                <tr>
                                     <th>Type de Dépense</th>
-                                    <th>Montant</th>
+                                    <th style="text-align: right;">Montant</th>
                                </tr>
                            </thead>
                            <tbody>
                                @foreach ($invoice->items as $item)
                                 <tr>
                                     <td class="col-md-4">{{$item->title}}</td>
-                                    <td class="col-md-3"> 
+                                    <td class="col-md-3" style="text-align: right;" colspan="2"> 
                                         {{ $invoice->formatCurrency($item->price_per_unit) }}
                                     </td>
+                                    
                                 </tr>
                                @endforeach
-                               <tr>
+                               
+                               <tr style="text-align: right;">
                                     <td></td>
-                                    <td style="text-align: right;"><h2><strong>Total: </strong></h2></td>
-                                    <td><h2><strong> {{ $invoice->formatCurrency($invoice->total_amount) }}</strong></h2></td>
+                                    <td><h2><strong>Total :   {{ $invoice->formatCurrency($invoice->total_amount) }}</strong></h2></td>
                                </tr>
                            </tbody>
                        </table>

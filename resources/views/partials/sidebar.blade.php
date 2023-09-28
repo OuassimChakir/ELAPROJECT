@@ -3,9 +3,9 @@
 				<div id="sidebar" class="sidebar ec-sidebar-footer">
 	
 					<div class="ec-brand">
-						<a href="{{ route('acceuil') }}" title="Medinata">
-							<img class="ec-brand-icon" src="{{asset('images/Logo/logo.webp')}}" alt="" />
-							<span class="ec-brand-name text-truncate">Easy Learn Academy</span>
+						<a href="{{ route('acceuil') }}" title="BMA">
+							<img src="{{asset('images/Logo/icon.png')}}" id="brandlogo" alt="" />
+							<span class="ec-brand-name text-truncate">BMA School</span>
 						</a>
 					</div>
 	
@@ -22,6 +22,7 @@
 								<hr>
 							</li>
 	
+							@staff
 							<!-- Persons -->
 							<li class="{{ Route::is('teachers.liste') ||Route::is('teachers.profil') ? 'active' : ''}}">
 								<a class="sidenav-item-link" href="{{route('teachers.liste')}}">
@@ -35,28 +36,69 @@
 									<span class="nav-text">Etudiants</span>
 								</a>
 							</li>
-							@if (!is_null(session()->get('user')->idRole))
-								<li class="{{ Route::is('staff.liste') ||Route::is('staff.profil') ? 'active' : ''}}">
-									<a class="sidenav-item-link" href="{{route('staff.liste')}}">
+							@endstaff
+							@notadmin
+								@staff
+								<li class="{{Route::is('staff.profil') ? 'active' : ''}}">
+									<a class="sidenav-item-link" href="{{route('staff.profil',['idStaff' => auth()->user()->idStaff])}}">
 										<i class="bi bi-people-fill"></i>
-										<span class="nav-text">Staff</span>
+										<span class="nav-text">Espace Staff</span>
 									</a>
-								</li>								
+								</li>
+								@endstaff
+
+								@onlyteacher
+								<li class="{{Route::is('teachers.profil') ? 'active' : ''}}">
+									<a class="sidenav-item-link" href="{{route('teachers.profil',['idProfesseur' => auth()->user()->idProfesseur])}}">
+										<i class="bi bi-people-fill"></i>
+										<span class="nav-text">Espace Enseignant</span>
+									</a>
+								</li>
+								@endonlyteacher
+
+								@onlystudent
+								<li class="{{ Route::is('student.profil') ? 'active' : ''}}">
+									<a class="sidenav-item-link" href="{{route('student.profil',['idStudent' => auth()->user()->idStudent])}}">
+										<i class="bi bi-people-fill"></i>
+										<span class="nav-text">Espace Etudiant</span>
+									</a>
+								</li>
+								@endonlystudent
+							@endnotadmin
+							@admin
+							<li class="has-sub {{ Route::is('staff.liste') || Route::is('specialite') || Route::is('specialite.update') || Route::is('staff.profil') ? 'active expand' : ''}}">
+								<a class="sidenav-item-link" href="javascript:void(0)">
+									<i class="bi bi-people-fill"></i>
+									<span class="nav-text">Staff</span> <b class="caret"></b>
+								</a>
+								<div class="collapse {{ Route::is('staff.liste') || Route::is('specialite') || Route::is('specialite.update') || Route::is('staff.profil') ? 'show' : 'collapsed'}}">
+									<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
+										<li class="{{ Route::is('staff.liste') || Route::is('staff.profil') ? 'active' : '' }}">
+											<a class="sidenav-item-link" href="{{route('staff.liste')}}">
+												<span class="nav-text">Staff Listes</span>
+											</a>
+										</li>
+										<li class="{{ Route::is('specialite') || Route::is('specialite.update')  ? 'active' : '' }}">
+											<a class="sidenav-item-link" href="{{route('specialite')}}">
+												<span class="nav-text">Spécialitées</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</li>
 							<li class="has-sub {{ Route::is('roles') || Route::is('users') ||
-							Route::is('profile.show') ? 'active' : ''}}">
+							Route::is('profile.show') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-people-fill"></i>
 									<span class="nav-text">Utilisateurs</span> <b class="caret"></b>
 								</a>
 								<div class="collapse {{ Route::is('roles') || Route::is('users') ? 'show' : 'collapsed'}}">
 									<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
-										@if (session()->get('user')->idRole && session()->get('user')->codeRole == '00')
 										<li class="{{ Route::is('roles') ? 'active' : '' }}">
 											<a class="sidenav-item-link" href="{{route('roles')}}">
 												<span class="nav-text">Roles</span>
 											</a>
 										</li>
-										@endif
 										<li class="{{ Route::is('users') ? 'active' : '' }}">
 											<a class="sidenav-item-link" href="{{route('users')}}">
 												<span class="nav-text">Listes des Utilisateurs</span>
@@ -65,7 +107,7 @@
 									</ul>
 								</div>
 							</li>
-							@endif
+							@endadmin
 							<hr>
 							<!-- Subjects -->
 							
@@ -86,8 +128,9 @@
 									<span class="nav-text">Groupes</span>
 								</a>
 							</li>
+							@staff
 							<!-- Subjects -->
-							<li class="has-sub {{ Route::is('subjects') || Route::is('courseType') ? 'active' : ''}}">
+							<li class="has-sub {{ Route::is('subjects') || Route::is('courseType') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-book-fill"></i>
 									<span class="nav-text">Matières</span> <b class="caret"></b>
@@ -108,7 +151,7 @@
 								</div>
 							</li>
 							<!-- Grades -->
-							<li class="has-sub {{ Route::is('grades') || Route::is('gradesCategory') ? 'active' : ''}}">
+							<li class="has-sub {{ Route::is('grades') || Route::is('gradesCategory') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-list-ol"></i>
 									<span class="nav-text">Niveaux</span> <b class="caret"></b>
@@ -129,9 +172,10 @@
 								</div>
 								<hr>
 							</li>
-	
+							@endstaff
 							<!-- Expenses -->
-							<li class="has-sub {{ Route::is('typeDepenses') || Route::is('factureDepenses') ? 'active' : ''}}">
+							@admin
+							<li class="has-sub {{ Route::is('typeDepenses') || Route::is('factureDepenses') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-wallet2"></i>
 									<span class="nav-text">Dépenses</span> <b class="caret"></b>
@@ -151,9 +195,8 @@
 									</ul>
 								</div>
 							</li>
-
 							<!-- Incomes -->
-							<li class="has-sub {{ Route::is('typeIncome') || Route::is('incomePayment') ? 'active' : ''}}">
+							<li class="has-sub {{ Route::is('typeIncome') || Route::is('incomePayment') || Route::is('incomes.stats') ? 'active expand' : ''}}">
 								<a class="sidenav-item-link" href="javascript:void(0)">
 									<i class="bi bi-cash-stack"></i>
 									<span class="nav-text">Revenus</span> <b class="caret"></b>
@@ -170,27 +213,54 @@
 												<span class="nav-text">Reçus de Payment</span>
 											</a>
 										</li>
+										<li class="{{Route::is('incomes.stats') ? 'active' : ''}}">
+											<a class="sidenav-item-link" href="{{route('incomes.stats')}}">
+												<span class="nav-text">Statistiques</span>
+											</a>
+										</li>
 									</ul>
 								</div>
 								<hr>
 							</li>
-
-							@if (!is_null(session()->get('user')->idRole))
+							@endadmin
+							@onlystudent
+							<hr>
+							<li class="{{Route::is('student.incomes') ? 'active' : ''}}">
+								<a class="sidenav-item-link" href="{{route('student.incomes',['idStudent' => auth()->user()->idStudent])}}">
+									<i class="mdi mdi-cash"></i>
+									<span class="nav-text">Mes Paiements</span>
+								</a>
+							</li>
+							<hr>
+							@endonlystudent
+							@onlyteacher
+							<hr>
+							<li class="{{Route::is('teachers.factures') ? 'active' : ''}}">
+								<a class="sidenav-item-link" href="{{route('teachers.factures',['idProfesseur' => auth()->user()->idProfesseur])}}">
+									<i class="mdi mdi-cash"></i>
+									<span class="nav-text">Mes Paiements</span>
+								</a>
+							</li>
+							<hr>
+							@endonlyteacher
+							@staff
 								<!-- ARCHIVE -->
-								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive')
-								|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive') ? 'active' : ''}}">
+								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive') || Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
+								 ? 'active expand' : ''}}">
 									<a class="sidenav-item-link" href="javascript:void(0)">
 										<i class="bi bi-archive-fill"></i>
 										<span class="nav-text">Archive</span> <b class="caret"></b>
 									</a>
 									<div class="collapse {{ Route::is('student.archive') || Route::is('teachers.archive')
-									|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive') ? 'show' : 'collapsed'}}">
+									|| Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
+									  ? 'show' : 'collapsed'}}">
 										<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
 											<li class="{{Route::is('student.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('student.archive')}}">
 													<span class="nav-text">Archive des Etudiants</span>
 												</a>
 											</li>
+											@admin
 											<li class="{{Route::is('teachers.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('teachers.archive')}}">
 													<span class="nav-text">Archive des Professeurs</span>
@@ -211,21 +281,23 @@
 													<span class="nav-text">Archive des Reçus de Paiement</span>
 												</a>
 											</li>
+											@endadmin
 										</ul>
 									</div>
 									<hr>
 								</li>
-							<!-- activation -->
+							@endstaff
+
+							@admin
+							<!-- Activities -->
 							<li class="{{Route::is('activite') ? 'active' : ''}}">
 								<a class="sidenav-item-link" href="{{route('activite')}}">
 									<i class="mdi mdi-bell-outline"></i>
-									<span class="nav-text">Activation</span>
+									<span class="nav-text">Activités</span>
 								</a>
 							</li>
 							<hr>
-							@endif
 
-							@if (!is_null(session()->get('user')->idRole) && session()->get('user')->codeRole == '00')
 								<!-- Setting -->
 								<li class="{{Route::is('settings') ? 'active' : ''}}">
 									<a class="sidenav-item-link" href="{{route('settings')}}">
@@ -234,7 +306,7 @@
 									</a>
 								</li>
 								<hr>
-							@endif
+							@endadmin
 							<!-- Deconnexion -->
 							<li>
 								<a class="sidenav-item-link" href="javascript:void(0)" id="logoutSidebar">

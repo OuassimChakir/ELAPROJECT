@@ -11,24 +11,40 @@ class Stafftype extends Model
     protected $table = "stafftype";
     protected $primaryKey = "idStaffType";
     public $timestamps = false;
+    protected $fillable = ['designation', 'is_moderator'];
     // add new Staff Type
-   public function addStaffType($designation){
-        $this->designation = $designation;
-        $this->save();
+    public static function addStaffType($designation, $is_mod = null)
+    {   
+        if(!is_null($is_mod))
+            Stafftype::create([
+                'designation' => $designation,
+                'is_moderator' => $is_mod,
+            ]);
+        else
+            Stafftype::create([
+                'designation' => $designation
+            ]);
     }
 
-    public function updateStaffType($id,$designation){
-        $staffType = $this::find($id);
+    public static function updateStaffType($id, $designation, $is_mod = null)
+    {
+        $staffType = Stafftype::find($id);
         $staffType->designation = $designation;
+        $staffType->is_moderator = $is_mod;
         $staffType->save();
     }
-    public function deleteStaffType($id){
-        $this::find($id)->delete();
+
+    public static function deleteStaffType($id)
+    {
+        Stafftype::find($id)->delete();
     }
-    public function getStaffTypes(){
-        return $this::all();
+
+    public static function getStaffTypes()
+    {
+        return Stafftype::all();
     }
-    public function getStaffType($id){
-        return $this::find($id);
+    public static function getStaffType($id)
+    {
+        return Stafftype::find($id);
     }
 }

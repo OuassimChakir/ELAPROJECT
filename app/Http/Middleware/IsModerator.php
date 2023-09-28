@@ -19,7 +19,7 @@ class IsModerator
     {
         // is not Moderator
         if(is_null(session()->get('user')->codeRole) || (session()->get('user')->codeRole != '00' && session()->get('user')->codeRole != '11')){
-            return Redirect::back()->with('deleteMessage','You have not Admin access');
+            return Redirect::back()->with('deleteMessage','Accès refusé!');
         }
         return $next($request);
     }

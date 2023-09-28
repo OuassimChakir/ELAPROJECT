@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Session;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\CanonicalizeUsername;
 use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
 use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
@@ -58,7 +59,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        Session::put('user',User::getUser($request->email));
+        Session::put('user',User::getUser($request->username));
         return $this->loginPipeline($request)->then(function ($request) {
             return app(LoginResponse::class);
         });
@@ -86,6 +87,7 @@ class AuthenticatedSessionController extends Controller
 
         return (new Pipeline(app()))->send($request)->through(array_filter([
             config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
+            config('fortify.lowercase_usernames') ? CanonicalizeUsername::class : null,
             Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
             AttemptToAuthenticate::class,
             PrepareAuthenticatedSession::class,
@@ -101,10 +103,11 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): LogoutResponse
     {
         $this->guard->logout();
-        
-        $request->session()->invalidate();
 
-        $request->session()->regenerateToken();
+        if ($request->hasSession()) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return app(LogoutResponse::class);
     }

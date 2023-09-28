@@ -1,27 +1,11 @@
 @extends('layouts.layout')
 @section('title')
-    liste des Groupes
+    Liste des Groupes
 @endsection
 @section('content')
-@if (session()->has('successMessage'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{session()->get('successMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('deleteMessage'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{session()->get('deleteMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@elseif(session()->has('updateMessage'))
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{session()->get('updateMessage')}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif
   <!--errour du validation -->
     @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger"> 
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -38,32 +22,128 @@
             <span><i class="mdi mdi-chevron-right"></i></span>Groupes
         </p>
     </div>
+    @staff
     <div>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
         data-bs-target="#addUser"><i class="bi bi-plus-square"></i> Créer un Groupe
         </button>
     </div>
+    @endstaff
 </div>
 <div class="row">
 <div class="col-12">
 <div class="ec-vendor-list card card-default">
 <div class="card-body">
+    @staff
     <form action="" method="POST">
         @method('delete')
         @csrf
+        <div class="table-responsive">
+            <table id="responsive-data-table" class="table">
+                <thead>
+                    <tr>
+                        @if ($groupes->count()!=0)
+                            <th>
+                                <input type="checkbox" class="form-check-input" id="selectAllArchived">
+                            </th>
+                        @endif
+                        <td></td>
+                        <th>Designation</th>
+                        <th>Niveaux</th>
+                        <th>Matière</th>
+                        <th>Professeur</th>
+                        <th>Prix/Etudiant</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (isset($groupes))
+                        @foreach ($groupes as $groupe)
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="groupes[]" value="{{$groupe->idGroup}}" class="form-check-input archivedStudents">
+                            </td>
+                            <td>
+                                @if ($groupe->pendingPaiment == 0)
+                                    <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
+                                @else
+                                    <span class="badge badge-danger">{{ $groupe->pendingPaiment }} <i class="bi bi-hourglass"></i></span>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">{{$groupe->designation}}</a>
+                                @if ($groupe->nbElements == $groupe->capacity)
+                                    <div class="badge badge-pill badge-warning">{{$groupe->nbElements}}/{{$groupe->capacity}}</div><br>
+                                @else
+                                    <div class="badge badge-pill badge-success">{{$groupe->nbElements}}/{{$groupe->capacity}}</div><br>
+                                @endif
+                                <small>{{$groupe->course}}</small>
+                            </td>
+                            <td>
+                                <ul>
+                                    @foreach ($groupe->grades as $grade)
+                                        <li>{{$grade->grade}}</li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                            <td><div class="badge bg-dark">{{$groupe->libelle}}</div></td>
+                            <td>
+                                @if (is_null($groupe->idProfesseur))
+                                    Non Assigné
+                                @else
+                                <a href="{{ route('teachers.profil', ['idProfesseur' => $groupe->idProfesseur]) }}">
+                                    {{ $groupe->prenom . ' ' . $groupe->nom }}
+                                </a> 
+                                @endif
+                            </td>
+                            <td><div class="badge bg-primary">{{$groupe->amount}} DH</div></td>
+                            @staff
+                            <td>                           
+                                    <div class="btn-group">
+                                        <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">
+                                            <button type="button" name="edit" class="btn btn-outline-info">
+                                                <i class="bi bi-collection"></i>
+                                            </button>
+                                        </a>
+                                        <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$groupe->idGroup}}">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </div>
+                            </td>
+                            @else
+                            <td>                           
+                                <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">
+                                    <button type="button" name="edit" class="btn btn-outline-info">
+                                        <i class="bi bi-collection"></i>
+                                    </button>
+                                </a>
+                            </td>
+                            @endstaff
+                        </tr>
+                        @endforeach
+                    @endif
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col btns">
+                <button type="submit" name="deleteAll" class="btn btn-outline-danger" onclick="return confirm('Voulez-vous supprimer définitivement ces Professeurs?');">
+                    <i class="bi bi-trash-fill"></i> Supprimer la Sélection
+                </button>
+            </div>
+        </div>    
+    </form>
+    @else
+    <div class="table-responsive">
         <table id="responsive-data-table" class="table">
             <thead>
                 <tr>
-                    @if ($groupes->count()!=0)
-                        <th>
-                            <input type="checkbox" class="form-check-input" id="selectAllArchived">
-                        </th>
-                    @endif
                     <th>Designation</th>
-                    <th>Niveau</th>
+                    <th>Niveaux</th>
                     <th>Matière</th>
-                    <th>Encadrant</th>
-                    <th>Date du Creation</th>
+                    <th>Professeur</th>
+                    <th>Prix/Etudiant</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -72,21 +152,33 @@
                     @foreach ($groupes as $groupe)
                     <tr>
                         <td>
-                            <input type="checkbox" name="groupes[]" value="{{$groupe->idStaff}}" class="form-check-input archivedStudents">
-                        </td>
-                        <td>
                             <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">{{$groupe->designation}}</a>
-                            @if ($groupe->nbElement == $groupe->capacity)
-                                <div class="badge badge-pill badge-dark">{{$groupe->nbElement}}/{{$groupe->capacity}}</div><br>
+                            @if ($groupe->nbElements == $groupe->capacity)
+                                <div class="badge badge-pill badge-warning">{{$groupe->nbElements}}/{{$groupe->capacity}}</div><br>
                             @else
-                                <div class="badge badge-pill badge-info">{{$groupe->nbElement}}/{{$groupe->capacity}}</div><br>
+                                <div class="badge badge-pill badge-success">{{$groupe->nbElements}}/{{$groupe->capacity}}</div><br>
                             @endif
                             <small>{{$groupe->course}}</small>
                         </td>
-                        <td><div class="badge badge-pill badge-purple">{{$groupe->grade}}</div></td>
+                        <td>
+                            <ul>
+                                @foreach ($groupe->grades as $grade)
+                                    <li>{{$grade->grade}}</li>
+                                @endforeach
+                            </ul>
+                        </td>
                         <td><div class="badge bg-dark">{{$groupe->libelle}}</div></td>
-                        <td><a href="{{route('teachers.profil',['idProfesseur' => $groupe->idStaff,'nom'=> $groupe->nom])}}">{{$groupe->prenom.' '.$groupe->nom}}</a></td>
-                        <td>{{$groupe->CREATED_AT}}</td>
+                        <td>
+                            @if (is_null($groupe->idProfesseur))
+                                Non Assigné
+                            @else
+                            <a href="{{ route('teachers.profil', ['idProfesseur' => $groupe->idProfesseur]) }}">
+                                {{ $groupe->prenom . ' ' . $groupe->nom }}
+                            </a> 
+                            @endif
+                        </td>
+                        <td><div class="badge bg-primary">{{$groupe->amount}} DH</div></td>
+                        @staff
                         <td>                           
                                 <div class="btn-group">
                                     <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">
@@ -94,27 +186,28 @@
                                             <i class="bi bi-collection"></i>
                                         </button>
                                     </a>
-                                    <a href="{{route('groups.delete',['idGroup'=>$groupe->idGroup])}}">
-                                        <button type="button" class="btn btn-outline-danger" name="delete" onclick="return confirm('Vous êtes sûr?');">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </a>
+                                    <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$groupe->idGroup}}">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
                                 </div>
                         </td>
+                        @else
+                        <td>                           
+                            <a href="{{route('groups.profil',['idGroup'=>$groupe->idGroup])}}">
+                                <button type="button" name="edit" class="btn btn-outline-info">
+                                    <i class="bi bi-collection"></i>
+                                </button>
+                            </a>
+                        </td>
+                        @endstaff
                     </tr>
                     @endforeach
                 @endif
                 
             </tbody>
         </table>
-        <div class="row">
-            <div class="col btns">
-                <button type="submit" name="deleteAll" class="btn btn-outline-danger" onclick="return confirm('Voulez-vous supprimer définitivement ces Professeurs?');">
-                    <i class="bi bi-trash-fill"></i> Supprimer la Sélection
-                </button>
-            </div>
-        </div>    
-    </form>   
+    </div>
+    @endstaff   
 </div>
 </div>
 </div>
@@ -123,6 +216,38 @@
 <!-- Ajouter un teacher -->
 @include('pages.groupes.add_group')
 <script src="{{asset('JS/jquery.min.js')}}"></script>
+<script>
+    $(document).on('click','.deleteGroup',function(){
+        let id = $(this).val();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Confirmez votre demande !',
+            text: 'Vous êtes sur le point de supprimer ce groupe.',
+            showCancelButton: true,
+            confirmButtonText: 'Oui',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/groupes/delete/' + id,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response){
+                        if(response == true){
+                            Swal.fire("Le groupe a été supprimé avec succès !", '', 'success')
+                            location.reload(true);
+                        }else{
+                            Swal.fire("Vous ne pouvez pas supprimer ce groupe", "Veuillez vérifier s'il y a des Paiements Impayés pour ce Group.", 'error')
+                        }
+                    },
+                    error: function(request, status, error) {
+                        console.log(request.responseText);
+                    }
+                    
+                });
+            }
+        })
+    });
+</script>
 <script>
     // Listen for click on toggle checkbox
     $('#selectAllArchived').click(function(event) {   

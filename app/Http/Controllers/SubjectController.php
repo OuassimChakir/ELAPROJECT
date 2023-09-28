@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 class SubjectController extends Controller
 {
     //----------------- Course Type ---------------- //
-    public function courseType(Request $request)
-    {
+    public function courseType(Request $request){
         // List of Courses
         $courses = CourseType::selectCourses();
         // Creating new Type
@@ -21,14 +20,11 @@ class SubjectController extends Controller
             CourseType::addType($course, $shortForm);
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
-
-
         return view('pages.courses.courseType')->with(['courses' => $courses]);
     }
 
     // Course Type Deletion or Update
-    public function updateCourseType(Request $request, $idCourseType)
-    {
+    public function updateCourseType(Request $request, $idCourseType){
         // List of Courses
         $courses = CourseType::selectCourses();
         // Update of Course Type (ACTION)
@@ -43,23 +39,17 @@ class SubjectController extends Controller
             ->with('courseInfo', $updatedCourse);
     }
 
-    public function deleteCourseType($idCourseType)
-    {
+    public function deleteCourseType($idCourseType){
         CourseType::deleteCourse($idCourseType);
         return Redirect::back()->with('deleteMessage', "La suppression est faite avec succès");
     }
 
     //----------------- Subjects ---------------- //
     // Subjects Controller
-    public function subjects(Request $request)
-    {
-
-
+    public function subjects(Request $request){
         // Adding new Subject
         if ($request->has('ajouterSubject')) {
-            $libelle = $request->libelle;
-            $idCourseType = $request->courseType;
-            Subjects::addSubject($libelle, $request->short, $idCourseType);
+            Subjects::addSubject($request->libelle,$request->short,$request->idCourseType);
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
         }
         $subjects = Subjects::getSubjects();
@@ -70,18 +60,14 @@ class SubjectController extends Controller
     }
 
     // Subjects Deletion or Update
-    public function updateSubject(Request $request, $idSubject)
-    {
-
+    public function updateSubject(Request $request, $idSubject){
         // List of Courses
         $courses = CourseType::selectCourses();
-
         // List of Subjects
         $subjects = Subjects::getSubjects();
-
         // Update of Subject (ACTION)
         if ($request->has('update')) {
-            Subjects::updateSubject($request->idSubject, $request->libelle, $request->short, $request->courseType);
+            Subjects::updateSubject($request->idSubject, $request->libelle,$request->short, $request->idCourseType);
             return Redirect::route('subjects')->with('updateMessage', "La Modification est faite avec succès");
         }
         // Update of Subject (PAGE)
@@ -91,14 +77,9 @@ class SubjectController extends Controller
             ->with('updatedSubject', $updatedSubject)
             ->with('courses', $courses);
     }
-
-    public function deleteSubject(Request $request, $idSubject)
-    {
-
-        // Deletion of Subject
-        if ($request->action == 'delete') {
+    public function deleteSubject($idSubject){
             Subjects::deleteSubject($idSubject);
             return Redirect::back()->with('deleteMessage', "La suppression est faite avec succès");
-        }
+        
     }
 }
