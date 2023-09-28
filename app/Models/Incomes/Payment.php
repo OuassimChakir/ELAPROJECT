@@ -184,6 +184,7 @@ class Payment extends Model
     public static function totalAmountIncomeMonth($firstYear, $secondYear)
     {
         return Payment::selectRaw('SUM(amount) AS amount, MONTH(datePayment) AS mois')
+            ->where('etat',1)
             ->whereYear("datePayment", $firstYear)
             ->orWhereYear("datePayment", $secondYear)
             ->whereRaw("MONTH(datePayment) BETWEEN '09' AND '12'")

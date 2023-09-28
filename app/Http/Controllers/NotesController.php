@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 class NotesController extends Controller
 {
     public function addNote(Request $request){
-        Notes::cleanNotes();
-
         if($request->has('note')){
             Notes::addNote($request->note,$request->idElement);
             return response()->json('true');
@@ -20,7 +18,6 @@ class NotesController extends Controller
     public function deleteNote(Request $request){
         if($request->has('idNote')){
             Notes::deleteNote($request->idNote);
-            Notes::cleanNotes();
             return response()->json('true');
         }
         else

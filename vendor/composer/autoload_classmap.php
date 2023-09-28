@@ -49,6 +49,7 @@ return array(
     'App\\Models\\Attendance' => $baseDir . '/app/Models/Attendance.php',
     'App\\Models\\Courses\\CourseType' => $baseDir . '/app/Models/Courses/CourseType.php',
     'App\\Models\\Courses\\Subjects' => $baseDir . '/app/Models/Courses/Subjects.php',
+    'App\\Models\\Emploi' => $baseDir . '/app/Models/Emploi.php',
     'App\\Models\\Expenses\\Expenses' => $baseDir . '/app/Models/Expenses/Expenses.php',
     'App\\Models\\Expenses\\Facture' => $baseDir . '/app/Models/Expenses/Facture.php',
     'App\\Models\\Grades\\Grades' => $baseDir . '/app/Models/Grades/Grades.php',
