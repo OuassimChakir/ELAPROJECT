@@ -116,7 +116,7 @@ class GroupController extends Controller
     public function deleteGroup($idGroup)
     {
         $payments = Payment::getGroupPendingPaiments($idGroup);
-        if ($payments == 0) {
+        if ($payments == 0) { 
             Payment::where('etat', 1)->where('idGroup', $idGroup)->update([
                 'idGroup' => null,
                 'updated_at' => date('Y-m-d H:i:s')
@@ -136,7 +136,6 @@ class GroupController extends Controller
             return  response()->json(true);
         } elseif ($payments > 0) {
             return response()->json(false);
-            
         }
     }
 
