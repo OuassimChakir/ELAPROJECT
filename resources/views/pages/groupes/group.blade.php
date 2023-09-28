@@ -19,11 +19,9 @@
                     Revenus
                 </button>
             </a>
-            <a href="{{route('group.incomes',['idGroup' => $group->idGroup])}}">
-                <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$group->idGroup}}">
-                    <i class="bi bi-trash-fill"></i> Supprimer
-                </button>
-            </a>
+            <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$group->idGroup}}">
+                <i class="bi bi-trash-fill"></i> Supprimer
+            </button>
         </div>
         @endstaff
     </div>
@@ -1061,6 +1059,39 @@
 
                 $('#updateEmploiButton').show();
                 $('#updateEmploi').hide();
+            });
+        </script>
+
+        {{-- Delete Group --}}
+        <script>
+            $(document).on('click','.deleteGroup',function(){
+                let id = $(this).val();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Confirmez votre demande !',
+                    text: 'Vous êtes sur le point de supprimer ce groupe.',
+                    showCancelButton: true,
+                    confirmButtonText: 'Oui',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/groupes/delete/' + id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response){
+                                if(response == true){
+                                    window.location.href = "{{route('groups')}}";
+                                }else{
+                                    Swal.fire("Vous ne pouvez pas supprimer ce groupe", "Veuillez vérifier s'il y a des Paiements Impayés pour ce Group.", 'error')
+                                }
+                            },
+                            error: function(request, status, error) {
+                                console.log(request.responseText);
+                            }
+                            
+                        });
+                    }
+                })
             });
         </script>
     @endsection
