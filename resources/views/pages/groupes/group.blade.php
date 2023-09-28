@@ -944,6 +944,7 @@
                 });
             });
         </script>
+        
         <script>
             $(document).on('click','#selectAllUpdated',function() {
                 if (this.checked) {
@@ -1015,51 +1016,51 @@
 
         {{-- Group Emploi --}}
         <script>
-        $(document).ready(function() {
-            var maxField = 10; //Input fields increment limitation
-            var addInput = $('.addInput'); //Add button selector
-            var wrapper = $('.field_wrapper'); //Input field wrapper
-            var fieldHTML = '<div class="row">'; //New input field html 
-            fieldHTML += '<div class="col-lg-4"> <div class="form-group"> <input id="jour" name="jour[]" class="form-control" type="text" required> </div> </div>';
-            fieldHTML += '<div class="col-lg-3"> <div class="form-group"> <input id="debut" name="debut[]" class="form-control" type="time" required> </div> </div>';
-            fieldHTML += '<div class="col-lg-3"> <div class="form-group"> <input id="fin" name="fin[]" class="form-control" type="time" required> </div> </div>';
-            fieldHTML += '<div class="col-lg-2"> <button type="button" class="btn btn-danger removeInput"><i class="bi bi-trash"></i></button> </div>';
-            fieldHTML += '</div>';
-            var x = 1; //Initial field counter is 1
-            //Once add button is clicked
-            $(addInput).click(function() {
-                //Check maximum number of input fields
-                if (x < maxField) {
-                    x++; //Increment field counter
-                    $(wrapper).append(fieldHTML); //Add field html
-                }
+            $(document).ready(function() {
+                var maxField = 10; //Input fields increment limitation
+                var addInput = $('.addInput'); //Add button selector
+                var wrapper = $('.field_wrapper'); //Input field wrapper
+                var fieldHTML = '<div class="row">'; //New input field html 
+                fieldHTML += '<div class="col-lg-4"> <div class="form-group"> <input id="jour" name="jour[]" class="form-control" type="text" required> </div> </div>';
+                fieldHTML += '<div class="col-lg-3"> <div class="form-group"> <input id="debut" name="debut[]" class="form-control" type="time" required> </div> </div>';
+                fieldHTML += '<div class="col-lg-3"> <div class="form-group"> <input id="fin" name="fin[]" class="form-control" type="time" required> </div> </div>';
+                fieldHTML += '<div class="col-lg-2"> <button type="button" class="btn btn-danger removeInput"><i class="bi bi-trash"></i></button> </div>';
+                fieldHTML += '</div>';
+                var x = 1; //Initial field counter is 1
+                //Once add button is clicked
+                $(addInput).click(function() {
+                    //Check maximum number of input fields
+                    if (x < maxField) {
+                        x++; //Increment field counter
+                        $(wrapper).append(fieldHTML); //Add field html
+                    }
+                });
+            
+                //Once remove button is clicked
+                $(wrapper).on('click', '.removeInput', function(e) {
+                    e.preventDefault();
+                    $(this).parentsUntil('.field_wrapper').remove(); //Remove field html
+                    x--; //Decrement field counter
+                });
             });
-        
-            //Once remove button is clicked
-            $(wrapper).on('click', '.removeInput', function(e) {
-                e.preventDefault();
-                $(this).parentsUntil('.field_wrapper').remove(); //Remove field html
-                x--; //Decrement field counter
-            });
-        });
 
-        $('#updateEmploi').hide();
-        $('#showEmploiButton').hide();
-        $(document).on('click','#updateEmploiButton', function(e){
-            e.preventDefault();
-            $('#showEmploi').hide();
-            $('#showEmploiButton').show();
-
-            $('#updateEmploiButton').hide();
-            $('#updateEmploi').show();
-        });
-        $(document).on('click','#showEmploiButton', function(e){
-            e.preventDefault();
-            $('#showEmploi').show();
-            $('#showEmploiButton').hide();
-
-            $('#updateEmploiButton').show();
             $('#updateEmploi').hide();
-        });
+            $('#showEmploiButton').hide();
+            $(document).on('click','#updateEmploiButton', function(e){
+                e.preventDefault();
+                $('#showEmploi').hide();
+                $('#showEmploiButton').show();
+
+                $('#updateEmploiButton').hide();
+                $('#updateEmploi').show();
+            });
+            $(document).on('click','#showEmploiButton', function(e){
+                e.preventDefault();
+                $('#showEmploi').show();
+                $('#showEmploiButton').hide();
+
+                $('#updateEmploiButton').show();
+                $('#updateEmploi').hide();
+            });
         </script>
     @endsection
