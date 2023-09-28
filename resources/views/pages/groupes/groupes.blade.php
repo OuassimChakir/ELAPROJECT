@@ -234,6 +234,7 @@
                     success: function(response){
                         if(response == true){
                             Swal.fire("Le groupe a été supprimé avec succès !", '', 'success')
+                            location.reload(true);
                         }else{
                             Swal.fire("Vous ne pouvez pas supprimer ce groupe", "Veuillez vérifier s'il y a des Paiements Impayés pour ce Group.", 'error')
                         }
