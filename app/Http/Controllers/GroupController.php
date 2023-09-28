@@ -136,6 +136,7 @@ class GroupController extends Controller
             Attendance::deleteGroupAttendancebyidGroup($idGroup);
             Notes::deleteGroupNotes($idGroup);
             GroupElements::deleteGroupClassroom($idGroup);
+            Emploi::deleteEmploi($idGroup);
             Group::deleteGroup($idGroup);
             return  response()->json(true);
         } elseif ($payments > 0) {
