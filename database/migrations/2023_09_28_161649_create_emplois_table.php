@@ -35,3 +35,4 @@ class CreateEmploisTable extends Migration
         Schema::dropIfExists('emplois');
     }
 }
+    // php artisan migrate --path=database\migrations\2023_09_28_161649_create_emplois_table.php
