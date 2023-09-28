@@ -12,8 +12,14 @@
 
                 <div class="modal-body px-4">
                     <div class="row mb-2">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="nbGroup">Nombre du Group</label>
+                                <input type="number"" min="1" class="form-control" name="nbGroup" id="nbGroup" required>
+                            </div>
+                        </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="capacity">Capacité du Groupe</label>
                                 <input type="number" max="50" min="1" class="form-control" name="capacity" id="capacity" required>
@@ -21,7 +27,7 @@
                         </div>
 
                         
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="capacity">Prix Individuel</label>
                                 <input type="number" min="1" class="form-control" name="amount" id="amount" value="0">

@@ -47,11 +47,7 @@ class GroupController extends Controller
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
 
-            // Group Number
-            $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur, $gradeCategory->idGradeCategory) + 1;
-
-
-            $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $numGroups;
+            $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
             $newGroup = Group::createGroup($designation, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades))
@@ -97,6 +93,7 @@ class GroupController extends Controller
             $grades = Grades::selectGradesByCategory(null);
 
         $emploi = Emploi::getGroupEmploi($idGroup);
+
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
             ->with('groupGrades', $groupGrades)
@@ -148,7 +145,11 @@ class GroupController extends Controller
     public function updateGroup(Request $request, $idGroup)
     {
         if ($request->has('updateGroup') && isset($idGroup)) {
-            Group::updateGroup($idGroup, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
+            $matiere = Subjects::getSubject($request->idSubject);
+            $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
+            $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+
+            Group::updateGroup($idGroup, $designation, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades)) {
                 GroupGrades::deleteGroupGrades($idGroup);
