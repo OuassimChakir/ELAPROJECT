@@ -218,7 +218,7 @@ Route::middleware([
 
         // JSON DATA
         Route::get('/students/get/{idSubject}', [StudentController::class, 'getGroupsByGrade']);
-        Route::get('/students/getGroups/{idSubject}/{idStudent}', [StudentController::class, 'getGroupsBySubject']);
+        Route::get('/students/getGroups/{idSubject}/{idStudent}/{idGradeCategory}', [StudentController::class, 'getGroupsBySubject']);
 
         /* -----------------------------------------------
         / Income Type

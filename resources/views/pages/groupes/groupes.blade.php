@@ -49,10 +49,10 @@
                         @endif
                         <td></td>
                         <th>Designation</th>
+                        <th>Niveaux</th>
                         <th>Matière</th>
                         <th>Professeur</th>
                         <th>Prix/Etudiant</th>
-                        <th>Date du Creation</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -79,6 +79,13 @@
                                 @endif
                                 <small>{{$groupe->course}}</small>
                             </td>
+                            <td>
+                                <ul>
+                                    @foreach ($groupe->grades as $grade)
+                                        <li>{{$grade->grade}}</li>
+                                    @endforeach
+                                </ul>
+                            </td>
                             <td><div class="badge bg-dark">{{$groupe->libelle}}</div></td>
                             <td>
                                 @if (is_null($groupe->idProfesseur))
@@ -90,7 +97,6 @@
                                 @endif
                             </td>
                             <td><div class="badge bg-primary">{{$groupe->amount}} DH</div></td>
-                            <td>{{$groupe->created_at}}</td>
                             @staff
                             <td>                           
                                     <div class="btn-group">
@@ -134,10 +140,10 @@
             <thead>
                 <tr>
                     <th>Designation</th>
+                    <th>Niveaux</th>
                     <th>Matière</th>
                     <th>Professeur</th>
                     <th>Prix/Etudiant</th>
-                    <th>Date du Creation</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -154,6 +160,13 @@
                             @endif
                             <small>{{$groupe->course}}</small>
                         </td>
+                        <td>
+                            <ul>
+                                @foreach ($groupe->grades as $grade)
+                                    <li>{{$grade->grade}}</li>
+                                @endforeach
+                            </ul>
+                        </td>
                         <td><div class="badge bg-dark">{{$groupe->libelle}}</div></td>
                         <td>
                             @if (is_null($groupe->idProfesseur))
@@ -165,7 +178,6 @@
                             @endif
                         </td>
                         <td><div class="badge bg-primary">{{$groupe->amount}} DH</div></td>
-                        <td>{{$groupe->created_at}}</td>
                         @staff
                         <td>                           
                                 <div class="btn-group">

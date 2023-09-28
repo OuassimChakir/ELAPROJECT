@@ -9,11 +9,10 @@
             <div class="modal-body px-4">
                 <div class="row mb-2 g-3">
                     {{-- Matières --}}
-                    <div class="col-lg-12">
+                    <div class="col-lg-5">
                         <div class="form-group mb-4">
                             <label for="form-label">Matières</label>
                             <select name="idSubject" id="subjectSelect" class="form-select" required>
-                                <option disabled selected>-- Choisir une Matière --</option>
                                 @foreach ($courseTypes as $courseType)
                                     <optgroup label="{{ $courseType->course }}">
                                         @foreach ($subjects as $subject)
@@ -28,8 +27,27 @@
                             </select>
                         </div>
                     </div>
-                    <div id="groupsResult">
 
+                    {{-- Grade Categories --}}
+                    <div class="col-lg-5">
+                        <div class="form-group mb-4">
+                            <label for="form-label">Catégories des Niveaux</label>
+                            <select name="gradeCategory" id="gradeCategory" class="form-select" required>
+                                @foreach ($gradesCategories as $categorie)
+                                    <option value="{{ $categorie->idGradeCategory }}">
+                                        {{ $categorie->category }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <button class="btn btn-primary mt-4" id="getGroupsButton">
+                            <span class="mdi mdi-magnify"></span>
+                        </button>
+                    </div>
+                    <div id="groupsResult">
+                        
                     </div>
                 </div>
             </div>
@@ -47,58 +65,62 @@
 
 {{-- GETTING GROUPS QUERY --}}
 <script>
+
     $("#groupsResult").hide();
     $(document).ready(function() {
         $(".add2GroupBtn").on('click', function() {
             $('#idStudent').val() = $(this).val();
         });
         // Department Change
-        $('#subjectSelect').change(function() {
+        $('#getGroupsButton').click(function() {
             // Department id
             var idStudent = $('#idStudent').val();
             var idSubject = $('#subjectSelect').val();
-
+            var idGradeCategory = $("#gradeCategory").val();
             // Empty the dropdown
-            $('#groupsResult').find('.card').remove();
+            $('#groupsResult').empty();
             $('#groupAlert').remove();
             // AJAX request 
             $.ajax({
-                url: '/students/getGroups/' + idSubject + '/' + idStudent,
+                url: '/students/getGroups/' + idSubject + '/' + idStudent +'/'+ idGradeCategory,
                 type: 'get',
                 dataType: 'json',
                 success: function(response) {
                     var len = 0;
-                    if (response['data'] != null) {
-                        len = response['data'].length;
+                    if (response != null) {
+                        len = response.length;
                     }
 
                     if (len > 0) {
+                        var htmlOut = '<table class="table"> <tr> <th>Groupe</th> <th>Niveaux</th> <th></th> </tr>';
                         for (var i = 0; i < len; i++) {
-                            var idGroup = response['data'][i].idGroup;
-                            console.log(response['data'][i]);
-                            var designation = response['data'][i].designation;
-                            var capacity = response['data'][i].capacity;
-                            var nbElement = response['data'][i].nbElements;
-                            var name = response['data'][i].prenom + " " + response['data'][i].nom;
-                            var htmlOut = "<div class='card'><div class='card-body'>";
-                            htmlOut += "<div class='row'><div class='col-11'>";
-                            htmlOut += '<h5 class="card-title">' + designation;
+                            var idGroup = response[i].idGroup;
+                            console.log(response[i]);
+                            var designation = response[i].designation;
+                            var capacity = response[i].capacity;
+                            var nbElement = response[i].nbElements;
+                            var name = response[i].prenom + " " + response[i].nom;
+
+                                
+                            htmlOut += '<tr><td class="align-middle"><h5>'+designation;
                             if (capacity == nbElement)
-                                htmlOut += '<span class="badge badge-pill badge-dark">';
+                                htmlOut += ' <span class="badge badge-pill badge-dark">';
                             else
-                                htmlOut += '<span class="badge badge-pill badge-info">';
-
-                            htmlOut += nbElement + '/' + capacity +
-                                '</span></h5><p class="card-text">' + name +
-                                '</p></div><div class="col-1">';
-
+                                htmlOut += ' <span class="badge badge-pill badge-info">';
+                            htmlOut += nbElement + '/' + capacity + '</span></h5> <small>' + name + '</small></td><td class="align-middle"><ul>';
+                            response[i].grades.forEach(grade => {
+                                htmlOut += '<li>'+grade.grade+'</li>';
+                            });
+                            htmlOut += '</ul></td><td class="align-middle">'
+                                
                             if (capacity == nbElement)
                                 htmlOut += '<button class="addStudentGroup btn btn-danger" value="' + idGroup + '" disabled=""><i class="bi bi-x-lg"></i></button>';
                             else
                                 htmlOut += '<button class="addStudentGroup btn btn-outline-primary" value="' + idGroup + '"><i class="bi bi-plus-lg"></i></button>';
-                            htmlOut += '</div></div></div></div>';
-                            $("#groupsResult").append(htmlOut);
+                            htmlOut += '</td></tr>';
                         }
+                        htmlOut += '</table>';
+                        $("#groupsResult").append(htmlOut);
                     } else {
                         var htmlOut =
                             "<div id='groupAlert' class='alert alert-warning' role='alert'>l'étudiant choisi n'est <b>déjà dans ce groupe</b> ou <b>les groupes demandés n'existent pas</b></div>";
@@ -129,37 +151,47 @@
     $(document).ready(function() {
         // Department Change
         $('#groupsResult').on('click', '.addStudentGroup', function() {
+            Swal.fire({
+                icon: 'question',
+                title: 'Confirmer votre Operation',
+                text: 'Voulez-vous affecter cet élève à ce groupe ?',
+                showCancelButton: true,
+                confirmButtonText: 'Oui',
+                cancelButtonText: 'Annuler',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var currentBtn = $(this);
+                    var idGroup = $(this).val();
+                    var idStudent = $('#idStudent').val();
+                    // AJAX request 
+                    $.ajax({
+                        url: '/groupes/' + idGroup + '/classroom/' + idStudent,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response == 'true') {
+                                currentBtn.find('i').remove();
+                                currentBtn.removeClass('btn-outline-primary');
+                                currentBtn.addClass('btn-success');
+                                var newIcon = '<i class="bi bi-check-lg"></i>';
+                                currentBtn.append(newIcon);
+                                currentBtn.prop('disabled', true);
+                            }else{
+                                Swal.fire({
+                                    template: '#fail-assign'
+                                })
+                            }
 
-            // Department id
-            if (confirm("Confirmer votre Affectation")) {
-                var currentBtn = $(this);
-                var idGroup = $(this).val();
-                var idStudent = $('#idStudent').val();
-                // AJAX request 
-                $.ajax({
-                    url: '/groupes/' + idGroup + '/classroom/' + idStudent,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response == 'true') {
-                            currentBtn.find('i').remove();
-                            currentBtn.removeClass('btn-outline-primary');
-                            currentBtn.addClass('btn-success');
-                            var newIcon = '<i class="bi bi-check-lg"></i>';
-                            currentBtn.append(newIcon);
-                            currentBtn.prop('disabled', true);
-                        }else{
-                            Swal.fire({
-                                template: '#fail-assign'
-                            })
+                        },
+                        error: function(request, status, error) {
+                            alert(request.responseText);
                         }
-
-                    },
-                    error: function(request, status, error) {
-                        alert(request.responseText);
-                    }
-                });
-            }
+                    });
+                    Swal.fire('Saved!', '', 'success')
+                } 
+            })
+            // Department id
         });
     });
 </script>

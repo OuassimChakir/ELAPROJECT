@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Activite;
 use App\Models\Attendance;
 use App\Models\Expenses\Facture;
+use App\Models\Grades\GradesCategory;
 use App\Models\Group;
 use App\Models\GroupElements;
+use App\Models\GroupGrades;
 use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
 use App\Models\Notes;
@@ -25,14 +27,15 @@ class StudentController extends Controller
     {
         $groupSubjects = Group::existedGroupSubjects();
         $groupCourseTypes = Group::existedGroupCourseTypes();
-
+        $gradesCategories = GradesCategory::getGradeCategories();
         // Restart from 0 EACH YEAR
         if (date('d-m') == "01-01")
             Storage::disk('local')->put('student.txt', 0);
         $students = Student::getStudents();
         return view('pages.students.students')->with('students', $students)
             ->with('subjects', $groupSubjects)
-            ->with('courseTypes', $groupCourseTypes);
+            ->with('courseTypes', $groupCourseTypes)
+            ->with('gradesCategories',$gradesCategories);
     }
 
     public function addStudent(Request $request)
@@ -86,6 +89,7 @@ class StudentController extends Controller
         $lastPaiments = Payment::getStudentLastestPaiments($idStudent);
         $invoiceGroups = Group::getGroupWithStudentInvoices($idStudent);
         $notes = Notes::studentNotes($idStudent);
+        $gradesCategories = GradesCategory::getGradeCategories();
         return view('pages.students.studentprofil')->with([
             'student' => $studentInfo,
             'pendingPaiment' => $pendingPaiment,
@@ -94,7 +98,8 @@ class StudentController extends Controller
             'studentGroups' => $studentGroups,
             'lastPaiments' => $lastPaiments,
             'invoiceGroups' => $invoiceGroups,
-            'notes' => $notes
+            'notes' => $notes,
+            'gradesCategories' => $gradesCategories,
         ]);
     }
 
@@ -320,9 +325,12 @@ class StudentController extends Controller
         return response()->json($gradeData);
     }
 
-    public function getGroupsBySubject($idSubject, $idStudent)
+    public function getGroupsBySubject($idSubject, $idStudent, $idGradeCategory)
     {
-        $groups['data'] = Group::selectGroupsBySubject($idSubject, $idStudent);
+        $groups = Group::selectGroupsBySubject($idSubject, $idStudent, $idGradeCategory);
+        for ($i=0; $i < $groups->count(); $i++) 
+            $groups[$i]->grades = GroupGrades::getGroupGrades($groups[$i]->idGroup);
+    
         return response()->json($groups);
     }
 
