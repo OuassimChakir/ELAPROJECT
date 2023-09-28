@@ -65,7 +65,7 @@ class GroupController extends Controller
             ->with('subjects', $subjects)
             ->with('courseTypes', $courseTypes);
     }
-
+ 
     public function groupPage($idGroup)
     {
         $students = GroupElements::groupElements($idGroup);
@@ -125,9 +125,10 @@ class GroupController extends Controller
             Notes::deleteGroupNotes($idGroup);
             GroupElements::deleteGroupClassroom($idGroup);
             Group::deleteGroup($idGroup);
-            return response()->json(true);
+            return  response()->json(true);
         } elseif ($payments > 0) {
             return response()->json(false);
+            
         }
     }
 

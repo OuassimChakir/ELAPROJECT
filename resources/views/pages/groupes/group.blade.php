@@ -19,8 +19,8 @@
                     Revenus
                 </button>
             </a>
-            <a>
-                <button type="button" class="deleteButton btn btn-outline-danger" data-url="/groupes/{{ $group->idGroup }}" data-confirm="Une fois supprimé, vous ne pourrez plus récupérer ce groupe!" data-title="Êtes-vous sûr?" data-type="error">
+            <a href="{{route('group.incomes',['idGroup' => $group->idGroup])}}">
+                <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$group->idGroup}}">
                     <i class="bi bi-trash-fill"></i> Supprimer
                 </button>
             </a>
@@ -1001,5 +1001,36 @@
                 });
 
             })
+        </script>
+        <script>
+                $(document).on('click','.deleteGroup',function(){
+        let id = $(this).val();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Confirmez votre demande !',
+            text: 'Vous êtes sur le point de supprimer ce groupe.',
+            showCancelButton: true,
+            confirmButtonText: 'Oui',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/groupes/delete/' + id,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response){
+                        if(response == true){
+                            Swal.fire("Le groupe a été supprimé avec succès !", '', 'success')
+                        }else{
+                            Swal.fire("Vous ne pouvez pas supprimer ce groupe", "Veuillez vérifier s'il y a des Paiements Impayés pour ce Group.", 'error')
+                        }
+                    },
+                    error: function(request, status, error) {
+                        console.log(request.responseText);
+                    }
+                    
+                });
+            }
+        })
+    });
         </script>
     @endsection
