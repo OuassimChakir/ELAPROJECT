@@ -89,7 +89,7 @@
 
         <div class="row">
             @admin
-            <div class="col-xl-4">
+            <div class="col-xl-6">
                 <div class="media widget-media p-3 bg-white border">
                     <div class="icon rounded-circle mr-3 text-white bg-dark">
                         <i class="bi bi-book-fill text-white"></i>
@@ -101,20 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4">
-                <div class="media widget-media p-3 bg-white border">
-                    <div class="icon rounded-circle mr-3 bg-info">
-                        <i class="bi bi-cash text-white"></i>
-                    </div>
-
-                    <div class="media-body align-self-center">
-                        <h4 class="text-primary mb-2">{{ $group->amount*$group->nbElements }} DH</h4>
-                        <p>Montant Total</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-xl-4">
+            <div class="col-xl-6">
                 <div class="media widget-media p-3 bg-white border">
                     <div class="icon rounded-circle mr-3 bg-success">
                         <i class="bi bi-calendar-date text-white"></i>
