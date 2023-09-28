@@ -8,6 +8,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomesController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\EmploiController;
 use App\Http\Controllers\GradesController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NotesController;
@@ -114,6 +115,7 @@ Route::middleware([
         Route::get('/attendance/update/{idGroup}-{dateAbsence}', [AttendanceController::class, 'updateAttendanceAjax']);
         Route::post('/attendance/update', [AttendanceController::class, 'updateAttendance'])->name('attendance.update');
         Route::post('/attendance/delete', [AttendanceController::class, 'deleteAttendance'])->name('attendance.delete');
+
         /* -----------------------------------------------
         / GRADES
         / --------------------------------------------- */
@@ -219,6 +221,13 @@ Route::middleware([
         // JSON DATA
         Route::get('/students/get/{idSubject}', [StudentController::class, 'getGroupsByGrade']);
         Route::get('/students/getGroups/{idSubject}/{idStudent}/{idGradeCategory}', [StudentController::class, 'getGroupsBySubject']);
+
+        /* -----------------------------------------------
+        / Emploi du temps
+        / --------------------------------------------- */
+        Route::post('/group/{idGroup}/nouveauEmploi', [EmploiController::class, 'addEmploi'])->name('emploi.add');
+        Route::put('/group/updateEmploi', [EmploiController::class, 'updateEmploi'])->name('emploi.update');
+        Route::delete('/group/deleteEmploi', [EmploiController::class, 'deleteEmploi'])->name('emploi.delete');
 
         /* -----------------------------------------------
         / Income Type

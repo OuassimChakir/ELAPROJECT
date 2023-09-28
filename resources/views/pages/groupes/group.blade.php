@@ -40,6 +40,11 @@
                                 type="button" role="tab" aria-controls="profile"
                                 aria-selected="true">Informations</button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="emploi-tab" data-bs-toggle="tab" data-bs-target="#emploi"
+                                type="button" role="tab" aria-controls="emploi"
+                                aria-selected="false">Emploi du Temps</button>
+                        </li>
                         @staff
                         {{-- Paramètres --}}
                         <li class="nav-item" role="presentation">
@@ -63,6 +68,7 @@
                                 aria-selected="false">Paramètres d'Absence</button>
                         </li>
                         @endstaff
+                        
                     </ul>
                     <div class="tab-content px-3 px-xl-5" id="myTabContent">
                         {{-- Informations --}}
@@ -715,6 +721,9 @@
                             </div>
                         </div>
                         @endstaff
+
+                        {{-- Emploi du Temps --}}
+                        @include('pages.groupes.sections.emploi')
                     </div>
                 </div>
             </div>
@@ -1002,35 +1011,55 @@
 
             })
         </script>
+
+
+        {{-- Group Emploi --}}
         <script>
-                $(document).on('click','.deleteGroup',function(){
-        let id = $(this).val();
-        Swal.fire({
-            icon: 'warning',
-            title: 'Confirmez votre demande !',
-            text: 'Vous êtes sur le point de supprimer ce groupe.',
-            showCancelButton: true,
-            confirmButtonText: 'Oui',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/groupes/delete/' + id,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(response){
-                        if(response == true){
-                            Swal.fire("Le groupe a été supprimé avec succès !", '', 'success')
-                        }else{
-                            Swal.fire("Vous ne pouvez pas supprimer ce groupe", "Veuillez vérifier s'il y a des Paiements Impayés pour ce Group.", 'error')
-                        }
-                    },
-                    error: function(request, status, error) {
-                        console.log(request.responseText);
-                    }
-                    
-                });
-            }
-        })
-    });
+        $(document).ready(function() {
+            var maxField = 10; //Input fields increment limitation
+            var addInput = $('.addInput'); //Add button selector
+            var wrapper = $('.field_wrapper'); //Input field wrapper
+            var fieldHTML = '<div class="row">'; //New input field html 
+            fieldHTML += '<div class="col-lg-4"> <div class="form-group"> <input id="jour" name="jour[]" class="form-control" type="text" required> </div> </div>';
+            fieldHTML += '<div class="col-lg-3"> <div class="form-group"> <input id="debut" name="debut[]" class="form-control" type="time" required> </div> </div>';
+            fieldHTML += '<div class="col-lg-3"> <div class="form-group"> <input id="fin" name="fin[]" class="form-control" type="time" required> </div> </div>';
+            fieldHTML += '<div class="col-lg-2"> <button type="button" class="btn btn-danger removeInput"><i class="bi bi-trash"></i></button> </div>';
+            fieldHTML += '</div>';
+            var x = 1; //Initial field counter is 1
+            //Once add button is clicked
+            $(addInput).click(function() {
+                //Check maximum number of input fields
+                if (x < maxField) {
+                    x++; //Increment field counter
+                    $(wrapper).append(fieldHTML); //Add field html
+                }
+            });
+        
+            //Once remove button is clicked
+            $(wrapper).on('click', '.removeInput', function(e) {
+                e.preventDefault();
+                $(this).parentsUntil('.field_wrapper').remove(); //Remove field html
+                x--; //Decrement field counter
+            });
+        });
+
+        $('#updateEmploi').hide();
+        $('#showEmploiButton').hide();
+        $(document).on('click','#updateEmploiButton', function(e){
+            e.preventDefault();
+            $('#showEmploi').hide();
+            $('#showEmploiButton').show();
+
+            $('#updateEmploiButton').hide();
+            $('#updateEmploi').show();
+        });
+        $(document).on('click','#showEmploiButton', function(e){
+            e.preventDefault();
+            $('#showEmploi').show();
+            $('#showEmploiButton').hide();
+
+            $('#updateEmploiButton').show();
+            $('#updateEmploi').hide();
+        });
         </script>
     @endsection

@@ -41,17 +41,6 @@ class Notes extends Model
             ->get();
     }
 
-    public static function cleanNotes(){
-        $deadNotes = (int)date('m')-2;
-        $deadyear = (int)date('Y');
-        if($deadNotes <= 0) {
-            $deadNotes += 12;
-            $deadyear--;
-        }
-
-        Notes::whereRaw('MONTH(created_at) = '.$deadNotes.' AND YEAR(created_at) = '.$deadyear)->delete();
-    }
-
     public static function deleteGroupNotes($idGroup){
         Notes::select('*')
             ->join('groupelements','groupelements.idElement','=','notes.idElement')

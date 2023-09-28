@@ -6,6 +6,7 @@ use App\Models\Activite;
 use App\Models\Attendance;
 use App\Models\Courses\CourseType;
 use App\Models\Courses\Subjects;
+use App\Models\Emploi;
 use App\Models\Grades\Grades;
 use App\Models\Grades\GradesCategory;
 use App\Models\Group;
@@ -94,6 +95,8 @@ class GroupController extends Controller
             $grades = Grades::selectGradesByCategory($groupGrades[0]->idGradeCategory);
         else
             $grades = Grades::selectGradesByCategory(null);
+
+        $emploi = Emploi::getGroupEmploi($idGroup);
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
             ->with('groupGrades', $groupGrades)
@@ -103,7 +106,8 @@ class GroupController extends Controller
             ->with('grades', $grades)
             ->with('students', $students)
             ->with('courseTypes', $courseTypes)
-            ->with('absen', $absen);
+            ->with('absen', $absen)
+            ->with('emploi',$emploi);
     }
 
     public function getGrade($idGradeCategory)
