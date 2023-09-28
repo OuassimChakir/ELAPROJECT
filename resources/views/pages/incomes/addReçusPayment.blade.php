@@ -9,7 +9,7 @@
                 @csrf
                 @method('post')
                 <div class="modal-body px-4">
-                    <div class="row mb-2 g-3">
+                    <div class="row mb-2 g-3"> 
                         <div class="row mb-2 g-3">
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
@@ -76,7 +76,7 @@
                                 <div class="form-group mb-4">
                                     <label for="numeroRecu">N° Reçu</label>
                                     <input type="text" name="numeroRecu" class="form-control" id="numeroRecu"
-                                        required>
+                                        >
                                     <small class="text-muted">Le numéro du Reçu donnée au Client</small>
                                 </div>
                             </div>

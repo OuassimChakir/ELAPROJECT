@@ -19,8 +19,8 @@
                     Revenus
                 </button>
             </a>
-            <a>
-                <button type="button" class="deleteButton btn btn-outline-danger" data-url="/groupes/{{ $group->idGroup }}" data-confirm="Une fois supprimé, vous ne pourrez plus récupérer ce groupe!" data-title="Êtes-vous sûr?" data-type="error">
+            <a href="{{route('group.incomes',['idGroup' => $group->idGroup])}}">
+                <button type="button" class="deleteGroup btn btn-outline-danger" name="delete" value="{{$group->idGroup}}">
                     <i class="bi bi-trash-fill"></i> Supprimer
                 </button>
             </a>
