@@ -59,11 +59,13 @@
                             <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
                                 type="button" role="tab" aria-controls="profile" aria-selected="true">Profile</button>
                         </li>
+                        @admin
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings"
                                 type="button" role="tab" aria-controls="settings"
                                 aria-selected="false">Paramètres</button>
                         </li>
+                        @endadmin
                     </ul>
                     <div class="tab-content px-3 px-xl-5" id="myTabContent">
 
@@ -107,7 +109,7 @@
                                 @endif
                             </div>
                         </div>
-
+                        @admin
                         {{-- SETTINGS OF THE ACCOUNT --}}
                         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                             <div class="tab-pane-content mt-5">
@@ -231,7 +233,7 @@
                                 </form>
                             </div>
                         </div>
-
+                        @endadmin
                     </div>
                 </div>
             </div>

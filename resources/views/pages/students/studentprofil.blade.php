@@ -59,17 +59,20 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="groups-tab" data-bs-toggle="tab" data-bs-target="#groups"
                                 type="button" role="tab" aria-controls="groups" aria-selected="false">Groupes</button>
-                        </li>
+                        </li> 
+                        @admin
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="groups-tab" data-bs-toggle="tab" data-bs-target="#responsible"
                                 type="button" role="tab" aria-controls="responsible"
                                 aria-selected="false">Responsable</button>
                         </li>
+                       
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings"
                                 type="button" role="tab" aria-controls="settings"
                                 aria-selected="false">Paramètres</button>
                         </li>
+                        @endadmin
                     </ul>
                     <div class="tab-content px-3 px-xl-5" id="myTabContent">
                         {{-- Profile TAB --}}
