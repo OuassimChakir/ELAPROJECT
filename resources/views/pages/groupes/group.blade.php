@@ -1061,4 +1061,37 @@
                 $('#updateEmploi').hide();
             });
         </script>
+
+        {{-- Delete Group --}}
+        <script>
+            $(document).on('click','.deleteGroup',function(){
+                let id = $(this).val();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Confirmez votre demande !',
+                    text: 'Vous êtes sur le point de supprimer ce groupe.',
+                    showCancelButton: true,
+                    confirmButtonText: 'Oui',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/groupes/delete/' + id,
+                            type: 'get',
+                            dataType: 'json',
+                            success: function(response){
+                                if(response == true){
+                                    window.location.href = "{{route('groups')}}";
+                                }else{
+                                    Swal.fire("Vous ne pouvez pas supprimer ce groupe", "Veuillez vérifier s'il y a des Paiements Impayés pour ce Group.", 'error')
+                                }
+                            },
+                            error: function(request, status, error) {
+                                console.log(request.responseText);
+                            }
+                            
+                        });
+                    }
+                })
+            });
+        </script>
     @endsection
