@@ -60,10 +60,13 @@ class Group extends Model
     }
 
     // ***** CHECK HOW MANY GROUPES OF A SPECIFIC SAME SUBJECT AND GRADE
-    public static function getNumGroups($idSubject,$idProfesseur){
+    public static function getNumGroups($idSubject,$idProfesseur,$idGradeCategory){
         return Group::select('*')
+            ->join('group_grades','group_grades.idGroup','=','groups.idGroup')
+            ->join('grades','grades.idGrade','=','group_grades.idGrade')
             ->where('idSubject', $idSubject)
             ->where('idProfesseur', $idProfesseur)
+            ->where('idGradeCategory',$idGradeCategory)
             ->count();
     }
 
@@ -107,12 +110,15 @@ class Group extends Model
             ->get();
     }
 
-    public static function selectGroupsBySubject($idSubject, $idStudent){
+    public static function selectGroupsBySubject($idSubject, $idStudent, $idGradeCategory){
         return Group::select('groups.*', 'groupelements.created_at','groupelements.idStudent', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
             ->selectRaw('sum(CASE WHEN (idStudent = '.$idStudent.') THEN 1 ELSE 0 END) as response')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->leftJoin('groupelements', 'groups.idGroup', '=', 'groupelements.idGroup')
+            ->join('group_grades','group_grades.idGroup','=','groups.idGroup')
+            ->join('grades','grades.idGrade','=','group_grades.idGrade')
             ->where('groups.idSubject', $idSubject)
+            ->where('idGradeCategory',$idGradeCategory)
             ->groupBy('groups.idGroup')
             ->having('response', '=', 0)
             ->get();

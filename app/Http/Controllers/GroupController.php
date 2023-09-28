@@ -38,11 +38,19 @@ class GroupController extends Controller
             $groups = Group::getProfGroups(Auth::user()->idProfesseur);
         else
             $groups = Group::getGroups();
+
+        for ($i=0; $i < $groups->count(); $i++) 
+            $groups[$i]->grades = GroupGrades::getGroupGrades($groups[$i]->idGroup);
+        
         if ($request->has('CreateGroup')) {
-            $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur) + 1;
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
-            $designation = $gradeCategory->category . '-' . $matiere->short . '-G' . $numGroups;
+
+            // Group Number
+            $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur, $gradeCategory->idGradeCategory) + 1;
+
+
+            $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $numGroups;
             $newGroup = Group::createGroup($designation, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades))
