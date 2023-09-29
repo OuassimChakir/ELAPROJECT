@@ -44,7 +44,7 @@ class GradesController extends Controller
         // Update GradeCategory (ACTION)
         if ($request->has('update')) {
             Grades::updateGrade($request->idGrade, $request->grade,$request->brev, $request->gradeCategory);
-            return Redirect::route('grades')->with('updateGrade', "La Modification est faite avec succès");
+            return Redirect::route('grades')->with('updateMessage', "La Modification est faite avec succès");
         }
         // Update GradeCategory (PAGE)
         $updatedGrade = Grades::getGrade($idGrade);
