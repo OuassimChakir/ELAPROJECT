@@ -47,8 +47,11 @@ class GroupController extends Controller
         if ($request->has('CreateGroup')) {
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
-
             $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+            if(count($request->grades) == 1){
+                $grade = Grades::getGrade($request->grades[0]);
+                $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+            }
             $newGroup = Group::createGroup($designation, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades))
@@ -149,7 +152,11 @@ class GroupController extends Controller
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
             $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
-
+            if(count($request->grades) == 1){
+                $grade = Grades::getGrade($request->grades[0]);
+                $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+            }
+            
             Group::updateGroup($idGroup, $designation, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades)) {
@@ -231,20 +238,16 @@ class GroupController extends Controller
     }
     public function searchNbGroup(Request $request)
     {
-        $matiere = Subjects::getSubject($request->get('idSubject'));
-        $gradeCategory = GradesCategory::getGradeCategory($request->get('idGradeCategory'));
-        $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->get('nbGroupQuery');
+        $matiere = Subjects::getSubject($request->idSubject);
+        $gradeCategory = GradesCategory::getGradeCategory($request->idGradeCategory);
+        $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
         $output = 0;
-        if (!empty($request->get('nbGroupQuery'))) {
-            if ($request->ajax()) {
-                $data = DB::table('groups')->where('designation',$designation)->get();
-                if (count($data) > 0) {
-                    return $output = 1;
-                }
-                return  $output;
+        if ($request->ajax()) {
+            $data = DB::table('groups')->where('designation',$designation)->get();
+            if (count($data) > 0) {
+                $output = 1;
             }
-        } else {
-            return  $output;
+            return response()->json($output);
         }
     }
 }

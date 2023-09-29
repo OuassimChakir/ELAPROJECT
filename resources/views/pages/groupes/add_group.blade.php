@@ -49,7 +49,6 @@
                             <div class="form-group mb-4">
                                 <label for="form-label">Matières</label>
                                 <select name="idSubject" id="id-Subject" class="form-select" required>
-                                    <option disabled selected value="0">-- Choisir une Matière --</option>
                                     @foreach ($courseTypes as $courseType)
                                         <optgroup label="{{ $courseType->course }}">
                                             @foreach ($subjects as $subject)
@@ -81,8 +80,7 @@
                         <div class="col-lg-12" >
                             <div class="form-group">
                                 <label for="nbGroup">Nombre du Group</label>
-                                <input type="number"" min="1" class="form-control" name="nbGroup" id="nbGroup"
-                                    >
+                                <input type="number"" min="1" class="form-control" name="nbGroup" id="nbGroup" >
                             </div>
                         </div>
 
@@ -100,13 +98,11 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
                 <div class="modal-footer px-4">
                     <button type="button" class="btn btn-secondary btn-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" name="CreateGroup" class="btn btn-primary btn-pill">Créer</button>
+                    <button type="submit" name="CreateGroup" class="btn btn-primary btn-pill" id="createGroupBtn" disabled>Créer</button>
                 </div>
             </form>
         </div>
@@ -170,25 +166,39 @@
     $(document).ready(function() {
         $('#nbGroup').on('keyup', function() {
             var nbGroupQuery = $('#nbGroup').val();
-            var idGradeCategory= $('#gradeCategory').val();
-            var idSubject= $('#id-Subject').val();
-            
+            var idGradeCategory = $('#gradeCategory').val();
+            var idSubject = $('#id-Subject').val();
+            if(nbGroupQuery <= 0 && nbGroupQuery.length != 0){
+                $('#nbGroup').val(1);
+                nbGroupQuery = 1;
+            }
             $.ajax({
                 url: "{{ route('search.nbGroup') }}",
                 type: "GET",
                 data: {
-                    'nbGroupQuery': nbGroupQuery
+                    'nbGroupQuery': nbGroupQuery,
+                    'idGradeCategory' : idGradeCategory,
+                    'idSubject' : idSubject,
                 },
                 success: function(data) {
                     if (data == 0) {
-                        $('#numeroRecu').removeClass("is-invalid");
-                        $('#numeroRecu').addClass("is-valid");
+                        if($('#nbGroup').val().length == 0){
+                            $('#createGroupBtn').prop('disabled',true);
+                            $('#nbGroup').removeClass("is-valid");
+                            $('#nbGroup').addClass("is-invalid");
+                        }else{
+                            $('#nbGroup').removeClass("is-invalid");
+                            $('#nbGroup').addClass("is-valid");
+                            $('#createGroupBtn').prop('disabled',false);
+                        }
                     } else {
-                        $('#numeroRecu').removeClass("is-valid");
-                        $('#numeroRecu').addClass("is-invalid");
+                        $('#nbGroup').removeClass("is-valid");
+                        $('#nbGroup').addClass("is-invalid");
+                        $('#createGroupBtn').prop('disabled',true);
                     }
                 }
             });
+            
         });
     });
 </script>

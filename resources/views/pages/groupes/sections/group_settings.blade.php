@@ -9,14 +9,8 @@
 
             <div class="modal-body px-4">
                 <div class="row mb-2">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="nbGroup">Nombre du Group</label>
-                            <input type="number" class="form-control" name="nbGroup" id="nbGroup" value="{{substr(explode('-',$group->designation)[2], 1)}}" required>
-                        </div>
-                    </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label for="capacity">Capacité du Groupe</label>
                             <input type="number" max="50" min="1"
@@ -26,7 +20,7 @@
                     </div>
 
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label for="capacity">Prix Individuel</label>
                             <input type="number" min="1" class="form-control"
@@ -77,7 +71,6 @@
                             <label for="form-label">Matières</label>
                             <select name="idSubject" id="id-Subject" class="form-select"
                                 required>
-                                <option disabled selected>-- Choisir une Matière --</option>
                                 @foreach ($courseTypes as $courseType)
                                     <optgroup label="{{ $courseType->course }}">
                                         @foreach ($subjects as $subject)
@@ -121,6 +114,20 @@
                                     </option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="nbGroup">Nombre du Group</label>
+                            @php
+                                $designation = explode('-',$group->designation);
+                                if(count($designation) == 3)
+                                    $nbGroup = $designation[2];
+                                elseif(count($designation) == 4)
+                                    $nbGroup = $designation[2];
+                            @endphp
+                            <input type="number" class="form-control" name="nbGroup" id="nbGroup" value="{{substr($nbGroup,1)}}" required>
                         </div>
                     </div>
 
@@ -188,8 +195,7 @@
             <div class="modal-footer px-4">
                 <button type="button" class="btn btn-secondary btn-pill"
                     data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" name="updateGroup"
-                    class="btn btn-warning btn-pill">Modifier</button>
+                <button type="submit" name="updateGroup" id="updateGroupBtn" class="btn btn-warning btn-pill">Modifier</button>
             </div>
         </form>
     </div>
