@@ -11,7 +11,7 @@ class Grades extends Model
     protected $table = "grades";
     protected $primaryKey = "idGrade";
     public $timestamps = false;
-    protected $fillable = ['grade', 'idGradeCategory'];
+    protected $fillable = ['grade','brev', 'idGradeCategory'];
 
     public static function getGrade($idGrade){
         return Grades::select('*')
@@ -41,16 +41,18 @@ class Grades extends Model
 
 
     // INSERT DATA (New Subject)
-    public static function addGrade($grade, $idGradeCategory){
+    public static function addGrade($grade,$brev, $idGradeCategory){
         Grades::create([
             'grade' => $grade,
+            'brev' => $brev,
             'idGradeCategory' => $idGradeCategory
         ]);
     }
     //    Update Subject
-    public static function updateGrade($idGrade, $grade, $idGradeCategory){
+    public static function updateGrade($idGrade, $grade,$brev,$idGradeCategory){
         $gradeClass = Grades::find($idGrade);
         $gradeClass->grade = $grade;
+        $gradeClass->brev = $brev;
         $gradeClass->idGradeCategory = $idGradeCategory;
         $gradeClass->save();
     }

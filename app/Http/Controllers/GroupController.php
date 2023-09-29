@@ -236,11 +236,17 @@ class GroupController extends Controller
         GroupElements::cancelAssignment($student);
         return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
     }
+
+
     public function searchNbGroup(Request $request)
     {
         $matiere = Subjects::getSubject($request->idSubject);
         $gradeCategory = GradesCategory::getGradeCategory($request->idGradeCategory);
         $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
+        if(count($request->grades) == 1){
+            $grade = Grades::getGrade($request->grades[0]);
+            $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
+        }
         $output = 0;
         if ($request->ajax()) {
             $data = DB::table('groups')->where('designation',$designation)->get();

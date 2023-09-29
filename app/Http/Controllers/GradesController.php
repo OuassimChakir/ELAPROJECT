@@ -25,7 +25,7 @@ class GradesController extends Controller
             $gradesArray = array();
             $idGradeCategory = $request->gradeCategory;
             for ($i = 0; $i < count($request->grade); $i++) {
-                $gradesArray[] = array('grade' => $request->grade[$i], 'idGradeCategory' => $idGradeCategory);
+                $gradesArray[] = array('grade' => $request->grade[$i],'brev' => $request->brev[$i] ,'idGradeCategory' => $idGradeCategory);
             }
             Grades::insert($gradesArray);
             return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
@@ -43,8 +43,8 @@ class GradesController extends Controller
         $gradesTable = Grades::getGrades();
         // Update GradeCategory (ACTION)
         if ($request->has('update')) {
-            Grades::updateGrade($request->idGrade, $request->grade, $request->gradeCategory);
-            return Redirect::route('grades')->with('updateGrade', "La Modification est faite avec succès");
+            Grades::updateGrade($request->idGrade, $request->grade,$request->brev, $request->gradeCategory);
+            return Redirect::route('grades')->with('updateMessage', "La Modification est faite avec succès");
         }
         // Update GradeCategory (PAGE)
         $updatedGrade = Grades::getGrade($idGrade);
