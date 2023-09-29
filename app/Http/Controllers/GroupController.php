@@ -243,17 +243,16 @@ class GroupController extends Controller
         $matiere = Subjects::getSubject($request->idSubject);
         $gradeCategory = GradesCategory::getGradeCategory($request->idGradeCategory);
         $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
-        if(count($request->grades) == 1){
-            $grade = Grades::getGrade($request->grades[0]);
-            $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
-        }
-        $output = 0;
-        if ($request->ajax()) {
-            $data = DB::table('groups')->where('designation',$designation)->get();
-            if (count($data) > 0) {
-                $output = 1;
+        if($request->has('grades'))
+            if(count($request->grades) == 1){
+                $grade = Grades::getGrade($request->grades[0]);
+                $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
             }
-            return response()->json($output);
+        $output = 0;
+        $data = DB::table('groups')->where('designation',$designation)->get();
+        if (count($data) > 0) {
+            $output = 1;
         }
+        return response()->json($output);
     }
 }
