@@ -148,7 +148,7 @@ class GroupController extends Controller
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
             $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
-
+            
             Group::updateGroup($idGroup, $designation, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades)) {
