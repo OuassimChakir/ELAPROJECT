@@ -70,642 +70,21 @@
                     </ul>
                     <div class="tab-content px-3 px-xl-5" id="myTabContent">
                         {{-- Informations --}}
-                        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <div class="tab-widget mt-5">
-                                <div class="row">
-                                @teacher
-                                        <div class="col-xl-4">
-                                            <div class="media widget-media p-3 bg-white border">
-                                                <div class="icon rounded-circle mr-3 bg-primary">
-                                                    <i class="bi bi-collection-fill text-white"></i>
-                                                </div>
-
-                                                <div class="media-body align-self-center">
-                                                    <h4 class="text-primary mb-2">{{ $group->designation }}</h4>
-                                                    <p>Designation</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-4">
-                                            <div class="media widget-media p-3 bg-white border">
-                                                <div class="icon rounded-circle bg-warning mr-3">
-                                                    <i class="bi bi-person-video3 text-white"></i>
-                                                </div>
-
-                                                <div class="media-body align-self-center">
-                                                    <h4 class="text-primary mb-2">
-                                                        @if (is_null($group->idProfesseur))
-                                                            Non Assigné
-                                                        @else
-                                                        <a href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
-                                                            {{ $group->prenom . ' ' . $group->nom }}
-                                                        </a> 
-                                                        @endif
-                                                    </h4>
-                                                    <p>Encadrant</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-4">
-                                            <div class="media widget-media p-3 bg-white border">
-                                                <div class="icon rounded-circle mr-3 bg-success">
-                                                    <i class="bi bi-people-fill text-white"></i>
-                                                </div>
-
-                                                <div class="media-body align-self-center">
-                                                    <h4 class="text-primary mb-2">
-                                                        {{ $group->nbElements }}/{{ $group->capacity }}</h4>
-                                                    <p>Capacité</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @else
-                                        <div class="col-xl-6">
-                                            <div class="media widget-media p-3 bg-white border">
-                                                <div class="icon rounded-circle mr-3 bg-primary">
-                                                    <i class="bi bi-collection-fill text-white"></i>
-                                                </div>
-
-                                                <div class="media-body align-self-center">
-                                                    <h4 class="text-primary mb-2">{{ $group->designation }}</h4>
-                                                    <p>Designation</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-6">
-                                            <div class="media widget-media p-3 bg-white border">
-                                                <div class="icon rounded-circle bg-warning mr-3">
-                                                    <i class="bi bi-person-video3 text-white"></i>
-                                                </div>
-
-                                                <div class="media-body align-self-center">
-                                                    <h4 class="text-primary mb-2">
-                                                        @if (is_null($group->idProfesseur))
-                                                            Non Assigné
-                                                        @else
-                                                        <a href="{{ route('teachers.profil', ['idProfesseur' => $group->idProfesseur]) }}">
-                                                            {{ $group->prenom . ' ' . $group->nom }}
-                                                        </a> 
-                                                        @endif
-                                                    </h4>
-                                                    <p>Encadrant</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endteacher
-
-                                <div class="row">
-                                    @admin
-                                    <div class="col-xl-4">
-                                        <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle mr-3 text-white bg-dark">
-                                                <i class="bi bi-book-fill text-white"></i>
-                                            </div>
-
-                                            <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">{{ $group->short }}</h4>
-                                                <p>Matière</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-xl-4">
-                                        <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle mr-3 bg-success">
-                                                <i class="bi bi-calendar-date text-white"></i>
-                                            </div>
-
-                                            <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">{{ date_format(date_create($group->created_at), 'd-m-Y') }}</h4>
-                                                <p>Année de Creation</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @else
-                                    <div class="col-xl-6">
-                                        <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle mr-3 text-white bg-dark">
-                                                <i class="bi bi-book-fill text-white"></i>
-                                            </div>
-
-                                            <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">{{ $group->short }}</h4>
-                                                <p>Matière</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-xl-6">
-                                        <div class="media widget-media p-3 bg-white border">
-                                            <div class="icon rounded-circle mr-3 bg-success">
-                                                <i class="bi bi-calendar-date text-white"></i>
-                                            </div>
-
-                                            <div class="media-body align-self-center">
-                                                <h4 class="text-primary mb-2">{{ date_format(date_create($group->created_at), 'd-m-Y') }}</h4>
-                                                <p>Année de Creation</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endadmin
-                                </div>
-
-                                <div class="col-xl-12">
-                                    <div class="media widget-media p-3 bg-white border">
-                                        <div class="icon rounded-circle bg-purple mr-3">
-                                            <i class="bi bi-list-ol text-white"></i>
-                                        </div>
-
-                                        <div class="media-body align-self-center">
-                                            <h4 class="text-primary mb-2">Niveaux</h4>
-                                            <p>
-                                                @foreach ($groupGrades as $grade)
-                                                    <span class="badge badge-primary">{{ $grade->grade }}</span>
-                                                @endforeach
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                @staff
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="tab-pane-content mt-5">
-                                            <form action="{{ route('classroom.multipleCancel') }}" method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <div class="table-responsive">
-                                                    <table id="responsive-data-table" class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                @if ($students->count() != 0)
-                                                                    <th>
-                                                                        <input type="checkbox" class="form-check-input"
-                                                                            id="selectAllArchived">
-                                                                    </th>
-                                                                @endif
-                                                                <th>#</th>
-                                                                <th>Nom</th>
-                                                                <th>Téléphone</th>
-                                                                <th>Rejoint le</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-
-                                                        <tbody>
-                                                            @foreach ($students as $student)
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" name="students[]" value="{{ $student->idElement }}" class="form-check-input archivedStudents">
-                                                                    </td>
-                                                                    <td>
-                                                                        {{ $student->matricule }}
-                                                                        @if ($student->pendingPaiment == 0)
-                                                                            <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
-                                                                        @else
-                                                                            <span class="badge badge-danger">{{ $student->pendingPaiment }} <i class="bi bi-hourglass"></i></span>
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        <a
-                                                                            href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
-                                                                            {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
-                                                                        </a>
-                                                                        @if ($student->sexe == 'Homme')
-                                                                            <span class="badge badge-pill badge-info">M</span>
-                                                                        @else
-                                                                            <span
-                                                                                class="badge badge-pill badge-purple">F</span>
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>{{ $student->numTel }}</td>
-                                                                    <td>{{ $student->dateAjout }}</td>
-                                                                    <td>
-                                                                        <div class="btn-group-spaced">
-                                                                            <button type="button" class="addNote btn btn-outline-primary" value="{{$student->idElement}}">
-                                                                                <i class="bi bi-info"></i>
-                                                                            </button>
-                                                                            <button type="button" class="btn btn-outline-danger" onclick="cancelAssignment({{$student->idElement}});">
-                                                                                <i class="bi bi-trash-fill"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col btns">
-                                                        <button type="submit" name="deleteAll"
-                                                            class="btn btn-outline-danger"
-                                                            onclick="return confirm('Voulez-vous supprimer définitivement ces Professeurs?');"
-                                                            value="{{ $group->idGroup }}">
-                                                            <i class="bi bi-trash-fill"></i> Supprimer la Sélection
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endstaff
-                                @onlyteacher
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="tab-pane-content mt-5">
-                                            <div class="table-responsive">
-                                                <table id="responsive-data-table" class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Nom</th>
-                                                            <th>Rejoint le</th>
-                                                        </tr>
-                                                    </thead>
-        
-                                                    <tbody>
-                                                        @foreach ($students as $student)
-                                                            <tr>
-                                                                <td>
-                                                                    {{ $student->matricule }}
-                                                                </td>
-                                                                <td>
-                                                                    {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
-                                                                    @if ($student->sexe == 'Homme')
-                                                                        <span class="badge badge-pill badge-info">M</span>
-                                                                    @else
-                                                                        <span
-                                                                            class="badge badge-pill badge-purple">F</span>
-                                                                    @endif
-                                                                </td>
-                                                                <td>{{ $student->dateAjout }}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endonlyteacher
-                            </div>
-                        </div>
+                        @include('pages.groupes.sections.group_info')
 
                         @staff
                         {{-- Parametres --}}
-                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                            <div class="tab-pane-content mt-5">
-                                <form action="{{ route('groups.update', ['idGroup' => $group->idGroup]) }}" method="post">
-                                    @csrf
-                                    @method('put')
-                                    <div class="modal-header px-4">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Créer un Groupe</h5>
-                                    </div>
+                        @include('pages.groupes.sections.group_settings')
 
-                                    <div class="modal-body px-4">
-                                        <div class="row mb-2">
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="capacity">Capacité du Groupe</label>
-                                                    <input type="number" max="50" min="1"
-                                                        class="form-control" name="capacity"
-                                                        value="{{ $group->capacity }}" id="capacity" required>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="capacity">Prix Individuel</label>
-                                                    <input type="number" min="1" class="form-control"
-                                                        name="amount" id="amount" value="{{ $group->amount }}"
-                                                        readonly>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="debutFormation">Début de formation</label>
-                                                    <input type="date" class="form-control" name="debutFormation" id="debutFormation" value='{{$group->debutFormation}}' required>
-                                                </div>
-                                            </div>
-                    
-                                            
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="finFormation">Fin de formation</label>
-                                                    <input type="date" class="form-control" name="finFormation" id="finFormation" value="{{$group->finFormation}}" required>
-                                                </div>
-                                            </div>
-
-                                            {{-- Staff --}}
-                                            <div class="col-lg-6">
-                                                <div class="form-group mb-4">
-                                                    <label for="form-label">Professeur Assigné</label>
-                                                    <select name="idProfesseur" id="idProfesseur" class="form-select"
-                                                        required>
-                                                        <option disabled selected>-- Choisir un Professeur --</option>
-                                                        @foreach ($professeurs as $professeur)
-                                                            @if ($group->idProfesseur == $professeur->idProfesseur)
-                                                                <option value="{{ $professeur->idProfesseur }}" selected>
-                                                                @else
-                                                                <option value="{{ $professeur->idProfesseur }}">
-                                                            @endif
-                                                            {{ $professeur->prenom . ' ' . $professeur->nom }} |
-                                                            {{ $professeur->libelle }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            {{-- Matières --}}
-                                            <div class="col-lg-6">
-                                                <div class="form-group mb-4">
-                                                    <label for="form-label">Matières</label>
-                                                    <select name="idSubject" id="id-Subject" class="form-select"
-                                                        required>
-                                                        <option disabled selected>-- Choisir une Matière --</option>
-                                                        @foreach ($courseTypes as $courseType)
-                                                            <optgroup label="{{ $courseType->course }}">
-                                                                @foreach ($subjects as $subject)
-                                                                    @if ($courseType->idCourseType == $subject->idCourseType)
-                                                                        @if ($group->idSubject == $subject->idSubject)
-                                                                            <option value="{{ $subject->idSubject }}"
-                                                                                selected>
-                                                                            @else
-                                                                            <option value="{{ $subject->idSubject }}">
-                                                                        @endif
-                                                                        {{ $subject->libelle }}
-                                                                        </option>
-                                                                    @endif
-                                                                @endforeach
-                                                            </optgroup>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            {{-- Grade Category --}}
-                                            <div class="col-lg-12">
-                                                <div class="form-group mb-4">
-                                                    <label for="form-label">Catégories des Niveaux</label>
-                                                    <select name="gradeCategory" id="gradeCategory" class="form-select"
-                                                        required>
-                                                        <option disabled selected>-- Choisir une Catégorie -- </option>
-                                                        @php
-                                                            if (isset($groupGrades[0])) {
-                                                                $idGradeCategory = $groupGrades[0]->idGradeCategory;
-                                                            }
-                                                        @endphp
-                                                        @foreach ($gradesCategories as $categorie)
-                                                            @if (isset($idGradeCategory) && $categorie->idGradeCategory == $idGradeCategory)
-                                                                <option value="{{ $categorie->idGradeCategory }}"
-                                                                    selected>
-                                                                @else
-                                                                <option value="{{ $categorie->idGradeCategory }}">
-                                                            @endif
-                                                            {{ $categorie->category }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-12">
-                                                <div class="card p-2 mt-2">
-                                                    <div class="card-title pl-3 pt-3">
-                                                        <h5>Niveaux</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <table class="table table-bordered" id="gradesGenerationTable">
-                                                            <tbody id="grades">
-                                                                @if (isset($groupGrades[0]))
-                                                                    <tr>
-                                                                        @for ($i = 1; $i <= count($grades); $i++)
-                                                                            <div>
-                                                                                <td class="align-middle checkCol">
-                                                                                    @php
-                                                                                        foreach ($groupGrades as $item) {
-                                                                                            if ($item->idGrade == $grades[$i - 1]->idGrade) {
-                                                                                                $flag = true;
-                                                                                                break;
-                                                                                            } else {
-                                                                                                $flag = false;
-                                                                                            }
-                                                                                        }
-                                                                                    @endphp
-                                                                                    @if ($flag)
-                                                                                        <input type="checkbox"
-                                                                                            class="form-check-input form-control"
-                                                                                            id="grade{{ $i }}"
-                                                                                            name="grades[]"
-                                                                                            value="{{ $grades[$i - 1]->idGrade }}"
-                                                                                            checked>
-                                                                                    @else
-                                                                                        <input type="checkbox"
-                                                                                            class="form-check-input form-control"
-                                                                                            id="grade{{ $i }}"
-                                                                                            name="grades[]"
-                                                                                            value="{{ $grades[$i - 1]->idGrade }}">
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td class="infoCol">
-                                                                                    <label for="grade{{ $i }}">
-                                                                                        {{ $grades[$i - 1]->grade }}
-                                                                                    </label>
-                                                                                </td>
-                                                                            </div>
-                                                                            @if ($i == count($grades))
-                                                                    </tr>
-                                                                @elseif($i % 3 == 0)
-                                                                    </tr>
-                                                                    <tr>
-                                                                @endif
-                                                                @endfor
-                                                                @endif
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer px-4">
-                                        <button type="button" class="btn btn-secondary btn-pill"
-                                            data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" name="updateGroup"
-                                            class="btn btn-warning btn-pill">Modifier</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
                         @endstaff
                         @teacher
                         {{-- Attendance --}}
-                        <div class="tab-pane fade" id="markAttendance" role="tabpanel" aria-labelledby="markAttendance-tab">
-                            <div class="tab-pane-content">
-                                <div class="card p-4 mb-4">
-                                    <h3 class="card-title">Afficher d'absences</h3>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <form method="POST" action="{{ route('getAttendance') }}" target="_blank">
-                                                @csrf
-                                                @method('post')
-                                                <div class="row">
-                                                    <div class="col-sm-10">
-                                                        <input type="month" name="dateAbsence" class="form-control" value="{{ date('Y-m') }}">
-                                                        <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
-                                                    </div>
-                                                    <div class="col-sm-2">
-                                                        <button type="submit" name="getAttendance" class="btn btn-primary btn-pill form-control">Recherche</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                        @include('pages.groupes.sections.attendance')
 
-                                <div class="card p-4">
-                                    <h3 class="card-title">Marquer l'Absence</h3>
-                                    <div class="card-body">
-                                        <form method="POST" action="{{ route('absence.add', ['idGroup' => $group->idGroup]) }}">
-                                            <div class="table-responsive">
-                                                <table id="responsive-data-table" class="table">
-                                                    <div class="col-3 input-group-date">
-                                                    @csrf
-                                                    @method('post')
-                                                    <input type="date" name="dateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
-                                                    </div>
-                                                    <thead>
-                                                        <tr>
-                                                            @if ($students->count() != 0)
-                                                                <th>
-                                                                    <input type="checkbox" class="form-check-input" id="selectAll">
-                                                                </th>
-                                                            @endif
-                                                            <th>#</th>
-                                                            <th>Nom</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($students as $student)
-                                                            <tr>
-                                                                <td>
-                                                                    <input type="checkbox" class="form-check-input students">
-                                                                </td>
-                                                                <td>
-                                                                    {{ $student->matricule }}
-                                                                    <input type="hidden" name="students[]" class="form-control"
-                                                                        value="{{ $student->idStudent }}">
-                                                                </td>
-                                                                <td>
-                                                                    <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
-                                                                        {{$student->prenom_fr}} {{$student->nom_fr}} - {{$student->prenom_ar}} {{$student->nom_ar}}
-                                                                    </a>
-                                                                    @if ($student->sexe == 'Homme')
-                                                                        <span class="badge badge-pill badge-info">M</span>
-                                                                    @else
-                                                                        <span class="badge badge-pill badge-purple">F</span>
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    <select name="absence[]" id="id-Subject"
-                                                                        class="absenceState form-select form-control" required>
-                                                                        <option value="0">
-                                                                            Présent
-                                                                        </option>
-                                                                        <option value="1">
-                                                                            Absent
-                                                                        </option>
-                                                                        <option value="2">
-                                                                            Justifié
-                                                                        </option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <button type="submit" name="markAttendance" class="btn btn-primary btn-pill">Marquée L'absence</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         @endteacher
                         @staff
                         {{-- Attendance Settings --}}
-                        <div class="tab-pane fade" id="attendance" role="tabpanel" aria-labelledby="attendance-tab">
-                            <div class="tab-pane-content mt-5">
-                                <div class="card p-4 mb-2">
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                                <div class="row">
-                                                    <div class="col-sm-5">
-                                                        <input type="month" name="dateAbsence" id="absenceDateInput" class="form-control" value="{{ date('Y-m') }}" required>
-                                                        <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
-                                                    </div>
-                                                    <div class="col-sm-5">
-                                                        <select name="idAttendance" class="form-control" id="attendanceSelect" required disabled>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-2">
-                                                        <button id="getAttendanceButton" class="btn btn-primary btn-pill form-control" disabled>Recherche</button>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="card p-4" id="updateAttendanceSection">
-                                    <h3 class="card-title">Gérer l'Absence</h3>
-                                    <div class="card-body">
-                                        <form method="POST" action="{{ route('attendance.update') }}">
-                                            <div class="table-responsive">
-                                                <table id="responsive-data-table" class="table">
-                                                    <div class="col-3 input-group-date">
-                                                    @csrf
-                                                    @method('post')
-                                                    <input type="date" name="dateAbsence" id="updatedDateAbsence" class="form-control" value="{{ date('Y-m-d') }}">
-                                                    <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
-                                                    <input type="hidden" name="deletionDateAbsence" id="deletionDateAbsence">
-                                                    </div>
-                                                    <thead>
-                                                        <tr>
-                                                            @if ($students->count() != 0)
-                                                                <th>
-                                                                    <input type="checkbox" class="form-check-input" id="selectAllUpdated">
-                                                                </th>
-                                                            @endif
-                                                            <th>#</th>
-                                                            <th>Nom</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="updateAttendanceStudents">
-                                                        
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <button type="submit" name="updateAttendance" id="updateAttendanceBtn" class="btn btn-warning btn-pill" disabled>Modifier L'absence</button>
-                                            <button type="submit" name="deleteAttendance" id="deleteAttendanceBtn" class="btn btn-outline-danger btn-pill" formaction="{{route('attendance.delete')}}" onclick="return confirm('ATTENTION: Vous êtes sur le point de supprimer cette présence!!');" disabled>Supprimer L'absence</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @include('pages.groupes.sections.attendance_settings')
                         @endstaff
 
                         {{-- Emploi du Temps --}}
@@ -1080,6 +459,55 @@
                         });
                     }
                 })
+            });
+        </script>
+
+        {{-- Get Group Number --}}
+        <script>
+            let nbGroup = $('#nbGroup').val();
+            $(document).ready(function() {
+                $('#nbGroup').on('keyup', function() {
+                    var nbGroupQuery = $('#nbGroup').val();
+                    var idGradeCategory = $('#gradeCategory').val();
+                    var idSubject = $('#id-Subject').val();
+                    if(nbGroupQuery <= 0 && nbGroupQuery.length != 0){
+                        $('#nbGroup').val(1);
+                        nbGroupQuery = 1;
+                    }
+                    $.ajax({
+                        url: "{{ route('search.nbGroup') }}",
+                        type: "GET",
+                        data: {
+                            'nbGroupQuery': nbGroupQuery,
+                            'idGradeCategory' : idGradeCategory,
+                            'idSubject' : idSubject,
+                        },
+                        success: function(data) {
+                            if (data == 0) {
+                                if($('#nbGroup').val().length == 0){
+                                    $('#updateGroupBtn').prop('disabled',true);
+                                    $('#nbGroup').removeClass("is-valid");
+                                    $('#nbGroup').addClass("is-invalid");
+                                }else{
+                                    $('#nbGroup').removeClass("is-invalid");
+                                    $('#nbGroup').addClass("is-valid");
+                                    $('#updateGroupBtn').prop('disabled',false);
+                                }
+                            } else {
+                                if(nbGroupQuery == nbGroup){
+                                    $('#nbGroup').removeClass("is-invalid");
+                                    $('#nbGroup').addClass("is-valid");
+                                    $('#updateGroupBtn').prop('disabled',false);
+                                }else{
+                                    $('#nbGroup').removeClass("is-valid");
+                                    $('#nbGroup').addClass("is-invalid");
+                                    $('#updateGroupBtn').prop('disabled',true);
+                                }
+                            }
+                        }
+                    });
+                    
+                });
             });
         </script>
     @endsection

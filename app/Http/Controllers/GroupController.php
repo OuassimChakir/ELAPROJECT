@@ -19,6 +19,7 @@ use App\Models\responsible\Professeurs;
 use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -46,12 +47,11 @@ class GroupController extends Controller
         if ($request->has('CreateGroup')) {
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
-
-            // Group Number
-            $numGroups = Group::getNumGroups($request->idSubject, $request->idProfesseur, $gradeCategory->idGradeCategory) + 1;
-
-
-            $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $numGroups;
+            $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+            if(count($request->grades) == 1){
+                $grade = Grades::getGrade($request->grades[0]);
+                $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+            }
             $newGroup = Group::createGroup($designation, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades))
@@ -97,6 +97,7 @@ class GroupController extends Controller
             $grades = Grades::selectGradesByCategory(null);
 
         $emploi = Emploi::getGroupEmploi($idGroup);
+
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
             ->with('groupGrades', $groupGrades)
@@ -148,7 +149,15 @@ class GroupController extends Controller
     public function updateGroup(Request $request, $idGroup)
     {
         if ($request->has('updateGroup') && isset($idGroup)) {
-            Group::updateGroup($idGroup, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
+            $matiere = Subjects::getSubject($request->idSubject);
+            $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
+            $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+            if(count($request->grades) == 1){
+                $grade = Grades::getGrade($request->grades[0]);
+                $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+            }
+            
+            Group::updateGroup($idGroup, $designation, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades)) {
                 GroupGrades::deleteGroupGrades($idGroup);
@@ -226,5 +235,19 @@ class GroupController extends Controller
         }
         GroupElements::cancelAssignment($student);
         return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
+    }
+    public function searchNbGroup(Request $request)
+    {
+        $matiere = Subjects::getSubject($request->idSubject);
+        $gradeCategory = GradesCategory::getGradeCategory($request->idGradeCategory);
+        $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
+        $output = 0;
+        if ($request->ajax()) {
+            $data = DB::table('groups')->where('designation',$designation)->get();
+            if (count($data) > 0) {
+                $output = 1;
+            }
+            return response()->json($output);
+        }
     }
 }

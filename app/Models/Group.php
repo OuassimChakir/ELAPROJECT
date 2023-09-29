@@ -59,16 +59,6 @@ class Group extends Model
             ->first();
     }
 
-    // ***** CHECK HOW MANY GROUPES OF A SPECIFIC SAME SUBJECT AND GRADE
-    public static function getNumGroups($idSubject,$idProfesseur,$idGradeCategory){
-        return Group::select('*')
-            ->join('group_grades','group_grades.idGroup','=','groups.idGroup')
-            ->join('grades','grades.idGrade','=','group_grades.idGrade')
-            ->where('idSubject', $idSubject)
-            ->where('idProfesseur', $idProfesseur)
-            ->where('idGradeCategory',$idGradeCategory)
-            ->count();
-    }
 
     // Only groups where a student have invoices
     public static function getGroupWithStudentInvoices($idStudent){
@@ -137,8 +127,9 @@ class Group extends Model
     }
 
     // --------- Update ------------- //
-    public static function updateGroup($idGroup, $capacity, $amount,$debutFormation, $finFormation, $idSubject, $idProfesseur){
+    public static function updateGroup($idGroup, $designation, $capacity, $amount,$debutFormation, $finFormation, $idSubject, $idProfesseur){
         $group = Group::find($idGroup);
+        $group->designation = $designation;
         $group->amount = $amount;
         $group->capacity = $capacity;
         $group->debutFormation = $debutFormation;
