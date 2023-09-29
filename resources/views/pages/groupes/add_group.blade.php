@@ -77,24 +77,28 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-12" >
-                            <div class="form-group">
-                                <label for="nbGroup">Nombre du Group</label>
-                                <input type="number"" min="1" class="form-control" name="nbGroup" id="nbGroup" >
-                            </div>
-                        </div>
 
-                        <div class="col-lg-12">
-                            <div class="card p-2 mt-2">
+                        <div class="col-lg-12" id="gradeSection">
+                            <div class="card p-2 mt-2 mb-4">
                                 <div class="card-title pl-3 pt-3">
                                     <h5>Niveaux</h5>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-bordered" id="gradesGenerationTable">
+                                    <table class="table table-bordered">
                                         <tbody id="grades">
 
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 mt-2">
+                            <div class="form-group">
+                                <label for="nbGroup">Nombre du Group</label>
+                                <input type="number"" min="1" class="form-control" name="nbGroup" id="nbGroup" required>
+                                <div class="invalid-feedback">
+                                    Ce numéro de groupe existe déjà !
                                 </div>
                             </div>
                         </div>
@@ -111,13 +115,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('JS/jquery.min.js') }}"></script>
 <script type='text/javascript'>
-    $("#gradesGenerationTable").hide();
+    $('#gradeSection').hide();
     $('#nbGroup').hide();
+    let gradeCategories = [];
     $(document).ready(function() {
 
         // Department Change
         $('#gradeCategory').change(function() {
-
+            $('#nbGroup').val('');
+            $('#createGroupBtn').prop('disabled',true);
             // Department id
             var id = $(this).val();
 
@@ -133,6 +139,7 @@
                     var len = 0;
                     if (response['data'] != null) {
                         len = response['data'].length;
+                        gradeCategories = response['data'];
                     }
 
                     if (len > 0) {
@@ -153,12 +160,23 @@
                                 html += '</tr><tr>';
                         }
                         $("#grades").append(html);
+                        $('#gradeSection').show();
+                    }else{
+                        $('#gradeSection').hide();
                     }
                     $("#nbGroup").show();
-                    $("#gradesGenerationTable").show();
-
                 }
             });
+        });
+
+        $('#id-Subject').change(function() {
+            $('#nbGroup').val('');
+            $('#createGroupBtn').prop('disabled',true);
+        });
+
+        $('#grades').on('click',function(){
+            $('#nbGroup').val('');
+            $('#createGroupBtn').prop('disabled',true);
         });
     });
 </script>
@@ -168,37 +186,52 @@
             var nbGroupQuery = $('#nbGroup').val();
             var idGradeCategory = $('#gradeCategory').val();
             var idSubject = $('#id-Subject').val();
-            if(nbGroupQuery <= 0 && nbGroupQuery.length != 0){
-                $('#nbGroup').val(1);
-                nbGroupQuery = 1;
-            }
-            $.ajax({
-                url: "{{ route('search.nbGroup') }}",
-                type: "GET",
-                data: {
-                    'nbGroupQuery': nbGroupQuery,
-                    'idGradeCategory' : idGradeCategory,
-                    'idSubject' : idSubject,
-                },
-                success: function(data) {
-                    if (data == 0) {
-                        if($('#nbGroup').val().length == 0){
-                            $('#createGroupBtn').prop('disabled',true);
-                            $('#nbGroup').removeClass("is-valid");
-                            $('#nbGroup').addClass("is-invalid");
-                        }else{
-                            $('#nbGroup').removeClass("is-invalid");
-                            $('#nbGroup').addClass("is-valid");
-                            $('#createGroupBtn').prop('disabled',false);
-                        }
-                    } else {
-                        $('#nbGroup').removeClass("is-valid");
-                        $('#nbGroup').addClass("is-invalid");
-                        $('#createGroupBtn').prop('disabled',true);
-                    }
-                }
+            var grades = [];
+            $('#grades :checkbox:checked').each(function(i){
+                grades[i] = $(this).val();
             });
             
+            if(grades.length == 0 && gradeCategories.length > 0){
+                $('#nbGroup').val('');
+                $('#createGroupBtn').prop('disabled',true);
+                Swal.fire(
+                    'Alert!',
+                    "Vous devez d'abord choisir un niveau !",
+                    'warning'
+                )
+            }else{
+                if(nbGroupQuery <= 0 && nbGroupQuery.length != 0){
+                    $('#nbGroup').val(1);
+                    nbGroupQuery = 1;
+                }
+                $.ajax({
+                    url: "{{ route('search.nbGroup') }}",
+                    type: "GET",
+                    data: {
+                        'nbGroupQuery': nbGroupQuery,
+                        'idGradeCategory' : idGradeCategory,
+                        'idSubject' : idSubject,
+                        'grades' : grades,
+                    },
+                    success: function(data) {
+                        if (data == 0) {
+                            if($('#nbGroup').val().length == 0){
+                                $('#createGroupBtn').prop('disabled',true);
+                                $('#nbGroup').removeClass("is-valid");
+                                $('#nbGroup').addClass("is-invalid");
+                            }else{
+                                $('#nbGroup').removeClass("is-invalid");
+                                $('#nbGroup').addClass("is-valid");
+                                $('#createGroupBtn').prop('disabled',false);
+                            }
+                        } else {
+                            $('#nbGroup').removeClass("is-valid");
+                            $('#nbGroup').addClass("is-invalid");
+                            $('#createGroupBtn').prop('disabled',true);
+                        }
+                    }
+                });
+            }
         });
     });
 </script>
