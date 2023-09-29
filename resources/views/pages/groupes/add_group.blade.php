@@ -174,7 +174,7 @@
             var idSubject= $('#id-Subject').val();
             
             $.ajax({
-                url: "{{ route('search.numRecu') }}",
+                url: "{{ route('search.nbGroup') }}",
                 type: "GET",
                 data: {
                     'nbGroupQuery': nbGroupQuery
