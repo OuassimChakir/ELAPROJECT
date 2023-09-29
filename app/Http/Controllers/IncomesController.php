@@ -330,7 +330,7 @@ class IncomesController extends Controller
                     ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
                     ->join('students', 'students.idStudent', '=', 'groupelements.idStudent')
                     ->where('students.matricule', $query)
-                    ->get();
+                    ->get(); 
                 return response()->json($data);
             }
     }

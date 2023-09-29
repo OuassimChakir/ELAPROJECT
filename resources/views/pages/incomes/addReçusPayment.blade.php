@@ -204,7 +204,7 @@
                     }
                 });
             });
-            $('#search').removeClass("is-valid");
+            $('#search').removeClass("is-valid"); 
             $('#search').addClass("is-invalid");
         });
 

@@ -239,6 +239,7 @@ Route::middleware([
         Route::get('/typeIncome/search', [IncomesController::class, 'searchEtudiant'])->name('search.etudiant');
         Route::get('/typeIncome/search/group', [IncomesController::class, 'searchGroup'])->name('search.group');
         Route::get('/typeIncome/Serach/Recu', [IncomesController::class, 'searchRecu'])->name('search.numRecu');
+        Route::get('/typeIncome/search/nbGroup', [GroupController::class, 'searchNbGroup'])->name('search.nbGroup');
         // Delete search
         Route::get('/typeIncome/delete/{idIncome}', [IncomesController::class, 'deleteIncome'])->name('typeIncome.delete');
         // Update a typeIncomes
