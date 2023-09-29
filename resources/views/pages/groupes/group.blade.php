@@ -461,4 +461,53 @@
                 })
             });
         </script>
+
+        {{-- Get Group Number --}}
+        <script>
+            let nbGroup = $('#nbGroup').val();
+            $(document).ready(function() {
+                $('#nbGroup').on('keyup', function() {
+                    var nbGroupQuery = $('#nbGroup').val();
+                    var idGradeCategory = $('#gradeCategory').val();
+                    var idSubject = $('#id-Subject').val();
+                    if(nbGroupQuery <= 0 && nbGroupQuery.length != 0){
+                        $('#nbGroup').val(1);
+                        nbGroupQuery = 1;
+                    }
+                    $.ajax({
+                        url: "{{ route('search.nbGroup') }}",
+                        type: "GET",
+                        data: {
+                            'nbGroupQuery': nbGroupQuery,
+                            'idGradeCategory' : idGradeCategory,
+                            'idSubject' : idSubject,
+                        },
+                        success: function(data) {
+                            if (data == 0) {
+                                if($('#nbGroup').val().length == 0){
+                                    $('#updateGroupBtn').prop('disabled',true);
+                                    $('#nbGroup').removeClass("is-valid");
+                                    $('#nbGroup').addClass("is-invalid");
+                                }else{
+                                    $('#nbGroup').removeClass("is-invalid");
+                                    $('#nbGroup').addClass("is-valid");
+                                    $('#updateGroupBtn').prop('disabled',false);
+                                }
+                            } else {
+                                if(nbGroupQuery == nbGroup){
+                                    $('#nbGroup').removeClass("is-invalid");
+                                    $('#nbGroup').addClass("is-valid");
+                                    $('#updateGroupBtn').prop('disabled',false);
+                                }else{
+                                    $('#nbGroup').removeClass("is-valid");
+                                    $('#nbGroup').addClass("is-invalid");
+                                    $('#updateGroupBtn').prop('disabled',true);
+                                }
+                            }
+                        }
+                    });
+                    
+                });
+            });
+        </script>
     @endsection
