@@ -20,7 +20,7 @@
                                             <span class="mdi mdi-receipt"></span>
                                         </div>
                                         <div class="media-body pr-3 ">
-                                            <a class="mt-0 mb-1 font-size-15 text-dark" href="#">Facture: {{ $item->description }}</a> <span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
+                                            Facture: {{ $item->description }}<span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
 
                                             <p>{{ $item->note }}</p>
                                         </div>

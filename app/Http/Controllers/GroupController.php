@@ -74,7 +74,6 @@ class GroupController extends Controller
             ->with('subjects', $subjects)
             ->with('courseTypes', $courseTypes);
     }
- 
     public function groupPage($idGroup)
     {
         $students = GroupElements::groupElements($idGroup);

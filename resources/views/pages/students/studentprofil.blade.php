@@ -341,7 +341,7 @@
                     else
                         $('#paimentDesignation').val(response.groupDesignation);
                     $('#paimentIdStudent').val(response.matricule);
-                    $('#paimentAmount').val(response.amount);
+                    $('#paimentAmount').val(response.amount - response.amountPaid);
                     $('#paimentAmountPaid').attr('max',response.amount);
                 },
                 error: function(request, status, error) {
