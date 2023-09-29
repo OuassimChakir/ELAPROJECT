@@ -12,29 +12,22 @@
 
                 <div class="modal-body px-4">
                     <div class="row mb-2">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="nbGroup">Nombre du Group</label>
-                                <input type="number"" min="1" class="form-control" name="nbGroup" id="nbGroup" required>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="capacity">Capacité du Groupe</label>
-                                <input type="number" max="50" min="1" class="form-control" name="capacity" id="capacity" required>
+                                <input type="number" max="50" min="1" class="form-control" name="capacity"
+                                    id="capacity" required>
                             </div>
                         </div>
 
-                        
-                        <div class="col-lg-4">
+
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="capacity">Prix Individuel</label>
-                                <input type="number" min="1" class="form-control" name="amount" id="amount" value="0">
+                                <input type="number" min="1" class="form-control" name="amount" id="amount"
+                                    value="0">
                             </div>
                         </div>
-                        
-
                         {{-- Staff --}}
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
@@ -43,7 +36,8 @@
                                     <option disabled selected>-- Choisir un Professeur --</option>
                                     @foreach ($professeurs as $professeur)
                                         <option value="{{ $professeur->idProfesseur }}">
-                                            {{ $professeur->prenom . ' ' . $professeur->nom }} | {{ $professeur->libelle }}
+                                            {{ $professeur->prenom . ' ' . $professeur->nom }} |
+                                            {{ $professeur->libelle }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -55,7 +49,7 @@
                             <div class="form-group mb-4">
                                 <label for="form-label">Matières</label>
                                 <select name="idSubject" id="id-Subject" class="form-select" required>
-                                    <option disabled selected>-- Choisir une Matière --</option>
+                                    <option disabled selected value="0">-- Choisir une Matière --</option>
                                     @foreach ($courseTypes as $courseType)
                                         <optgroup label="{{ $courseType->course }}">
                                             @foreach ($subjects as $subject)
@@ -70,19 +64,25 @@
                                 </select>
                             </div>
                         </div>
-
                         {{-- Grade Category --}}
                         <div class="col-lg-12">
                             <div class="form-group mb-4">
                                 <label for="form-label">Catégories des Niveaux</label>
                                 <select name="gradeCategory" id="gradeCategory" class="form-select" required>
-                                    <option disabled selected>-- Choisir une Catégorie -- </option>
+                                    <option disabled selected value="0">-- Choisir une Catégorie -- </option>
                                     @foreach ($gradesCategories as $categorie)
                                         <option value="{{ $categorie->idGradeCategory }}">
                                             {{ $categorie->category }}
                                         </option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" >
+                            <div class="form-group">
+                                <label for="nbGroup">Nombre du Group</label>
+                                <input type="number"" min="1" class="form-control" name="nbGroup" id="nbGroup"
+                                    >
                             </div>
                         </div>
 
@@ -92,11 +92,11 @@
                                     <h5>Niveaux</h5>
                                 </div>
                                 <div class="card-body">
-                                        <table class="table table-bordered" id="gradesGenerationTable">
-                                            <tbody id="grades">
+                                    <table class="table table-bordered" id="gradesGenerationTable">
+                                        <tbody id="grades">
 
-                                            </tbody>
-                                        </table>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -116,6 +116,7 @@
 <script src="{{ asset('JS/jquery.min.js') }}"></script>
 <script type='text/javascript'>
     $("#gradesGenerationTable").hide();
+    $('#nbGroup').hide();
     $(document).ready(function() {
 
         // Department Change
@@ -143,9 +144,12 @@
                         var html = '<tr>';
                         for (var i = 1; i <= len; i++) {
                             var id = response['data'][i - 1].idGrade;
-                            var grade = response['data'][i - 1]. grade;
-                            html += '<div> <td class="align-middle checkCol"> <input type="checkbox" class="form-check-input form-control" id="grade'+i+'" name="grades[]" value="' +
-                                id + '"> </td> <td class="infoCol"><label for="grade'+i+'">' + grade +
+                            var grade = response['data'][i - 1].grade;
+                            html +=
+                                '<div> <td class="align-middle checkCol"> <input type="checkbox" class="form-check-input form-control" id="grade' +
+                                i + '" name="grades[]" value="' +
+                                id + '"> </td> <td class="infoCol"><label for="grade' + i +
+                                '">' + grade +
                                 '</label></td> </div>';
                             if (i == len)
                                 html += '</tr>';
@@ -154,8 +158,35 @@
                         }
                         $("#grades").append(html);
                     }
+                    $("#nbGroup").show();
                     $("#gradesGenerationTable").show();
 
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#nbGroup').on('keyup', function() {
+            var nbGroupQuery = $('#nbGroup').val();
+            var idGradeCategory= $('#gradeCategory').val();
+            var idSubject= $('#id-Subject').val();
+            
+            $.ajax({
+                url: "{{ route('search.numRecu') }}",
+                type: "GET",
+                data: {
+                    'nbGroupQuery': nbGroupQuery
+                },
+                success: function(data) {
+                    if (data == 0) {
+                        $('#numeroRecu').removeClass("is-invalid");
+                        $('#numeroRecu').addClass("is-valid");
+                    } else {
+                        $('#numeroRecu').removeClass("is-valid");
+                        $('#numeroRecu').addClass("is-invalid");
+                    }
                 }
             });
         });

@@ -19,6 +19,7 @@ use App\Models\responsible\Professeurs;
 use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -227,5 +228,23 @@ class GroupController extends Controller
         }
         GroupElements::cancelAssignment($student);
         return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
+    }
+    public function searchNbGroup(Request $request)
+    {
+        $matiere = Subjects::getSubject($request->get('idSubject'));
+        $gradeCategory = GradesCategory::getGradeCategory($request->get('idGradeCategory'));
+        $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->get('nbGroupQuery');
+        $output = 0;
+        if (!empty($request->get('nbGroupQuery'))) {
+            if ($request->ajax()) {
+                $data = DB::table('groups')->where('designation',$designation)->get();
+                if (count($data) > 0) {
+                    return $output = 1;
+                }
+                return  $output;
+            }
+        } else {
+            return  $output;
+        }
     }
 }
