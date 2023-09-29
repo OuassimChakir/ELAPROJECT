@@ -94,8 +94,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group mb-3 was-validated">
                                     <label for="paimentAmount">Montant à Payer</label>
-                                    <input type="number" class="form-control" name="amount" id="paimentAmount"
-                                        value="{{-- $paiment->amount --}}" required>
+                                    <input type="number" class="form-control" name="amount" id="paimentAmount" required>
                                     <small class="text-muted">Le montant à payer en Dirham</small>
                                 </div>
                             </div>
