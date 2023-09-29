@@ -117,7 +117,7 @@
 <script type='text/javascript'>
     $('#gradeSection').hide();
     $('#nbGroup').hide();
-    let gradeCategories = [];
+    let gradesLevels = [];
     $(document).ready(function() {
 
         // Department Change
@@ -139,7 +139,7 @@
                     var len = 0;
                     if (response['data'] != null) {
                         len = response['data'].length;
-                        gradeCategories = response['data'];
+                        gradesLevels = response['data'];
                     }
 
                     if (len > 0) {
@@ -191,7 +191,7 @@
                 grades[i] = $(this).val();
             });
             
-            if(grades.length == 0 && gradeCategories.length > 0){
+            if(grades.length == 0 && gradesLevels.length > 0){
                 $('#nbGroup').val('');
                 $('#createGroupBtn').prop('disabled',true);
                 Swal.fire(
