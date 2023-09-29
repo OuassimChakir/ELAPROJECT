@@ -47,11 +47,13 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group  row">
                                     <label for="text" class="col-12 col-form-label">Niveau</label>
-                                    <div class="col-12">
+                                    <div class="input-group mb-2">
                                         <input id="text" name="grade" class="form-control" type="text"
-                                            value="{{ $updatedGrade->grade }}">
+                                            value="{{ $updatedGrade->grade }}" placeholder="Niveau" autocomplete="off" required>
+                                        <input id="text" name="brev" class="form-control" type="text" value="{{ $updatedGrade->brev }}"
+                                        placeholder="Abbréviation" autocomplete="off" required>
                                     </div>
                                 </div>
                                 <input type="hidden" name="idGrade" value="{{ $updatedGrade->idGrade }}">
@@ -90,10 +92,9 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="text" class="col-12 col-form-label">Niveau</label>
-                                    <div class="col-10">
-                                        <input id="text" name="grade[]" class="form-control" type="text">
-                                    </div>
-                                    <div class="col-2">
+                                    <div class="input-group mb-2">
+                                        <input id="text" name="grade[]" class="form-control" type="text" placeholder="Niveau" autocomplete="off" required>
+                                        <input id="text" name="brev[]" class="form-control" type="text" placeholder="Abbréviation" autocomplete="off" required>
                                         <button type="button" class="addInput btn btn-info">
                                             <i class="bi bi-plus-circle"></i>
                                         </button>
@@ -155,6 +156,7 @@
                                         <th>#</th>
                                         <th>Niveau</th>
                                         <th>Categorie</th>
+                                        <th>Abbréviation</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -168,6 +170,7 @@
                                                 <td>
                                                     <div class="badge bg-dark">{{ $grade->category }}</div>
                                                 </td>
+                                                <td>{{ $grade->brev }}</td>
                                                 <td>
                                                     <div class="btn-group">
                                                         <a
@@ -219,9 +222,9 @@
             var wrapper = $('.field_wrapper'); //Input field wrapper
             var fieldHTML = '<div class="form-group row">'; //New input field html 
             fieldHTML +=
-                '<div class="col-10"><input id="text" name="grade[]" class="form-control" type="text"></div>';
+                '<div class="input-group mb-2"><input id="text" name="grade[]" class="form-control" type="text" placeholder="Niveau" autocomplete="off" required><input id="text" name="brev[]" class="form-control" type="text" placeholder="Abbréviation" autocomplete="off" required>';
             fieldHTML +=
-                '<div class="col-2"><button type="button" class="btn btn-danger removeInput"><i class="bi bi-trash"></i></button></div>';
+                '<button type="button" class="btn btn-danger removeInput"><i class="bi bi-trash"></i></button></div>';
             fieldHTML += '</div>';
             var x = 1; //Initial field counter is 1
             //Once add button is clicked
