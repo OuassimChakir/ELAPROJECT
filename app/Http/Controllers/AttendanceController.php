@@ -122,6 +122,7 @@ class AttendanceController extends Controller
                     ->where('idGroup',$idGroup)
                     ->where('dateAbsence',$dateAbsence)
                     ->get();
+                    
         return response()->json($response);
     }
 

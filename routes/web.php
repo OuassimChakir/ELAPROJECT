@@ -112,7 +112,7 @@ Route::middleware([
         Route::get('/staff/{idStaff}', [StaffController::class, 'staffProfil'])->name('staff.profil');
 
         // Update Attendance
-        Route::get('/attendance/update/{idGroup}-{dateAbsence}', [AttendanceController::class, 'updateAttendanceAjax']);
+        Route::get('/attendance/update/{idGroup}/{dateAbsence}', [AttendanceController::class, 'updateAttendanceAjax']);
         Route::post('/attendance/update', [AttendanceController::class, 'updateAttendance'])->name('attendance.update');
         Route::post('/attendance/delete', [AttendanceController::class, 'deleteAttendance'])->name('attendance.delete');
 
