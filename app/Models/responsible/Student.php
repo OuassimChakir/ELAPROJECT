@@ -43,6 +43,7 @@ class Student extends Model
         return Student::selectRaw("students.*,count(idPayment) - sum(etat) as pendingPayment")
             ->leftjoin('payment','payment.idStudent','=','students.idStudent')
             ->whereNotNull('etat')
+            ->whereRaw('etat != 2')
             ->groupBy('students.idStudent')
             ->get();
     }
@@ -55,7 +56,6 @@ class Student extends Model
     }
     public static function selectStudent($idStudent){
         return Student::where('idStudent', $idStudent)->first();
-       ;
     }
 
 

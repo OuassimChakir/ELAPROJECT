@@ -50,6 +50,20 @@ class HomeController extends Controller
             }
         }
 
+        $currentMois = (int)date('m');
+        $countCurrentMonthPayments = Payment::select('*')
+            ->join('incomes','incomes.idIncome','=','payment.idIncome')
+            ->whereNull('etat')
+            ->where('activationDate',$currentMois)
+            ->count();
+        if($countCurrentMonthPayments > 0)
+            Payment::select('*')
+                ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                ->whereNull('etat')
+                ->where('activationDate',$currentMois)
+                ->update([
+                    'etat' => 2
+                ]);
         /* ------------------------------------
         / Admins & Staff
         / -------------------------------------*/

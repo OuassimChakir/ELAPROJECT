@@ -66,13 +66,15 @@
                                                 @endif
                                                 
                                             </td>
-                                            <td><span class="badge badge-dark">{{ $Payment->amount }} DH</span></td>
+                                            <td><span class="badge badge-primary">{{ $Payment->amount }} DH</span></td>
                                             <td><span class="badge badge-info">{{ $Payment->amount-$Payment->amountPaid }} DH</span></td>
                                             <td>
                                                 @if ($Payment->etat == 0)
                                                     <span class="badge badge-warning">Impayée</span>
                                                 @elseif($Payment->etat == 1)
                                                     <span class="badge badge-success">Réglée</span>
+                                                @elseif($Payment->etat == 2)
+                                                    <span class="badge badge-dark">Désactivé</span>
                                                 @endif
                                             </td>
                                             <td>{{ $Payment->datePayment }}</td>

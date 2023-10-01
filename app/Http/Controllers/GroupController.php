@@ -141,7 +141,11 @@ class GroupController extends Controller
                 'idGroup' => null,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
-            Payment::whereNull('etat')->where('idGroup', $idGroup)->forceDelete();
+            Payment::where('idGroup', $idGroup)
+                ->whereNull('etat')
+                ->orWhere('etat',2)
+                ->forceDelete();
+                
             GroupGrades::deleteGroupGrades($idGroup);
             if (session()->get('user')) {
                 $groupInfo = Group::getGroup($idGroup);

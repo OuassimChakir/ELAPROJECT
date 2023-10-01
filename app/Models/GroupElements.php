@@ -53,6 +53,7 @@ class GroupElements extends Model
             ->leftjoin('payment','payment.idStudent','=','students.idStudent')
             ->where('groupelements.idGroup', $idGroup)
             ->whereNotNull('etat')
+            ->where('etat','!=',2)
             ->groupBy('students.idStudent')
             ->get();
     }
@@ -92,4 +93,8 @@ class GroupElements extends Model
             ->where('idElement', $idElement)
             ->first();
     }
+
+    /* --------------------------------
+    / Student Status in Group
+    / -------------------------------- */
 }

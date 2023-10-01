@@ -176,7 +176,9 @@
                                                 @if ($paiment->etat == 0)
                                                     <span class="badge badge-warning">Non Payé</span>
                                                 @elseif ($paiment->etat == 1)
-                                                    <span class="badge badge-success">Réglé</span>
+                                                    <span class="badge badge-success">Réglé</span> 
+                                                @elseif($paiment->etat == 2)
+                                                    <span class="badge badge-dark">Désactivé</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle">
@@ -189,10 +191,12 @@
                                             @staff
                                             <td class="align-middle">
                                                 <div class="btn-group-spaced">
-                                                    @if ($paiment->etat != 1)
+                                                    @if ($paiment->etat == 0)
                                                     <button type="button" class="btn btn-outline-info payInvoiceBtn" data-bs-toggle="modal" data-bs-target="#invoicePaiment" value="{{$paiment->idPayment}}">
                                                         <span class="mdi mdi-check-bold"></span>
                                                     </button>
+                                                    @elseif($paiment->etat == 2)
+                                                    <button type="button" class="btn btn-outline-warning activateInvoice" value="{{$item->idPayment}}"><span class="mdi mdi-lock-open-outline"></span></button>
                                                     @endif
                                                     <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice({{$paiment->idPayment}})">
                                                         <i class="bi bi-trash-fill"></i>
@@ -242,9 +246,21 @@
                                 html += '<td class="align-middle">'+((response[i].numeroRecu == null) ? '-' :'BMA-N°'+response[i].numeroRecu)+'</td>';
                                 html += '<td class="align-middle">'+((response[i].idPaiment == null) ? response[i].designation : response[i].groupsDesignation)+' <p>'+response[i].note+'</p></td>';
                                 html += '<td class="align-middle">'+((response[i].etat == 0) ? (response[i].amount - response[i].amountPaid) : response[i].amount)+' DH</td>';
-                                html += '<td class="align-middle">'+((response[i].etat == 0) ? '<span class="badge badge-warning">Non Payé</span>' : '<span class="badge badge-success">Réglé</span> ')+'</td>';
+                                if(response[i].etat == 0)
+                                    html += '<td class="align-middle"><span class="badge badge-warning">Non Payé</span></td>';
+                                else if(response[i].etat == 1)
+                                    html += '<td class="align-middle"><span class="badge badge-success">Réglé</span></td>';
+                                else if(response[i].etat == 2){
+                                    html += '<td class="align-middle"><span class="badge badge-dark">Désactivé</span></td>';
+                                }
                                 html += '<td class="align-middle">'+((response[i].datePayment == null) ? '-' : response[i].datePayment)+'</td>';
-                                html += '<td class="align-middle"> <div class="btn-group-spaced"><button type="button" class="btn btn-outline-info payInvoiceBtn" data-bs-toggle="modal" data-bs-target="#invoicePaiment" value="'+response[i].idPayment+'"> <span class="mdi mdi-check-bold"></span> </button> <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice('+response[i].idPayment+')"> <i class="bi bi-trash-fill"></i> </button> </div> </td><tr>';
+                                if(response[i].etat == 0)
+                                    html += '<td class="align-middle"> <div class="btn-group-spaced"><button type="button" class="btn btn-outline-info payInvoiceBtn" data-bs-toggle="modal" data-bs-target="#invoicePaiment" value="'+response[i].idPayment+'"> <span class="mdi mdi-check-bold"></span> </button> <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice('+response[i].idPayment+')"> <i class="bi bi-trash-fill"></i> </button> </div> </td><tr>';
+                                else if(response[i].etat == 1)
+                                    html += '<td class="align-middle"> <div class="btn-group-spaced"><button type="button" class="btn btn-outline-danger" onclick="deleteInvoice('+response[i].idPayment+')"> <i class="bi bi-trash-fill"></i> </button> </div> </td><tr>';
+                                else if(response[i].etat == 2){
+                                    html += '<td class="align-middle"> <div class="btn-group-spaced"><button type="button" class="btn btn-outline-warning activateInvoice" value="'+response[i].idPayment+'"> <span class="mdi mdi-lock-open-outline"></span> </button> <button type="button" class="btn btn-outline-danger" onclick="deleteInvoice('+response[i].idPayment+')"> <i class="bi bi-trash-fill"></i> </button> </div> </td><tr>';
+                                }
                                 $('#paimentSection').append(html);
                             }
                         }
@@ -306,7 +322,6 @@
 
     <script>
         function deleteInvoice(id){
-            console.log($(this));
             Swal.fire({
                 title: "Vous êtes sur le point de supprimer cette facture",
                 icon: "warning",
@@ -379,6 +394,41 @@
                     });
                 }
             });
+        });
+    </script>
+
+    {{-- Activate Paiments --}}
+    <script>
+        $(document).on('click','.activateInvoice', function(){
+            let idPayment = $(this).val();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Voulez-vous activer ce paiement ?',
+                showCancelButton: true,
+                confirmButtonText: 'Oui',
+                cancelButtonText: `Annuler`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type:'post',
+                            url:"{{ route('paiment.activate') }}",
+                            data:{"idPayment" : idPayment, "_token" : "{{ csrf_token() }}"},
+                            success: function(response) {
+                                if(response == true)
+                                    Swal.fire('Paiement Activé !', '', 'success').then((result2) => {
+                                        location.reload(true);
+                                        Swal.fire('Reloading!')
+                                    })
+                                else
+                                    Swal.fire('problème rencontré ! Réessayez !', '', 'warning')
+                            },
+                            error: function(request, status, error) {
+                                console.log(request.responseText);
+                            }
+                        });
+                    }
+            })
         });
     </script>
 @endsection
