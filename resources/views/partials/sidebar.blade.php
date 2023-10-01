@@ -22,7 +22,7 @@
 								<hr>
 							</li>
 	
-							@staff
+							@admin
 							<!-- Persons -->
 							<li class="{{ Route::is('teachers.liste') ||Route::is('teachers.profil') ? 'active' : ''}}">
 								<a class="sidenav-item-link" href="{{route('teachers.liste')}}">
@@ -30,6 +30,8 @@
 									<span class="nav-text">Professeurs</span>
 								</a>
 							</li>
+							@endadmin
+							@staff
 							<li class="{{ Route::is('student.liste') ||Route::is('student.profil') ? 'active' : ''}}">
 								<a class="sidenav-item-link" href="{{route('student.liste')}}">
 									<i class="bi bi-people-fill"></i>
@@ -243,7 +245,7 @@
 							</li>
 							<hr>
 							@endonlyteacher
-							@staff
+							@admin
 								<!-- ARCHIVE -->
 								<li class="has-sub {{ Route::is('student.archive') || Route::is('teachers.archive') || Route::is('staff.archive') || Route::is('factureDepenses.archive')||Route::is('incomePayment.archive')
 								 ? 'active expand' : ''}}">
@@ -260,7 +262,7 @@
 													<span class="nav-text">Archive des Etudiants</span>
 												</a>
 											</li>
-											@admin
+											
 											<li class="{{Route::is('teachers.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('teachers.archive')}}">
 													<span class="nav-text">Archive des Professeurs</span>
@@ -281,14 +283,14 @@
 													<span class="nav-text">Archive des Reçus de Paiement</span>
 												</a>
 											</li>
-											@endadmin
+											
 										</ul>
 									</div>
 									<hr>
 								</li>
-							@endstaff
+							
 
-							@admin
+							
 							<!-- Activities -->
 							<li class="{{Route::is('activite') ? 'active' : ''}}">
 								<a class="sidenav-item-link" href="{{route('activite')}}">
