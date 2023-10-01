@@ -21,6 +21,33 @@ class GradesCategory extends Model
       return GradesCategory::select('*')->get();
    }
 
+   public static function getGroupsGradeCatgories(){
+      return GradesCategory::select('gradescategories.*')
+         ->join('grades','grades.idGradeCategory','=','gradescategories.idGradeCategory')
+         ->join('group_grades','group_grades.idGrade','=','grades.idGrade')
+         ->groupBy('gradescategories.idGradeCategory')
+         ->get();
+   }
+
+   public static function getGroupsGradeCatgoriesStudent($idStudent){
+      return GradesCategory::select('gradescategories.*')
+         ->join('grades','grades.idGradeCategory','=','gradescategories.idGradeCategory')
+         ->join('group_grades','group_grades.idGrade','=','grades.idGrade')
+         ->join('groupelements','groupelements.idGroup','=','group_grades.idGroup')
+         ->where('idStudent',$idStudent)
+         ->groupBy('gradescategories.idGradeCategory')
+         ->get();
+   }
+
+   public static function getGroupsGradeCatgoriesProfesseur($idProfesseur){
+      return GradesCategory::select('gradescategories.*')
+         ->join('grades','grades.idGradeCategory','=','gradescategories.idGradeCategory')
+         ->join('group_grades','group_grades.idGrade','=','grades.idGrade')
+         ->join('groups','groups.idGroup','=','group_grades.idGroup')
+         ->where('idProfesseur',$idProfesseur)
+         ->groupBy('gradescategories.idGradeCategory')
+         ->get();
+   }
    // INSERT DATA (New Subject)
    public static function addGradeCategory($category,$description,$idCourseType){
       GradesCategory::create([

@@ -5,7 +5,7 @@
                 <div class="mb-3">
                         <div class="row">
                             <div class="col-sm-5">
-                                <input type="month" name="dateAbsence" id="absenceDateInput" class="form-control" value="{{ date('Y-m') }}" required>
+                                <input type="month" name="dateAbsence" id="absenceDateInput" class="form-control" required>
                                 <input type="hidden" name="idGroup" value="{{$group->idGroup}}">
                             </div>
                             <div class="col-sm-5">

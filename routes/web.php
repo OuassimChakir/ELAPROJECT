@@ -79,6 +79,7 @@ Route::middleware([
     / Groups
     / ---------------------------------*/
     Route::get('/groupes', [GroupController::class, 'groups'])->name('groups');
+    Route::post('/groupes', [GroupController::class, 'groups'])->name('groups.filter');
     Route::get('/groupe/{idGroup}', [GroupController::class, 'groupPage'])->name('groups.profil');
 
     //----------------- Absence -------------------//    
@@ -112,7 +113,7 @@ Route::middleware([
         Route::get('/staff/{idStaff}', [StaffController::class, 'staffProfil'])->name('staff.profil');
 
         // Update Attendance
-        Route::get('/attendance/update/{idGroup}-{dateAbsence}', [AttendanceController::class, 'updateAttendanceAjax']);
+        Route::get('/attendance/update/{idGroup}/{dateAbsence}', [AttendanceController::class, 'updateAttendanceAjax']);
         Route::post('/attendance/update', [AttendanceController::class, 'updateAttendance'])->name('attendance.update');
         Route::post('/attendance/delete', [AttendanceController::class, 'deleteAttendance'])->name('attendance.delete');
 
@@ -169,12 +170,7 @@ Route::middleware([
         Route::get('/matieres/update/{idSubject}', [SubjectController::class, 'updateSubject'])->name('subjects.update');
         Route::put('/matieres/update/{idSubject}', [SubjectController::class, 'updateSubject'])->name('subjects.update.query');
 
-        /* -----------------------------------------------
-        / Teachers
-        / --------------------------------------------- */
-        Route::get('/teachers', [TeacherController::class, 'teacher'])->name('teachers.liste');
-        // Add staff
-        Route::post('/teacher/add',  [TeacherController::class, 'teacher'])->name('teachers.add');
+
 
         /* -----------------------------------------------
         / Students
@@ -257,14 +253,6 @@ Route::middleware([
         Route::get('/getbmapaiment/{idPayment}', [IncomesController::class, 'ajaxPaimentModal']);
         Route::post('/bmapaiment/{idPayment}', [IncomesController::class, 'paimentPage'])->name('paiment.validate');
 
-
-        /* -----------------------------------------------
-        / ARCHIVE
-        / --------------------------------------------- */
-        // ARCHIVED STUDENTS
-        Route::get('/archive/students', [StudentController::class, 'archive'])->name('student.archive');
-        Route::get('/archive/students/{idStudent}', [StudentController::class, 'archivedStudent'])->name('student.archive.profil');
-        Route::get('/archive/students/restore/{idStudent}', [StudentController::class, 'restoreArchivedStudent'])->name('student.archive.restore');
     
         /* -----------------------------------------------
         / Notes
@@ -314,6 +302,12 @@ Route::middleware([
         Route::get('/roles/update/{idRole}', [RolesController::class, 'updateRoles'])->name('roles.update.page');
         Route::put('/roles/update/{idRole}', [RolesController::class, 'updateRoles'])->name('roles.update');
 
+        /* -----------------------------------------------
+        / Teachers
+        / --------------------------------------------- */
+        Route::get('/teachers', [TeacherController::class, 'teacher'])->name('teachers.liste');
+        // Add staff
+        Route::post('/teacher/add',  [TeacherController::class, 'teacher'])->name('teachers.add');
 
         /* --------------------------------------
         / Staffs 
@@ -371,6 +365,9 @@ Route::middleware([
         // Archive Teachers
         Route::get('/archive/teachers/delete/{idProfesseur}', [TeacherController::class, 'deleteArchivedTeacher'])->name('teachers.archive.delete');
         Route::post('/archive/teachers/action', [TeacherController::class, 'multipleArchivedTeachers'])->name('teachers.archive.multiple');
+        Route::get('/teachers', [TeacherController::class, 'teacher'])->name('teachers.liste');
+        // Add staff
+        Route::post('/teacher/add',  [TeacherController::class, 'teacher'])->name('teachers.add');
 
         // Depenses Archive
         Route::get('/archive/factureDepenses', [ExpenseController::class, 'archive'])->name('factureDepenses.archive');

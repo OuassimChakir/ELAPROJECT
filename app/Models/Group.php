@@ -28,24 +28,47 @@ class Group extends Model
             ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
             ->get();
     }
+
+    public static function getGroupsByGradeCategory($idGradeCategory){
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at','idGradeCategory')
+        ->selectRaw('(SELECT count(idStudent) FROM `groups` as g
+        INNER JOIN payment ON payment.idGroup = g.idGroup
+        WHERE etat = 0 AND g.idGroup = groups.idGroup) as pendingPaiment')
+        ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
+        ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
+        ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
+        ->join('group_grades','group_grades.idGroup','=','groups.idGroup')
+        ->join('grades','grades.idGrade','=','group_grades.idGrade')
+        ->where('idGradeCategory',$idGradeCategory)
+        ->groupBy('groups.idGroup')
+        ->get();
+    }
     public static function getStudentGroups($idStudent){
-        return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at','idGradeCategory')
             ->selectRaw('(SELECT count(idPayment) FROM  payment
             WHERE etat = 0 AND idStudent = '.$idStudent.') as pendingPaiment')
             ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
             ->join('groupelements','groupelements.idGroup','=','groups.idGroup')
+            ->join('group_grades','group_grades.idGroup','=','groups.idGroup')
+            ->join('grades','grades.idGrade','=','group_grades.idGrade')
             ->where('groupelements.idStudent',$idStudent)
+            ->groupBy('groups.idGroup')
+            ->orderBy('idGradeCategory')
             ->get();
     }
 
     public static function getProfGroups($idProfesseur){
-        return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at')
+        return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at','idGradeCategory')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
+            ->join('group_grades','group_grades.idGroup','=','groups.idGroup')
+            ->join('grades','grades.idGrade','=','group_grades.idGrade')
             ->where('groups.idProfesseur',$idProfesseur)
+            ->groupBy('groups.idGroup')
+            ->orderBy('idGradeCategory')
             ->get();
     }
 
@@ -58,7 +81,6 @@ class Group extends Model
             ->where('idGroup', $idGroup)
             ->first();
     }
-
 
     // Only groups where a student have invoices
     public static function getGroupWithStudentInvoices($idStudent){
@@ -155,9 +177,14 @@ class Group extends Model
     public static function deleteGroup($idGroup) {
         Group::find($idGroup)->delete();
     }
-    //----------- all Group---------------//    
+    // ---------- all Group----------- //
     public static function selectGroup(){
-        return Group::all();
+        return Group::select('groups.*','idGradeCategory')
+            ->join('group_grades','group_grades.idGroup','=','groups.idGroup')
+            ->join('grades','grades.idGrade','=','group_grades.idGrade')
+            ->groupBy('groups.idGroup')
+            ->orderBy('idGradeCategory')
+            ->get();
     }
     // statistic des types groupes
 

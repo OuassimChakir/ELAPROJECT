@@ -153,6 +153,7 @@
                 });
             });
         </script>
+
         <script type='text/javascript'>
             $(document).ready(function() {
                 $('#cancelBtn').on('click',function() {
@@ -208,6 +209,7 @@
                 }
             });
         </script>
+
         <script>
             function cancelAssignment(idElement){
                 var id = idElement;
@@ -270,7 +272,7 @@
                     $('#updateAttendanceStudents').empty();
                      // AJAX request 
                     $.ajax({
-                        url: '/attendance/update/' + idGroup + '-' + dateAbsence,
+                        url: '/attendance/update/' + idGroup + '/' + dateAbsence,
                         type: 'get',
                         dataType: 'json',
                         success: function(response) {
