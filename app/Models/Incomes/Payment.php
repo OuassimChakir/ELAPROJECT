@@ -313,8 +313,7 @@ class Payment extends Model
     {
         Payment::where('idGroup', $idGroup)
             ->where('idStudent', $idStudent)
-            ->whereNull('etat')
-            ->orWhere('etat',2)
+            ->whereRaw("(etat = 0 OR etat = 2)")
             ->forceDelete();
     }
 
