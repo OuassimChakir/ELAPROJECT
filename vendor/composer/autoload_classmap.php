@@ -17,6 +17,7 @@ return array(
     'App\\Http\\Controllers\\ActiviteController' => $baseDir . '/app/Http/Controllers/ActiviteController.php',
     'App\\Http\\Controllers\\AttendanceController' => $baseDir . '/app/Http/Controllers/AttendanceController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\EmploiController' => $baseDir . '/app/Http/Controllers/EmploiController.php',
     'App\\Http\\Controllers\\ExpenseController' => $baseDir . '/app/Http/Controllers/ExpenseController.php',
     'App\\Http\\Controllers\\GradesController' => $baseDir . '/app/Http/Controllers/GradesController.php',
     'App\\Http\\Controllers\\GroupController' => $baseDir . '/app/Http/Controllers/GroupController.php',

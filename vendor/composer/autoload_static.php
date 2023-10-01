@@ -620,6 +620,7 @@ class ComposerStaticInit5c30efe6b5497c9675038c9e7b003c63
         'App\\Http\\Controllers\\ActiviteController' => __DIR__ . '/../..' . '/app/Http/Controllers/ActiviteController.php',
         'App\\Http\\Controllers\\AttendanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/AttendanceController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\EmploiController' => __DIR__ . '/../..' . '/app/Http/Controllers/EmploiController.php',
         'App\\Http\\Controllers\\ExpenseController' => __DIR__ . '/../..' . '/app/Http/Controllers/ExpenseController.php',
         'App\\Http\\Controllers\\GradesController' => __DIR__ . '/../..' . '/app/Http/Controllers/GradesController.php',
         'App\\Http\\Controllers\\GroupController' => __DIR__ . '/../..' . '/app/Http/Controllers/GroupController.php',
