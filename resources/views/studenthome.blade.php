@@ -142,26 +142,48 @@
         
                                                     <p>{{ $item->note }}</p>
                                                 </div>
+                                                @staff
                                                 <span class=" font-size-12 d-inline-block">
                                                     <button class="btn btn-outline-success payInvoiceBtn" data-bs-toggle="modal"
                                                     data-bs-target="#invoicePaiment" value="{{$item->idPayment}}"><span class="mdi mdi-check"></span></button>
                                                 </span>
+                                                @endstaff
                                             </div>
                                             @else
-                                            <div class="media pb-3 align-items-center justify-content-between">
-                                                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
-                                                    <span class="mdi mdi-receipt"></span>
-                                                </div>
-                                                <div class="media-body pr-3 ">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark" href="{{route('groups.profil',['idGroup' => $item->idGroup ])}}">Facture: {{ $item->designation }}</a> <span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
-        
-                                                    <p>{{ $item->note }}</p>
-                                                </div>
-                                                <span class=" font-size-12 d-inline-block">
-                                                        <button class="btn btn-outline-success payInvoiceBtn" data-bs-toggle="modal"
-                                                        data-bs-target="#invoicePaiment" value="{{$item->idPayment}}"><span class="mdi mdi-check"></span></button>
-                                                </span>
-                                            </div>
+                                                @if ($item->etat == 2)
+                                                    <div class="media pb-3 align-items-center justify-content-between">
+                                                        <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-dark text-white">
+                                                            <span class="mdi mdi-receipt"></span>
+                                                        </div>
+                                                        <div class="media-body pr-3 ">
+                                                            <a class="mt-0 mb-1 font-size-15 text-dark" href="{{route('groups.profil',['idGroup' => $item->idGroup ])}}">Facture: {{ $item->designation }}</a> <span class="badge badge-dark">{{$item->amount - $item->amountPaid}} DH</span>
+
+                                                            <p>{{ $item->note }}</p>
+                                                        </div>
+                                                        @staff
+                                                        <span class=" font-size-12 d-inline-block">
+                                                                <button class="btn btn-outline-warning activateInvoice" value="{{$item->idPayment}}"><span class="mdi mdi-lock-open-outline"></span></button>
+                                                        </span>
+                                                        @endstaff
+                                                    </div>
+                                                @else
+                                                    <div class="media pb-3 align-items-center justify-content-between">
+                                                        <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
+                                                            <span class="mdi mdi-receipt"></span>
+                                                        </div>
+                                                        <div class="media-body pr-3 ">
+                                                            <a class="mt-0 mb-1 font-size-15 text-dark" href="{{route('groups.profil',['idGroup' => $item->idGroup ])}}">Facture: {{ $item->designation }}</a> <span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
+
+                                                            <p>{{ $item->note }}</p>
+                                                        </div>
+                                                        @staff
+                                                        <span class=" font-size-12 d-inline-block">
+                                                                <button class="btn btn-outline-success payInvoiceBtn" data-bs-toggle="modal"
+                                                                data-bs-target="#invoicePaiment" value="{{$item->idPayment}}"><span class="mdi mdi-check"></span></button>
+                                                        </span>
+                                                        @endstaff
+                                                    </div>
+                                                @endif
                                             @endif 
                                         @endforeach
                                     @endif

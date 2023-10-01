@@ -353,4 +353,15 @@ class IncomesController extends Controller
             return  $output;
         }
     }
+
+    public function activatePaiment(Request $request){
+        if($request->has('idPayment')){
+            Payment::where('idPayment',$request->idPayment)->update([
+                'etat' => 0,
+            ]);
+            return response()->json(true);
+            
+        }
+        return response()->json(false);
+    }
 }

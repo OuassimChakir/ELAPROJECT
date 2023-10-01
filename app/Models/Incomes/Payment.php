@@ -32,7 +32,7 @@ class Payment extends Model
             ->join('incomes', 'payment.idIncome', '=', 'incomes.idIncome')
             ->leftjoin('groups', 'payment.idGroup', '=', 'groups.idGroup')
             ->where('idStudent', $idStudent)
-            ->where('etat', 0)
+            ->whereRaw("(etat = 0 OR etat = 2)")
             ->get();
     }
 
@@ -298,9 +298,10 @@ class Payment extends Model
     {
         return Payment::select('*')
             ->where('idGroup', $idGroup)
-            ->where('etat', 0)
+            ->whereRaw("etat = 0")
             ->count();
     }
+    
     // --------- Delete Payment ----------------- //
     public static function deletePayment($idPayment)
     {
@@ -310,7 +311,11 @@ class Payment extends Model
 
     public static function deleteDisactivatedPaiments($idGroup, $idStudent)
     {
-        Payment::where('idGroup', $idGroup)->where('idStudent', $idStudent)->whereNull('etat')->forceDelete();
+        Payment::where('idGroup', $idGroup)
+            ->where('idStudent', $idStudent)
+            ->whereNull('etat')
+            ->orWhere('etat',2)
+            ->forceDelete();
     }
 
     // --------------- Archive Payment ------------------ //

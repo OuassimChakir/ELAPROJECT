@@ -23,7 +23,8 @@ class CreatePaymentTable extends Migration
             $table->text('note')->nullable();
             $table->tinyInteger('etat')->nullable()->comment('NULL (Disactivated)
             0 (Activated)
-            1 (Payed)');
+            1 (Payed)
+            2 (Desactivated)');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->bigInteger('idGroup',false,true)->nullable();

@@ -252,7 +252,7 @@ Route::middleware([
         Route::get('/bmapaiment/{idPayment}', [IncomesController::class, 'paimentPage'])->name('paiment');
         Route::get('/getbmapaiment/{idPayment}', [IncomesController::class, 'ajaxPaimentModal']);
         Route::post('/bmapaiment/{idPayment}', [IncomesController::class, 'paimentPage'])->name('paiment.validate');
-
+        Route::post('/activatePaiment',[IncomesController::class, 'activatePaiment'])->name('paiment.activate');
     
         /* -----------------------------------------------
         / Notes
