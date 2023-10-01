@@ -379,7 +379,8 @@ Route::middleware([
         Route::post('/archive/incomePayment/action', [IncomesController::class, 'multipleArchivedPayment'])->name('incomePayment.archive.multiple');
         Route::get('/archive/incomePayment/delete/{idPayment}', [IncomesController::class, 'deleteArchivedPayment'])->name('incomePayment.archive.delete');
 
-        // Students Archive
+        // Students archive
+        Route::get('/archive/students', [StudentController::class, 'archive'])->name('student.archive');
         Route::post('/archive/students/action', [StudentController::class, 'multipleArchivedStudents'])->name('student.archive.multiple');
         Route::get('/archive/students/delete/{idStudent}', [StudentController::class, 'deleteArchivedStudent'])->name('student.archive.delete');
 
