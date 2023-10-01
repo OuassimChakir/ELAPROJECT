@@ -30,16 +30,22 @@
                                             <label for="form-label">Groupes</label>
                                             <select name="idGroup" id="id-Group" class="form-select" required>
                                                 <option disabled selected>-- Choisir un Groupe --</option>
-                                                @foreach ($groups as $group)
-                                                    @if (isset($idGroup))
-                                                        @if ($group->idGroup == $idGroup)
-                                                        <option value="{{ $group->idGroup }}" selected>{{ $group->designation }}</option>
-                                                        @else
-                                                        <option value="{{ $group->idGroup }}">{{ $group->designation }}</option>
+                                                @foreach ($gradeCategories as $category)
+                                                    <optgroup label="{{$category->category}}">
+                                                    @foreach ($groups as $group)
+                                                        @if ($group->idGradeCategory == $category->idGradeCategory)
+                                                            @if (isset($idGroup))
+                                                                @if ($group->idGroup == $idGroup)
+                                                                <option value="{{ $group->idGroup }}" selected>{{ $group->designation }}</option>
+                                                                @else
+                                                                <option value="{{ $group->idGroup }}">{{ $group->designation }}</option>
+                                                                @endif
+                                                            @else
+                                                                <option value="{{ $group->idGroup }}">{{ $group->designation }}</option>
+                                                            @endif
                                                         @endif
-                                                    @else
-                                                    <option value="{{ $group->idGroup }}">{{ $group->designation }}</option>
-                                                    @endif
+                                                    @endforeach
+                                                    </optgroup>
                                                 @endforeach
                                                 
                                             </select>

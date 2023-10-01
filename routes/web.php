@@ -79,6 +79,7 @@ Route::middleware([
     / Groups
     / ---------------------------------*/
     Route::get('/groupes', [GroupController::class, 'groups'])->name('groups');
+    Route::post('/groupes', [GroupController::class, 'groups'])->name('groups.filter');
     Route::get('/groupe/{idGroup}', [GroupController::class, 'groupPage'])->name('groups.profil');
 
     //----------------- Absence -------------------//    

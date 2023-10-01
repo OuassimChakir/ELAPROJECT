@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activite;
 use App\Models\Attendance;
+use App\Models\Grades\GradesCategory;
 use App\Models\Group;
 use App\Models\GroupElements;
 use App\Models\Incomes\Income;
@@ -57,12 +58,17 @@ class AttendanceController extends Controller
     public function allAbsences(Request $request)
     {
         $role = Roles::getRole(Auth::user()->idRole);
-        if($role->codeRole == '22')
+        if($role->codeRole == '22'){
             $allGroups = Group::getStudentGroups(Auth::user()->idStudent);
-        elseif($role->codeRole == '33')
+            $gradeCategories = GradesCategory::getGroupsGradeCatgoriesStudent(Auth::user()->idStudent);
+        }elseif($role->codeRole == '33'){
             $allGroups = Group::getProfGroups(Auth::user()->idProfesseur);
-        else
+            $gradeCategories = GradesCategory::getGroupsGradeCatgoriesProfesseur(Auth::user()->idProfesseur);
+        }else{
             $allGroups = Group::selectGroup();
+            $gradeCategories = GradesCategory::getGroupsGradeCatgories();
+        }
+
         if ($request->has('getAttendance')) {
             if($role->codeRole != '22'){
                 $students = GroupElements::groupElements($request->idGroup);
@@ -74,24 +80,24 @@ class AttendanceController extends Controller
                     'groups' => $allGroups,
                     'idGroup' => $request->idGroup,
                     'studentsAttendance' => $students,
+                    'gradeCategories' => $gradeCategories,
                     'dateAbsence' => explode('-',$request->dateAbsence),
                 ]);
             }else{
                 $student = Student::getStudent(Auth::user()->idStudent);
                 $element = GroupElements::getElement($request->idGroup,$student->idStudent);
-                $student->attendance =  Attendance::getGroupAttendanceByDate($request->dateAbsence, $element->idElement);
+                $student->attendance = Attendance::getGroupAttendanceByDate($request->dateAbsence, $element->idElement);
                 if($student->attendance->count() == 0) $student->attendance = null;
                 return view('pages.groupes.presence')->with([
                     'groups' => $allGroups,
                     'idGroup' => $request->idGroup,
                     'student' => $student,
+                    'gradeCategories' => $gradeCategories,
                     'dateAbsence' => explode('-',$request->dateAbsence),
                 ]);
             }
-
-
         }
-        return view('pages.groupes.presence')->with('groups', $allGroups);
+        return view('pages.groupes.presence')->with('groups', $allGroups)->with('gradeCategories',$gradeCategories);
     }
 
 
@@ -141,7 +147,7 @@ class AttendanceController extends Controller
                 $paiment = Payment::getElementActivatedPaiment($request->idGroup,$student->idStudent,$income->idIncome);
                 if(is_null($paiment) && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) >= 2)
                     Payment::activatePaiment($request->idGroup,$student->idStudent,explode('-',$request->dateAbsence)[1]);
-                elseif($paiment->count() > 0 && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) < 2)
+                elseif((!is_null($paiment) && $paiment->count() > 0) && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) < 2)
                     Payment::disactivatePaiment($paiment->idPayment);
             }
             return Redirect::back()->with('successMessage', "Mise à jour des présences réussie !");

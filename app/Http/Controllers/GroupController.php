@@ -33,6 +33,22 @@ class GroupController extends Controller
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
         $professeurs = Professeurs::getProfesseurs();
+        // Filter Groups
+        if($request->has('filterGroups')){
+            if($request->idGradeCategory != 0){
+                $groups = Group::getGroupsByGradeCategory($request->idGradeCategory);
+                for ($i=0; $i < $groups->count(); $i++) 
+                    $groups[$i]->grades = GroupGrades::getGroupGrades($groups[$i]->idGroup);
+                return view('pages.groupes.groupes')
+                ->with('groupes', $groups)
+                ->with('gradesCategories', $gradesCategories)
+                ->with('professeurs', $professeurs)
+                ->with('subjects', $subjects)
+                ->with('idGradeCategory',$request->idGradeCategory)
+                ->with('courseTypes', $courseTypes);
+            }
+        }
+
         $role = Roles::getRole(Auth::user()->idRole);
         if ($role->codeRole == '22')
             $groups = Group::getStudentGroups(Auth::user()->idStudent);
