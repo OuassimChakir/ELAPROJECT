@@ -62,6 +62,7 @@ return array(
     'App\\Models\\Incomes\\Payment' => $baseDir . '/app/Models/Incomes/Payment.php',
     'App\\Models\\Notes' => $baseDir . '/app/Models/Notes.php',
     'App\\Models\\Responsible\\Responsible' => $baseDir . '/app/Models/Responsible/Responsible.php',
+    'App\\Models\\Responsible\\Professeurs' => $baseDir . '/app/Models/Responsible/Professeurs.php',
     'App\\Models\\Responsible\\Staff' => $baseDir . '/app/Models/Responsible/Staff.php',
     'App\\Models\\Responsible\\Stafftype' => $baseDir . '/app/Models/Responsible/Stafftype.php',
     'App\\Models\\Responsible\\Student' => $baseDir . '/app/Models/Responsible/Student.php',

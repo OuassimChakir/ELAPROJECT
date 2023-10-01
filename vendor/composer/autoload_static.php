@@ -665,6 +665,7 @@ class ComposerStaticInit5c30efe6b5497c9675038c9e7b003c63
         'App\\Models\\Incomes\\Payment' => __DIR__ . '/../..' . '/app/Models/Incomes/Payment.php',
         'App\\Models\\Notes' => __DIR__ . '/../..' . '/app/Models/Notes.php',
         'App\\Models\\Responsible\\Responsible' => __DIR__ . '/../..' . '/app/Models/Responsible/Responsible.php',
+        'App\\Models\\Responsible\\Professeurs' => __DIR__ . '/../..' . '/app/Models/Responsible/Professeurs.php',
         'App\\Models\\Responsible\\Staff' => __DIR__ . '/../..' . '/app/Models/Responsible/Staff.php',
         'App\\Models\\Responsible\\Stafftype' => __DIR__ . '/../..' . '/app/Models/Responsible/Stafftype.php',
         'App\\Models\\Responsible\\Student' => __DIR__ . '/../..' . '/app/Models/Responsible/Student.php',
