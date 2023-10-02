@@ -54,6 +54,7 @@ class GroupElements extends Model
             ->where('groupelements.idGroup', $idGroup)
             ->whereNotNull('etat')
             ->where('etat','!=',2)
+            ->whereNull('payment.deleted_at')
             ->groupBy('students.idStudent')
             ->get();
     }
