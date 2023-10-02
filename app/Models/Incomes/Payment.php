@@ -146,9 +146,12 @@ class Payment extends Model
             ->where('idGroup', $idGroup)
             ->where('idStudent', $idStudent)
             ->where('activationDate', $month)
+            ->whereRaw('(etat is null or etat = 2)')
             ->first();
-        $paiment->etat = 0;
-        $paiment->save();
+        if(!is_null($paiment)){
+            $paiment->etat = 0;
+            $paiment->save();
+        }
     }
 
     public static function disactivatePaiment($idPayment)

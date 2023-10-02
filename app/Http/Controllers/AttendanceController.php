@@ -41,14 +41,12 @@ class AttendanceController extends Controller
                 Attendance::markAttendance($request->absence[$i],$request->dateAbsence,$element->idElement);
                 if(Attendance::countAttendances($element->idElement, $date[1]) >= 2){
                     $paiment = Payment::selectPayment($idGroup, $element->idStudent,$income->idIncome);
-                    if(is_null($paiment->etat))
+                    if(is_null($paiment->etat) || $paiment->etat == 2)
                         Payment::activatePaiment($element->idGroup,$element->idStudent, $date[1]);  
                 }
             }
 
             // Reset Paiments
-
-
             if($flag == 1)
                 return Redirect::back()->with('updateMessage', "L'absence de ce groupe était déjà marquée.");
             return Redirect::back()->with('successMessage', "L'ajout du Abssence est faite avec succès.");
@@ -147,7 +145,7 @@ class AttendanceController extends Controller
                 $paiment = Payment::getElementActivatedPaiment($request->idGroup,$student->idStudent,$income->idIncome);
                 if(is_null($paiment) && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) >= 2)
                     Payment::activatePaiment($request->idGroup,$student->idStudent,explode('-',$request->dateAbsence)[1]);
-                elseif((!is_null($paiment) && $paiment->count() > 0) && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) < 2)
+                elseif(!is_null($paiment) && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) < 2)
                     Payment::disactivatePaiment($paiment->idPayment);
             }
             return Redirect::back()->with('successMessage', "Mise à jour des présences réussie !");

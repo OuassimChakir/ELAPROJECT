@@ -48,12 +48,13 @@
                                 @foreach ($students as $student)
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="form-check-input students">
+                                            <input type="checkbox" class="form-check-input students" id="{{ $student->matricule }}">
                                         </td>
                                         <td>
+                                            <label for="{{ $student->matricule }}">
                                             {{ $student->matricule }}
-                                            <input type="hidden" name="students[]" class="form-control"
-                                                value="{{ $student->idStudent }}">
+                                            </label>
+                                            <input type="hidden" name="students[]" class="form-control" value="{{ $student->idStudent }}">
                                         </td>
                                         <td>
                                             <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
