@@ -44,6 +44,7 @@ class Student extends Model
             ->leftjoin('payment','payment.idStudent','=','students.idStudent')
             ->whereNotNull('etat')
             ->whereRaw('etat != 2')
+            ->whereNull('payment.deleted_at')
             ->groupBy('students.idStudent')
             ->get();
     }
