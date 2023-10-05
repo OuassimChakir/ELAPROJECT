@@ -19,8 +19,8 @@ class CreateGroupsTable extends Migration
             $table->integer('capacity')->unsigned();
             $table->integer('nbElements')->unsigned()->default(0);
             $table->double('amount')->comment('Amount for each student to pay');
-            $table->date('debutFormation');
-            $table->date('finFormation');
+            $table->string('debutFormation',8);
+            $table->string('finFormation',8);
             $table->bigInteger('idSubject',false,true);
             $table->bigInteger('idProfesseur',false,true)->nullable();
             $table->timestamps();
