@@ -32,15 +32,15 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="debutFormation">Début de formation</label>
-                            <input type="date" class="form-control" name="debutFormation" id="debutFormation" value='{{$group->debutFormation}}' required>
+                            <input type="month" class="form-control" name="debutFormation" id="debutFormation" value="{{is_null($group->debutFormation) ? date('Y-m') : $group->debutFormation}}" required>
                         </div>
                     </div>
 
-                    
+
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="finFormation">Fin de formation</label>
-                            <input type="date" class="form-control" name="finFormation" id="finFormation" value="{{$group->finFormation}}" required>
+                            <input type="month" class="form-control" name="finFormation" id="finFormation" value="{{$group->finFormation}}" required>
                         </div>
                     </div>
 
@@ -125,7 +125,7 @@
                                 if(count($designation) == 3)
                                     $nbGroup = $designation[2];
                                 elseif(count($designation) == 4)
-                                    $nbGroup = $designation[2];
+                                    $nbGroup = $designation[3];
                             @endphp
                             <input type="number" class="form-control" name="nbGroup" id="nbGroup" value="{{substr($nbGroup,1)}}" required>
                         </div>

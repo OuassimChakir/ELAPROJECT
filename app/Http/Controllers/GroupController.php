@@ -20,7 +20,6 @@ use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 
@@ -34,18 +33,18 @@ class GroupController extends Controller
         $courseTypes = CourseType::selectCourses();
         $professeurs = Professeurs::getProfesseurs();
         // Filter Groups
-        if($request->has('filterGroups')){
-            if($request->idGradeCategory != 0){
+        if ($request->has('filterGroups')) {
+            if ($request->idGradeCategory != 0) {
                 $groups = Group::getGroupsByGradeCategory($request->idGradeCategory);
-                for ($i=0; $i < $groups->count(); $i++) 
+                for ($i = 0; $i < $groups->count(); $i++)
                     $groups[$i]->grades = GroupGrades::getGroupGrades($groups[$i]->idGroup);
                 return view('pages.groupes.groupes')
-                ->with('groupes', $groups)
-                ->with('gradesCategories', $gradesCategories)
-                ->with('professeurs', $professeurs)
-                ->with('subjects', $subjects)
-                ->with('idGradeCategory',$request->idGradeCategory)
-                ->with('courseTypes', $courseTypes);
+                    ->with('groupes', $groups)
+                    ->with('gradesCategories', $gradesCategories)
+                    ->with('professeurs', $professeurs)
+                    ->with('subjects', $subjects)
+                    ->with('idGradeCategory', $request->idGradeCategory)
+                    ->with('courseTypes', $courseTypes);
             }
         }
 
@@ -57,16 +56,16 @@ class GroupController extends Controller
         else
             $groups = Group::getGroups();
 
-        for ($i=0; $i < $groups->count(); $i++) 
+        for ($i = 0; $i < $groups->count(); $i++)
             $groups[$i]->grades = GroupGrades::getGroupGrades($groups[$i]->idGroup);
-        
+
         if ($request->has('CreateGroup')) {
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
             $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
-            if(count($request->grades) == 1){
+            if (count($request->grades) == 1) {
                 $grade = Grades::getGrade($request->grades[0]);
-                $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+                $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
             }
             $newGroup = Group::createGroup($designation, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
 
@@ -90,6 +89,13 @@ class GroupController extends Controller
             ->with('subjects', $subjects)
             ->with('courseTypes', $courseTypes);
     }
+
+    public function getGrade($idGradeCategory)
+    {
+        $gradeData['data'] = Grades::selectGradesByCategory($idGradeCategory);
+        return response()->json($gradeData);
+    }
+
     public function groupPage($idGroup)
     {
         $students = GroupElements::groupElements($idGroup);
@@ -123,29 +129,24 @@ class GroupController extends Controller
             ->with('students', $students)
             ->with('courseTypes', $courseTypes)
             ->with('absen', $absen)
-            ->with('emploi',$emploi);
+            ->with('emploi', $emploi);
     }
 
-    public function getGrade($idGradeCategory)
-    {
-        $gradeData['data'] = Grades::selectGradesByCategory($idGradeCategory);
-        return response()->json($gradeData);
-    }
+    //  DELETION
 
-    //  DELETION 
     public function deleteGroup($idGroup)
     {
         $payments = Payment::getGroupPendingPaiments($idGroup);
-        if ($payments == 0) { 
+        if ($payments == 0) {
             Payment::where('etat', 1)->where('idGroup', $idGroup)->update([
                 'idGroup' => null,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
             Payment::where('idGroup', $idGroup)
                 ->whereNull('etat')
-                ->orWhere('etat',2)
+                ->orWhere('etat', 2)
                 ->forceDelete();
-                
+
             GroupGrades::deleteGroupGrades($idGroup);
             if (session()->get('user')) {
                 $groupInfo = Group::getGroup($idGroup);
@@ -158,10 +159,11 @@ class GroupController extends Controller
             GroupElements::deleteGroupClassroom($idGroup);
             Emploi::deleteEmploi($idGroup);
             Group::deleteGroup($idGroup);
-            return  response()->json(true);
+            return response()->json(true);
         } elseif ($payments > 0) {
             return response()->json(false);
         }
+        return response()->json(false);
     }
 
     // Update Group
@@ -171,11 +173,11 @@ class GroupController extends Controller
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
             $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
-            if(count($request->grades) == 1){
+            if (count($request->grades) == 1) {
                 $grade = Grades::getGrade($request->grades[0]);
-                $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+                $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
             }
-            
+
             Group::updateGroup($idGroup, $designation, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades)) {
@@ -201,8 +203,11 @@ class GroupController extends Controller
 
     public function assignElement($idGroup, $idStudent)
     {
-        GroupElements::addElement($idGroup, $idStudent);
         $group = Group::getGroup($idGroup);
+        if (is_null($group->debutFormation) || is_null($group->finFormation)) {
+            return response()->json('null');
+        }
+        GroupElements::addElement($idGroup, $idStudent);
         $debut = (int)explode('-', $group->debutFormation)[1];
         $year = (int)explode('-', $group->debutFormation)[0];
         if (date('Y-m-d') > $group->debutFormation) {
@@ -233,6 +238,14 @@ class GroupController extends Controller
         return response()->json('true');
     }
 
+    public function multipleCancelAssignment(Request $request)
+    {
+        foreach ($request->students as $student) {
+        }
+        GroupElements::cancelAssignment($student);
+        return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
+    }
+
     public function cancelAssignment($idElement)
     {
         $assignment = GroupElements::getAssignment($idElement);
@@ -248,27 +261,18 @@ class GroupController extends Controller
         return Redirect::back()->with('deleteMessage', "L'étudiant a été retiré du groupe avec succès");
     }
 
-    public function multipleCancelAssignment(Request $request)
-    {
-        foreach ($request->students as $student) {
-        }
-        GroupElements::cancelAssignment($student);
-        return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
-    }
-
-
     public function searchNbGroup(Request $request)
     {
         $matiere = Subjects::getSubject($request->idSubject);
         $gradeCategory = GradesCategory::getGradeCategory($request->idGradeCategory);
         $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
-        if($request->has('grades'))
-            if(count($request->grades) == 1){
+        if ($request->has('grades'))
+            if (count($request->grades) == 1) {
                 $grade = Grades::getGrade($request->grades[0]);
-                $designation = $grade->brev.'-'.$gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
+                $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroupQuery;
             }
         $output = 0;
-        $data = DB::table('groups')->where('designation',$designation)->get();
+        $data = DB::table('groups')->where('designation', $designation)->get();
         if (count($data) > 0) {
             $output = 1;
         }

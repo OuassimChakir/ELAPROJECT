@@ -47,7 +47,7 @@
                         </button>
                     </div>
                     <div id="groupsResult">
-                        
+
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
     $("#groupsResult").hide();
     $(document).ready(function() {
         $(".add2GroupBtn").on('click', function() {
-            $('#idStudent').val() = $(this).val();
+            $('#idStudent').val($(this).val());
         });
         // Department Change
         $('#getGroupsButton').click(function() {
@@ -80,7 +80,7 @@
             // Empty the dropdown
             $('#groupsResult').empty();
             $('#groupAlert').remove();
-            // AJAX request 
+            // AJAX request
             $.ajax({
                 url: '/students/getGroups/' + idSubject + '/' + idStudent +'/'+ idGradeCategory,
                 type: 'get',
@@ -101,7 +101,7 @@
                             var nbElement = response[i].nbElements;
                             var name = response[i].prenom + " " + response[i].nom;
 
-                                
+
                             htmlOut += '<tr><td class="align-middle"><h5>'+designation;
                             if (capacity == nbElement)
                                 htmlOut += ' <span class="badge badge-pill badge-dark">';
@@ -112,7 +112,7 @@
                                 htmlOut += '<li>'+grade.grade+'</li>';
                             });
                             htmlOut += '</ul></td><td class="align-middle">'
-                                
+
                             if (capacity == nbElement)
                                 htmlOut += '<button class="addStudentGroup btn btn-danger" value="' + idGroup + '" disabled=""><i class="bi bi-x-lg"></i></button>';
                             else
@@ -146,6 +146,19 @@
     <swal-param name="customClass" value='{ "popup": "my-popup" }' />
     <swal-function-param name="didOpen" value="popup => console.log(popup)" />
 </template>
+
+<template id="null-assign">
+    <swal-title>
+        La durée du groupe n'est pas définie
+    </swal-title>
+    <swal-icon type="warning" color="red"></swal-icon>
+    <swal-button type="confirm">
+        Okay
+    </swal-button>
+    <swal-param name="allowEscapeKey" value="true" />
+    <swal-param name="customClass" value='{ "popup": "my-popup" }' />
+    <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+</template>
 {{-- ASSIGNING A STUDENT INTO A GROUP --}}
 <script>
     $(document).ready(function() {
@@ -164,7 +177,7 @@
                     var currentBtn = $(this);
                     var idGroup = $(this).val();
                     var idStudent = $('#idStudent').val();
-                    // AJAX request 
+                    // AJAX request
                     $.ajax({
                         url: '/groupes/' + idGroup + '/classroom/' + idStudent,
                         type: 'get',
@@ -177,9 +190,13 @@
                                 var newIcon = '<i class="bi bi-check-lg"></i>';
                                 currentBtn.append(newIcon);
                                 currentBtn.prop('disabled', true);
+                            }else if(response == 'null'){
+                                Swal.fire({
+                                    template: "#null-assign"
+                                })
                             }else{
                                 Swal.fire({
-                                    template: '#fail-assign'
+                                    template: "#fail-assign"
                                 })
                             }
 
@@ -189,7 +206,7 @@
                         }
                     });
                     Swal.fire('Saved!', '', 'success')
-                } 
+                }
             })
             // Department id
         });

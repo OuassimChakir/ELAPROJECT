@@ -10,7 +10,7 @@ class Group extends Model
     use HasFactory;
     protected $table = "groups";
     protected $primaryKey = "idGroup";
-    protected $fillable = ['designation', 'capacity', 'amount', 'idSubject', 'idGrade', 'idStaff', 'CREATED_AT', 'UPDATED_AT'];
+    protected $fillable = ['designation', 'capacity', 'amount','debutFormation','finFormation', 'idSubject', 'idGrade', 'idStaff', 'CREATED_AT', 'UPDATED_AT'];
 
     // ------- Selections ----------- //
     public static function totalGroups(){
@@ -94,7 +94,7 @@ class Group extends Model
 
     // Student Groups
 
-    // ****** GET SUBJECTS OF EXISTED GROUPS ************ // 
+    // ****** GET SUBJECTS OF EXISTED GROUPS ************ //
     public static function existedGroupSubjects(){
         return Group::select('subjects.*')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
@@ -111,7 +111,7 @@ class Group extends Model
     }
 
 
-    
+
     public static function existedGroupGradesBySubject($idSubject)
     {
         return Group::select('grades.*', 'gradescategories.*')
@@ -136,11 +136,13 @@ class Group extends Model
             ->get();
     }
     // ------ Creation ----------- //
-    public static function createGroup($designation, $capacity, $amount, $idSubject, $idProfesseur){
+    public static function createGroup($designation, $capacity,$debut, $fin, $amount, $idSubject, $idProfesseur){
         return Group::insertGetId([
             'designation' => $designation,
             'capacity' => $capacity,
             'amount' => $amount,
+            'debutFormation' => $debut,
+            'finFormation' => $fin,
             'idSubject' => $idSubject,
             'idProfesseur' => $idProfesseur,
             'CREATED_AT' => date('Y-m-d H:i:s'),
@@ -172,7 +174,7 @@ class Group extends Model
         $group->idProfesseur = null;
         $group->save();
     }
-    
+
     // ---------- Deletion ----------- //
     public static function deleteGroup($idGroup) {
         Group::find($idGroup)->delete();
