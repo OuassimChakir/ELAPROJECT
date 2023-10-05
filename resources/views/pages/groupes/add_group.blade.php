@@ -28,6 +28,22 @@
                                     value="0">
                             </div>
                         </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="debutFormation">Début de formation</label>
+                                <input type="month" class="form-control" name="debutFormation" id="debutFormation" value="{{date('Y-m')}}" required>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="finFormation">Fin de formation</label>
+                                <input type="month" class="form-control" name="finFormation" id="finFormation" required>
+                            </div>
+                        </div>
+
                         {{-- Staff --}}
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
@@ -63,6 +79,7 @@
                                 </select>
                             </div>
                         </div>
+
                         {{-- Grade Category --}}
                         <div class="col-lg-12">
                             <div class="form-group mb-4">
@@ -96,7 +113,7 @@
                         <div class="col-lg-12 mt-2">
                             <div class="form-group">
                                 <label for="nbGroup">Nombre du Group</label>
-                                <input type="number"" min="1" class="form-control" name="nbGroup" id="nbGroup" required>
+                                <input type="number" min="1" class="form-control" name="nbGroup" id="nbGroup" required>
                                 <div class="invalid-feedback">
                                     Ce numéro de groupe existe déjà !
                                 </div>
@@ -130,7 +147,7 @@
             // Empty the dropdown
             $('#grades').empty();
 
-            // AJAX request 
+            // AJAX request
             $.ajax({
                 url: '/groupes/get/' + id,
                 type: 'get',
@@ -190,7 +207,7 @@
             $('#grades :checkbox:checked').each(function(i){
                 grades[i] = $(this).val();
             });
-            
+
             if(grades.length == 0 && gradesLevels.length > 0){
                 $('#nbGroup').val('');
                 $('#createGroupBtn').prop('disabled',true);
