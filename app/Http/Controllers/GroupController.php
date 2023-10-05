@@ -67,7 +67,7 @@ class GroupController extends Controller
                 $grade = Grades::getGrade($request->grades[0]);
                 $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
             }
-            $newGroup = Group::createGroup($designation, $request->capacity, $request->amount, $request->idSubject, $request->idProfesseur);
+            $newGroup = Group::createGroup($designation, $request->capacity, $request->debutFormation, $request->finFormation, $request->amount, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades))
                 foreach ($request->grades as $idGrade)
