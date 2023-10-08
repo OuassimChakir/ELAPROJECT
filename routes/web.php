@@ -386,6 +386,7 @@ Route::middleware([
 
         // Delete Student
         Route::get('/students/delete/{idStudent}', [StudentController::class, 'deleteStudent'])->name('student.delete');
+        Route::get('/archive/students/{idStudent}', [StudentController::class, 'archivedStudent'])->name('student.archive.profil');
         Route::delete('/staff/delete', [StudentController::class, 'deleteMultipleStudents'])->name('student.delete.multiple');
 
         // Delete & Update Grade
@@ -415,5 +416,6 @@ Route::middleware([
         Route::get('/archive/teachers', [TeacherController::class, 'archive'])->name('teachers.archive');
         Route::get('/archive/teacher/{idProfesseur}', [TeacherController::class, 'archivedTeacher'])->name('teachers.archive.profil');
         Route::get('/archive/teachers/restore/{idProfesseur}', [TeacherController::class, 'restoreArchivedTeacher'])->name('teachers.archive.restore');
+        
     });
 });
