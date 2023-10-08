@@ -29,87 +29,90 @@
                         <div class="table-responsive">
                             <table id="responsive-data-table" class="table">
                                 <thead>
-                                    @if ($students->count() != 0)
-                                        <th>
-                                            <input type="checkbox" class="form-check-input" id="selectAllArchived">
-                                        </th>
-                                    @endif
-                                    <th>#</th>
-                                    <th>Matricule</th>
-                                    <th>Nom</th>
-                                    <th>Téléphone</th>
-                                    <th>Inscrie</th>
-                                    <th>Action</th>
+                                @if ($students->count() != 0)
+                                    <th>
+                                        <input type="checkbox" class="form-check-input" id="selectAllArchived">
+                                    </th>
+                                @endif
+                                <th>#</th>
+                                <th>Matricule</th>
+                                <th>Nom</th>
+                                <th>Téléphone</th>
+                                <th>Inscrie</th>
+                                <th>Action</th>
                                 </thead>
                                 @php
                                     $i = 0;
                                 @endphp
                                 <tbody>
 
-                                    @if (isset($students[0]->idStudent))
-                                        @foreach ($students as $student)
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" name="students[]"
-                                                        value="{{ $student->idStudent }}"class="form-check-input archivedStudents">
-                                                </td>
-                                                <td>{{ ++$i }}</td>
-                                                <td>
-                                                    {{ $student->matricule }}
-                                                    @if ($student->pendingPayment == 0)
-                                                        <span class="badge badge-success"><i class="bi bi-check-lg"></i></span>
-                                                    @else
-                                                        <span class="badge badge-danger">{{ $student->pendingPayment }} <i
-                                                                class="bi bi-hourglass"></i></span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    {{ $student->prenom_ar }}
-                                                    {{ $student->nom_ar }}
-                                                    @if ($student->sexe == 'Homme')
-                                                        <span class="badge badge-pill badge-info">M</span>
-                                                    @else
-                                                        <span class="badge badge-pill badge-purple">F</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $student->numTel }}</td>
-                                                <td>{{ $student->created_at }}</td>
-                                                <td>
-                                                    <div class="btn-group-spaced">
-                                                        <button type="button" class="add2GroupBtn btn btn-outline-success"
+                                @if (isset($students[0]->idStudent))
+                                    @foreach ($students as $student)
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="students[]"
+                                                       value="{{ $student->idStudent }}"
+                                                       class="form-check-input archivedStudents">
+                                            </td>
+                                            <td>{{ ++$i }}</td>
+                                            <td>
+                                                {{ $student->matricule }}
+                                                @if ($student->pendingPayment == 0)
+                                                    <span class="badge badge-success"><i
+                                                            class="bi bi-check-lg"></i></span>
+                                                @else
+                                                    <span class="badge badge-danger">{{ $student->pendingPayment }} <i
+                                                            class="bi bi-hourglass"></i></span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ $student->prenom_ar }}
+                                                {{ $student->nom_ar }}
+                                                @if ($student->sexe == 'Homme')
+                                                    <span class="badge badge-pill badge-info">M</span>
+                                                @else
+                                                    <span class="badge badge-pill badge-purple">F</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $student->numTel }}</td>
+                                            <td>{{ $student->created_at }}</td>
+                                            <td>
+                                                <div class="btn-group-spaced">
+                                                    <button type="button" class="add2GroupBtn btn btn-outline-success"
                                                             value="{{ $student->idStudent }}" data-bs-toggle="modal"
                                                             data-bs-target="#add2Group" data-toggle="tooltip"
                                                             data-placement="right" title="Ajouter au Groupe">
-                                                            <i class="bi bi-plus-lg"></i>
-                                                        </button>
+                                                        <i class="bi bi-plus-lg"></i>
+                                                    </button>
 
-                                                        <a
-                                                            href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
-                                                            <button type="button" name="show" class="btn btn-outline-info"
+                                                    <a
+                                                        href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                                        <button type="button" name="show" class="btn btn-outline-info"
                                                                 value="{{ $student->idStudent }}">
-                                                                <i class="bi bi-person-fill"></i>
-                                                            </button>
-                                                        </a>
-                                                        <a
-                                                            href="{{ route('student.delete', ['idStudent' => $student->idStudent]) }}">
-                                                            <button type="button" class="btn btn-outline-danger" name="delete"
+                                                            <i class="bi bi-person-fill"></i>
+                                                        </button>
+                                                    </a>
+                                                    <a
+                                                        href="{{ route('student.delete', ['idStudent' => $student->idStudent]) }}">
+                                                        <button type="button" class="btn btn-outline-danger"
+                                                                name="delete"
                                                                 value="{{ $student->idStudent }}"
                                                                 onclick="return confirm('Voulez-vous supprimer définitivement ce Etudiant?');">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                            </button>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                                 </tbody>
                             </table>
                         </div>
                         <div class="row">
                             <div class="col btns">
                                 <button type="submit" name="deleteAll" class="btn btn-outline-danger"
-                                    onclick="return confirm('Voulez-vous supprimer définitivement ces Etudiants?');">
+                                        onclick="return confirm('Voulez-vous supprimer définitivement ces Etudiants?');">
                                     <i class="bi bi-trash-fill"></i> Supprimer Tous
                                 </button>
                             </div>
@@ -125,21 +128,21 @@
     <script src="{{ asset('JS/sweetAlert.js') }}"></script>
     <script>
         // Listen for click on toggle checkbox
-        $('#selectAllArchived').click(function(event) {
+        $('#selectAllArchived').click(function (event) {
             if (this.checked) {
                 // Iterate each checkbox
-                $(':checkbox').each(function() {
+                $(':checkbox').each(function () {
                     this.checked = true;
                 });
             } else {
-                $(':checkbox').each(function() {
+                $(':checkbox').each(function () {
                     this.checked = false;
                 });
             }
         });
 
         $(".btns").hide();
-        $(":checkbox").click(function() {
+        $(":checkbox").click(function () {
             if ($(this).is(":checked")) {
                 $(".btns").show();
             } else {
@@ -148,7 +151,8 @@
         });
     </script>
     <script>
-        $('.add2GroupBtn').click(function() {
+        $('.add2GroupBtn').click(function () {
+            $('#groupsResult').empty();
             $('#idStudent').val($(this).val());
             $('#gradesSelect').find('option').remove();
             $('#groupsResult').find('div').remove();
@@ -183,9 +187,9 @@
             <swal-button type="confirm">
                 Terminer
             </swal-button>
-            <swal-param name="allowEscapeKey" value="false" />
-            <swal-param name="customClass" value='{ "popup": "my-popup" }' />
-            <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+            <swal-param name="allowEscapeKey" value="false"/>
+            <swal-param name="customClass" value='{ "popup": "my-popup" }'/>
+            <swal-function-param name="didOpen" value="popup => console.log(popup)"/>
         </template>
 
         <script>

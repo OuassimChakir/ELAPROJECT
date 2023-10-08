@@ -63,10 +63,11 @@ class GroupController extends Controller
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
             $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
-            if (count($request->grades) == 1) {
-                $grade = Grades::getGrade($request->grades[0]);
-                $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
-            }
+            if (!is_null($request->grades))
+                if (count($request->grades) == 1) {
+                    $grade = Grades::getGrade($request->grades[0]);
+                    $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+                }
             $newGroup = Group::createGroup($designation, $request->capacity, $request->debutFormation, $request->finFormation, $request->amount, $request->idSubject, $request->idProfesseur);
 
             if (isset($request->grades))
@@ -98,7 +99,9 @@ class GroupController extends Controller
 
     public function groupPage($idGroup)
     {
+
         $students = GroupElements::groupElements($idGroup);
+        $paimentStudents = GroupElements::paimentStudents();
         $absen = Attendance::selectAbsence();
         // Queries
         $gradesCategories = GradesCategory::getGradeCategories();
@@ -121,6 +124,7 @@ class GroupController extends Controller
 
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
+            ->with('paimentStudents', $paimentStudents)
             ->with('groupGrades', $groupGrades)
             ->with('gradesCategories', $gradesCategories)
             ->with('professeurs', $teachers)
@@ -173,10 +177,11 @@ class GroupController extends Controller
             $matiere = Subjects::getSubject($request->idSubject);
             $gradeCategory = GradesCategory::getGradeCategory($request->gradeCategory);
             $designation = $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
-            if (count($request->grades) == 1) {
-                $grade = Grades::getGrade($request->grades[0]);
-                $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
-            }
+            if (!is_null($request->grades))
+                if (count($request->grades) == 1) {
+                    $grade = Grades::getGrade($request->grades[0]);
+                    $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
+                }
 
             Group::updateGroup($idGroup, $designation, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
 
@@ -208,29 +213,29 @@ class GroupController extends Controller
             return response()->json('null');
         }
         GroupElements::addElement($idGroup, $idStudent);
-        $debut = (int)explode('-', $group->debutFormation)[1];
-        $year = (int)explode('-', $group->debutFormation)[0];
-        if (date('Y-m-d') > $group->debutFormation) {
-            $debut = (int)date('m');
-            $year = (int)date('Y');
-        }
-        $fin = (int)explode('-', $group->finFormation)[1];
-        $breakpoint = $fin + 13;
-
-        for ($i = $debut; $i <= $breakpoint; $i++) {
-            $income = Income::getIncomeByDate($i);
-            // Log::info("Iterations ".$i." - idIncome ".$income->idIncome." - Result: ".Payment::checkElementPaiment($idGroup,$idStudent, $income->idIncome)." - idStudent: ".$idStudent." & idGroup ".$idGroup);
-            if (Payment::checkElementPaiment($idGroup, $idStudent, $income->idIncome) != 0)
-                continue;
-            else {
-                Payment::initialGroupPayment($group->amount, $income->description . ' - ' . $year, $idGroup, $idStudent, $income->idIncome);
-                if ($i == 12) {
-                    $i = 0;
-                    $breakpoint = $fin;
-                    $year++;
-                }
-            }
-        }
+//        $debut = (int)explode('-', $group->debutFormation)[1];
+//        $year = (int)explode('-', $group->debutFormation)[0];
+//        if (date('Y-m-d') > $group->debutFormation) {
+//            $debut = (int)date('m');
+//            $year = (int)date('Y');
+//        }
+//        $fin = (int)explode('-', $group->finFormation)[1];
+//        $breakpoint = $fin + 13;
+////
+//        for ($i = $debut; $i <= $breakpoint; $i++) {
+//            $income = Income::getIncomeByDate($i);
+//            // Log::info("Iterations ".$i." - idIncome ".$income->idIncome." - Result: ".Payment::checkElementPaiment($idGroup,$idStudent, $income->idIncome)." - idStudent: ".$idStudent." & idGroup ".$idGroup);
+//            if (Payment::checkElementPaiment($idGroup, $idStudent, $income->idIncome) != 0)
+//                continue;
+//            else {
+//                Payment::initialGroupPayment($group->amount, $income->description . ' - ' . $year, $idGroup, $idStudent, $income->idIncome);
+//                if ($i == 12) {
+//                    $i = 0;
+//                    $breakpoint = $fin;
+//                    $year++;
+//                }
+//            }
+////        }
 
         // Update Group Capacity
         Group::updateElements($idGroup);
@@ -240,9 +245,22 @@ class GroupController extends Controller
 
     public function multipleCancelAssignment(Request $request)
     {
-        foreach ($request->students as $student) {
+        foreach ($request->elements as $idElement) {
+            $assignment = GroupElements::getAssignment($idElement);
+            if (session()->get('user')) {
+                $typeActivity = 1; // 0 = Ajout | 1 = Suppression | 2 = Modification | 3 = Réstauration | 10 = Suppression définitive
+                $activityDescription = "L'Etudiant " . $assignment->nom_fr . " " . $assignment->prenom_fr . " (" . $assignment->matricule . ') du Group ' . $assignment->designation . " (ID = " . $assignment->idGroup . ")";
+                Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
+            }
+
+            Payment::deleteDisactivatedPaiments($assignment->idGroup, $assignment->idStudent);
+            Attendance::deleteGroupAttendancebyidElement($idElement);
+            $group = Group::find($assignment->idGroup);
+            Group::where('idGroup',$assignment->idGroup)->update([
+                'nbElements' => $group->nbElements-count($request->elements)
+            ]);
+            GroupElements::cancelAssignment($idElement);
         }
-        GroupElements::cancelAssignment($student);
         return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
     }
 

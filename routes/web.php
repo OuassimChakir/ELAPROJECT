@@ -82,7 +82,7 @@ Route::middleware([
     Route::post('/groupes', [GroupController::class, 'groups'])->name('groups.filter');
     Route::get('/groupe/{idGroup}', [GroupController::class, 'groupPage'])->name('groups.profil');
 
-    //----------------- Absence -------------------//    
+    //----------------- Absence -------------------//
     Route::get('/attendance', [AttendanceController::class, 'allAbsences'])->name('absence');
     Route::post('/attendance', [AttendanceController::class, 'allAbsences'])->name('getAttendance');
 
@@ -108,7 +108,7 @@ Route::middleware([
 
     // Moderator Permission View
     Route::middleware(['is_moderator'])->group(function () {
-        
+
         // Staff Profil
         Route::get('/staff/{idStaff}', [StaffController::class, 'staffProfil'])->name('staff.profil');
 
@@ -247,44 +247,45 @@ Route::middleware([
         / Incomes Paiments
         / --------------------------------------------- */
         Route::post('/incomePayment/add', [IncomesController::class, 'allPayment'])->name('incomePayment.add');
-        // Delete Incomes Payment 
+        // Delete Incomes Payment
         Route::get('/bmapaiment/delete/{idPayment}', [IncomesController::class, 'deletePayment'])->name('incomePayment.delete');
         Route::get('/bmapaiment/{idPayment}', [IncomesController::class, 'paimentPage'])->name('paiment');
         Route::get('/getbmapaiment/{idPayment}', [IncomesController::class, 'ajaxPaimentModal']);
         Route::post('/bmapaiment/{idPayment}', [IncomesController::class, 'paimentPage'])->name('paiment.validate');
         Route::post('/activatePaiment',[IncomesController::class, 'activatePaiment'])->name('paiment.activate');
-    
+        Route::post('/generatePayments',[IncomesController::class, 'generatePayments'])->name('generatePayments');
+
         /* -----------------------------------------------
         / Notes
         / --------------------------------------------- */
         Route::post('/notes/',[NotesController::class,'addNote'])->name('notes.add');
         Route::delete('/notes/delete',[NotesController::class,'deleteNote'])->name('notes.delete');
-        
+
     });
 
     // Admin Permission View
     Route::middleware(['is_admin'])->group(function () {
         /* --------------------------------------
-        / Incomes Statistics 
+        / Incomes Statistics
         / --------------------------------------- */
         Route::get('stats', [IncomesController::class, 'incomeStats'])->name('incomes.stats');
         Route::post('stats', [IncomesController::class, 'incomeStats'])->name('incomes.stats.query');
 
         /* --------------------------------------
-        / activites 
+        / activites
         / --------------------------------------- */
         Route::get('/activites', [ActiviteController::class, 'activite'])->name('activite');
         Route::post('/activites', [ActiviteController::class, 'activite'])->name('activite.date');
         Route::delete('/activites/delete', [ActiviteController::class, 'activitedeleteAll'])->name('activite.delete.all');
 
         /* --------------------------------------
-        / Settings 
+        / Settings
         / --------------------------------------- */
         Route::get('/settings', [SettingController::class, 'index'])->name('settings');
         Route::post('/settings', [SettingController::class, 'index'])->name('settings.reset');
 
         /* --------------------------------------
-        / Teachers 
+        / Teachers
         / --------------------------------------- */
         // Update Staff
         Route::put('/teacher/update/{idProfesseur}',  [TeacherController::class, 'updateTeacher'])->name('teachers.update');
@@ -293,7 +294,7 @@ Route::middleware([
         Route::delete('/teacher/delete', [TeacherController::class, 'deleteMultipleTeachers'])->name('teachers.delete.multiple');
 
         /* --------------------------------------
-        / Roles 
+        / Roles
         / --------------------------------------- */
         Route::get('/roles', [RolesController::class, 'role'])->name('roles');
         // Delete roles
@@ -310,7 +311,7 @@ Route::middleware([
         Route::post('/teacher/add',  [TeacherController::class, 'teacher'])->name('teachers.add');
 
         /* --------------------------------------
-        / Staffs 
+        / Staffs
         / --------------------------------------- */
         Route::get('/staff', [StaffController::class, 'staff'])->name('staff.liste');
         // Add staff
@@ -331,7 +332,7 @@ Route::middleware([
         Route::get('/specialites/delete/{idStaffType}', [SpecialiteController::class, 'deleteStaffType'])->name('specialite.delete');
 
         /* --------------------------------------
-        / Users 
+        / Users
         / --------------------------------------- */
         Route::get('/utilisateurs', [UserController::class, 'users'])->name('users');
         Route::post('/utilisateurs/add', [UserController::class, 'register'])->name('users.add');
@@ -401,17 +402,17 @@ Route::middleware([
         Route::get('/archive/staff/restore/{idStaff}', [StaffController::class, 'restoreArchivedStaff'])->name('staff.archive.restore');
         Route::post('/archive/staff/action', [StaffController::class, 'multipleArchivedStaff'])->name('staff.archive.multiple');
         Route::get('/archive/staff/delete/{idStaff}', [StaffController::class, 'deleteArchivedStaff'])->name('staff.archive.delete');
-        
-        
+
+
         Route::get('/groupe/{idGroup}/revenus/{datePayment}',[IncomesController::class,'groupPayments'])->name('group.incomes');
 
         Route::get('/incomePayment', [IncomesController::class,'allPayment'])->name('incomePayment');
-        // Add New Incomes Payment 
-		
-		// ARCHIVED Incomes Payment 
+        // Add New Incomes Payment
+
+		// ARCHIVED Incomes Payment
         Route::get('/archive/incomePayment',[IncomesController::class, 'archive'])->name('incomePayment.archive');
         Route::get('/archive/incomePayment/restore/{idPayment}',[IncomesController::class, 'restoreArchivedPayment'])->name('incomePayment.archive.restore');
-        
+
         // ARCHIVED Teachers
         Route::get('/archive/teachers', [TeacherController::class, 'archive'])->name('teachers.archive');
         Route::get('/archive/teacher/{idProfesseur}', [TeacherController::class, 'archivedTeacher'])->name('teachers.archive.profil');
