@@ -8,8 +8,8 @@
 
             <form action="">
                 <div class="modal-body px-4">
-                    
-                        <div class="row mb-2 g-3">  
+
+                        <div class="row mb-2 g-3">
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
                                     <label for="form-label">Facture</label>
@@ -23,7 +23,7 @@
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div class="col-lg-6">
                                 <div class="staffSelect form-group mb-4">
                                     <label for="form-label" id="staffLabel">Staff</label>
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="teacherGroupSection" class="row mb-2 g-3">  
+                        <div id="teacherGroupSection" class="row mb-2 g-3">
                             <div class="col-lg-6">
                                 <div class="groupSelect form-group mb-4">
                                     <label for="form-label">Groupes</label>
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2 g-3">  
+                        <div class="row mb-2 g-3">
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
                                     <label for="datePayment">Date du Payement</label>
@@ -76,15 +76,15 @@
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
                                     <label for="form-label">Montant en Dh</label>
-                                    <input type="number" name="amount" class="form-control" id="amount" required> 
+                                    <input type="number" name="amount" class="form-control" id="amount" required>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2 g-3">  
+                        <div class="row mb-2 g-3">
                             <div class="col-lg-12">
                                 <div class="form-group mb-4">
                                     <label for="description">Description</label>
-                                    <textarea name="description" id="description" rows="3" class="form-control"></textarea>
+                                    <textarea name="description" id="description" rows="3" class="form-control" required></textarea>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
 <script src="{{asset('Bootstrap/js/bootstrap.min.js')}}"></script>
 
 <script>
-    
+
     $('.staffSelect').hide();
     $('.ProfSelect').hide();
     $(document).ready(function(){
@@ -127,15 +127,15 @@
                     $('.staffSelect').hide();
                     $('#ProfSelect').prop('disabled',false);
                     $('#staffSelect').prop('disabled',true);
-                }         
+                }
             } else{
                 $('.staffSelect').hide();
                 $('.ProfSelect').hide();
                 $('#staffSelect').prop('disabled',true);
                 $('#ProfSelect').prop('disabled',true);
             }
-            }); 
-        
+            });
+
     });
 </script>
 
@@ -146,16 +146,16 @@
         $('#numerator').prop('disabled',true);
         $('#denominator').prop('disabled',true);
         let idProfesseur = $(this).val();
-        // AJAX request 
+        // AJAX request
         $.ajax({
             url: '/teacher/groups/' + idProfesseur,
             type: 'get',
             dataType: 'json',
             success: function(response) {
                 var len = 0;
-                if (response != null) 
+                if (response != null)
                     len = response.length;
-                
+
                 if (len > 0) {
                     console.log(response);
                     // Read data and create  html
@@ -188,7 +188,7 @@
         $('#amount').val(value);
     });
     $(document).on('keyup','.pourcentage', function(){
-        
+
         let values = $('#groupSelect').val().split('|');
         let nbElements = values[1];
         let amount = values[2];

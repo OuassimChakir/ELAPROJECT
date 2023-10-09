@@ -99,7 +99,6 @@ class GroupController extends Controller
 
     public function groupPage($idGroup)
     {
-
         $students = GroupElements::groupElements($idGroup);
         $paimentStudents = GroupElements::paimentStudents();
         $absen = Attendance::selectAbsence();
@@ -112,7 +111,6 @@ class GroupController extends Controller
         $groupInfo = Group::getGroup($idGroup);
         $groupGrades = GroupGrades::getGroupGrades($idGroup);
         // Logic
-        $groupInfo->nbElements = GroupElements::countGroupElements($idGroup);
         $description = explode('-', $groupInfo->designation);
         $groupInfo->description = $description[2];
         if (isset($groupGrades[0]))
@@ -121,6 +119,14 @@ class GroupController extends Controller
             $grades = Grades::selectGradesByCategory(null);
 
         $emploi = Emploi::getGroupEmploi($idGroup);
+
+        $pendingOutElements = Payment::select('students.*')
+            ->join('students','students.idStudent','=','payment.idStudent')
+            ->leftJoin('groupelements','groupelements.idStudent','=','payment.idStudent')
+            ->where('etat',0)
+            ->where('payment.idGroup',$idGroup)
+            ->whereNull('groupelements.idStudent')
+            ->get();
 
         return view('pages.groupes.group')
             ->with('group', $groupInfo)
@@ -133,6 +139,7 @@ class GroupController extends Controller
             ->with('students', $students)
             ->with('courseTypes', $courseTypes)
             ->with('absen', $absen)
+            ->with('pendingOutElements',$pendingOutElements)
             ->with('emploi', $emploi);
     }
 
@@ -272,9 +279,12 @@ class GroupController extends Controller
             $activityDescription = "L'Etudiant " . $assignment->nom_fr . " " . $assignment->prenom_fr . " (" . $assignment->matricule . ') du Group ' . $assignment->designation . " (ID = " . $assignment->idGroup . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
-
+        $group = Group::find($assignment->idGroup);
         Payment::deleteDisactivatedPaiments($assignment->idGroup, $assignment->idStudent);
         Attendance::deleteGroupAttendancebyidElement($idElement);
+        Group::where('idGroup',$group->idGroup)->update([
+            'nbElements' => $group->nbElements-1
+        ]);
         GroupElements::cancelAssignment($idElement);
         return Redirect::back()->with('deleteMessage', "L'étudiant a été retiré du groupe avec succès");
     }

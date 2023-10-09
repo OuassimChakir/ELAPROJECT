@@ -20,9 +20,8 @@ class Group extends Model
     // ***** Select Groupes ******* //
     public static function getGroups(){
         return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at')
-            ->selectRaw('(SELECT count(idStudent) FROM `groups` as g
-            INNER JOIN payment ON payment.idGroup = g.idGroup
-            WHERE etat = 0 AND g.idGroup = groups.idGroup AND payment.deleted_at is null) as pendingPaiment')
+            ->selectRaw('(SELECT count(idElement) FROM `groupelements` as g INNER JOIN payment as p ON (p.idGroup = g.idGroup and p.idStudent = g.idStudent) WHERE etat = 0 AND p.deleted_at is null AND groups.idGroup = g.idGroup) as pendingPaiment')
+            ->selectRaw('(select count(idElement) from groupelements where groupelements.idGroup = groups.idGroup) as nbElements')
             ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
@@ -31,9 +30,8 @@ class Group extends Model
 
     public static function getGroupsByGradeCategory($idGradeCategory){
         return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at','idGradeCategory')
-        ->selectRaw('(SELECT count(idStudent) FROM `groups` as g
-        INNER JOIN payment ON payment.idGroup = g.idGroup
-        WHERE etat = 0 AND g.idGroup = groups.idGroup AND payment.deleted_at is null) as pendingPaiment')
+        ->selectRaw('(SELECT count(idElement) FROM `groupelements` as g INNER JOIN payment as p ON (p.idGroup = g.idGroup and p.idStudent = g.idStudent) WHERE etat = 0 AND p.deleted_at is null AND groups.idGroup = g.idGroup) as pendingPaiment')
+        ->selectRaw('(select count(idElement) from groupelements where groupelements.idGroup = groups.idGroup) as nbElements')
         ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
         ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
         ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
@@ -61,6 +59,7 @@ class Group extends Model
 
     public static function getProfGroups($idProfesseur){
         return Group::select('groups.*', 'subjects.*', 'professeurs.*','coursetype.*', 'groups.created_at', 'groups.updated_at','idGradeCategory')
+            ->selectRaw('(select count(idElement) from groupelements where groupelements.idGroup = groups.idGroup) as nbElements')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
@@ -75,6 +74,7 @@ class Group extends Model
     // ***** Select a Specific Group ******* //
     public static function getGroup($idGroup){
         return Group::select('groups.*', 'subjects.*', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
+            ->selectRaw('(select count(idElement) from groupelements where groupelements.idGroup = groups.idGroup) as nbElements')
             ->join('subjects', 'groups.idSubject', '=', 'subjects.idSubject')
             ->Join('coursetype', 'subjects.idCourseType', '=', 'coursetype.idCourseType')
             ->leftjoin('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
@@ -125,6 +125,7 @@ class Group extends Model
     public static function selectGroupsBySubject($idSubject, $idStudent, $idGradeCategory){
         return Group::select('groups.*', 'groupelements.created_at','groupelements.idStudent', 'professeurs.idProfesseur', 'professeurs.nom', 'professeurs.prenom')
             ->selectRaw('sum(CASE WHEN (idStudent = '.$idStudent.') THEN 1 ELSE 0 END) as response')
+            ->selectRaw('(select count(idElement) from groupelements where groupelements.idGroup = groups.idGroup) as nbElements')
             ->join('professeurs', 'groups.idProfesseur', '=', 'professeurs.idProfesseur')
             ->leftJoin('groupelements', 'groups.idGroup', '=', 'groupelements.idGroup')
             ->join('group_grades','group_grades.idGroup','=','groups.idGroup')

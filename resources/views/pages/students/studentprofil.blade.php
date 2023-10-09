@@ -59,14 +59,14 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="groups-tab" data-bs-toggle="tab" data-bs-target="#groups"
                                 type="button" role="tab" aria-controls="groups" aria-selected="false">Groupes</button>
-                        </li> 
+                        </li>
                         @admin
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="groups-tab" data-bs-toggle="tab" data-bs-target="#responsible"
                                 type="button" role="tab" aria-controls="responsible"
                                 aria-selected="false">Responsable</button>
                         </li>
-                       
+
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings"
                                 type="button" role="tab" aria-controls="settings"
@@ -170,13 +170,13 @@
                                                 @else
                                                 {{$paiment->amount}} DH
                                                 @endif
-                                            
+
                                             </td>
                                             <td class="align-middle">
                                                 @if ($paiment->etat == 0)
                                                     <span class="badge badge-warning">Non Payé</span>
                                                 @elseif ($paiment->etat == 1)
-                                                    <span class="badge badge-success">Réglé</span> 
+                                                    <span class="badge badge-success">Réglé</span>
                                                 @elseif($paiment->etat == 2)
                                                     <span class="badge badge-dark">Désactivé</span>
                                                 @endif
@@ -205,7 +205,7 @@
                                             </td>
                                             @endstaff
                                         </tr>
-                                    @endforeach    
+                                    @endforeach
                                 @endif
                             </tbody>
                         </table>
@@ -231,8 +231,8 @@
                 $('#paimentSection').empty();
                 var idGroup = $('#groupPaiments').val();
                 var idStudent = "{{$student->idStudent}}";
-                
-                // AJAX request 
+
+                // AJAX request
                 $.ajax({
                     url: '/student/' + idStudent + '/groupPaiment/' + idGroup,
                     type: 'get',
@@ -341,8 +341,8 @@
     <script>
         $(document).on('click','.payInvoiceBtn', function(){
             var idPaiment = $(this).val();
-            
-            // AJAX request 
+
+            // AJAX request
             $.ajax({
                 url: '/getbmapaiment/'+idPaiment,
                 type: 'get',
@@ -358,6 +358,10 @@
                     $('#paimentIdStudent').val(response.matricule);
                     $('#paimentAmount').val(response.amount - response.amountPaid);
                     $('#paimentAmountPaid').attr('max',response.amount);
+                    if(response.numeroRecu != null){
+                        $('#numeroRecu').val(response.numeroRecu);
+                        $('#numeroRecu').prop('readonly',true);
+                    }
                 },
                 error: function(request, status, error) {
                     alert(request.responseText);
