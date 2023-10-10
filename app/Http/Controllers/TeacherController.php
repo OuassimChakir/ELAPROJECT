@@ -90,6 +90,7 @@ class TeacherController extends Controller
             $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . " (" . $teach->idProfesseur . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
+
         User::deleteProfAccount($idProfesseur);
         Professeurs::deleteProfesseur($idProfesseur);
         return Redirect::route('teachers.liste')
@@ -145,12 +146,6 @@ class TeacherController extends Controller
 
     public function restoreArchivedTeacher($idProfesseur)
     {
-        $factures = Facture::getDeletedFacturebyIdProf($idProfesseur);
-        if ($factures != null) {
-            foreach ($factures as $facture) {
-                Facture::restoreFacture($facture->idExpensePayment);
-            }
-        }
         User::restoreProfAccount($idProfesseur);
         Professeurs::restoreTeacher($idProfesseur);
         $teachers = Professeurs::softDeletedTeachers();
@@ -165,7 +160,6 @@ class TeacherController extends Controller
 
     public function deleteArchivedTeacher($idProfesseur)
     {
-        $factures = Facture::getDeletedFacturebyIdProf($idProfesseur);
         $groups = Group::getProfGroups($idProfesseur);
         $teach = Professeurs::getDeletedTeacher($idProfesseur);
         if (session()->get('user')) {
@@ -173,12 +167,10 @@ class TeacherController extends Controller
             $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . "(" . $teach->idProfesseur . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
-        // delet les facture de Prof
-        if ($factures != null) {
-            foreach ($factures as $facture) {
-                Facture::forceDeleteFacture($facture->idExpensePayment);
-            }
-        }
+
+        // delete les facture de Prof
+        Facture::where('idProfesseur',$idProfesseur)->delete();
+        Facture::onlyTrashed()->where('idProfesseur',$idProfesseur)->forceDelete();
         // update sur les groups de le prof
         if (!is_null($groups)) {
             foreach ($groups as $group) {
