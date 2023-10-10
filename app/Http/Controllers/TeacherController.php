@@ -214,12 +214,9 @@ class TeacherController extends Controller
                     $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . " (" . $teach->idProfesseur . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
-                // delet les facture de Prof
-                if ($factures != null) {
-                    foreach ($factures as $facture) {
-                        Facture::forceDeleteFacture($facture->idExpensePayment);
-                    }
-                }
+                // delete les facture de Prof
+                Facture::where('idProfesseur',$idProfesseur)->delete();
+                Facture::onlyTrashed()->where('idProfesseur',$idProfesseur)->forceDelete();
                 // update sur les groups de le prof
                 if (!is_null($groups)) {
                     foreach ($groups as $group) {

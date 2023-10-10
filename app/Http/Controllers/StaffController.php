@@ -161,12 +161,10 @@ class StaffController extends Controller
             $activityDescription = 'Le staff' . " " . $st->prenom . " " . $st->nom . "(" . $idStaff . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
-        // update sur les factures pour le prof
-        if ($factures != null) {
-            foreach ($factures as $facture) {
-                Facture::forceDeleteFacture($facture->idExpensePayment);
-            }
-        }
+        // delete les facture de Prof
+        Facture::where('idStaff',$idStaff)->delete();
+        Facture::onlyTrashed()->where('idStaff',$idStaff)->forceDelete();
+
         User::forceStaffAccount($idStaff);
         staff::forceDeleteStaff($idStaff);
         return Redirect::route('staff.archive')->with('deleteMessage', "Le Staff a été supprimer Définitivement");
@@ -196,13 +194,9 @@ class StaffController extends Controller
                     $activityDescription = 'Le staff' . " " . $st->prenom . " " . $st->nom . "(" . $idStaff . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
-                // update sur les factures pour le prof
-                if ($factures != null) {
-                    foreach ($factures as $facture) {
-                        Facture::forceDeleteFacture($facture->idExpensePayment);
-                    }
-                }
-                
+                // delete les facture de Prof
+                Facture::where('idStaff',$idStaff)->delete();
+                Facture::onlyTrashed()->where('idStaff',$idStaff)->forceDelete();
                 User::forceStaffAccount($idStaff);
                 staff::forceDeleteStaff($idStaff);
             }
