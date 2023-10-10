@@ -386,7 +386,7 @@ Route::middleware([
         Route::get('/archive/students/delete/{idStudent}', [StudentController::class, 'deleteArchivedStudent'])->name('student.archive.delete');
 
         // Delete Student
-        Route::get('/students/delete/{idStudent}', [StudentController::class, 'deleteStudent'])->name('student.delete');
+        
         Route::get('/archive/students/{idStudent}', [StudentController::class, 'archivedStudent'])->name('student.archive.profil');
         Route::delete('/staff/delete', [StudentController::class, 'deleteMultipleStudents'])->name('student.delete.multiple');
 
