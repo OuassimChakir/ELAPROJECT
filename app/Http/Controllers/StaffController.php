@@ -202,6 +202,7 @@ class StaffController extends Controller
                         Facture::forceDeleteFacture($facture->idExpensePayment);
                     }
                 }
+                
                 User::forceStaffAccount($idStaff);
                 staff::forceDeleteStaff($idStaff);
             }
