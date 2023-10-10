@@ -1,5 +1,5 @@
 <div class="modal fade modal-add-contact" id="add2Group" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header px-4">
@@ -54,7 +54,8 @@
             <input type="hidden" name="matricule" id="idStudent" value="hello">
             <div class="modal-footer px-4">
                 <button type="button" id="reloardBtn" class="btn btn-primary btn-pill"
-                    data-bs-dismiss="modal">Terminer</button>
+                        data-bs-dismiss="modal">Terminer
+                </button>
                 <button type="button" class="btn btn-secondary btn-pill" data-bs-dismiss="modal">Annuler</button>
             </div>
         </div>
@@ -65,14 +66,13 @@
 
 {{-- GETTING GROUPS QUERY --}}
 <script>
-
     $("#groupsResult").hide();
-    $(document).ready(function() {
-        $(".add2GroupBtn").on('click', function() {
+    $(document).ready(function () {
+        $(".add2GroupBtn").on('click', function () {
             $('#idStudent').val($(this).val());
         });
         // Department Change
-        $('#getGroupsButton').click(function() {
+        $('#getGroupsButton').click(function () {
             // Department id
             var idStudent = $('#idStudent').val();
             var idSubject = $('#subjectSelect').val();
@@ -82,10 +82,10 @@
             $('#groupAlert').remove();
             // AJAX request
             $.ajax({
-                url: '/students/getGroups/' + idSubject + '/' + idStudent +'/'+ idGradeCategory,
+                url: '/students/getGroups/' + idSubject + '/' + idStudent + '/' + idGradeCategory,
                 type: 'get',
                 dataType: 'json',
-                success: function(response) {
+                success: function (response) {
                     var len = 0;
                     if (response != null) {
                         len = response.length;
@@ -102,14 +102,14 @@
                             var name = response[i].prenom + " " + response[i].nom;
 
 
-                            htmlOut += '<tr><td class="align-middle"><h5>'+designation;
+                            htmlOut += '<tr><td class="align-middle"><h5>' + designation;
                             if (capacity == nbElement)
                                 htmlOut += ' <span class="badge badge-pill badge-dark">';
                             else
                                 htmlOut += ' <span class="badge badge-pill badge-info">';
                             htmlOut += nbElement + '/' + capacity + '</span></h5> <small>' + name + '</small></td><td class="align-middle"><ul>';
                             response[i].grades.forEach(grade => {
-                                htmlOut += '<li>'+grade.grade+'</li>';
+                                htmlOut += '<li>' + grade.grade + '</li>';
                             });
                             htmlOut += '</ul></td><td class="align-middle">'
 
@@ -142,9 +142,9 @@
     <swal-button type="confirm">
         Okay
     </swal-button>
-    <swal-param name="allowEscapeKey" value="true" />
-    <swal-param name="customClass" value='{ "popup": "my-popup" }' />
-    <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+    <swal-param name="allowEscapeKey" value="true"/>
+    <swal-param name="customClass" value='{ "popup": "my-popup" }'/>
+    <swal-function-param name="didOpen" value="popup => console.log(popup)"/>
 </template>
 
 <template id="null-assign">
@@ -155,15 +155,16 @@
     <swal-button type="confirm">
         Okay
     </swal-button>
-    <swal-param name="allowEscapeKey" value="true" />
-    <swal-param name="customClass" value='{ "popup": "my-popup" }' />
-    <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+    <swal-param name="allowEscapeKey" value="true"/>
+    <swal-param name="customClass" value='{ "popup": "my-popup" }'/>
+    <swal-function-param name="didOpen" value="popup => console.log(popup)"/>
 </template>
+
 {{-- ASSIGNING A STUDENT INTO A GROUP --}}
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Department Change
-        $('#groupsResult').on('click', '.addStudentGroup', function() {
+        $('#groupsResult').on('click', '.addStudentGroup', function () {
             Swal.fire({
                 icon: 'question',
                 title: 'Confirmer votre Operation',
@@ -182,7 +183,7 @@
                         url: '/groupes/' + idGroup + '/classroom/' + idStudent,
                         type: 'get',
                         dataType: 'json',
-                        success: function(response) {
+                        success: function (response) {
                             if (response == 'true') {
                                 currentBtn.find('i').remove();
                                 currentBtn.removeClass('btn-outline-primary');
@@ -190,18 +191,18 @@
                                 var newIcon = '<i class="bi bi-check-lg"></i>';
                                 currentBtn.append(newIcon);
                                 currentBtn.prop('disabled', true);
-                            }else if(response == 'null'){
+                            } else if (response == 'null') {
                                 Swal.fire({
                                     template: "#null-assign"
                                 })
-                            }else{
+                            } else {
                                 Swal.fire({
                                     template: "#fail-assign"
                                 })
                             }
 
                         },
-                        error: function(request, status, error) {
+                        error: function (request, status, error) {
                             alert(request.responseText);
                         }
                     });
@@ -216,9 +217,9 @@
 
 {{-- Reload Page when you finish assigning --}}
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Department Change
-        $('.modal-footer').on('click', '#reloardBtn', function() {
+        $('.modal-footer').on('click', '#reloardBtn', function () {
             location.reload(true);
         });
     });

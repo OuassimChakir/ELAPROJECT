@@ -11,66 +11,83 @@
                         </div>
 
                     </div>
-                        <div class="card-body compact-notifications" data-simplebar style="height: auto;">
-                            @if (isset($pendingPaiment))
-                                @foreach ($pendingPaiment as $item)
-                                    @if (is_null($item->idGroup))
+                    <div class="card-body compact-notifications" data-simplebar style="height: auto;">
+                        @if (isset($pendingPaiment))
+                            @foreach ($pendingPaiment as $item)
+                                @if (is_null($item->idGroup))
+                                    <div class="media pb-3 align-items-center justify-content-between">
+                                        <div
+                                            class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
+                                            <span class="mdi mdi-receipt"></span>
+                                        </div>
+                                        <div class="media-body pr-3 ">
+                                            Facture: {{ $item->description }} <span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
+
+                                            <p>{{ $item->note }}</p>
+                                        </div>
+                                        @staff
+                                        <span class=" font-size-12 d-inline-block">
+                                                <button class="btn btn-outline-success payInvoiceBtn"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#invoicePaiment"
+                                                        value="{{$item->idPayment}}">
+                                                    <span class="mdi mdi-check"></span>
+                                                </button>
+                                            </span>
+                                        @endstaff
+                                    </div>
+                                @else
+                                    @if ($item->etat == 2)
                                         <div class="media pb-3 align-items-center justify-content-between">
-                                            <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
+                                            <div
+                                                class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-dark text-white">
                                                 <span class="mdi mdi-receipt"></span>
                                             </div>
                                             <div class="media-body pr-3 ">
-                                                Facture: {{ $item->description }}<span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
-    
+                                                <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                   href="{{route('groups.profil',['idGroup' => $item->idGroup ])}}">Facture: {{ $item->designation }}</a>
+                                                <span
+                                                    class="badge badge-dark">{{$item->amount - $item->amountPaid}} DH</span>
+
                                                 <p>{{ $item->note }}</p>
                                             </div>
                                             @staff
                                             <span class=" font-size-12 d-inline-block">
-                                                <button class="btn btn-outline-success payInvoiceBtn" data-bs-toggle="modal"
-                                                data-bs-target="#invoicePaiment" value="{{$item->idPayment}}"><span class="mdi mdi-check"></span></button>
-                                            </span>
+                                                    <button class="btn btn-outline-warning activateInvoice"
+                                                            value="{{$item->idPayment}}"><span
+                                                            class="mdi mdi-lock-open-outline"></span></button>
+                                                </span>
                                             @endstaff
-                                        </div>                                    
+                                        </div>
                                     @else
-                                        @if ($item->etat == 2)
-                                            <div class="media pb-3 align-items-center justify-content-between">
-                                                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-dark text-white">
-                                                    <span class="mdi mdi-receipt"></span>
-                                                </div>
-                                                <div class="media-body pr-3 ">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark" href="{{route('groups.profil',['idGroup' => $item->idGroup ])}}">Facture: {{ $item->designation }}</a> <span class="badge badge-dark">{{$item->amount - $item->amountPaid}} DH</span>
-
-                                                    <p>{{ $item->note }}</p>
-                                                </div>
-                                                @staff
-                                                <span class=" font-size-12 d-inline-block">
-                                                    <button class="btn btn-outline-warning activateInvoice" value="{{$item->idPayment}}"><span class="mdi mdi-lock-open-outline"></span></button>
-                                                </span>
-                                                @endstaff
+                                        <div class="media pb-3 align-items-center justify-content-between">
+                                            <div
+                                                class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
+                                                <span class="mdi mdi-receipt"></span>
                                             </div>
-                                        @else
-                                            <div class="media pb-3 align-items-center justify-content-between">
-                                                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-danger text-white">
-                                                    <span class="mdi mdi-receipt"></span>
-                                                </div>
-                                                <div class="media-body pr-3 ">
-                                                    <a class="mt-0 mb-1 font-size-15 text-dark" href="{{route('groups.profil',['idGroup' => $item->idGroup ])}}">Facture: {{ $item->designation }}</a> <span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
+                                            <div class="media-body pr-3 ">
+                                                <a class="mt-0 mb-1 font-size-15 text-dark"
+                                                   href="{{route('groups.profil',['idGroup' => $item->idGroup ])}}">Facture: {{ $item->designation }}</a>
+                                                <span class="badge badge-danger">{{$item->amount - $item->amountPaid}} DH</span>
 
-                                                    <p>{{ $item->note }}</p>
-                                                </div>
-                                                @staff
-                                                <span class=" font-size-12 d-inline-block">
-                                                        <button class="btn btn-outline-success payInvoiceBtn" data-bs-toggle="modal"
-                                                        data-bs-target="#invoicePaiment" value="{{$item->idPayment}}"><span class="mdi mdi-check"></span></button>
-                                                </span>
-                                                @endstaff
+                                                <p>{{ $item->note }}</p>
                                             </div>
-                                        @endif
-                                    @endif 
-                                @endforeach
-                            @endif
+                                            @staff
+                                            <span class=" font-size-12 d-inline-block">
+                                                        <button class="btn btn-outline-success payInvoiceBtn"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#invoicePaiment"
+                                                                value="{{$item->idPayment}}"><span
+                                                                class="mdi mdi-check"></span></button>
+                                                </span>
+                                            @endstaff
+                                        </div>
+                                    @endif
+                                @endif
+                            @endforeach
+                        @endif
 
-                        </div>
+                    </div>
                     <div class="mt-3"></div>
                 </div>
 
@@ -78,28 +95,31 @@
                     <div class="card-header justify-content-between mb-1">
                         <h2>Remarques</h2>
                     </div>
-                        <div class="card-body compact-notifications" data-simplebar style="height: auto;">
-                            @if (isset($notes))
-                                @foreach ($notes as $note)
+                    <div class="card-body compact-notifications" data-simplebar style="height: auto;">
+                        @if (isset($notes))
+                            @foreach ($notes as $note)
                                 @php
                                     $date = date_create($note->created_at)
                                 @endphp
-                                    <div class="media pb-3 align-items-center justify-content-between">
-                                        <div class="media-body pr-3 ">
-                                            <a class="mt-0 mb-1 font-size-15 text-dark">Note du Group: {{ $note->designation }}</a> <span class="badge badge-primary"><i class="mdi mdi-clock-outline"></i> {{date_format($note->created_at,'d-m-Y')}}</span>
+                                <div class="media pb-3 align-items-center justify-content-between">
+                                    <div class="media-body pr-3 ">
+                                        <a class="mt-0 mb-1 font-size-15 text-dark">Note du
+                                            Group: {{ $note->designation }}</a> <span class="badge badge-primary"><i
+                                                class="mdi mdi-clock-outline"></i> {{date_format($note->created_at,'d-m-Y')}}</span>
 
-                                            <p>{{ $note->note }}</p>
-                                        </div>
-                                        @staff
-                                        <span class=" font-size-12 d-inline-block">
-                                            <button class="deleteNote btn btn-outline-danger" value="{{$note->idNote}}"><span class="mdi mdi-delete"></span></button>
-                                        </span>
-                                        @endstaff
+                                        <p>{{ $note->note }}</p>
                                     </div>
-                                @endforeach
-                            @endif
+                                    @staff
+                                    <span class=" font-size-12 d-inline-block">
+                                            <button class="deleteNote btn btn-outline-danger" value="{{$note->idNote}}"><span
+                                                    class="mdi mdi-delete"></span></button>
+                                        </span>
+                                    @endstaff
+                                </div>
+                            @endforeach
+                        @endif
 
-                        </div>
+                    </div>
                     <div class="mt-3"></div>
                 </div>
 

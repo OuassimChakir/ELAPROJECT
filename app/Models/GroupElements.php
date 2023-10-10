@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class GroupElements extends Model
 {
@@ -20,7 +21,7 @@ class GroupElements extends Model
             'idGroup' => $idGroup
         ]);
     }
-    
+
     public static function getElement($idGroup, $idStudent){
         return GroupElements::select('*')->where('idGroup',$idGroup)->where('idStudent',$idStudent)->first();
     }
@@ -42,6 +43,10 @@ class GroupElements extends Model
             ->join('coursetype', 'coursetype.idCourseType', '=', 'subjects.idCourseType')
             ->where('groupelements.idStudent', $idStudent)
             ->get();
+    }
+
+    public static function paimentStudents(){
+        return DB::select("select groupelements.*, students.*, count(idPayment) as payments from groupelements inner join students on groupelements.idStudent = students.idStudent left join payment on (payment.idGroup = groupelements.idGroup) AND (payment.idStudent = groupelements.idStudent) group by idElement order by payments asc");
     }
 
     // Select ALL STUDENTS OF A SPECIFIC GROUP
@@ -83,7 +88,7 @@ class GroupElements extends Model
     {
         GroupElements::where('idGroup', $idGroup)->delete();
     }
-    
+
 
     // Get Assignment
     public static function getAssignment($idElement)

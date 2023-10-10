@@ -28,11 +28,11 @@ class AttendanceController extends Controller
             $date = explode('-',$request->dateAbsence);
             $income = Income::getIncomeByDate($date[1]);
             if(session()->get('user')){
-                $typeActivity = 0; 
-                $activityDescription = "l'absence de groupe"." "."(".$idGroup.")"." "."par"." ".session()->get('user')->name; 
+                $typeActivity = 0;
+                $activityDescription = "l'absence de groupe"." "."(".$idGroup.")"." "."par"." ".session()->get('user')->name;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
-            for ($i=0; $i < count($request->students); $i++) { 
+            for ($i=0; $i < count($request->students); $i++) {
                 $element = GroupElements::getElement($idGroup,$request->students[$i]);
                 if(Attendance::checkAbsence($request->dateAbsence, $element->idElement) != 0){
                     $flag = 1;
@@ -42,7 +42,7 @@ class AttendanceController extends Controller
                 if(Attendance::countAttendances($element->idElement, $date[1]) >= 2){
                     $paiment = Payment::selectPayment($idGroup, $element->idStudent,$income->idIncome);
                     if(is_null($paiment->etat) || $paiment->etat == 2)
-                        Payment::activatePaiment($element->idGroup,$element->idStudent, $date[1]);  
+                        Payment::activatePaiment($element->idGroup,$element->idStudent, $date[1]);
                 }
             }
 
@@ -126,7 +126,7 @@ class AttendanceController extends Controller
                     ->where('idGroup',$idGroup)
                     ->where('dateAbsence',$dateAbsence)
                     ->get();
-                    
+
         return response()->json($response);
     }
 
@@ -134,7 +134,7 @@ class AttendanceController extends Controller
         if($request->has('updateAttendance')){
             $income = Income::getIncomeByDate(explode('-',$request->deletionDateAbsence)[1]);
             if(session()->get('user')){
-                $typeActivity = 2; 
+                $typeActivity = 2;
                 $activityDescription = "l'absence de groupe"." "."(".$request->idGroup.")"." "."par"." ".session()->get('user')->name;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
@@ -158,7 +158,7 @@ class AttendanceController extends Controller
         if($request->has('deleteAttendance')){
             $income = Income::getIncomeByDate(explode('-',$request->deletionDateAbsence)[1]);
             if(session()->get('user')){
-                $typeActivity = 1; 
+                $typeActivity = 1;
                 $activityDescription = "l'absence de groupe"." "."(".$request->idGroup.")"." "."par"." ".session()->get('user')->name;
                 Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription,session()->get('user')->name);
             }
@@ -171,7 +171,7 @@ class AttendanceController extends Controller
                 if(!is_null($paiment))
                     if($paiment->count() > 0 && Attendance::countAttendances($student->idElement,explode('-',$request->deletionDateAbsence)[1]) < 2)
                         Payment::disactivatePaiment($paiment->idPayment);
-                
+
             }
             return Redirect::back()->with('successMessage', "Présences supprimées avec succès");
         }
