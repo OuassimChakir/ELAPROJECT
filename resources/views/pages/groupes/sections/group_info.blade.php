@@ -245,6 +245,60 @@
             </div>
         </div>
     </div>
+    @if($pendingOutElements->count() != 0)
+        <div class="row mt-5">
+            <div class="col-xl-12">
+                <div class="tab-pane-content mt-5">
+                    <h3>Étudiants en attente de paiement</h3>
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nom</th>
+                            <th>Téléphone</th>
+                            <th>Rejoint le</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        @foreach ($pendingOutElements as $student)
+                            <tr>
+                                <td class="align-middle">
+                                    {{ $student->matricule }}
+                                </td>
+                                <td class="align-middle">
+                                    <a
+                                        href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                        {{$student->prenom_fr}} {{$student->nom_fr}}
+                                        - {{$student->prenom_ar}} {{$student->nom_ar}}
+                                    </a>
+                                    @if ($student->sexe == 'Homme')
+                                        <span class="badge badge-pill badge-info">M</span>
+                                    @else
+                                        <span
+                                            class="badge badge-pill badge-purple">F</span>
+                                    @endif
+                                </td>
+                                <td class="align-middle">{{ $student->numTel }}</td>
+                                <td class="align-middle">{{ $student->created_at }}</td>
+                                <td class="align-middle">
+                                    <div class="btn-group-spaced">
+                                        <a href="{{ route('student.profil', ['idStudent' => $student->idStudent]) }}">
+                                            <button type="button" class="btn btn-outline-primary">
+                                                <i class="bi bi-person"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    @endif
     @endstaff
     @onlyteacher
     <div class="row">

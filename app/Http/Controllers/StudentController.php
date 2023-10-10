@@ -142,7 +142,6 @@ class StudentController extends Controller
 
     public function deleteStudent($idStudent)
     {
-        $studentInfo = Student::getStudents();
         $stu = Student::selectStudents($idStudent);
         if (session()->get('user')) {
             $typeActivity = 1;
@@ -159,9 +158,7 @@ class StudentController extends Controller
         GroupElements::cancelStudentAssignments($idStudent);
         User::deleteStudentAccount($idStudent);
         Student::deleteStudent($idStudent);
-        return Redirect::route('student.liste')
-            ->with('deleteMessage', "La suppression est faite avec succès")
-            ->with('students', $studentInfo);
+        return Redirect::back()->with('deleteMessage', "La suppression est faite avec succès");
     }
 
     // -------------- Responsible -------------- //
@@ -263,7 +260,7 @@ class StudentController extends Controller
             }
         }
         Student::forceDeleteStudent($idStudent);
-    
+
         return Redirect::back()->with('deleteMessage', "L'étudiant a été supprimer Définitivement");
     }
 
@@ -328,9 +325,9 @@ class StudentController extends Controller
     public function getGroupsBySubject($idSubject, $idStudent, $idGradeCategory)
     {
         $groups = Group::selectGroupsBySubject($idSubject, $idStudent, $idGradeCategory);
-        for ($i=0; $i < $groups->count(); $i++) 
+        for ($i=0; $i < $groups->count(); $i++)
             $groups[$i]->grades = GroupGrades::getGroupGrades($groups[$i]->idGroup);
-    
+
         return response()->json($groups);
     }
 

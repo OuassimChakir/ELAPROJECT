@@ -160,7 +160,7 @@ class ExpenseController extends Controller
     public function archive()
     {
         $factures = Facture::softDeletedFactures();
-        return view('pages.expense.FactureArchive')->with('factureDepenses', $factures);
+        return view('pages.expense.factureArchive')->with('factureDepenses', $factures);
     }
 
     public function restoreArchivedFacture($idExpensePayment)

@@ -384,6 +384,7 @@ Route::middleware([
         Route::get('/archive/students', [StudentController::class, 'archive'])->name('student.archive');
         Route::post('/archive/students/action', [StudentController::class, 'multipleArchivedStudents'])->name('student.archive.multiple');
         Route::get('/archive/students/delete/{idStudent}', [StudentController::class, 'deleteArchivedStudent'])->name('student.archive.delete');
+        Route::get('/archive/students/restore/{idStudent}', [StudentController::class, 'restoreArchivedStudent'])->name('student.archive.restore');
 
         // Delete Student
         
@@ -417,6 +418,6 @@ Route::middleware([
         Route::get('/archive/teachers', [TeacherController::class, 'archive'])->name('teachers.archive');
         Route::get('/archive/teacher/{idProfesseur}', [TeacherController::class, 'archivedTeacher'])->name('teachers.archive.profil');
         Route::get('/archive/teachers/restore/{idProfesseur}', [TeacherController::class, 'restoreArchivedTeacher'])->name('teachers.archive.restore');
-        
+
     });
 });
