@@ -49,6 +49,15 @@ class GroupElements extends Model
         return DB::select("select groupelements.*, students.*, count(idPayment) as payments from groupelements inner join students on groupelements.idStudent = students.idStudent left join payment on (payment.idGroup = groupelements.idGroup) AND (payment.idStudent = groupelements.idStudent) group by idElement order by payments asc");
     }
 
+    public static function countElementPaiments($idGroup){
+        return GroupElements::select('*')
+            ->selectRaw('(select count(idPayment) from payment where idStudent = groupelements.idStudent AND idGroup = groupelements.idGroup) as payments')
+            ->where('idGroup',$idGroup)
+            ->groupBy('idElement')
+            ->having('payments',0)
+            ->count();
+    }
+
     // Select ALL STUDENTS OF A SPECIFIC GROUP
     public static function groupElements($idGroup)
     {

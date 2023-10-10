@@ -48,19 +48,16 @@
                                                 <option value="{{$category->idGradeCategory}}"
                                                         selected>{{$category->category}}</option>
                                             @else
-                                                <option
-                                                    value="{{$category->idGradeCategory}}">{{$category->category}}</option>
+                                                <option value="{{$category->idGradeCategory}}">{{$category->category}}</option>
                                             @endif
                                         @else
-                                            <option
-                                                value="{{$category->idGradeCategory}}">{{$category->category}}</option>
+                                            <option value="{{$category->idGradeCategory}}">{{$category->category}}</option>
                                         @endif
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-lg-1">
-                                <button type="submit" class="btn btn-primary" name="filterGroups"><i
-                                        class="mdi mdi-magnify"></i></button>
+                                <button type="submit" class="btn btn-primary" name="filterGroups"><i class="mdi mdi-magnify"></i></button>
                             </div>
                         </div>
                     </form>

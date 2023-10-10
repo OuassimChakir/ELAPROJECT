@@ -235,10 +235,18 @@ class IncomesController extends Controller
     {
         $paiment = Payment::getStudentPaiment($idPayment);
         if ($request->has('validatePaiment')) {
-            Payment::where('idPayment', $idPayment)->update([
-                'amount' => $request->amount
-            ]);
-            Payment::validateStudentPaiment($idPayment, $request->numeroRecu, $request->datePayment, $request->amountPaid, $request->paymentMode);
+            if ($paiment->amount - $paiment->amountPaid != 0){
+                Payment::where('idPayment', $idPayment)->update([
+                    'amount' => $request->amount+$paiment->amountPaid
+                ]);
+                $amountPaid = $request->amountPaid + $paiment->amountPaid;
+                Payment::validateStudentPaiment($idPayment, $request->numeroRecu, $request->datePayment, $amountPaid, $request->paymentMode);
+            } else {
+                Payment::where('idPayment', $idPayment)->update([
+                    'amount' => $request->amount
+                ]);
+                Payment::validateStudentPaiment($idPayment, $request->numeroRecu, $request->datePayment, $request->amountPaid, $request->paymentMode);
+            }
             return Redirect::route('student.profil', ['idStudent' => $paiment->idStudent])->with('successMessage', 'Paiement Validé avec succès');
         }
         return view('pages.incomes.paimentPage')->with([

@@ -161,14 +161,14 @@ class Payment extends Model
         $paiment->save();
     }
 
-    // Update in new year || 
+    // Update in new year ||
     public static function updatePaiment($idPayment)
     {
         $paiment = Payment::find($idPayment);
         $paiment->idStudent = null;
         $paiment->save();
     }
-    // Update in new year by group|| 
+    // Update in new year by group||
     public static function updatePaimentidGroup($idPayment)
     {
         $paiment = Payment::find($idPayment);
@@ -200,7 +200,7 @@ class Payment extends Model
 
 
 
-    //------------- create Payment ----------//         
+    //------------- create Payment ----------//
     public static function createPayment($numeroRecu, $datePayment, $paymentMode, $amount, $amountPaid, $note, $etat, $idGroup, $idStudent, $idIncome)
     {
         Payment::create([
@@ -219,7 +219,7 @@ class Payment extends Model
         ]);
     }
 
-    //------------- create student initial payments ----------//        
+    //------------- create student initial payments ----------//
     public static function initialPayment($amount, $note, $idStudent, $idIncome, $etat = null)
     {
         Payment::create([
@@ -304,7 +304,7 @@ class Payment extends Model
             ->whereRaw("etat = 0")
             ->count();
     }
-    
+
     // --------- Delete Payment ----------------- //
     public static function deletePayment($idPayment)
     {
@@ -316,7 +316,7 @@ class Payment extends Model
     {
         Payment::where('idGroup', $idGroup)
             ->where('idStudent', $idStudent)
-            ->whereRaw("(etat = 0 OR etat = 2)")
+            ->whereRaw("(etat is null OR etat = 2)")
             ->forceDelete();
     }
 
@@ -359,7 +359,7 @@ class Payment extends Model
 
 
     /*----------------------------------
-    / Stats Page 
+    / Stats Page
     /----------------------------------*/
 
     public static function stats_inscriptionPaimentsByDay($datePayment)

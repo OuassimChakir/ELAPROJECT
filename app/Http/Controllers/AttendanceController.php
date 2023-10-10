@@ -23,7 +23,8 @@ class AttendanceController extends Controller
 
     public function addAbsence(Request $request,$idGroup)
     {
-        if ($request->has('markAttendance')) {
+        $countPaiments = GroupElements::countElementPaiments($idGroup);
+        if ($request->has('markAttendance') && $countPaiments == 0) {
             $flag = 0;
             $date = explode('-',$request->dateAbsence);
             $income = Income::getIncomeByDate($date[1]);
@@ -50,6 +51,8 @@ class AttendanceController extends Controller
             if($flag == 1)
                 return Redirect::back()->with('updateMessage', "L'absence de ce groupe était déjà marquée.");
             return Redirect::back()->with('successMessage', "L'ajout du Abssence est faite avec succès.");
+        }else{
+            return Redirect::back()->with('deleteMessage', "Vous ne pouvez pas marquer les présences, veuillez d'abord générer les Paiments !");
         }
     }
 
