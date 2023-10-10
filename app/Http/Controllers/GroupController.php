@@ -243,9 +243,7 @@ class GroupController extends Controller
 //                }
 //            }
 ////        }
-
-        // Update Group Capacity
-        Group::updateElements($idGroup);
+        
 
         return response()->json('true');
     }

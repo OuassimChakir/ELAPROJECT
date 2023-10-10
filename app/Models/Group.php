@@ -164,12 +164,6 @@ class Group extends Model
         $group->save();
     }
 
-    public static function updateElements($idGroup){
-        $nbElements = GroupElements::countGroupElements($idGroup);
-        $group = Group::find($idGroup);
-        $group->nbElements = $nbElements;
-        $group->save();
-    }
     public static function updateidProfesseurGroup($idGroup){
         $group = Group::find($idGroup);
         $group->idProfesseur = null;
