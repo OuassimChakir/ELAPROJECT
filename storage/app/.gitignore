@@ -1,3 +1,6 @@
-*
+anneeScolaire.txt
+professeurs.txt
+staff.txt
+student.txt
 !public/
 !.gitignore
