@@ -150,7 +150,7 @@
                                                 @if (is_null($paiment->numeroRecu))
                                                     -
                                                 @else
-                                                    BMA-N° {{$paiment->numeroRecu}}
+                                                    {{Storage::get('config.txt')}}-N° {{$paiment->numeroRecu}}
                                                 @endif
                                             </td>
                                             <td class="align-middle">
@@ -167,7 +167,7 @@
                                                 @else
                                                 {{$paiment->amount}} DH
                                                 @endif
-                                            
+
                                             </td>
                                             <td class="align-middle">
                                                 @if ($paiment->etat == 0)
@@ -198,7 +198,7 @@
                                             </td>
                                             @endstaff
                                         </tr>
-                                    @endforeach    
+                                    @endforeach
                                 @endif
                             </tbody>
                         </table>
@@ -224,8 +224,8 @@
                 $('#paimentSection').empty();
                 var idGroup = $('#groupPaiments').val();
                 var idStudent = "{{$student->idStudent}}";
-                
-                // AJAX request 
+
+                // AJAX request
                 $.ajax({
                     url: '/student/' + idStudent + '/groupPaiment/' + idGroup,
                     type: 'get',
@@ -236,7 +236,7 @@
                             for (let i = 0; i < response.length; i++) {
                                 html = '<tr>';
                                 html += '<td class="align-middle"><input type="checkbox" name="paiments[]" value="'+response[i].idPayment+'"class="form-check-input archivedStudents"></td><td class="align-middle">'+(i+1)+'</td>';
-                                html += '<td class="align-middle">'+((response[i].numeroRecu == null) ? '-' :'BMA-N°'+response[i].numeroRecu)+'</td>';
+                                html += '<td class="align-middle">'+((response[i].numeroRecu == null) ? '-' :'CA-N°'+response[i].numeroRecu)+'</td>';
                                 html += '<td class="align-middle">'+((response[i].idPaiment == null) ? response[i].designation : response[i].groupsDesignation)+' <p>'+response[i].note+'</p></td>';
                                 html += '<td class="align-middle">'+((response[i].etat == 0) ? (response[i].amount - response[i].amountPaid) : response[i].amount)+' DH</td>';
                                 html += '<td class="align-middle">'+((response[i].etat == 0) ? '<span class="badge badge-warning">Non Payé</span>' : '<span class="badge badge-success">Réglé</span> ')+'</td>';
@@ -323,8 +323,8 @@
     <script>
         $(document).on('click','.payInvoiceBtn', function(){
             var idPaiment = $(this).val();
-            
-            // AJAX request 
+
+            // AJAX request
             $.ajax({
                 url: '/getbmapaiment/'+idPaiment,
                 type: 'get',

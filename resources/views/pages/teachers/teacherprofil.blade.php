@@ -238,7 +238,7 @@
                 </div>
             </div>
         </div>
- 
+
         {{-- FACTURES --}}
         <div class="row">
             <div class="col-12">
@@ -254,7 +254,7 @@
                                 <tr>
                                     <th>Numéro</th>
                                     <th>Type de Dépense</th>
-                                    <th>Description</th> 
+                                    <th>Description</th>
                                     <th>Prix</th>
                                     <th>Date de Facture</th>
                                     <th>Action</th>
@@ -266,7 +266,7 @@
 
                                     @foreach ($factures as $facture)
                                         <tr>
-                                            <td>BMA-F.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
+                                            <td>{{Storage::get('config.txt')}}-F.{{str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT)}}</td>
                                             <td><span class="badge badge-primary">{{$facture->designation}}</span></td>
                                             <td>{{$facture->description}}</td>
                                             <td><span class="badge badge-dark">{{$facture->amount}} DH</span></td>

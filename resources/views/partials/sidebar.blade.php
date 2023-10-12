@@ -3,7 +3,7 @@
 				<div id="sidebar" class="sidebar ec-sidebar-footer">
 
 					<div class="ec-brand">
-						<a href="{{ route('acceuil') }}" title="CreativeAura">
+						<a href="{{ route('acceuil') }}" title="{{Storage::get('config.txt')}}">
 							<img src="{{asset('images/Logo/icon.png')}}" id="brandlogo" alt="" />
 							<span class="ec-brand-name text-truncate">School Management</span>
 						</a>

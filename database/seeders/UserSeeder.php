@@ -6,6 +6,7 @@ use App\Models\Roles;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserSeeder extends Seeder
 {
@@ -20,9 +21,9 @@ class UserSeeder extends Seeder
         foreach($roles as $role){
             if($role->codeRole == '00')
                 DB::table('users')->insert([
-                    'name' => 'BMA Admin',
+                    'name' => Storage::get('config.txt').' Admin',
                     'username' => 'admin',
-                    'password' => Hash::make('bma123456789'),
+                    'password' => Hash::make('admin123'),
                     'idRole' => $role->idRole,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')

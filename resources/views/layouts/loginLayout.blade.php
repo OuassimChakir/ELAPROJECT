@@ -5,9 +5,9 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="description" content="@yield('title') - BMA School">
+	<meta name="description" content="@yield('title') - {{Storage::get('config.txt')}} School">
 
-	<title>@yield('title') - BMA School</title>
+	<title>@yield('title') - {{Storage::get('config.txt')}} School</title>
 	<!-- FAVICON -->
 	<link href="favicon.ico" rel="shortcut icon" />
 

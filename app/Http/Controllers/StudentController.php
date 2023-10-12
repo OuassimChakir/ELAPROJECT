@@ -52,7 +52,7 @@ class StudentController extends Controller
             Storage::disk('local')->put('student.txt', $studentsCounter);
 
             // ========== Create new Student ============= //
-            $matricule = "BMA" . $studentsCounter . "-" . date('Y');
+            $matricule = Storage::get('config.txt') . $studentsCounter . "-" . date('Y');
             $prenom_ar = $request->prenom_ar;
             $nom_ar = $request->nom_ar;
             $idStudent = Student::addStudent($matricule, $request->nom_fr, $request->nom_ar, $request->prenom_fr, $request->prenom_ar, $request->cnie, $request->numTel, $request->sexe, $request->adresse, $request->dateNaissance);

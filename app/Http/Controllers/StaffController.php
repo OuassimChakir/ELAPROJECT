@@ -32,7 +32,7 @@ class StaffController extends Controller
             if (!Storage::exists('staff.txt'))
                 Storage::disk('local')->put('staff.txt', 0);
             $staffCounter += Storage::get('staff.txt');
-            $username = "BMA-S" . $staffCounter;
+            $username = "CA-S" . $staffCounter;
             Storage::disk('local')->put('staff.txt', $staffCounter);
             // check cine if vide
             if (isset($request->cine)) $cine = $request->cine;
@@ -153,7 +153,7 @@ class StaffController extends Controller
     }
 
     public function deleteArchivedStaff($idStaff)
-    { 
+    {
         $factures = Facture::getDeletedFacturebyIdStaff($idStaff);
         $st = staff::getDeletedStaff($idStaff);
         if (session()->get('user')) {

@@ -11,7 +11,7 @@ use LaravelDaily\Invoices\Classes\InvoiceItem;
 class PdfController extends Controller
 {
     public function pdf($idExpensePayment){
-        
+
         $data =Facture::getFacturePdf($idExpensePayment);
         if(!is_null($data->idStaff ||$data->idProfesseur )){
             $customer = new Buyer([
@@ -21,7 +21,7 @@ class PdfController extends Controller
                     'description' => $data->description,
                 ],
             ]);
-            
+
         }else{
             $customer = new Buyer([
                 'custom_fields' => [
@@ -31,14 +31,14 @@ class PdfController extends Controller
             ]);
         }
 
-    
+
         $item = (new InvoiceItem())->title($data->designation)->pricePerUnit($data->amount);
-        
+
         $invoice = Invoice::make()
             ->buyer($customer)
             ->addItem($item);
         $invoice->sequence($data->idExpensePayment);
-        $invoice->name = "BMA Facture";
+        $invoice->name = "CA Facture";
         $invoice->logo = asset('images/Logo/logo.png');
         $invoice->hasItemUnits = true;
         return $invoice->stream();

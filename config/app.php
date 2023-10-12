@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'BMA School'),
+    'name' => env('APP_NAME', 'Creative School'),
 
     /*
     |--------------------------------------------------------------------------
@@ -123,6 +123,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'app_brev' => 'CA',
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
