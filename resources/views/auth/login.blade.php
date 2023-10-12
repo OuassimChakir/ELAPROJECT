@@ -71,8 +71,8 @@
         });
 
         $('#teacher').click(function() {
-            var username = "teacher";
-            var password = "teacherpassword";
+            var username = "CA-P1";
+            var password = "vKQiu9EA";
             $('#username').val(username);
             $('#password').val(password);
         });

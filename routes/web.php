@@ -387,7 +387,7 @@ Route::middleware([
         Route::get('/archive/students/restore/{idStudent}', [StudentController::class, 'restoreArchivedStudent'])->name('student.archive.restore');
 
         // Delete Student
-        
+        Route::get('/students/delete/{idStudent}', [StudentController::class, 'deleteStudent'])->name('student.delete');
         Route::get('/archive/students/{idStudent}', [StudentController::class, 'archivedStudent'])->name('student.archive.profil');
         Route::delete('/staff/delete', [StudentController::class, 'deleteMultipleStudents'])->name('student.delete.multiple');
 
@@ -410,7 +410,7 @@ Route::middleware([
         Route::get('/incomePayment', [IncomesController::class,'allPayment'])->name('incomePayment');
         // Add New Incomes Payment
 
-		// ARCHIVED Incomes Payment
+        // ARCHIVED Incomes Payment
         Route::get('/archive/incomePayment',[IncomesController::class, 'archive'])->name('incomePayment.archive');
         Route::get('/archive/incomePayment/restore/{idPayment}',[IncomesController::class, 'restoreArchivedPayment'])->name('incomePayment.archive.restore');
 
