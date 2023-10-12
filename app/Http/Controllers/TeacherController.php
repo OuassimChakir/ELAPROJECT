@@ -164,7 +164,7 @@ class TeacherController extends Controller
         $teach = Professeurs::getDeletedTeacher($idProfesseur);
         if (session()->get('user')) {
             $typeActivity = 10;
-            $activityDescription = 'Le profisseur' . " " . $teach->nom . " " . $teach->prenom . "(" . $teach->idProfesseur . ")";
+            $activityDescription = 'Le professeur' . " " . $teach->nom . " " . $teach->prenom . "(" . $teach->idProfesseur . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
 
@@ -207,7 +207,6 @@ class TeacherController extends Controller
         if ($request->has('deleteAll')) {
             foreach ($request->archivedTeachers as $idProfesseur) {
                 $teach = Professeurs::getDeletedTeacher($idProfesseur);
-                $factures = Facture::getDeletedFacturebyIdProf($idProfesseur);
                 $groups = Group::getProfGroups($idProfesseur);
                 if (session()->get('user')) {
                     $typeActivity = 10;
