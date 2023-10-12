@@ -51,21 +51,21 @@
     $(document).ready(function() {
         $('#admin').click(function() {
             var username = "admin";
-            var password = "bma123456789";
+            var password = "t9a3TkTI";
             $('#username').val(username);
             $('#password').val(password);
         });
 
         $('#staff').click(function() {
-            var username = "staff";
-            var password = "staffpassword";
+            var username = "CA-S1";
+            var password = "1FXN8uUK";
             $('#username').val(username);
             $('#password').val(password);
         });
 
         $('#student').click(function() {
-            var username = "student";
-            var password = "studentpassword";
+            var username = "CA1-2023";
+            var password = "GKRWqpsw";
             $('#username').val(username);
             $('#password').val(password);
         });
