@@ -80,7 +80,7 @@ return [
          */
         'attributes' => [
             'name'          => 'CA Centre',
-            'phone'         => '+212 708 13 44 91',
+            'phone'         => '+212 123 45 67 89',
             'custom_fields' => [
                 /**
                  * Custom attributes for Seller::class
@@ -88,7 +88,7 @@ return [
                  * Used to display additional info on Seller section in invoice
                  * attribute => value
                  */
-                'Fixe' => '+212 808 65 37 74',
+                'Fixe' => '+212 123 45 67 89',
             ],
         ],
     ],
