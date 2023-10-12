@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Storage;
-
 return [
     'date' => [
         /**
@@ -15,7 +13,7 @@ return [
     ],
 
     'serial_number' => [
-        'series'           => Storage::get('config.txt').'-F',
+        'series'           => 'CA-F',
         'sequence'         => 1,
         /**
          * Sequence will be padded accordingly, for ex. 00001
@@ -80,7 +78,7 @@ return [
          * Default attributes for Seller::class
          */
         'attributes' => [
-            'name'          => Storage::get('config.txt').' Centre',
+            'name'          => 'CA Centre',
             'phone'         => '+212 708 13 44 91',
             'custom_fields' => [
                 /**
