@@ -410,7 +410,7 @@ Route::middleware([
         Route::get('/incomePayment', [IncomesController::class,'allPayment'])->name('incomePayment');
         // Add New Incomes Payment
 
-		// ARCHIVED Incomes Payment
+        // ARCHIVED Incomes Payment
         Route::get('/archive/incomePayment',[IncomesController::class, 'archive'])->name('incomePayment.archive');
         Route::get('/archive/incomePayment/restore/{idPayment}',[IncomesController::class, 'restoreArchivedPayment'])->name('incomePayment.archive.restore');
 

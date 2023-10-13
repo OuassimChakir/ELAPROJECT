@@ -17,7 +17,6 @@ class CreateGroupsTable extends Migration
             $table->bigIncrements('idGroup');
             $table->string('designation',50);
             $table->integer('capacity')->unsigned();
-            $table->integer('nbElements')->unsigned()->default(0);
             $table->double('amount')->comment('Amount for each student to pay');
             $table->string('debutFormation',8);
             $table->string('finFormation',8);

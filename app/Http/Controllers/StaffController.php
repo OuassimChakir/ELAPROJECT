@@ -87,12 +87,7 @@ class StaffController extends Controller
 
     public function deleteStaff($idStaff)
     {
-        $factures = Facture::getFacturesByStaff($idStaff);
-        if ($factures != null) {
-            foreach ($factures as $facture) {
-                Facture::deleteFacture($facture->idExpensePayment);
-            }
-        }
+
         User::deleteStaffAccount($idStaff);
         staff::deleteStaff($idStaff);
         $staffs = staff::getStaffs();
@@ -111,12 +106,6 @@ class StaffController extends Controller
     {
         if ($request->has('deleteAll')) {
             foreach ($request->staffs as $idStaff) {
-                $factures = Facture::getFacturesByStaff($idStaff);
-                if ($factures != null) {
-                    foreach ($factures as $facture) {
-                        Facture::deleteFacture($facture->idExpensePayment);
-                    }
-                }
                 User::deleteStaffAccount($idStaff);
                 staff::deleteStaff($idStaff);
                 $st = staff::getDeletedStaff($idStaff);
@@ -151,12 +140,6 @@ class StaffController extends Controller
 
     public function restoreArchivedStaff($idStaff)
     {
-        $factures = Facture::getDeletedFacturebyIdStaff($idStaff);
-        if ($factures != null) {
-            foreach ($factures as $facture) {
-                Facture::restoreFacture($facture->idExpensePayment);
-            }
-        }
         staff::restoreStaff($idStaff);
         User::restoreStaffAccount($idStaff);
         $staffs = staff::softDeletedStaffs();
@@ -170,7 +153,7 @@ class StaffController extends Controller
     }
 
     public function deleteArchivedStaff($idStaff)
-    {
+    { 
         $factures = Facture::getDeletedFacturebyIdStaff($idStaff);
         $st = staff::getDeletedStaff($idStaff);
         if (session()->get('user')) {
@@ -178,12 +161,10 @@ class StaffController extends Controller
             $activityDescription = 'Le staff' . " " . $st->prenom . " " . $st->nom . "(" . $idStaff . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
-        // update sur les factures pour le prof
-        if ($factures != null) {
-            foreach ($factures as $facture) {
-                Facture::forceDeleteFacture($facture->idExpensePayment);
-            }
-        }
+        // delete les facture de Prof
+        Facture::where('idStaff',$idStaff)->delete();
+        Facture::onlyTrashed()->where('idStaff',$idStaff)->forceDelete();
+
         User::forceStaffAccount($idStaff);
         staff::forceDeleteStaff($idStaff);
         return Redirect::route('staff.archive')->with('deleteMessage', "Le Staff a été supprimer Définitivement");
@@ -193,12 +174,6 @@ class StaffController extends Controller
     {
         if ($request->has('restoreAll')) {
             foreach ($request->archivedStaff as $idStaff) {
-                $factures = Facture::getDeletedFacturebyIdStaff($idStaff);
-                if ($factures != null) {
-                    foreach ($factures as $facture) {
-                        Facture::restoreFacture($facture->idExpensePayment);
-                    }
-                }
                 staff::restoreStaff($idStaff);
                 User::restoreStaffAccount($idStaff);
                 $st = staff::getStaff($idStaff);
@@ -219,12 +194,9 @@ class StaffController extends Controller
                     $activityDescription = 'Le staff' . " " . $st->prenom . " " . $st->nom . "(" . $idStaff . ")";
                     Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
                 }
-                // update sur les factures pour le prof
-                if ($factures != null) {
-                    foreach ($factures as $facture) {
-                        Facture::forceDeleteFacture($facture->idExpensePayment);
-                    }
-                }
+                // delete les facture de Prof
+                Facture::where('idStaff',$idStaff)->delete();
+                Facture::onlyTrashed()->where('idStaff',$idStaff)->forceDelete();
                 User::forceStaffAccount($idStaff);
                 staff::forceDeleteStaff($idStaff);
             }
