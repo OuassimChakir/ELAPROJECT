@@ -64,7 +64,7 @@
                                             <td>
                                                 <div class="btn-group">
                                                     <a
-                                                        href="{{ route('teachers.profil', ['idProfesseur' => $teacher->idProfesseur, 'nom' => $teacher->nom]) }}">
+                                                        href="{{ route('teachers.profil', ['idProfesseur' => $teacher->idProfesseur]) }}">
                                                         <button type="button" name="edit" class="btn btn-outline-info"
                                                             value="{{ $teacher->idProfesseur }}">
                                                             <i class="bi bi-person-fill"></i>
@@ -98,7 +98,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Ajouter un teacher -->
     @include('pages.teachers.add_teacher')
