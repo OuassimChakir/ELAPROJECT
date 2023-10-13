@@ -100,7 +100,7 @@ class GroupController extends Controller
     public function groupPage($idGroup)
     {
         $students = GroupElements::groupElements($idGroup);
-        $paimentStudents = GroupElements::paimentStudents();
+        $paimentStudents = GroupElements::paimentStudents($idGroup);
         $absen = Attendance::selectAbsence();
         // Queries
         $gradesCategories = GradesCategory::getGradeCategories();
@@ -243,7 +243,7 @@ class GroupController extends Controller
 //                }
 //            }
 ////        }
-        
+
 
         return response()->json('true');
     }
