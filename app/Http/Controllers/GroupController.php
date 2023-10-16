@@ -99,6 +99,7 @@ class GroupController extends Controller
 
     public function groupPage($idGroup)
     {
+        $groupes = Group::getGroups();
         $students = GroupElements::groupElements($idGroup);
         $paimentStudents = GroupElements::paimentStudents($idGroup);
         $absen = Attendance::selectAbsence();
@@ -106,6 +107,7 @@ class GroupController extends Controller
         $gradesCategories = GradesCategory::getGradeCategories();
 
         $subjects = Subjects::getSubjects();
+        $groupSubjects = Group::existedGroupSubjects();
         $courseTypes = CourseType::selectCourses();
         $teachers = Professeurs::getProfesseurs();
         $groupInfo = Group::getGroup($idGroup);
@@ -128,19 +130,23 @@ class GroupController extends Controller
             ->whereNull('groupelements.idStudent')
             ->get();
 
-        return view('pages.groupes.group')
-            ->with('group', $groupInfo)
-            ->with('paimentStudents', $paimentStudents)
-            ->with('groupGrades', $groupGrades)
-            ->with('gradesCategories', $gradesCategories)
-            ->with('professeurs', $teachers)
-            ->with('subjects', $subjects)
-            ->with('grades', $grades)
-            ->with('students', $students)
-            ->with('courseTypes', $courseTypes)
-            ->with('absen', $absen)
-            ->with('pendingOutElements',$pendingOutElements)
-            ->with('emploi', $emploi);
+        return view('pages.groupes.group')->with([
+            'group' =>  $groupInfo,
+            'groupSubjects' =>  $groupSubjects,
+            'paimentStudents' =>  $paimentStudents,
+            'groupGrades' =>  $groupGrades,
+            'gradesCategories' =>  $gradesCategories,
+            'professeurs' =>  $teachers,
+            'subjects' =>  $subjects,
+            'grades' =>  $grades,
+            'students' =>  $students,
+            'courseTypes' =>  $courseTypes,
+            'absen' =>  $absen,
+            'pendingOutElements' => $pendingOutElements,
+            "groupes" => $groupes,
+            'emploi' => $emploi,
+        ]);
+
     }
 
     //  DELETION
@@ -250,6 +256,8 @@ class GroupController extends Controller
 
     public function multipleCancelAssignment(Request $request)
     {
+        if(!$request->has('elements'))
+            return Redirect::back()->with("dangerAlert","ERREUR: Aucun élément n'a été sélectionné.");
         foreach ($request->elements as $idElement) {
             $assignment = GroupElements::getAssignment($idElement);
             if (session()->get('user')) {
@@ -259,11 +267,6 @@ class GroupController extends Controller
             }
 
             Payment::deleteDisactivatedPaiments($assignment->idGroup, $assignment->idStudent);
-            Attendance::deleteGroupAttendancebyidElement($idElement);
-            $group = Group::find($assignment->idGroup);
-            Group::where('idGroup',$assignment->idGroup)->update([
-                'nbElements' => $group->nbElements-count($request->elements)
-            ]);
             GroupElements::cancelAssignment($idElement);
         }
         return Redirect::back()->with('deleteMessage', "Les étudiants séléctionés ont été retirés du groupe avec succès");
@@ -277,12 +280,7 @@ class GroupController extends Controller
             $activityDescription = "L'Etudiant " . $assignment->nom_fr . " " . $assignment->prenom_fr . " (" . $assignment->matricule . ') du Group ' . $assignment->designation . " (ID = " . $assignment->idGroup . ")";
             Activite::addActivity(session()->get('user')->id, $typeActivity, $activityDescription, session()->get('user')->name);
         }
-        $group = Group::find($assignment->idGroup);
         Payment::deleteDisactivatedPaiments($assignment->idGroup, $assignment->idStudent);
-        Attendance::deleteGroupAttendancebyidElement($idElement);
-        Group::where('idGroup',$group->idGroup)->update([
-            'nbElements' => $group->nbElements-1
-        ]);
         GroupElements::cancelAssignment($idElement);
         return Redirect::back()->with('deleteMessage', "L'étudiant a été retiré du groupe avec succès");
     }
@@ -303,5 +301,36 @@ class GroupController extends Controller
             $output = 1;
         }
         return response()->json($output);
+    }
+
+    public function transferClassroom(Request $request){
+        if($request->has('transferStudents'))
+        {
+            // Check the groups durations
+            $currentGroup = Group::getGroup($request->currentGroup);
+            $transferGroup = Group::getGroup($request->idGroup);
+            if(!$request->has('elements'))
+                return Redirect::back()->with("dangerAlert","ERREUR: Aucun élément n'a été sélectionné.");
+            elseif($currentGroup->debutFormation != $transferGroup->debutFormation || $currentGroup->finFormation != $transferGroup->finFormation)
+                return Redirect::back()->with("dangerAlert","ERREUR: La durée du groupe de destination est différente de celle du groupe actuel.");
+            else
+            {
+                // Check if any element of the current group exists in the destination group
+                foreach ($request->elements as $idElement) {
+                    $element = GroupElements::find($idElement);
+                    if(GroupElements::checkElement($request->idGroup, $element->idStudent) != 0)
+                        return Redirect::back()->with("dangerAlert","ERREUR: Un ou plusieurs éléments sélectionnés existent déjà dans le groupe destinataire, Veuillez réessayer !");
+                }
+
+                // Transfer Process
+                foreach ($request->elements as $idElement) {
+                    $element = GroupElements::find($idElement);
+                    GroupElements::addElement($request->idGroup, $element->idStudent);
+                    Payment::transferPayments($element->idStudent, $request->currentGroup, $request->idGroup);
+                    GroupElements::cancelAssignment($idElement);
+                }
+                return Redirect::back()->with('successAlert',"Éléments transférés avec succès vers ".$transferGroup->designation);
+            }
+        }
     }
 }

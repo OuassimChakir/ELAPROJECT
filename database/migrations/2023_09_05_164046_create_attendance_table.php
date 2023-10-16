@@ -18,10 +18,12 @@ class CreateAttendanceTable extends Migration
             $table->tinyInteger('absence')->nullable();
             $table->date('dateAbsence');
             $table->timestamps();
-            $table->unsignedBigInteger('idElement',false,true);
+            $table->unsignedBigInteger('idStudent',false,true);
+            $table->unsignedBigInteger('idGroup',false,true);
         });
         Schema::table('attendance', function (Blueprint $table){
-            $table->foreign('idElement')->references('idElement')->on('groupelements');
+            $table->foreign('idStudent')->references('idStudent')->on('students');
+            $table->foreign('idGroup')->references('idGroup')->on('groups');
         });
     }
 

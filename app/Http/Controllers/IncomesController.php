@@ -207,11 +207,12 @@ class IncomesController extends Controller
                 if (Payment::checkElementPaiment($request->idGroup, $payment[0], $income->idIncome) != 0)
                     continue;
                 else
-                    Payment::initialGroupPayment($group->amount, $group->designation.' - '.$income->description . ' - ' . $payment[2], $request->idGroup, $payment[0], $income->idIncome);
+                    Payment::initialGroupPayment($group->amount,$income->description . ' - ' . $payment[2], $request->idGroup, $payment[0], $income->idIncome);
             }
-            return Redirect::back()->with('successMessage','Les paiements des étudiants a été créé avec succès !');
+            
+            return Redirect::back()->with('successAlert','Les paiements des étudiants a été créé avec succès !');
         }
-        return Redirect::back()->with('deleteMessage','Erreur lors de la creation des factures des étudiants!');
+        return Redirect::back()->with('dangerAlert','Erreur lors de la creation des factures des étudiants!');
     }
 
     public function studentPaiments(Request $request, $idStudent)

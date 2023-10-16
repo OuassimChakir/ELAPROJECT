@@ -162,7 +162,7 @@
                                                 @else
                                                     {{$paiment->groupsDesignation}}
                                                 @endif
-                                                <p>{{$paiment->note}}</p>
+                                                <p>{{$paiment->groupDesignation.'-'.$paiment->note}}</p>
                                             </td>
                                             <td class="align-middle">
                                                 @if ($paiment->etat == 0)

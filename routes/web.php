@@ -205,6 +205,7 @@ Route::middleware([
         /* -----------------------------------------------
         / Classroom (GroupElement)
         / --------------------------------------------- */
+        // Transfer students
         // Add Student to Group
         Route::get('/groupes/{idGroup}/classroom/{idStudent}', [GroupController::class, 'assignElement']);
 
@@ -212,11 +213,12 @@ Route::middleware([
         Route::get('/classrooms/remove/{idElement}', [GroupController::class, 'cancelAssignment'])->name('classroom.cancelAssignment');
 
         // multiple remove from classroom
-        Route::delete('/classroom/multipleRemove', [GroupController::class, 'multipleCancelAssignment'])->name('classroom.multipleCancel');
-
+        Route::post('/classroom/multipleRemove', [GroupController::class, 'multipleCancelAssignment'])->name('classroom.multipleCancel');
+        Route::post("/classroom/transfer", [GroupController::class, 'transferClassroom'])->name('classroom.transfer');
         // JSON DATA
         Route::get('/students/get/{idSubject}', [StudentController::class, 'getGroupsByGrade']);
         Route::get('/students/getGroups/{idSubject}/{idStudent}/{idGradeCategory}', [StudentController::class, 'getGroupsBySubject']);
+        Route::get('/classroom/getGroups/{idSubject}/{idGradeCategory}', [StudentController::class, 'getClassroomGroupsBySubject']);
 
         /* -----------------------------------------------
         / Emploi du temps

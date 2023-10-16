@@ -52,7 +52,7 @@ class StudentController extends Controller
             Storage::disk('local')->put('student.txt', $studentsCounter);
 
             // ========== Create new Student ============= //
-            $matricule = "BMA" . $studentsCounter . "-" . date('Y');
+            $matricule = 'BMA'. $studentsCounter . "-" . date('Y');
             $prenom_ar = $request->prenom_ar;
             $nom_ar = $request->nom_ar;
             $idStudent = Student::addStudent($matricule, $request->nom_fr, $request->nom_ar, $request->prenom_fr, $request->prenom_ar, $request->cnie, $request->numTel, $request->sexe, $request->adresse, $request->dateNaissance);
@@ -331,6 +331,18 @@ class StudentController extends Controller
         return response()->json($groups);
     }
 
+    public function getClassroomGroupsBySubject($idSubject, $idGradeCategory)
+    {
+        $groups = Group::select('*')
+            ->selectRaw('(select count(idElement) from groupelements where groupelements.idGroup = groups.idGroup) as nbElements')
+            ->where('idSubject', $idSubject)
+            ->where('idGradeCategory', $idGradeCategory)
+            ->get();
+        for ($i=0; $i < $groups->count(); $i++)
+            $groups[$i]->grades = GroupGrades::getGroupGrades($groups[$i]->idGroup);
+
+        return response()->json($groups);
+    }
 
     //--------- Student ------------//
     public function getInvoicesByGroupAndStudent($idStudent, $idGroup)

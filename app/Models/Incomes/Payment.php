@@ -2,6 +2,7 @@
 
 namespace App\Models\Incomes;
 
+use App\Models\Group;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,9 +19,10 @@ class Payment extends Model
     //------------- all Payment de incomes----------//
     public static function allPayment()
     {
-        return Payment::select('*')
+        return Payment::select('*', 'groups.designation as groupDesignation')
             ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
             ->leftjoin('students', 'students.idStudent', '=', 'payment.idStudent')
+            ->leftjoin('groups', 'payment.idGroup', '=', 'groups.idGroup')
             ->whereNotNull('etat')
             ->orderBy('datePayment', 'DESC')
             ->get();
@@ -90,7 +92,7 @@ class Payment extends Model
         // null (Random) | 0 (Other Paiments) | >=1 Group Paiments
         if (is_null($idGroup)) {
             // Random Last 10 Groups
-            return Payment::select('*', 'groups.designation as groupsDesignation', 'payment.amount')
+            return Payment::select('*', 'groups.designation as groupDesignation', 'payment.amount')
                 ->leftjoin('groups', 'payment.idGroup', '=', 'groups.idGroup')
                 ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
                 ->where('idStudent', $idStudent)
@@ -161,21 +163,6 @@ class Payment extends Model
         $paiment->save();
     }
 
-    // Update in new year ||
-    public static function updatePaiment($idPayment)
-    {
-        $paiment = Payment::find($idPayment);
-        $paiment->idStudent = null;
-        $paiment->save();
-    }
-    // Update in new year by group||
-    public static function updatePaimentidGroup($idPayment)
-    {
-        $paiment = Payment::find($idPayment);
-        $paiment->idGroup = null;
-        $paiment->save();
-    }
-
     //------ total amount
     public static function totalAmount()
     {
@@ -243,19 +230,21 @@ class Payment extends Model
             'idIncome' => $idIncome,
             'etat' => $etat,
             'created_at' => date('Y-m-d H:i:s'),
-            'created_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s')
         ]);
     }
 
-    public static function pendingGroupPaiments($idGroup, $idStudent)
-    {
-        return Payment::select('*')
-            ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
-            ->where('idStudent', $idStudent)
-            ->where('idGroup', $idGroup)
-            ->where('activationDate', '!=', '00')
-            ->whereNotNull('activationDate')
-            ->get();
+    public static function transferPayments($idStudent, $idGroup, $destinationGroup){
+        $group = Group::find($destinationGroup);
+        Payment::where('idStudent',$idStudent)
+            ->where('idGroup',$idGroup)
+            ->where('etat','!=',1)
+            ->orWhereNull('etat')
+            ->update([
+                'idGroup' => $destinationGroup,
+                'amount' => $group->amount,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
     }
 
     /* ---------------------------------------
@@ -284,18 +273,6 @@ class Payment extends Model
         return Payment::select('*')->where('idStudent', $idStudent)->get();
     }
 
-    public static function getOldPaymentByidStudent($idStudent)
-    {
-        return Payment::withTrashed()
-            ->select('*')
-            ->where('idStudent', $idStudent)
-            ->get();
-    }
-
-    public static function getPaymentByidGroup($idGroup)
-    {
-        return Payment::where('idGroup', $idGroup)->get();
-    }
 
     public static function getGroupPendingPaiments($idGroup)
     {
@@ -355,8 +332,6 @@ class Payment extends Model
     {
         return  Payment::onlyTrashed()->select('*')->where('idStudent', $idStudent)->get();
     }
-
-
 
     /*----------------------------------
     / Stats Page

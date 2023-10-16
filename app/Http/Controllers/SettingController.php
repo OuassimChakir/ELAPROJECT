@@ -43,7 +43,7 @@ class SettingController extends Controller
                     Notes::deleteGroupNotes($groupe->idGroup);
                     $groupElements = GroupElements::groupElements($groupe->idGroup);
                     foreach ($groupElements as $goupElements) {
-                        Attendance::deleteGroupAttendancebyidElement($goupElements->idElement);
+                        Attendance::deleteGroupAttendancebyidElement($groupe->idGroup, $goupElements->idStudent);
                         GroupElements::cancelAssignment($goupElements->idElement);
                     }
                     GroupGrades::deleteGroupGrades($groupe->idGroup);
