@@ -18,10 +18,11 @@ class Attendance extends Model
         return Attendance::all();
     }
 
-    public static function checkAbsence($dateAbsence, $idElement)
+    public static function checkAbsence($dateAbsence, $idGroup, $idStudent)
     {
         return Attendance::where('dateAbsence', $dateAbsence)
-            ->where('idElement', $idElement)
+            ->where('idGroup', $idGroup)
+            ->where('idStudent', $idStudent)
             ->count();
     }
 
@@ -29,25 +30,35 @@ class Attendance extends Model
     public static function getAttendance($idAttendance)
     {
         return Attendance::select('*')
-                ->join('groupelements','groupelements.idElement','=','attendance.idElement')
-                ->join('students','students.idStudent','=','groupelements.idStudent')
+                ->join('students','students.idStudent','=','attendance.idStudent')
                 ->where('idAttendance',$idAttendance)
                 ->first();
     }
 
-    public static function getGroupAttendanceByDate($dateAbsence, $idElement)
+    public static function getGroupAttendanceByDate($dateAbsence, $idStudent, $idGroup)
     {
         $date = explode('-',$dateAbsence);
         return Attendance::selectRaw('*, DAY(dateAbsence) as day')
-            ->where('idElement', $idElement)
+            ->join('students','students.idStudent','=','attendance.idStudent')
+            ->where('idGroup', $idGroup)
+            ->where('attendance.idStudent', $idStudent)
             ->whereRaw('MONTH(dateAbsence) = '.$date[1].' AND YEAR(dateAbsence) = '.$date[0])
+            ->get();
+    }
+
+    public static function getAttendanceStudents($dateAbsence, $idGroup){
+        $date = explode('-',$dateAbsence);
+        return Attendance::selectRaw('students.*')
+            ->join('students','students.idStudent','=','attendance.idStudent')
+            ->where('idGroup', $idGroup)
+            ->whereRaw('MONTH(dateAbsence) = '.$date[1].' AND YEAR(dateAbsence) = '.$date[0])
+            ->groupBy('students.idStudent')
             ->get();
     }
 
     public static function studentLastestAttendances($idStudent){
         return Attendance::select('*')
-            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
-            ->join('groups','groups.idGroup','=','groupelements.idGroup')
+            ->join('groups','groups.idGroup','=','attendance.idGroup')
             ->where('idStudent',$idStudent)
             ->orderBy('dateAbsence','DESC')
             ->skip(0)
@@ -55,15 +66,16 @@ class Attendance extends Model
             ->get();
     }
 
-    // ------------ add Absence ------------//     
-    public static function markAttendance($absence, $dateAbsence, $idElement)
+    // ------------ add Absence ------------//
+    public static function markAttendance($absence, $dateAbsence, $idGroup, $idStudent)
     {
         Attendance::insert([
             'absence' => $absence,
             'dateAbsence' => $dateAbsence,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
-            'idElement' => $idElement,
+            'idStudent' => $idStudent,
+            'idGroup' => $idGroup,
         ]);
     }
 
@@ -79,28 +91,14 @@ class Attendance extends Model
 
 
     // ---------- Total attendances in a month ---------- //
-    public static function countAttendances($idElement, $month){
+    public static function countAttendances($idStudent, $idGroup, $month){
         return Attendance::select('*')
-                ->where('idElement',$idElement)
+                ->where('idStudent',$idStudent)
+                ->where('idGroup',$idGroup)
                 ->where('absence',0)
                 ->whereRaw('MONTH(dateAbsence) = '.$month)
                 ->count();
     }
-
-    // ---------- Total absence for Each Month in the Scolare Year ---------- //
-    public static function totalAbsenceMonth($firstYear, $secondYear)
-    {
-        return DB::table('attendance')
-            ->selectRaw('count(idAttendance) AS absence, MONTH(dateAbsence) AS mois ,absence AS etatabsence')
-            ->whereYear("dateAbsence", $firstYear)
-            ->orWhereYear("dateAbsence", $secondYear)
-            ->whereRaw("MONTH(dateAbsence) BETWEEN '09' AND '12'")
-            ->orWhereRaw("MONTH(dateAbsence) BETWEEN '01' AND '08'")
-            ->groupByRaw("absence")
-            ->groupByRaw("MONTH(dateAbsence)")
-            ->get();
-    }
-
 
     public static function totalAbsenceDay($currentYear, $month)
     {
@@ -121,23 +119,23 @@ class Attendance extends Model
     /* ---------------------------------
     /  Delete Attendance by Group Element
     /----------------------------------*/
-    public static function deleteGroupAttendancebyidElement($idElement)
+    public static function deleteGroupAttendancebyidElement($idGroup, $idStudent)
     {
-        Attendance::where('idElement', $idElement)->delete();
+        Attendance::where('idStudent', $idStudent)
+            ->where('idGroup',$idGroup)
+            ->delete();
     }
 
 
     public static function deleteGroupAttendancebyidStudent($idStudent){
         Attendance::select('*')
-            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
-            ->where('groupelements.idStudent', $idStudent)
+            ->where('idStudent', $idStudent)
             ->delete();
     }
 
     public static function deleteGroupAttendancebyidGroup($idGroup){
         Attendance::select('*')
-            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
-            ->where('groupelements.idGroup', $idGroup)
+            ->where('idGroup', $idGroup)
             ->delete();
     }
 }

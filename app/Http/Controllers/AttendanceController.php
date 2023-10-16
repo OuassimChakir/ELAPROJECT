@@ -35,15 +35,16 @@ class AttendanceController extends Controller
             }
             for ($i=0; $i < count($request->students); $i++) {
                 $element = GroupElements::getElement($idGroup,$request->students[$i]);
-                if(Attendance::checkAbsence($request->dateAbsence, $element->idElement) != 0){
+                if(Attendance::checkAbsence($request->dateAbsence, $idGroup, $request->students[$i]) != 0){
                     $flag = 1;
                     break;
                 }
-                Attendance::markAttendance($request->absence[$i],$request->dateAbsence,$element->idElement);
-                if(Attendance::countAttendances($element->idElement, $date[1]) >= 2){
+                Attendance::markAttendance($request->absence[$i],$request->dateAbsence, $idGroup, $request->students[$i]);
+                if(Attendance::countAttendances($request->students[$i], $idGroup, $date[1]) >= 2){
                     $paiment = Payment::selectPayment($idGroup, $element->idStudent,$income->idIncome);
-                    if(is_null($paiment->etat) || $paiment->etat == 2)
-                        Payment::activatePaiment($element->idGroup,$element->idStudent, $date[1]);
+                    if(!is_null($paiment))
+                        if(is_null($paiment->etat) || $paiment->etat == 2)
+                            Payment::activatePaiment($element->idGroup,$element->idStudent, $date[1]);
                 }
             }
 
@@ -72,9 +73,9 @@ class AttendanceController extends Controller
 
         if ($request->has('getAttendance')) {
             if($role->codeRole != '22'){
-                $students = GroupElements::groupElements($request->idGroup);
+                $students = Attendance::getAttendanceStudents($request->dateAbsence, $request->idGroup);
                 for ($i=0; $i < count($students); $i++){
-                    $students[$i]->attendance = Attendance::getGroupAttendanceByDate($request->dateAbsence, $students[$i]->idElement);
+                    $students[$i]->attendance = Attendance::getGroupAttendanceByDate($request->dateAbsence, $students[$i]->idStudent, $request->idGroup);
                     if($students[$i]->attendance->count() == 0) $students[$i]->attendance = null;
                 }
                 return view('pages.groupes.presence')->with([
@@ -86,8 +87,7 @@ class AttendanceController extends Controller
                 ]);
             }else{
                 $student = Student::getStudent(Auth::user()->idStudent);
-                $element = GroupElements::getElement($request->idGroup,$student->idStudent);
-                $student->attendance = Attendance::getGroupAttendanceByDate($request->dateAbsence, $element->idElement);
+                $student->attendance = Attendance::getGroupAttendanceByDate($request->dateAbsence, $student->idStudent, $request->idGroup);
                 if($student->attendance->count() == 0) $student->attendance = null;
                 return view('pages.groupes.presence')->with([
                     'groups' => $allGroups,
@@ -101,18 +101,9 @@ class AttendanceController extends Controller
         return view('pages.groupes.presence')->with('groups', $allGroups)->with('gradeCategories',$gradeCategories);
     }
 
-
-    //-------- liste absence by date and idGroup
-    public function getListeAbsence($dateAbsence, $idGroup)
-    {
-        $gradeData['data'] = Attendance::selectListeAbsenceByDateIdgroup($dateAbsence, $idGroup);
-        return response()->json($gradeData);
-    }
-
     public function getAttendanceMonthDates($idGroup,$dateAbsence){
         $date = explode('-',$dateAbsence);
         $response = Attendance::select('dateAbsence')
-                            ->join('groupelements','groupelements.idElement','=','attendance.idElement')
                             ->where('idGroup',$idGroup)
                             ->whereRaw('MONTH(dateAbsence) = '.$date[1].' AND YEAR(dateAbsence) = '.$date[0])
                             ->groupBy('dateAbsence')
@@ -124,8 +115,7 @@ class AttendanceController extends Controller
     public function updateAttendanceAjax($idGroup, $dateAbsence)
     {
         $response = Attendance::select('*')
-                    ->join('groupelements','groupelements.idElement','=','attendance.idElement')
-                    ->join('students','students.idStudent','=','groupelements.idStudent')
+                    ->join('students','students.idStudent','=','attendance.idStudent')
                     ->where('idGroup',$idGroup)
                     ->where('dateAbsence',$dateAbsence)
                     ->get();
@@ -146,9 +136,9 @@ class AttendanceController extends Controller
                 // Disactivated Payment if the absence was deleted
                 $student = Attendance::getAttendance($request->attendances[$i]);
                 $paiment = Payment::getElementActivatedPaiment($request->idGroup,$student->idStudent,$income->idIncome);
-                if(is_null($paiment) && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) >= 2)
+                if(is_null($paiment) && Attendance::countAttendances($student->idStudent,$request->idGroup,explode('-',$request->dateAbsence)[1]) >= 2)
                     Payment::activatePaiment($request->idGroup,$student->idStudent,explode('-',$request->dateAbsence)[1]);
-                elseif(!is_null($paiment) && Attendance::countAttendances($student->idElement,explode('-',$request->dateAbsence)[1]) < 2)
+                elseif(!is_null($paiment) && Attendance::countAttendances($student->idStudent,$request->idGroup,explode('-',$request->dateAbsence)[1]) < 2)
                     Payment::disactivatePaiment($paiment->idPayment);
             }
             return Redirect::back()->with('successMessage', "Mise à jour des présences réussie !");
@@ -172,7 +162,7 @@ class AttendanceController extends Controller
                 // Disactivated Payment if the absence was deleted
                 $paiment = Payment::getElementActivatedPaiment($request->idGroup,$student->idStudent,$income->idIncome);
                 if(!is_null($paiment))
-                    if($paiment->count() > 0 && Attendance::countAttendances($student->idElement,explode('-',$request->deletionDateAbsence)[1]) < 2)
+                    if($paiment->count() > 0 && Attendance::countAttendances($student->idStudent,$request->idGroup,explode('-',$request->deletionDateAbsence)[1]) < 2)
                         Payment::disactivatePaiment($paiment->idPayment);
 
             }

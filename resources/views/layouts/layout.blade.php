@@ -148,7 +148,24 @@
             )
         </script>
     @endif
-
+    @if(session()->has('dangerAlert'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ session()->get('dangerAlert') }}",
+            })
+        </script>
+    @endif
+    @if(session()->has('successAlert'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Terminé!',
+                text: "{{ session()->get('successAlert') }}",
+            })
+        </script>
+    @endif
 
     <script>
         document.getElementById("logoutHeader").addEventListener("click", function() {

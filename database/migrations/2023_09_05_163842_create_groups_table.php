@@ -22,11 +22,13 @@ class CreateGroupsTable extends Migration
             $table->string('finFormation',8);
             $table->bigInteger('idSubject',false,true);
             $table->bigInteger('idProfesseur',false,true)->nullable();
+            $table->bigInteger('idGradeCategory',false,true)->nullable();
             $table->timestamps();
         });
         Schema::table('groups', function (Blueprint $table){
             $table->foreign('idSubject')->references('idSubject')->on('subjects');
             $table->foreign('idProfesseur')->references('idProfesseur')->on('professeurs');
+            $table->foreign('idGradeCategory')->references('idGradeCategory')->on('gradescategories');
         });
     }
 

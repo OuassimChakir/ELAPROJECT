@@ -164,15 +164,15 @@
             <div class="tab-pane-content mt-5">
                 <form action="{{ route('classroom.multipleCancel') }}" method="post">
                     @csrf
-                    @method('delete')
+                    @method('post')
+                    <input type="hidden" name="currentGroup" value="{{$group->idGroup}}">
                     <div class="table-responsive">
                         <table id="responsive-data-table" class="table">
                             <thead>
                             <tr>
                                 @if ($students->count() != 0)
                                     <th>
-                                        <input type="checkbox" class="form-check-input"
-                                               id="selectAllArchived">
+                                        <input type="checkbox" class="form-check-input" id="selectAllArchived">
                                     </th>
                                 @endif
                                 <th>#</th>
@@ -188,7 +188,7 @@
                                 <tr>
                                     <td>
                                         <input type="checkbox" name="elements[]" value="{{ $student->idElement }}"
-                                               class="form-check-input archivedStudents">
+                                            class="form-check-input archivedStudents">
                                     </td>
                                     <td>
                                         {{ $student->matricule }}
@@ -231,16 +231,24 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
-                        <div class="col btns">
+
+                    <div class="row mt-3">
+                        <div class="btn-group-toggle">
+                            <button type="button" name="transferAll"
+                                    class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#transferStudents">
+                                <i class="mdi mdi-transfer"></i> Transférer la Sélection
+                            </button>
                             <button type="submit" name="deleteAll"
-                                    class="btn btn-outline-danger"
+                                    class="btn btn-outline-danger text-right"
                                     onclick="return confirm('Voulez-vous retirer définitivement ces étudiants?');"
                                     value="{{ $group->idGroup }}">
                                 <i class="bi bi-trash-fill"></i> Supprimer la Sélection
                             </button>
                         </div>
                     </div>
+                    {{-- Tansfer Modal --}}
+                    @include('pages.groupes.sections.transfer')
                 </form>
             </div>
         </div>

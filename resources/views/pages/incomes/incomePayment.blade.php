@@ -54,17 +54,17 @@
                                                 <td>BMA-N°{{$Payment->numeroRecu}}</td>
                                             @endif
                                             <td>
-                                                <p>{{ $Payment->note }}</p>
+                                                <p>{{$Payment->groupDesignation.'-'.$Payment->note }}</p>
                                             </td>
                                             <td>
                                                 @if (!is_null($Payment->idStudent))
                                                 <a href="{{route('student.profil',['idStudent' => $Payment->idStudent])}}">
                                                     {{$Payment->prenom_ar}} {{$Payment->nom_ar}}
-                                                </a>    
+                                                </a>
                                                 @else
                                                     -
                                                 @endif
-                                                
+
                                             </td>
                                             <td><span class="badge badge-primary">{{ $Payment->amount }} DH</span></td>
                                             <td><span class="badge badge-info">{{ $Payment->amount-$Payment->amountPaid }} DH</span></td>
