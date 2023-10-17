@@ -68,7 +68,7 @@ class GroupController extends Controller
                     $grade = Grades::getGrade($request->grades[0]);
                     $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
                 }
-            $newGroup = Group::createGroup($designation, $request->capacity, $request->debutFormation, $request->finFormation, $request->amount, $request->idSubject, $request->idProfesseur);
+            $newGroup = Group::createGroup($designation, $request->capacity, $request->debutFormation, $request->finFormation, $request->amount, $request->idSubject, $request->idProfesseur, $request->gradeCategory);
 
             if (isset($request->grades))
                 foreach ($request->grades as $idGrade)
@@ -196,7 +196,7 @@ class GroupController extends Controller
                     $designation = $grade->brev . '-' . $gradeCategory->category . '-' . strtoupper($matiere->short) . '-G' . $request->nbGroup;
                 }
 
-            Group::updateGroup($idGroup, $designation, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur);
+            Group::updateGroup($idGroup, $designation, $request->capacity, $request->amount, $request->debutFormation, $request->finFormation, $request->idSubject, $request->idProfesseur, $request->gradeCategory);
 
             if (isset($request->grades)) {
                 GroupGrades::deleteGroupGrades($idGroup);
