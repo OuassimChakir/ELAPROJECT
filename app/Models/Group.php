@@ -129,7 +129,7 @@ class Group extends Model
             ->get();
     }
     // ------ Creation ----------- //
-    public static function createGroup($designation, $capacity,$debut, $fin, $amount, $idSubject, $idProfesseur){
+    public static function createGroup($designation, $capacity,$debut, $fin, $amount, $idSubject, $idProfesseur, $idGradeCategory){
         return Group::insertGetId([
             'designation' => $designation,
             'capacity' => $capacity,
@@ -138,13 +138,14 @@ class Group extends Model
             'finFormation' => $fin,
             'idSubject' => $idSubject,
             'idProfesseur' => $idProfesseur,
+            'idGradeCategory' => $idGradeCategory,
             'CREATED_AT' => date('Y-m-d H:i:s'),
             'UPDATED_AT' => date('Y-m-d H:i:s')
         ]);
     }
 
     // --------- Update ------------- //
-    public static function updateGroup($idGroup, $designation, $capacity, $amount,$debutFormation, $finFormation, $idSubject, $idProfesseur){
+    public static function updateGroup($idGroup, $designation, $capacity, $amount,$debutFormation, $finFormation, $idSubject, $idProfesseur, $idGradeCategory){
         $group = Group::find($idGroup);
         $group->designation = $designation;
         $group->amount = $amount;
@@ -153,6 +154,7 @@ class Group extends Model
         $group->finFormation = $finFormation;
         $group->idSubject = $idSubject;
         $group->idProfesseur = $idProfesseur;
+        $group->idGradeCategory = $idGradeCategory;
         $group->save();
     }
 
