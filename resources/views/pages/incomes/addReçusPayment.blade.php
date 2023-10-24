@@ -9,7 +9,7 @@
                 @csrf
                 @method('post')
                 <div class="modal-body px-4">
-                    <div class="row mb-2 g-3"> 
+                    <div class="row mb-2 g-3">
                         <div class="row mb-2 g-3">
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
@@ -150,12 +150,19 @@
         $('#idIncome').change(function() {
             var array = $(this).val().split('|');
             var activationDate = array[1];
-            var idincome = array[0];
             if(activationDate == ''){
                 $('#search').prop('disabled',true);
+                $('#searchBtn').prop('disabled',true);
+                $('#groupSelect').hide();
+                $('#groupSelect').prop('disabled',true);
             }else{
                 $('#search').prop('disabled',false);
+                $('#searchBtn').prop('disabled',false);
+                $('#groupSelect').hide();
+                $('#groupSelect').prop('disabled',false);
             }
+            if(activationDate == '00')
+                $('#searchBtn').prop('disabled',true);
             $('#search').on('keyup', function() {
                 $('#userList').show();
                 $('#idGroup').empty();
@@ -203,7 +210,7 @@
                     }
                 });
             });
-            $('#search').removeClass("is-valid"); 
+            $('#search').removeClass("is-valid");
             $('#search').addClass("is-invalid");
         });
 
