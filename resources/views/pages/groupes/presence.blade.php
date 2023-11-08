@@ -47,7 +47,7 @@
                                                     @endforeach
                                                     </optgroup>
                                                 @endforeach
-                                                
+
                                             </select>
                                         </div>
                                     </div>
@@ -82,7 +82,11 @@
                                 </tr>
                                 @foreach ($studentsAttendance as $student)
                                     <tr>
-                                        <th>{{ ucfirst($student->prenom_ar) }} {{ ucfirst($student->nom_ar) }}</th>
+                                        <th>
+                                            <a href="{{route('student.profil', ['idStudent' => $student->idStudent])}}" target="_blank">
+                                                {{ ucfirst($student->prenom_ar) }} {{ ucfirst($student->nom_ar) }}
+                                            </a>
+                                        </th>
                                         @for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, $dateAbsence[1], $dateAbsence[0]); $i++)
                                             @if (is_null($student->attendance))
                                                 <td></td>
@@ -198,7 +202,7 @@
                     var etatAbsence = $(this).val();
                     var idAttendance = $(this).closest('tr').find('.btn').val().split(
                         '|')[0];
-                    // AJAX request 
+                    // AJAX request
                     $.ajax({
                         url: '/absence/update/' + idAttendance + '-' +
                             etatAbsence,

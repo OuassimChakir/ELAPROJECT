@@ -46,7 +46,7 @@ class GroupElements extends Model
     }
 
     public static function paimentStudents($idGroup){
-        return DB::select("select groupelements.*, students.*, count(idPayment) as payments from groupelements inner join students on groupelements.idStudent = students.idStudent left join payment on (payment.idGroup = groupelements.idGroup) AND (payment.idStudent = groupelements.idStudent) group by idElement having idGroup = ".$idGroup." order by payments asc");
+        return DB::select("select groupelements.*, students.*, count(idPayment) as payments, (select GROUP_CONCAT(idIncome SEPARATOR '|') from payment where idGroup = groupelements.idGroup and idStudent = groupelements.idStudent) as existedMonths from groupelements inner join students on groupelements.idStudent = students.idStudent left join payment on (payment.idGroup = groupelements.idGroup) AND (payment.idStudent = groupelements.idStudent) group by idElement having idGroup = ".$idGroup." order by payments asc");
     }
 
     public static function countElementPaiments($idGroup){

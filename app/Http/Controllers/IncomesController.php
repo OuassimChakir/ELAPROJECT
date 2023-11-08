@@ -209,7 +209,7 @@ class IncomesController extends Controller
                 else
                     Payment::initialGroupPayment($group->amount,$income->description . ' - ' . $payment[2], $request->idGroup, $payment[0], $income->idIncome);
             }
-            
+
             return Redirect::back()->with('successAlert','Les paiements des étudiants a été créé avec succès !');
         }
         return Redirect::back()->with('dangerAlert','Erreur lors de la creation des factures des étudiants!');

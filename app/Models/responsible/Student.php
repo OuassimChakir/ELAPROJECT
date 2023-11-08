@@ -18,8 +18,8 @@ class Student extends Model
     protected $primaryKey = "idStudent";
     public $incrementing = false;
     protected $fillable = ['idStudent','matricule','nom_fr','nom_ar','prenom_fr','prenom_ar','cnie','numTel','sexe','adresse','dateNaissance','created_at','updated_at','deleted_at'];
-    
-        // Adding a new student 
+
+        // Adding a new student
     public static function addStudent($matricule,$nom_fr,$nom_ar,$prenom_fr,$prenom_ar,$cnie,$numTel,$sexe,$adresse,$dateNaissance){
             $student = Student::insertGetId([
                 'matricule' => $matricule,
@@ -50,13 +50,13 @@ class Student extends Model
     }
     public static function totalStudents(){
         return Student::select()->get()->count();
-    
+
     }
     public static function selectStudents($idStudent){
         return Student::find($idStudent);
     }
-    public static function selectStudent($idStudent){
-        return Student::where('idStudent', $idStudent)->first();
+    public static function selectStudent($matricule){
+        return Student::where('matricule', $matricule)->first();
     }
 
 
@@ -67,7 +67,7 @@ class Student extends Model
         'responsibles.nom as responsibleNom',
         'responsibles.prenom as responsiblePrenom',
         'responsibles.cnie as responsibleCnie',
-        'responsibles.sexe as responsibleSexe', 
+        'responsibles.sexe as responsibleSexe',
         'responsibles.numTel as responsibleTel',
         'responsibles.created_at as responsibleCreated_at',
         'responsibles.updated_at as responsibleUpdated_at',)
@@ -93,7 +93,7 @@ class Student extends Model
             'updated_at' => date('Y-m-d H:i:s')
         ]);
     }
-    
+
     /* ---------------------------------------
     / Archive & Delete
     / ---------------------------------------*/
@@ -113,7 +113,7 @@ class Student extends Model
         'responsibles.nom as responsibleNom',
         'responsibles.prenom as responsiblePrenom',
         'responsibles.cnie as responsibleCnie',
-        'responsibles.sexe as responsibleSexe', 
+        'responsibles.sexe as responsibleSexe',
         'responsibles.numTel as responsibleTel',
         'responsibles.created_at as responsibleCreated_at',
         'responsibles.updated_at as responsibleUpdated_at',)
