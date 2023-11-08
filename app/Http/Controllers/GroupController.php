@@ -12,7 +12,6 @@ use App\Models\Grades\GradesCategory;
 use App\Models\Group;
 use App\Models\GroupElements;
 use App\Models\GroupGrades;
-use App\Models\Incomes\Income;
 use App\Models\Incomes\Payment;
 use App\Models\Notes;
 use App\Models\responsible\Professeurs;
@@ -123,25 +122,24 @@ class GroupController extends Controller
         $emploi = Emploi::getGroupEmploi($idGroup);
 
         $pendingOutElements = Payment::select('students.*')
-            ->join('students','students.idStudent','=','payment.idStudent')
-            ->leftJoin('groupelements','groupelements.idStudent','=','payment.idStudent')
-            ->where('etat',0)
-            ->where('payment.idGroup',$idGroup)
+            ->join('students', 'students.idStudent', '=', 'payment.idStudent')
+            ->leftJoin('groupelements', 'groupelements.idStudent', '=', 'payment.idStudent')
+            ->where('etat', 0)
+            ->where('payment.idGroup', $idGroup)
             ->whereNull('groupelements.idStudent')
             ->get();
-
         return view('pages.groupes.group')->with([
-            'group' =>  $groupInfo,
-            'groupSubjects' =>  $groupSubjects,
-            'paimentStudents' =>  $paimentStudents,
-            'groupGrades' =>  $groupGrades,
-            'gradesCategories' =>  $gradesCategories,
-            'professeurs' =>  $teachers,
-            'subjects' =>  $subjects,
-            'grades' =>  $grades,
-            'students' =>  $students,
-            'courseTypes' =>  $courseTypes,
-            'absen' =>  $absen,
+            'group' => $groupInfo,
+            'groupSubjects' => $groupSubjects,
+            'paimentStudents' => $paimentStudents,
+            'groupGrades' => $groupGrades,
+            'gradesCategories' => $gradesCategories,
+            'professeurs' => $teachers,
+            'subjects' => $subjects,
+            'grades' => $grades,
+            'students' => $students,
+            'courseTypes' => $courseTypes,
+            'absen' => $absen,
             'pendingOutElements' => $pendingOutElements,
             "groupes" => $groupes,
             'emploi' => $emploi,
@@ -256,8 +254,8 @@ class GroupController extends Controller
 
     public function multipleCancelAssignment(Request $request)
     {
-        if(!$request->has('elements'))
-            return Redirect::back()->with("dangerAlert","ERREUR: Aucun élément n'a été sélectionné.");
+        if (!$request->has('elements'))
+            return Redirect::back()->with("dangerAlert", "ERREUR: Aucun élément n'a été sélectionné.");
         foreach ($request->elements as $idElement) {
             $assignment = GroupElements::getAssignment($idElement);
             if (session()->get('user')) {
@@ -303,23 +301,22 @@ class GroupController extends Controller
         return response()->json($output);
     }
 
-    public function transferClassroom(Request $request){
-        if($request->has('transferStudents'))
-        {
+    public function transferClassroom(Request $request)
+    {
+        if ($request->has('transferStudents')) {
             // Check the groups durations
             $currentGroup = Group::getGroup($request->currentGroup);
             $transferGroup = Group::getGroup($request->idGroup);
-            if(!$request->has('elements'))
-                return Redirect::back()->with("dangerAlert","ERREUR: Aucun élément n'a été sélectionné.");
-            elseif($currentGroup->debutFormation != $transferGroup->debutFormation || $currentGroup->finFormation != $transferGroup->finFormation)
-                return Redirect::back()->with("dangerAlert","ERREUR: La durée du groupe de destination est différente de celle du groupe actuel.");
-            else
-            {
+            if (!$request->has('elements'))
+                return Redirect::back()->with("dangerAlert", "ERREUR: Aucun élément n'a été sélectionné.");
+            elseif ($currentGroup->debutFormation != $transferGroup->debutFormation || $currentGroup->finFormation != $transferGroup->finFormation)
+                return Redirect::back()->with("dangerAlert", "ERREUR: La durée du groupe de destination est différente de celle du groupe actuel.");
+            else {
                 // Check if any element of the current group exists in the destination group
                 foreach ($request->elements as $idElement) {
                     $element = GroupElements::find($idElement);
-                    if(GroupElements::checkElement($request->idGroup, $element->idStudent) != 0)
-                        return Redirect::back()->with("dangerAlert","ERREUR: Un ou plusieurs éléments sélectionnés existent déjà dans le groupe destinataire, Veuillez réessayer !");
+                    if (GroupElements::checkElement($request->idGroup, $element->idStudent) != 0)
+                        return Redirect::back()->with("dangerAlert", "ERREUR: Un ou plusieurs éléments sélectionnés existent déjà dans le groupe destinataire, Veuillez réessayer !");
                 }
 
                 // Transfer Process
@@ -329,7 +326,7 @@ class GroupController extends Controller
                     Payment::transferPayments($element->idStudent, $request->currentGroup, $request->idGroup);
                     GroupElements::cancelAssignment($idElement);
                 }
-                return Redirect::back()->with('successAlert',"Éléments transférés avec succès vers ".$transferGroup->designation);
+                return Redirect::back()->with('successAlert', "Éléments transférés avec succès vers " . $transferGroup->designation);
             }
         }
     }
