@@ -155,6 +155,7 @@ class IncomesController extends Controller
                 }
                 return Redirect::back()->with('successMessage', "L'ajout est fait avec succès");
             }
+            
             $dataidstudent = Student::selectStudent($request->search);
             $idStudent = $dataidstudent->idStudent;
             $count = Payment::checkElementPaiment($request->idGroup, $idStudent, $idIncome);
@@ -168,7 +169,7 @@ class IncomesController extends Controller
                     $note,
                     $etat,
                     $request->idGroup,
-                    $request->idStudent,
+                    $idStudent,
                     $idIncome
                 );
                 if (session()->get('user')) {
