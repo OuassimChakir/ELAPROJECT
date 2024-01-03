@@ -155,15 +155,15 @@
                 var len = 0;
                 if (response != null)
                     len = response.length;
-
+                console.log(response);
                 if (len > 0) {
                     console.log(response);
                     // Read data and create  html
                     let html = '<option disabled selected>-- Choisir un Group --</option>';
                     let value = '';
                     for (var i = 0; i < len; i++) {
-                        value = response[0].idGroup+'|'+response[0].nbElements+'|'+response[0].amount;
-                        html += '<option value="'+value+'">'+response[0].designation+'</option>';
+                        value = response[0].idGroup+'|'+response[i].nbElements+'|'+response[i].amount;
+                        html += '<option value="'+value+'">'+response[i].designation+'</option>';
                     }
                     $("#groupSelect").append(html);
                 }
