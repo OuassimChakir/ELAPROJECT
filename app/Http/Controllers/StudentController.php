@@ -46,10 +46,12 @@ class StudentController extends Controller
 
             // =========== Count nb Student Stock it in student.txt file ============== //
             $studentsCounter = 1;
-            if (!Storage::exists('student.txt'))
+            if (!Storage::exists('student.txt')){
                 Storage::disk('local')->put('student.txt', 0);
-            $studentsCounter += Storage::get('student.txt');
+            }
+            $studentsCounter +=intval(Storage::get('student.txt'));
             Storage::disk('local')->put('student.txt', $studentsCounter);
+            
 
             // ========== Create new Student ============= //
             $matricule = 'BMA'. $studentsCounter . "-" . date('Y');
