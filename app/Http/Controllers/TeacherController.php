@@ -22,10 +22,6 @@ class TeacherController extends Controller
         $subjects = Subjects::getSubjects();
         $courseTypes = CourseType::selectCourses();
         $teachers = Professeurs::getProfesseurs();
-
-        // Restart from 0 EACH YEAR
-        if (date('d-m') == "01-01")
-            Storage::disk('local')->put('professeurs.txt', 0);
         if ($request->has('addTeacher')) {
             // =========== Count nb Professeurs Stock it in professeurs.txt file ============== //
             $professeursCounter = 1;

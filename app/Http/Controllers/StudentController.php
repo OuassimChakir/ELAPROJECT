@@ -29,8 +29,9 @@ class StudentController extends Controller
         $groupCourseTypes = Group::existedGroupCourseTypes();
         $gradesCategories = GradesCategory::getGradeCategories();
         // Restart from 0 EACH YEAR
-        if (date('d-m') == "01-01")
-            Storage::disk('local')->put('student.txt', 0);
+        $studentFileContent = explode('|', Storage::get('student.txt'));
+        if (date('Y') != $studentFileContent[1])
+            Storage::disk('local')->put('student.txt', '0|'.date('Y'));
         $students = Student::getStudents();
         return view('pages.students.students')->with('students', $students)
             ->with('subjects', $groupSubjects)
@@ -47,10 +48,10 @@ class StudentController extends Controller
             // =========== Count nb Student Stock it in student.txt file ============== //
             $studentsCounter = 1;
             if (!Storage::exists('student.txt'))
-                Storage::disk('local')->put('student.txt', 0);
-            $studentsCounter += Storage::get('student.txt');
-            Storage::disk('local')->put('student.txt', $studentsCounter);
-
+                Storage::disk('local')->put('student.txt', '0|'.date('Y'));
+            $studentFileContent = Storage::get('student.txt');
+            $studentsCounter += explode('|', $studentFileContent)[0];
+            Storage::disk('local')->put('student.txt', $studentsCounter.'|'.date('Y'));
             // ========== Create new Student ============= //
             $matricule = 'BMA'. $studentsCounter . "-" . date('Y');
             $prenom_ar = $request->prenom_ar;
