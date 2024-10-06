@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activite;
 use App\Models\Attendance;
+use App\Models\Emploi;
 use App\Models\Expenses\Facture;
 use App\Models\Group;
 use App\Models\GroupElements;
@@ -34,74 +36,62 @@ class SettingController extends Controller
                 / ------------------------------------*/
                 Storage::disk('local')->put('anneeScolaire.txt', $currentYear . "\n" . ((int)date('Y') + 1));
 
-                $students = Student::getStudents();
-                $oldStudents = Student::softDeletedStudents();
-                $professeurs = Professeurs::getProfesseurs();
-                $staffs = Staff::getStaffs();
-                $groupes = Group::getGroups();
-                foreach ($groupes as $groupe) {
-                    Notes::deleteGroupNotes($groupe->idGroup);
-                    $groupElements = GroupElements::groupElements($groupe->idGroup);
-                    foreach ($groupElements as $goupElements) {
-                        Attendance::deleteGroupAttendancebyidElement($groupe->idGroup, $goupElements->idStudent);
-                        GroupElements::cancelAssignment($goupElements->idElement);
-                    }
-                    GroupGrades::deleteGroupGrades($groupe->idGroup);
-                    Payment::where('idGroup',$groupe->idGroup)->whereNull('etat')->forceDelete();
+                // Delete All Attendances Histories:
+                Attendance::select('*')->delete();
 
-                    Payment::where('idGroup',$groupe->idGroup)->update([
-                        'idGroup' => null,
-                    ]);
-                    Payment::withTrashed()->where('idGroup', $groupe->idGroup)->update([
-                        'idGroup' => null,
-                    ]);
+                // Supprimer les Emplois
+                Emploi::select('*')->delete();
 
-                    Group::deleteGroup($groupe->idGroup);
+                // Supprimer les Notes
+                Notes::select('*')->delete();
+
+                // Modifier les paiements id group null
+                Payment::select('*')->update([
+                    'idGroup' => null,
+                ]);
+                Payment::withTrashed()->forceDelete();
+
+                // Supprimer les Groupes Elements
+                GroupElements::select('*')->delete();
+
+                // Groupe Grades
+                GroupGrades::select('*')->delete();
+
+                // Supprimer les Groupes
+                Group::select('*')->delete();
+
+                // Supprimer les activités
+                Activite::select('*')->delete();
+
+                // expenses Paiements
+                Facture::select('*')->delete();
+
+                // Supprimer les professeurs
+                $deleted_profs = Professeurs::withTrashed()->get();
+                foreach($deleted_profs as $prof){
+                    Facture::where('idProfesseur', $prof->idProfesseur)->forceDelete();
+                    User::where('idProfesseur', $prof->idProfesseur)->forceDelete();
+                    $prof->forceDelete();
                 }
+                Professeurs::select('*')->delete();
 
-                $allfacture = Payment::allPayment();
-                foreach ($allfacture as $payment) {
-                    Payment::deletePayment($payment->idPayment);
+                // Supprimer les staffs
+                $deleted_staff = Staff::withTrashed()->get();
+                foreach($deleted_staff as $staff){
+                    Facture::where('idStaff', $staff->idStaff)->forceDelete();
+                    User::where('idStaff', $staff->idStaff)->forceDelete();
+                    $staff->forceDelete();
                 }
+                Staff::select('*')->delete();
 
-                foreach ($oldStudents as $oldStudent) {
-                    $date = date_create($oldStudent->deleted_at);
-                    $anneeSortie = (int)date_format($date, 'Y') + 1;
-                    if ($anneeSortie == $currentYear) {
-                        Payment::withTrashed()
-                        ->where('idStudent', $oldStudent->idStudent)
-                        ->forceDelete();
-
-                        User::forceStudentAccount($oldStudent->idStudent);
-                        if (!is_null($oldStudent->idResponsible))
-                            Responsible::deleteResponsible($oldStudent->idResponsible);
-                        Student::forceDeleteStudent($oldStudent->idStudent);
-                    }
+                // Supprimer les étudiants
+                $deleted_students = Student::withTrashed()->get();
+                foreach($deleted_students as $student){
+                    Payment::where('idStudent', $student->idStudent)->forceDelete();
+                    User::where('idStudent', $student->idStudent)->forceDelete();
+                    $student->forceDelete();
                 }
-
-                foreach ($students as $student) {
-                    User::deleteStudentAccount($student->idStudent);
-                    Student::deleteStudent($student->idStudent);
-                    $payments = Payment::getPaymentByidStudent($student->idStudent);
-                    foreach ($payments as $payment)
-                        Payment::deletePayment($payment->idPayment);
-                }
-
-                foreach ($professeurs as $professeur) {
-                    User::deleteProfAccount($professeur->idProfesseur);
-                    Professeurs::deleteProfesseur($professeur->idProfesseur);
-                    $factures = Facture::getFacturesByProf($professeur->idProfesseur);
-                    foreach ($factures as $facture)
-                        Facture::forceDeleteFacture($facture->idExpensePayment);
-                }
-
-                foreach ($staffs as $staff) {
-                    User::deleteStaffAccount($staff->idStaff);
-                    Staff::deleteStaff($staff->idStaff);
-                    $factures = Facture::getFacturesByStaff($staff->idStaff);
-                    foreach ($factures as $facture)
-                        Facture::forceDeleteFacture($facture->idExpensePayment);
-                }
+                Student::select('*')->delete();
 
                 return response()->json(true);
             } else {

@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'BMA') }}</title>
+        <link href="{{asset('images/Logo/icon.png')}}" rel="shortcut icon" />
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -15,7 +16,7 @@
         <!-- Styles -->
         @livewireStyles
 
-        
+
     </head>
     <body class="font-sans antialiased">
         <x-jet-banner />
