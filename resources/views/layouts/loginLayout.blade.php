@@ -9,7 +9,7 @@
 
 	<title>@yield('title') - BMA School</title>
 	<!-- FAVICON -->
-	<link href="favicon.ico" rel="shortcut icon" />
+	<link href="{{asset('/images/logo/icon.png')}}" rel="shortcut icon" />
 
 
     @include('assets.styles')
