@@ -49,9 +49,9 @@
                                         <tr>
                                             <td>{{++$i}}</td>
                                             @if (is_null($Payment->numeroRecu))
-                                                <td>BMA-N°-</td>
+                                                <td>ELA-N°-</td>
                                             @else
-                                                <td>BMA-N°{{$Payment->numeroRecu}}</td>
+                                                <td>ELA-N°{{$Payment->numeroRecu}}</td>
                                             @endif
                                             <td>
                                                 <p>{{$Payment->groupDesignation.'-'.$Payment->note }}</p>

@@ -153,7 +153,7 @@
                                                 @if (is_null($paiment->numeroRecu))
                                                     -
                                                 @else
-                                                    BMA-N° {{$paiment->numeroRecu}}
+                                                    ELA-N° {{$paiment->numeroRecu}}
                                                 @endif
                                             </td>
                                             <td class="align-middle">
@@ -243,7 +243,7 @@
                             for (let i = 0; i < response.length; i++) {
                                 html = '<tr>';
                                 html += '<td class="align-middle"><input type="checkbox" name="paiments[]" value="'+response[i].idPayment+'"class="form-check-input archivedStudents"></td><td class="align-middle">'+(i+1)+'</td>';
-                                html += '<td class="align-middle">'+((response[i].numeroRecu == null) ? '-' :'BMA-N°'+response[i].numeroRecu)+'</td>';
+                                html += '<td class="align-middle">'+((response[i].numeroRecu == null) ? '-' :'ELA-N°'+response[i].numeroRecu)+'</td>';
                                 html += '<td class="align-middle">'+((response[i].idPaiment == null) ? response[i].designation : response[i].groupsDesignation)+' <p>'+response[i].note+'</p></td>';
                                 html += '<td class="align-middle">'+((response[i].etat == 0) ? (response[i].amount - response[i].amountPaid) : response[i].amount)+' DH</td>';
                                 if(response[i].etat == 0)

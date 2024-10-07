@@ -40,7 +40,7 @@
                                 <tbody>
                                     @if (isset($incomePayment))
 
-                                    
+
                                                 @php
                                                     $i = 0;
                                                 @endphp
@@ -49,9 +49,9 @@
                                                         <td><input type="checkbox" name="archivedPayment[]" value="{{$Payment->idPayment}}" class="form-check-input archivedPayment"></td>
                                                         <td>{{ ++$i }}</td>
                                                         @if (is_null($Payment->numeroRecu))
-                                                            <td>BMA-N°-</td>
+                                                            <td>ELA-N°-</td>
                                                         @else
-                                                            <td>BMA-N°{{ $Payment->numeroRecu }}</td>
+                                                            <td>ELA-N°{{ $Payment->numeroRecu }}</td>
                                                         @endif
                                                         <td>
                                                             <p>{{ $Payment->note }}</p>

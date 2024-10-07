@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         foreach($roles as $role){
             if($role->codeRole == '00')
                 DB::table('users')->insert([
-                    'name' => 'BMA Admin',
+                    'name' => 'ELA Admin',
                     'username' => 'admin',
                     'password' => Hash::make('bma123456789'),
                     'idRole' => $role->idRole,

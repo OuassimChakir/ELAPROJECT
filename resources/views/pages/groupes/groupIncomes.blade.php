@@ -49,9 +49,9 @@
                                         <tr>
                                             <td>{{++$i}}</td>
                                             @if (is_null($Payment->numeroRecu))
-                                                <td>BMA-N°-</td>
+                                                <td>ELA-N°-</td>
                                             @else
-                                                <td>BMA-N°{{$Payment->numeroRecu}}</td>
+                                                <td>ELA-N°{{$Payment->numeroRecu}}</td>
                                             @endif
                                             <td>
                                                 <p>{{ $Payment->note }}</p>
@@ -60,11 +60,11 @@
                                                 @if (!is_null($Payment->idStudent))
                                                 <a href="{{route('student.profil',['idStudent' => $Payment->idStudent])}}">
                                                     {{$Payment->prenom_ar}} {{$Payment->nom_ar}}
-                                                </a>    
+                                                </a>
                                                 @else
                                                     -
                                                 @endif
-                                                
+
                                             </td>
                                             <td><span class="badge badge-dark">{{ $Payment->amount }} DH</span></td>
                                             <td>

@@ -104,7 +104,7 @@
                                                             @if (isset($factures))
                                                                 @foreach ($factures as $facture)
                                                                     <tr>
-                                                                        <td>BMA-F.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
+                                                                        <td>ELA-F.{{ str_pad((string) $facture->idExpensePayment, 4, 0, STR_PAD_LEFT) }}
                                                                         </td>
                                                                         <td><span
                                                                                 class="badge badge-primary">{{ $facture->designation }}</span>

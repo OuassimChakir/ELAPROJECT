@@ -1,14 +1,14 @@
     		<!-- LEFT MAIN SIDEBAR -->
 			<div class="ec-left-sidebar ec-bg-sidebar">
 				<div id="sidebar" class="sidebar ec-sidebar-footer">
-	
+
 					<div class="ec-brand">
-						<a href="{{ route('acceuil') }}" title="BMA">
-							<img src="{{asset('images/Logo/icon.png')}}" id="brandlogo" alt="" />
-							<span class="ec-brand-name text-truncate">BMA School</span>
+						<a href="{{ route('acceuil') }}" title="ELA">
+							<img src="{{asset('images/Logo/logo_ela.png')}}" id="brandlogo" alt="" />
+							<span class="ec-brand-name text-truncate">ELA School</span>
 						</a>
 					</div>
-	
+
 					<!-- begin sidebar scrollbar -->
 					<div class="ec-navigation" data-simplebar>
 						<!-- sidebar menu -->
@@ -21,7 +21,7 @@
 								</a>
 								<hr>
 							</li>
-	
+
 							@admin
 							<!-- Persons -->
 							<li class="{{ Route::is('teachers.liste') ||Route::is('teachers.profil') ? 'active' : ''}}">
@@ -112,8 +112,8 @@
 							@endadmin
 							<hr>
 							<!-- Subjects -->
-							
-	
+
+
 							{{-- School --}}
 							<!-- Attendance -->
 							<li class="{{ Route::is('absence')  ? 'active' : ''}}">
@@ -262,7 +262,7 @@
 													<span class="nav-text">Archive des Etudiants</span>
 												</a>
 											</li>
-											
+
 											<li class="{{Route::is('teachers.archive') ? 'active' : ''}}">
 												<a class="sidenav-item-link" href="{{route('teachers.archive')}}">
 													<span class="nav-text">Archive des Professeurs</span>
@@ -283,14 +283,14 @@
 													<span class="nav-text">Archive des Reçus de Paiement</span>
 												</a>
 											</li>
-											
+
 										</ul>
 									</div>
 									<hr>
 								</li>
-							
 
-							
+
+
 							<!-- Activities -->
 							<li class="{{Route::is('activite') ? 'active' : ''}}">
 								<a class="sidenav-item-link" href="{{route('activite')}}">
@@ -320,6 +320,5 @@
 					</div>
 				</div>
 			</div>
-	
-	
-	
+
+

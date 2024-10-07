@@ -13,7 +13,7 @@ return [
     ],
 
     'serial_number' => [
-        'series'           => 'BMA-F',
+        'series'           => 'ELA-F',
         'sequence'         => 1,
         /**
          * Sequence will be padded accordingly, for ex. 00001
@@ -78,7 +78,7 @@ return [
          * Default attributes for Seller::class
          */
         'attributes' => [
-            'name'          => 'BMA Centre',
+            'name'          => 'ELA Centre',
             'phone'         => '+212 708 13 44 91',
             'custom_fields' => [
                 /**

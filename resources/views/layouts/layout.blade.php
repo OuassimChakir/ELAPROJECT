@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="@yield('title') - BMA School">
+    <meta name="description" content="@yield('title') - ELA School">
 
-    <title>@yield('title') - BMA School</title>
+    <title>@yield('title') - ELA School</title>
     <!-- FAVICON -->
-    <link href="{{asset('images/Logo/icon.png')}}" rel="shortcut icon" />
+    <link href="{{asset('images/Logo/logo_ela.png')}}" rel="shortcut icon" />
     <!-- Scripts -->
     <link rel="stylesheet" href="/CSS/app.css">
     <script src="/JS/app.js"></script>
@@ -79,7 +79,7 @@
     <script src='{{ asset('assets/plugins/data-tables/jquery.datatables.min.js') }}'></script>
     <script src='{{ asset('assets/plugins/data-tables/datatables.bootstrap5.min.js') }}'></script>
     <script src='{{ asset('assets/plugins/data-tables/datatables.responsive.min.js') }}'></script>
-    
+
 
 <!--------------------------------
 !! Message d'alert

@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 @section('title')
-    BMA Paiment
+    ELA Paiment
 @endsection
 @section('content')
     <div class="breadcrumb-wrapper breadcrumb-contacts">
@@ -8,7 +8,7 @@
             <h1>Revenus</h1>
             <p class="breadcrumbs">
                 <span><a href="{{ route('acceuil') }}">Acceuil</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>BMA Paiment
+                <span><i class="mdi mdi-chevron-right"></i></span>ELA Paiment
             </p>
         </div>
     </div>
@@ -18,7 +18,7 @@
         <div class="col-xl-12 col-lg-12">
             <div class="ec-cat-list card card-default mb-24px">
                     <div class="ec-cat-form p-4">
-                        <h4>BMA Paiment</h4>
+                        <h4>ELA Paiment</h4>
 
                         <form action="{{ route('paiment.validate',['idPayment' => $paiment->idPayment]) }}" method="post">
                             @csrf

@@ -29,7 +29,7 @@ class TeacherController extends Controller
                 Storage::disk('local')->put('professeurs.txt', 0);
             $professeursCounter += Storage::get('professeurs.txt');
             Storage::disk('local')->put('professeurs.txt', $professeursCounter);
-            $username = "BMA-P" . $professeursCounter;
+            $username = "ELA-P" . $professeursCounter;
             $idProfesseur = Professeurs::addProfesseur($request->cine, $request->prenom, $request->nom, $request->sexe, $request->numTel, $request->idSubject);
             $password = User::createProfAccount($idProfesseur->idProfesseur, ucfirst($request->prenom) . ' ' . Str::upper($request->nom), $username);
             $newProfesseur = array(['nom' => $request->nom, 'prenom' => $request->prenom, 'username' => $username, 'password' => $password]);
