@@ -32,7 +32,7 @@ class HomeController extends Controller
         //dd(session()->get("user"));
         if (!Storage::exists('anneeScolaire.txt')) {
             $mois = intval(date('m'));
-            if ($mois >= 9 && $mois <= 12) {
+            if ($mois >= 7 && $mois <= 12) {
                 $premierAnnee = intval(date('Y'));
                 $deuxiemeAnne = $premierAnnee + 1;
             } elseif ($mois <= 1 && $mois <= 6) {
@@ -40,27 +40,33 @@ class HomeController extends Controller
                 $premierAnnee = $deuxiemeAnne - 1;
             }
             Storage::disk('local')->put('anneeScolaire.txt', $premierAnnee . "\n" . $deuxiemeAnne);
-        }else{
+        } else {
             $scolareYears = Storage::get('anneeScolaire.txt');
             $scolareYears = explode("\n", $scolareYears);
-            if(date('Y') == $scolareYears[1]){
-                Storage::disk('local')->put('professerus.txt', 0);
-                Storage::disk('local')->put('staff.txt', 0);
-                Storage::disk('local')->put('student.txt', 0);
+            if (date('Y') == $scolareYears[1]) {
+                Storage::disk('local')->put('professerus.txt', '0|' . date('Y'));
+                Storage::disk('local')->put('staff.txt', '0|' . date('Y'));
+                Storage::disk('local')->put('student.txt', '0|' . date('Y'));
             }
+        }
+
+        if (!Storage::exists('professerus.txt') || !Storage::exists('staff.txt') || !Storage::exists('student.txt')) {
+            Storage::disk('local')->put('professerus.txt', '0|' . date('Y'));
+            Storage::disk('local')->put('staff.txt', '0|' . date('Y'));
+            Storage::disk('local')->put('student.txt', '0|' . date('Y'));
         }
 
         $currentMois = (int)date('m');
         $countCurrentMonthPayments = Payment::select('*')
-            ->join('incomes','incomes.idIncome','=','payment.idIncome')
+            ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
             ->whereNull('etat')
-            ->where('activationDate',$currentMois)
+            ->where('activationDate', $currentMois)
             ->count();
-        if($countCurrentMonthPayments > 0)
+        if ($countCurrentMonthPayments > 0)
             Payment::select('*')
-                ->join('incomes','incomes.idIncome','=','payment.idIncome')
+                ->join('incomes', 'incomes.idIncome', '=', 'payment.idIncome')
                 ->whereNull('etat')
-                ->where('activationDate',$currentMois)
+                ->where('activationDate', $currentMois)
                 ->update([
                     'etat' => 2
                 ]);
@@ -68,7 +74,7 @@ class HomeController extends Controller
         / Admins & Staff
         / -------------------------------------*/
         $role = Roles::getRole(Auth::user()->idRole);
-        if($role->codeRole == '00' || $role->codeRole == '11'){
+        if ($role->codeRole == '00' || $role->codeRole == '11') {
             $student = new Student();
             $students = $student->totalStudents();
             $NumGroups = Group::totalGroups();
@@ -255,7 +261,7 @@ class HomeController extends Controller
                 'professeurs' => $teachers,
                 'Inscrits' => $Inscrits,
             ]);
-        }elseif($role->codeRole == '22'){
+        } elseif ($role->codeRole == '22') {
             /* ------------------------------------
             / Students Home
             / -------------------------------------*/
@@ -271,7 +277,7 @@ class HomeController extends Controller
                 'lastestAttendances' => $lastestAttendances,
                 'notes' => $notes,
             ]);
-        }elseif($role->codeRole=='33'){
+        } elseif ($role->codeRole == '33') {
             /* ------------------------------------
             / Teachers Home
             / -------------------------------------*/
@@ -281,7 +287,7 @@ class HomeController extends Controller
             return view('teacherhome')->with([
                 'teacher' => $teacher,
                 'teacherGroups' => $teacherGroups,
-                'pendingPaiment'=>$pendingPaiment,
+                'pendingPaiment' => $pendingPaiment,
             ]);
         }
     }
